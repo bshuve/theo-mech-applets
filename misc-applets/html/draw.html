@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>draw</title>
+    <link rel = "stylesheet" href = "../css/draw.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/draw.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <canvas id="canvas"></canvas>
+    <div id="energy-graph"></div>
+    <div id="coord-graph"></div>
+    <div id="coord-dxdy-graph"></div>
+    <button class="button" id="clear-canvas">clear</button>
+</div>
+
+<div id="bottom-panel">
+    <div id="derivative-graph"></div>
+    <div id="integral-graph"></div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>orbit2</title>
+    <link rel = "stylesheet" href = "../css/orbit2.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/orbit2.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">Orbit2</h1>
+
+<!-- <p id="text">
+    circa page 300
+
+    \[U_{eff}(r) = -\frac{Gm_1m_2}{r}+\frac{l^2}{2\mu r^2}\]
+
+    \[r(\phi)=\frac{c}{1+\epsilon\cos\phi}\]
+
+    where \(c=l^2/Gm_1m_2\mu\) and \(\mu=m_1m_2/(m_1+m_2)\) is the reduced mass
+
+    \(x=a\cos t\) and \(y=b\sin t\). We want to convert to polar but also a little different. The foci at \(a^2-b^2\)
+    \[\frac{b}{a}=\sqrt{1-\epsilon^2}\]
+    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta} \longleftrightarrow \frac{(x+d)^2}{a^2}+\frac{y^2}{b^2}=1\longleftrightarrow x=a\cos t - d\quad\text{ and }\quad y=b\sin t\]
+    \[c=r(\pi/2)\]
+    \[a=\frac{c}{1-\epsilon^2}\]
+    \[b=\frac{c}{\sqrt{1-\epsilon^2}}\]
+    \[d=a\epsilon\]
+
+    <br><br>
+
+    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta}\]
+    \[\frac{d\phi}{dt} = \frac{l}{\mu r^2}\]
+</p> -->
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+        <canvas id="orbit-canvas" title="planetary-motion"></canvas>
+        <div id="potential-energy-graph"></div>
+    </div>
+
+    <div id="bottom-panel">
+        <div id="position-graph"></div>
+        <div id="angle-graph"></div>
+    </div>
+
+    <div id="inner-container">
+        <label for="earth-slider">d: <span id="print-earth">0.00</span></label>
+        <input id="earth-slider" class="slider" type="range" min="-180" max="180" value="0">
+        <br>
+        <label for="a-slider">a: <span id="print-a">2.30</span></label>
+        <input id="a-slider" class="slider" type="range" min="201" max="280" value="230">
+        <label for="speed-slider">frame rate (ms/f): <span id="print-speed">5</span></label>
+        <input id="speed-slider" class="slider" type="range" min="1" max="10" value="5">
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Position</label><br>
+            <label><span id="purple">.....</span> - Velocity</label><br>
+            <br>
+            <label><span id="red">.....</span> - Kinetic</label><br>
+            <label><span id="green">.....</span> - Potential</label><br>
+            <label><span id="blue">.....</span> - Action</label><br>
+        </fieldset>
+        <p>\(f=\) <span id="print-focus">2.00</span></p>
+        <p>\(\epsilon=\) <span id="print-epsilon">0.00</span></p>
+    </div>
+
+</div>
+
+</body>
+</html>
+

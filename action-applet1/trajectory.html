@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory</title>
+    <link rel = "stylesheet" href = "trajectory.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "trajectory.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 1D: Page 1/4</h1>
+<p id="text">
+Throughout this activity, we consider an object of mass \(m=1\) kg constrained to move in the \(y\)-direction under uniform gravitational acceleration \(-g\). The kinetic energy of the object is \(T=m\dot{y}^2/2\) and the potential energy is \(U=mgy\). We consider the motion of the object from \(t=-1\) s to \(t=+1\) s, with its position beginning and ending at \(y=0\). <br>
+</p>
+
+
+<p id="text">
+<b>Question 1:</b> In your own words, what is the Principle of Least Action? Why is it significant?
+</p>
+
+<p id="text">
+<b>Question 2:</b> The Principle of Least Action requires us to consider paths from the initial configuration to the final configuration that are <i>different from</i> the classical path. Write down a few kinematic properties that the classical path should have. Which of these properties might you expect the non-classical path to have as well?
+</p> 
+
+<p id="text">
+Once you've answered questions 1 and 2, play around with the following applet. It allows you to specify alternative paths that obey the boundary conditions specified in the problem and to visualize an object's motion along the alternative path in comparison to the classical path.
+</p>
+
+<p id="text">
+In the applet below, the alternative path is parametrized by the function \(y(t) = (1+p)(1-t^2)\). For convenience, we have \( g = 2 \).
+</p>
+
+
+<br>
+<br>    
+<!-- <p id="debug">debug text here</p> -->
+<div id="appletsingle">
+    <div id="top-panel" class="row">
+
+	<!-- First column: linear trajectory animation -->
+        <div class="column">
+            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+	<!-- Second column: parabolic trajectory animation (in time) -->
+        <div class="column">
+            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+	<!-- Third column: legend and sliders -->
+        <div class="column">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="purple">.....</span> &nbsp;Correct classical path</label><br>
+                    <label><span id="orange">.....</span> &nbsp;Alternative path</label><br>
+                </fieldset>
+
+		<br> <br>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br>
+<p id="text">
+<b>Question 3:</b> Consider two alternative paths, one with \(p<0\) and the other with \(p>0\). For each, explain in your own words what's "wrong" with each path (i.e., why it's not the path that a particle experiencing uniform acceleration \(-g\) would follow).
+</p>
+
+
+When you are done, proceed to <a href="trajectory2.html">the next page.</a>
+
+<br><br><br>
+
+<i>Created by Kanalu Monaco, Brian Shuve, Bryce Tu Chi, 2022.</i>
+
+<br><br>
+
+</body>
+</html>
+

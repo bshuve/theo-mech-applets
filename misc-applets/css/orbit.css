@@ -1,0 +1,152 @@
+body{
+    position: relative;
+    top: 70px;
+    background-color:#edcdca;
+    max-width: 1000px;
+    margin: auto;
+}
+
+svg, canvas {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    border: none;
+    border-radius: 8px;
+    width: 90%;
+    height: 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+button:hover {
+    transition-duration: 0.4s;
+    background-color: white; /* Green */
+    color:black;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 90%;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+#applet {
+    background-color:#b5cef5;
+    margin-top: 20px;
+    position: relative;
+    height: 580px;
+    width: 1000px;
+    padding: 20px;
+}
+
+#top-panel {
+    /* background-color:#aaa; */
+    position: absolute;
+    height: 280px;
+    width: 680px;
+}
+
+#orbit-canvas {
+    position: absolute;
+    left: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+#position-graph {
+    position: absolute;
+    right: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+#bottom-panel {
+    /* background-color:#bbb; */
+    position: absolute;
+    bottom: 20px;
+    height: 280px;
+    width: 680px;
+}
+
+#potential-energy-graph {
+    position: absolute;
+    right: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+#integral-graph {
+    position: absolute;
+    right: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+#inner-container {
+    background-color:#c2f0c8;
+    position: absolute;
+    right: 20px;
+    height: 540px;
+    width: 260px;
+    padding: 20px;
+}
+
+#red {
+    color: red;
+    background-color:red;
+    width: 30px;
+}
+
+#green {
+    color: green;
+    background-color:green;
+    width: 30px;
+}
+
+#blue {
+    color: blue;
+    background-color:blue;
+    width: 30px;
+}
+
+#orange {
+    color: orange;
+    background-color:orange;
+    width: 30px;
+}
+
+#purple {
+    color: purple;
+    background-color:purple;
+    width: 30px;
+}
+

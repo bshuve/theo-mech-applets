@@ -1,0 +1,110 @@
+body {
+    position: relative;
+    top: 70px;
+    background-color:#edcdca;
+    max-width: 1000px;
+    margin: auto;
+}
+
+svg, canvas {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    height: 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.button:hover {
+    transition-duration: 0.4s;
+    background-color: white; /* white */
+    color:black;
+}
+
+#text {
+    width: 880px;
+    margin: auto;
+}
+
+#applet {
+    background-color:#b5cef5;
+    position: relative;
+    height: 380px;
+    width: 1050px;
+    left: 0px;
+}
+
+.column {
+    float: left;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Clear floats after the columns: 
+IDK what that means*/
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+ }
+
+#controls {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 270px;
+    height: 100%;
+    padding: 10px;
+}
+
+#sliders {
+    display:grid;
+    grid-template-columns: max-content 1fr 20px;
+    grid-gap:5px;
+}
+#sliders label { 
+    text-align:right; 
+}
+
+#checkbox-grid li {
+    display: block;
+    float: left;
+    width: 50%;
+}

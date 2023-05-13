@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory</title>
+    <link rel = "stylesheet" href = "trajectory3.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "trajectory3.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+
+<h1 id="title">Free-fall projectile in 1D: Page 3/4</h1>
+<p id="text">
+Along with a visualization of the particle's motion along a specified path, we now show various quantities (such as the kinetic and potential energies, and their derivatives) as a function of time. We also show the <b>integral</b> of several of these quantities over the entire path, plotted as a function of \(p\), the parameter used to specify the path. The checkboxes allow you to choose which of these integrated quantities to plot. Recall that the alternative path is parametrized by the function \(y(t) = (1+p)(1-t^2)\). For simplicity, we are assuming that motion is occurring on the Planet Ilton where \(g=2\).
+</p>
+
+
+<p id="text">
+Spend some time exploring the applet, and then answer the questions below.
+</p>
+
+<br>
+<br>    
+<!-- <p id="debug">debug text here</p> -->
+<div id="applet">
+    <div id="top-panel" class="row">
+        <div class="column left">
+            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+        <div class="column middle">
+            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+        <div class="column right">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="purple">.....</span> Correct classical motion</label><br>
+                    <label><span id="orange">.....</span> Alternative path</label><br>
+                </fieldset>
+		<br> <br>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="-250" max="100" value="0">
+           </div>
+        </div>
+    </div>
+
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="energy-graph"></div>
+        </div>
+
+        <div class="column middle">
+            <div id="integral-graph"></div>
+        </div>
+
+        <div class="column right">
+            <div id="controls2">
+                <div id="checkbox-grid">
+		    <b>Left plot:</b> energy as a function of time for current value of p.
+		    <br> <br>
+		    <b>Right plot:</b> energy integrated over all time as a function of p. Dot shows selected value of p.
+		    <br> <br>
+		    <b>Checkboxes</b> control which energies are being plotted 
+	 	    <br> <br>
+                    <ul>
+                        <li><input type="checkbox" id="show-k" value="on" checked>
+                        </label> <label><span id="red">.....</span></label>
+                        <label for="show-k"> KE</label> </li>
+                        <li><input type="checkbox" id="show-np" value="on" checked>
+                        </label> <label><span id="green">.....</span></label>
+                        <label for="show-np"> -PE</label></li>
+                        <li><input type="checkbox" id="show-nk" value="off">
+                        </label> <label><span id="lightsalmon">.....</span></label>
+                        <label for="show-nk"> -KE</label></li>
+                        <li><input type="checkbox" id="show-p" value="off">
+                        </label> <label><span id="lime">.....</span></label>
+                        <label for="show-kp"> PE</label></li>
+                        <li><input type="checkbox" id="show-kmp" value="off">
+                        </label> <label><span id="blue">.....</span></label>
+                        <label for="show-kmp"> KE-PE</label></li>
+                        <li><input type="checkbox" id="show-pmk" value="off">
+                        </label> <label><span id="cyan">.....</span></label>
+                        <label for="show-pmk"> KE^2-PE^2</label></li>
+                        <li><input type="checkbox" id="show-kpp" value="off">
+                        </label> <label><span id="purple">.....</span></label>
+                        <label for="show-kpp"> KE+PE</label></li>
+                        <li><input type="checkbox" id="show-nkmp" value="off">
+                        </label> <label><span id="plum">.....</span></label>
+                        <label for="show-nkmp"> KE^2+PE^2</label></li>
+                    </ul>
+                </div>
+	    </div>	
+        </div>
+
+    </div>
+</div>
+
+<br><br>
+
+<p id="text">
+<b>Question 4:</b> Return to your answer to Question 2, updating and revising your answers based on what you've found from exploring this applet. As a reminder, Question 2 asked "Write down a few kinematic properties that the classical path should have. Which of these properties might you expect the non-classical path to have as well?"
+</p>
+
+<p id="text">
+<b>Question 5:</b> As best you can, and in your own words, explain why the classical path minimizes the action defined as the time integral of the kinetic minus potential energies over the path. Choosing two paths, one with \(p<0\) and another with \(p>0\), explain for each why the action is larger than the minimal value. Explain why some other candidates for the "action" (such as the integral of the <b>sum</b> of the kinetic and potential energies) are unsuitable for determining the classical path.
+</p>
+
+
+<p id="text">
+When you are done, proceed to <a href="trajectory4.html">the next page.</a>
+</p>
+
+<br><br><br>
+
+</body>
+</html>
+
