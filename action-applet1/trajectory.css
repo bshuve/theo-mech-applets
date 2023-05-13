@@ -1,0 +1,199 @@
+body {
+    position: relative;
+    top: 70px;
+    background-color:#edcdca;
+    max-width: 1000px;
+    margin: auto;
+}
+
+svg, canvas {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    height: 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.button:hover {
+    transition-duration: 0.4s;
+    background-color: white; /* white */
+    color:black;
+}
+
+#text {
+    width: 880px;
+}
+
+#applet{
+    background-color:#b5cef5;
+    position: relative;
+    height: 650px;
+    width: 950px;
+}
+
+#appletsingle{
+    background-color:#b5cef5;
+    position: relative;
+    height: 320px;
+    width: 950px;
+}
+
+
+#top-panel{
+    /* background-color: green; */
+    position: absolute;
+    height: 320px;
+    width: 950px;
+    padding: 10px;
+}
+
+#bottom-panel{
+    /* background-color:red; */
+    position: absolute;
+    height: 320px;
+    width: 950px;
+    bottom: 0px;
+    padding: 10px;
+}
+
+.column {
+    float: left;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+  
+/* .left, .right {
+    background-color: #aaa;
+    width: 25%;
+} */
+
+/* .middle {
+    background-color: #bbb;
+    width: 50%;
+} */
+
+/* Clear floats after the columns: 
+IDK what that means*/
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+ }
+
+#projectile-motion-canvas-1 {
+    width: 190px;
+    height: 100%;
+}
+
+#projectile-motion-canvas-2 {
+    width: 395px;
+    height: 100%;
+}
+
+#controls {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 270px;
+    height: 100%;
+    padding: 10px;
+}
+
+#checkbox-grid li {
+    display: block;
+    float: left;
+    width: 50%;
+}
+
+#energy-graph{
+    /* background-color:red; */
+    height: 300px;
+    width: 260px;
+}
+
+#integral-graph{
+    /* background-color:green; */
+    height: 300px;
+    width: 260px;
+}
+
+#derivative-graph{
+    /* background-color:blue; */
+    height: 300px;
+    width: 260px;
+}
+
+#red {
+    color: red;
+    background-color:red;
+    width: 30px;
+}
+
+#green {
+    color: green;
+    background-color:green;
+    width: 30px;
+}
+
+#blue {
+    color: blue;
+    background-color:blue;
+    width: 30px;
+}
+
+#aquamarine {
+    color: aquamarine;
+    background-color:aquamarine;
+    width: 30px;
+}
+
+
+#orange {
+    color: orange;
+    background-color:orange;
+    width: 30px;
+}
+
+#purple {
+    color: purple;
+    background-color:purple;
+    width: 30px;
+}

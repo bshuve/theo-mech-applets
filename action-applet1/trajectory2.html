@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory</title>
+    <link rel = "stylesheet" href = "trajectory.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "trajectory2.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 1D: Page 2/4</h1>
+<p id="text">
+We present a similar to applet to the one on the last page, except we now visualize two paths: one is the specified alternative path given by the function \(y(t) = (1+p)(1-t^2)\) (with \(p=0\) corresponding to the classical path), and the classical motion of an object with the same initial position and velocity as the alternative path.
+</p>
+
+
+<p id="text">
+Spend some time playing with this applet, and re-visit your answers to Question 3, updating them or changing them if necessary.
+</p>
+
+
+<br>
+<br>    
+<!-- <p id="debug">debug text here</p> -->
+<div id="appletsingle">
+    <div id="top-panel" class="row">
+        <div class="column left">
+            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+        <div class="column middle">
+            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+        <div class="column right">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="orange">.....</span> &nbsp;Alternative path</label><br>
+                    <label><span id="aquamarine">.....</span> &nbsp;Classical motion with same initial conditions as alternative path</label><br>
+                </fieldset>
+
+		<br> <br>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br> <br>
+When you are done, proceed to <a href="trajectory3.html">the next page.</a>
+
+</body>
+</html>
+

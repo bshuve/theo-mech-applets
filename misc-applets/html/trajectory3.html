@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory3</title>
+    <link rel = "stylesheet" href = "../css/trajectory3.css">
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    
+    <script defer src = "../js/trajectory3.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 1D</h1>
+<p id="text">
+Consider the case of a projectile in free fall in 1D. Suppose our boundary conditions are that the projectile travels to and from (0, 0) in 20 seconds (parameterized from \(t=0\) to \(t=20\)). Given a parameterized path of the form
+
+\[y(t) = y_{sol}(t) + \Delta y(t)\]
+\[y(t) = t(20-t) + \alpha (t-t_1)(t-t_2)(t-t_3)\]
+\[y(t) = 20t-t^2 + \alpha (t^3-t_1t^2-t_2t^2-t_3t^2+t_1t_2t+t_2t_3t+t_1t_3t-t_1t_2t_3)\]
+\[y(t) = \alpha t^3 + (-1-\alpha(t_1+t_2+t_3))t^2 + (\alpha(t_1t_2+t_2t_3+t_1t_3)+20)t-\alpha t_1t_2t_3\]
+\[y(t) = at^3 + bt^2 +ct +d\]
+
+<!-- \[y'(t) = 20-2t +\alpha(3t^2-2t_1t-2t_2t-2t_3t+t_1t_2+t_2t_3+t_1t_3)\]
+\[y'(t) = 3\alpha t^2 + (-2-\alpha(2t_1+2t_2+2t_3))t + \alpha(t_1t_2+t_2t_3+t_1t_3)+20\]
+\[y'(t) = at^2 + bt + c\]
+we see that
+
+\[KE = \frac{1}{2}my'(t)^2\]
+\[PE = mgy(t)\]
+\[S = \int_{0}^{20} KE-PE \ dt \]
+\[S = \int \frac{1}{2}m(at^3+bt^2+ct+d)^2 \ dt - \int mg(at^2+bt+c) \ dt \]
+\[S = \frac{1}{2}m\int a^2t^6+2abt^5+(2ac+b^2)t^4+(2ad+2bc)t^3+(2bd+c^2)t^2+2cdt+d^2 \ dt - \int mg(at^2+bt+c) \ dt\]
+\[S = \frac{1}{2}m\left( \frac{a^2}{7}t^7+\frac{2ab}{6}t^6+\frac{2ac+b^2}{5}t^5+\frac{2ad+2bc}{4}t^4+\frac{2bd+c^2}{3}t^3+\frac{2cd}{2}t^2+d^2t \right) - mg\left(\frac{a}{3}t^3+\frac{b}{2}t^2+ct\right)\] -->
+</p>
+
+<br>
+<br>    
+<!-- <p id="debug">debug text here</p> -->
+<div id="applet">
+    <div id="top-panel" class="row">
+        <div class="column">
+            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+        <div class="column">
+            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+        <div class="column">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="orange">.....</span> - Paramaterized</label><br>
+                    <label><span id="purple">.....</span> - Classical</label><br>
+                    <br>
+                    <label><span id="red">.....</span> - Kinetic</label><br>
+                    <label><span id="green">.....</span> - Potential</label><br>
+                    <label><span id="blue">.....</span> - Action</label><br>
+                </fieldset>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="1" max="100" value="100">
+                <div id="checkbox-grid">
+                    <ul>
+                        <li><input type="checkbox" id="show-k" value="on" checked>
+                        <label for="show-k"> KE</label></li>
+                        <li><input type="checkbox" id="show-p" value="on" checked>
+                        <label for="show-p"> PE</label></li>
+                        <li><input type="checkbox" id="show-kmp" value="off">
+                        <label for="show-kmp"> KE-PE</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div id="tform">
+            <!-- <form id="tform"> -->
+                <!-- <label for="t1">\(t_1\):</label>
+                <input type="number" id="t1" min="1" max="5" step="1" value="0"><br> -->
+                <label for="t2">\(t_2\):</label>
+                <input type="number" id="t2" min="7" max="13" step="1" value="10"><br>
+                <!-- <label for="t3">\(t_3\):</label>
+                <input type="number" id="t3" min="11" max="15" step="1" value="20"><br> -->
+                <button id="submit" value="">Submit</button>
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+
+    <!-- <form>
+        <label for="fname">First name:</label><br>
+        <input type="text" id="fname" name="fname"><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lname">
+      </form> -->
+
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="energy-graph"></div>
+        </div>
+
+        <div class="column middle">
+            <div id="integral-graph"></div>
+        </div>
+
+        <div class="column right">
+            <div id="derivative-graph"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

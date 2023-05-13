@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory</title>
+    <link rel = "stylesheet" href = "../css/trajectory.css">
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    
+    <script defer src = "../js/trajectory.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 1D</h1>
+<p id="text">
+Consider the case of a projectile in free fall in 1D. Suppose our boundary conditions are that the projectile travels to and from (0, 0) in 2 seconds (parameterized from \(t=-1\) to \(t=1\)). If we only consider reasonable paths straight up or down, we can ask how high the projectile will go. In other words, given a parameterized path of the form
+
+\[y(t) = (1+p)(1-t^2)\]
+\[y'(t) = -2t(1+p)\]
+
+for what value of \(p\) will the projectile's path satisfy our boundary conditions? We want to minimize the action given by
+
+\[KE = \frac{1}{2}mv^2 = 2mt^2(1+p)^2\]
+\[PE = mgy = mg(1+p)(1-t^2)\]
+<!-- \[\]
+\[S = \int_{t_0}^{t_1} [KE-PE] \ dt\]
+\[\] -->
+
+\[S = \int_{-1}^{1} [KE-PE] \ dt= \int_{-1}^{1} 2mt^2(1+p)^2-mg(1+p)(1-t^2) \ dt\]
+
+Though we could solve this integral by hand, using the Euler-Lagrange Equation, 
+\[\frac{\partial f}{\partial y}-\frac{d}{dx}\frac{\partial f}{\partial y'}=0\]
+
+we can also solve it computationally by varying \(p\) and trying to minimizing \(S\). Note that potential energy is graphed as \(-mgy\) since it is being subtracted in the Lagrangian (\(KE-PE\))
+</p>
+
+<br>
+<br>    
+<!-- <p id="debug">debug text here</p> -->
+<div id="applet">
+    <div id="top-panel" class="row">
+        <div class="column left">
+            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+        <div class="column middle">
+            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+        <div class="column right">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="orange">.....</span> - Paramaterized</label><br>
+                    <label><span id="purple">.....</span> - Classical</label><br>
+                    <br>
+                    <label><span id="red">.....</span> - Kinetic</label><br>
+                    <label><span id="green">.....</span> - Potential</label><br>
+                    <label><span id="blue">.....</span> - Action</label><br>
+                </fieldset>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
+                <div id="checkbox-grid">
+                    <ul>
+                        <li><input type="checkbox" id="show-k" value="on" checked>
+                        <label for="show-k"> KE</label></li>
+                        <li><input type="checkbox" id="show-p" value="on" checked>
+                        <label for="show-kp"> PE</label></li>
+                        <li><input type="checkbox" id="show-nk" value="off">
+                        <label for="show-nk"> -KE</label></li>
+                        <li><input type="checkbox" id="show-np" value="off">
+                        <label for="show-np"> -PE</label></li>
+                        <li><input type="checkbox" id="show-kpp" value="off">
+                        <label for="show-kpp"> KE+PE</label></li>
+                        <li><input type="checkbox" id="show-nkmp" value="off">
+                        <label for="show-nkmp"> -KE-PE</label></li>
+                        <li><input type="checkbox" id="show-kmp" value="off">
+                        <label for="show-kmp"> KE-PE</label></li>
+                        <li><input type="checkbox" id="show-pmk" value="off">
+                        <label for="show-pmk"> PE-KE</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="energy-graph"></div>
+        </div>
+
+        <div class="column middle">
+            <div id="integral-graph"></div>
+        </div>
+
+        <div class="column right">
+            <div id="derivative-graph"></div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+
+</body>
+</html>
+

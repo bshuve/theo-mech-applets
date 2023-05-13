@@ -1,0 +1,43 @@
+body{
+    position: relative;
+    top: 70px;
+    background-color:#edcdca;
+    max-width: 1000px;
+    margin: auto;
+}
+
+svg, canvas {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+#applet {
+    background-color:#b5cef5;
+    margin-top: 20px;
+    position: relative;
+    height: 700px;
+    width: 1000px;
+    padding: 20px;
+}
+
+#canvas {
+    background-color: white;
+    width: 500px;
+    height: 500px;
+}
+
+#coord-graph {
+    /* background-color: green; */
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+#energy-graph {
+    /* background-color: red; */
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>parabola</title>
+    <link rel = "stylesheet" href = "../css/parabola.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/parabola.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 2D</h1>
+
+<p id="text">
+Consider the case of a projectile in free fall in 2D. Suppose our boundary conditions are that the projectile travels from (0, 0) to (250, 160) in 1 second (parameterized from \(t=0\) to \(t=1\)). If we only consider some reasonable parabolic paths, we can ask exactly which path it will take. In other words, given a parameterized path of the form
+<!-- 
+\[x(t) = c_x + (1-t)^2(0-c_x) + t^2(250-c_x)\quad\text{ and }\quad x'(t) = 2(1-t)(0-c_x) + 2t(250-c_x) \quad\text{ and }\quad x''(t) = 2(250-c_x)-2(0-c_x)\]
+\[y(t) = c_y + (1-t)^2(0-c_y) + t^2(160-c_y)\quad\text{ and }\quad y'(t) = 2(1-t)(0-c_y) + 2t(160-c_y) \quad\text{ and }\quad y''(t) = 2(160-cy)-2(0-c_y)\] -->
+
+\[y(t)=y_0 + (v_0\sin\theta) t + 4.9t^2\]
+
+for what value of \(p\) will the projectile's path satisfy our boundary conditions? We want to minimize the action given by
+
+\[KE = \frac{1}{2}mv^2 = \frac{1}{2}m(x'(t)^2+y'(t)^2)\]
+\[PE = mgy = mgy(t)\]
+\[S = \int_{0}^{1} KE-PE \ dt\]
+
+Though we could solve this integral by hand, we can also solve it computationally by varying \(p\) and trying to minimizing \(S\). Note that potential energy is graphed as \(-mgy\) since it is being subtracted in the Lagrangian (\(KE-PE\))
+
+<br><br>
+
+CONSIDER GRAPHING THE CLASSICAL PATH TOO
+
+<br><br>
+
+\[\frac{dK}{dt}=\frac{d}{dt}\left(\frac{1}{2}m\dot{x}^2+\frac{1}{2}m\dot{y}^2\right)=m\dot{x}\ddot{x}+m\dot{y}\ddot{y}\]
+
+</p>
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+        <svg id="svg-parabola">
+            <g transform="translate(25, -55) scale(1, -1) translate(0, -300)">
+                <path id="classical" d="" fill="none" stroke="purple" stroke-width="2" />
+            <path id="param" d="" fill="none" stroke="orange" stroke-width="2" />
+    
+            <circle id="start-point" cx="0" cy="0" r="3"/>
+            <circle id="end-point" cx="270" cy="0" r="3"/>
+            <circle id="end-point2" cx="270" cy="66" r="3"/>
+            <!-- <circle id="control-point" cx="150" cy="80" r="3"/> -->
+            </g>
+
+            <text x="10" y="30" style="font: 20px sans-serif;">Trajectory (x-y plane)</text>
+            <text x="10" y="265" style="font: italic 12px sans-serif;">(0, 0)</text>
+            <text x="270" y="265" style="font: italic 12px sans-serif;">(10, 0)</text>
+        </svg>
+        <div id="energy-graph"></div>
+    </div>
+    <div id="bottom-panel">
+        <div id="integral-graph"></div>
+        <div id="derivative-graph"></div>
+    </div>
+
+    <div id="inner-container">
+        <p>\(S = \) <span id="print-action"></span></p>
+        <p>\(v_0 = \) <span id="print-velocity"></span></p>
+        <p>\(\theta_0 = \) <span id="print-angle"></span></p>
+        <p>\(y_{max} = \) <span id="print-height"></span></p>
+        <label for="slide-y-coord">y: <span id="print-cy-coord">150</span></label>
+        <input id="slide-y-coord" class="slider" type="range" min="0" max="300" value="150">
+        <p>Classical Calculations</p>
+        <p>\(x(1) = \) <span id="print-x-coord"></span></p>
+        <p>\(y(1) = \) <span id="print-y-coord"></span></p>
+        <p>\(y_{max} = \) <span id="print-max-height-classical"></span></p>
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Paramaterized</label><br>
+            <label><span id="purple">.....</span> - Classical</label><br>
+            <br>
+            <label><span id="red">.....</span> - Kinetic</label><br>
+            <label><span id="green">.....</span> - Potential</label><br>
+            <label><span id="blue">.....</span> - Action</label><br>
+        </fieldset>
+    </div>
+
+</div>
+
+</body>
+</html>
+

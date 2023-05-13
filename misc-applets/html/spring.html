@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>spring</title>
+    <link rel = "stylesheet" href = "../css/spring.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/spring.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">Spring</h1>
+
+<p id="text">
+We can calculate the energies of a spring
+\[x = \cos(\omega t+\phi)\]
+\[\dot{x} = -\omega\sin(\omega t+\phi)\]
+\[L = KE - PE = \frac{1}{2}m\dot{x}^2-\frac{1}{2}kx^2\]
+\[L = \frac{1}{2}m\omega^2\sin^2(\omega t+\phi)-\frac{1}{2}k\cos^2(\omega t+\phi)\]
+\[S = \frac{1}{2}m\omega^2\int_0^4\sin^2(\omega t+\phi) dt - \frac{1}{2}k\int_0^4\cos^2(\omega t+\phi) dt\]
+
+\[S = \frac{1}{2}m\omega^2\left(\frac{\omega t+\phi}{2\omega}-\frac{\sin 2(\omega t+\phi)}{4\omega}\right)\Bigg|_0^4 - \frac{1}{2}k\left(\frac{\omega t+\phi}{2\omega}+\frac{\sin 2(\omega t+\phi)}{4\omega}\right)\Bigg|_0^4\]
+
+\[S = \frac{1}{2}m\omega^2\left(\frac{4\omega}{2\omega}+\frac{\phi}{2\omega}-\frac{\sin 2(4\omega+\phi)}{4\omega}-\frac{\phi}{2\omega}+\frac{\sin 2\phi}{4\omega}\right) - \frac{1}{2}k\left(\frac{4\omega}{2\omega}+\frac{\phi}{2\omega}+\frac{\sin 2(4\omega+\phi)}{4\omega}-\frac{\phi}{2\omega}-\frac{\sin 2\phi}{4\omega}\right)\]
+
+\[S = \frac{1}{2}m\omega^2\left(2-\frac{\sin 2(4\omega+\phi)}{4\omega}+\frac{\sin 2\phi}{4\omega}\right) - \frac{1}{2}k\left(2+\frac{\sin 2(4\omega+\phi)}{4\omega}-\frac{\sin 2\phi}{4\omega}\right)\]
+
+\[S = \frac{m\omega}{8}\left(8\omega-\sin 2(4\omega +\phi)+\sin 2\phi\right) - \frac{k}{8\omega}\left(8\omega+\sin 2(4\omega +\phi) -\sin 2\phi\right)\]
+</p>
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+        <canvas id="spring-canvas" title="spring-motion"></canvas>
+        <div id="position-graph"></div>
+    </div>
+    <div id="bottom-panel">
+        <div id="integral-graph"></div>
+        <div id="energy-graph"></div>
+    </div>
+
+    <div id="inner-container">
+        <label for="p-slider">y: <span id="print-p">0</span> degrees</label>
+        <input id="p-slider" class="slider" type="range" min="0" max="360" value="0">
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Position</label><br>
+            <label><span id="purple">.....</span> - Velocity</label><br>
+            <br>
+            <label><span id="red">.....</span> - Kinetic</label><br>
+            <label><span id="green">.....</span> - Potential</label><br>
+            <label><span id="blue">.....</span> - Action</label><br>
+        </fieldset>
+    </div>
+
+</div>
+
+</body>
+</html>
+

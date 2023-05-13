@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>spring</title>
+    <link rel = "stylesheet" href = "../css/spring2.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/spring2.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">Spring</h1>
+
+<p id="text">
+    We will parameterize the spring's motion with 
+    \[x(t)=A\cos(\omega_1 t) + B \sin (\omega_2 t)\]
+    on the interval \(t\in [0, 2\pi/\omega_2]\). Notice that the sine term goes to 0 at the endpoints. The parameterized spring is shown in red. The Newton's Laws spring is given in blue. Notice that
+    \[KE = \frac{1}{2}m\dot{x}^2=m\dot{x}\ddot{x}=m(B\omega_2\sin(\omega_2 t)-A\omega_1\cos(\omega_1 t))(-A\omega_1^2\cos(\omega_1 t) - B \sin \omega_2^2(\omega_2 t))=\]
+</p>
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+        <canvas id="spring-canvas" title="spring-motion"></canvas>
+        <div id="position-graph"></div>
+    </div>
+    <div id="bottom-panel">
+        <div id="position-graph"></div>
+        <div id="energy-graph"></div>
+    </div>
+
+    <div id="inner-container">
+        <label for="w-slider">angular frequency: <span id="print-w">0</span> rad / second</label>
+        <input id="w-slider" class="slider" type="range" min="0" max="50" value="0">
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Position</label><br>
+            <label><span id="purple">.....</span> - Velocity</label><br>
+            <br>
+            <label><span id="red">.....</span> - Kinetic</label><br>
+            <label><span id="green">.....</span> - Potential</label><br>
+            <label><span id="blue">.....</span> - Action</label><br>
+        </fieldset>
+    </div>
+
+</div>
+
+</body>
+</html>
+

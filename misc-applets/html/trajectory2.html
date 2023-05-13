@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>parabola</title>
+    <link rel = "stylesheet" href = "../css/trajectory2.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/trajectory2.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 2D</h1>
+
+<p id="text">
+\[x(t) = t\]
+\[x'(t) = 1\]
+
+<br><br>
+
+\[y(t) = pt(1-t)\]
+\[y'(t) = p - 2pt\]
+\[y''(t) = -2p\]
+
+<br><br>
+
+\[v_0 = \sqrt{1+p^2}\]
+
+
+</p>
+
+<h1>Find the Fastest Path</h1>
+<p>Note that the animation is not quite to scale in order to fit everything within the frame</p>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+        <canvas id="projectile-motion-canvas" class="plot"></canvas>
+        <div id="energy-graph"></div>
+    </div>
+    <div id="bottom-panel">
+        <div id="integral-graph"></div>
+        <div id="derivative-graph"></div>
+    </div>
+
+    <div id="inner-container">
+        <p>\(S = \) <span id="print-action"></span></p>
+
+        <form>
+            <p>\(y(t)=\) <span id="print-p">0.00</span> \(t(1-t)\)</p>
+            <input type="text" id="p-input" name="type p" placeholder="enter 0 <= p <= 999" value=""><input id="manual-input-submit" type="button" value="submit"><br><br>
+            <!-- <label for="p-slider">\(p =\) <span id="print-p">0.0</span></label> -->
+            <input id="p-slider" class="slider" type="range" min="0" max="999" value="0"><br><br>
+          </form> 
+
+        <p>Calculations</p>
+        <p>\(v_{y0} = \) <span id="print-vy">0.00</span></p>
+        <p>\(\theta = \) <span id="print-theta">0</span></p>
+        <p>\(y(1) = \) <span id="print-y"></span></p>
+        <!-- <p>\(x(1) = \) <span id="print-x-coord"></span></p>
+        <p>\(y(1) = \) <span id="print-y-coord"></span></p> -->
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Paramaterized</label><br>
+            <label><span id="purple">.....</span> - Classical</label><br>
+            <br>
+            <label><span id="red">.....</span> - Kinetic</label><br>
+            <label><span id="green">.....</span> - Potential</label><br>
+            <label><span id="blue">.....</span> - Action</label><br>
+        </fieldset>
+    </div>
+
+</div>
+
+</body>
+</html>
+

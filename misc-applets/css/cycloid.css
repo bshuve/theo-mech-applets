@@ -1,0 +1,112 @@
+body{
+    position: relative;
+    top: 70px;
+    background-color:#edcdca;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 230px;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+#applet {
+    padding: 20px;
+    background-color:#b5cef5;
+    position: relative;
+    height: 430px;
+    width: 830px;
+}
+
+#svg-cycloid{
+    position: absolute;
+    left: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+#integral-graphs{
+    position: absolute;
+    right: 20px;
+    height: 320px;
+    width: 400px;
+}
+
+#svg-for-integral-plots {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+#bottom-panel {
+    position: absolute;
+    bottom: 20px;
+    background-color:#c2f0c8;
+    height: 45px;
+    width: 800px;
+    padding: 20px;
+}
+
+#x-slider {
+    position: absolute;
+    top: 30px;
+    right: 310px;
+}
+
+#y-slider {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+}
+
+#time-text {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+}
+
+#show-cycloid {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 100px;
+    height: 42px;
+    position: absolute;
+    top: 20px;
+    left: 130px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#show-cycloid:hover {
+    transition-duration: 0.4s;
+    background-color: white;
+    color:black;
+}
+

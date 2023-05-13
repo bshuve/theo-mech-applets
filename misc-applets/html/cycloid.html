@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>cycloid</title>
+    <link rel = "stylesheet" href = "../css/cycloid.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/cycloid.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">The Brachistochrone Problem</h1>
+
+The time it takes to travel from point \(a\) to point \(b\) is given by \(t = \int_{a}^{b}\frac{ds}{v}\). We can solve this computationally using curves parameterized by a variable \(t\). Using the substitution \(ds = \sqrt{\frac{dx}{dt}^2+\frac{dy}{dt}^2}dt\) and \(v=\sqrt{2gy}\), we can rewrite this as 
+
+\[t = \frac{1}{\sqrt{2g}}\int_{a}^{b}\frac{\sqrt{\frac{dx}{dt}^2+\frac{dy}{dt}^2}}{\sqrt{y}}dt\]
+
+We can computationally find the parameterization of a <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Quadratic_B%C3%A9zier_curves">quadratic Bezier curve</a> that minimizes this integral by brute force. Consider some path from (0, 0) to (250, 160). Again we will use \(y\) vertically down. We can use some control point \((c_x, c_y)\) to get some reasonable curves.
+
+\[x(t) = c_x + (1-t)^2(0-c_x) + t^2(250-c_x)\]
+\[y(t) = c_y + (1-t)^2(0-c_y) + t^2(160-c_y)\]
+
+<!-- Using \(f=\frac{\sqrt{1+x_y'^2}}{\sqrt{y}}\), we can solve for \(x\) using the Euler-Lagrange equation
+
+\[\frac{\partial f}{\partial x}=\frac{d}{dy}\frac{\partial f}{\partial x_y'}\]
+\[0=\frac{d}{dy}\frac{x_y'}{\sqrt{y}\sqrt{1+x_y'^2}}\]
+
+In order for \(\frac{d}{dy}\frac{\partial f}{\partial x_y'}\) to equal 0, we see that \(\frac{\partial f}{\partial x_y'}=\frac{x_y'}{\sqrt{y}\sqrt{1+x_y'^2}}\) must be constant. We can square it to obtain
+
+\[\frac{x_y'^2}{y(1+x_y'^2)}\]
+
+With some clever math, we find that \(x=C(\theta-\sin\theta)\) and \(y=C(1-\cos\theta)\) -->
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+            <!-- http://www.softouch.on.ca/svg/bezierdata6.6.html -->
+            <svg id="svg-cycloid" width="400" height="320" viewbox= "-20 0 300 200">
+                <defs><clipPath id="clip-right-half">
+                    <rect x="0" y="0" width="250" height="300"/>
+                </clipPath></defs>
+
+                <path id="curve" d="M 0 0 Q 125 80 250 160" fill="none" stroke="red" stroke-width="2"/>
+
+                <path id="cycloid" d="" fill="none" stroke="blue" stroke-width="2" clip-path="url(#clip-right-half)"></path>
+
+                <path id="x-axis" d="M 0 0 H 260" stroke="black" stroke-width="1"/>
+                <path id="y-axis" d="M 0 0 V 200" stroke="black" stroke-width="1"/>
+
+                <path id="start-to-control" d="M 0 0 L 125 80" fill="none" stroke="green" stroke-width="1" opacity="0.5"/>
+                <path id="end-to-control" d="M 250 160 L 125 80" fill="none" stroke="green" stroke-width="1" opacity="0.5"/>
+
+                <circle id="start-point" cx="0" cy="0" r="3"/>
+                <circle id="end-point" cx="250" cy="160" r="3"/>
+                <circle id="control-point" cx="125" cy="80" r="3"/>
+
+                <text x="0" y="-5" style="font: italic 10px sans-serif;">(0, 0) </text>
+                <text x="230" y="180" style="font: italic 10px sans-serif;">(250, 160) </text>
+            </svg>
+            <div id="integral-graphs"></div>
+    </div>
+
+    <div id="bottom-panel">
+        <p id="time-text">\(\text{time} = \) <span id="print-time">10.4828</span> s</p>
+        <div id="x-slider">
+            <label for="slide-x-coord">cx: <span id="print-x-coord">125</span></label>
+            <input id="slide-x-coord" class="slider" type="range" min="0" max="300" value="125">
+        </div>
+        <div id="y-slider">
+            <label for="slide-y-coord">cy: <span id="print-y-coord">80</span></label>
+            <input id="slide-y-coord" class="slider" type="range" min="0" max="300" value="80">
+        </div>
+        <button type="button" class="button" id="show-cycloid" value="hide">cycloid</button> 
+    </div>
+</div>
+
+</body>
+</html>
+

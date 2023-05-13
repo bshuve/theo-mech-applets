@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>orbit</title>
+    <link rel = "stylesheet" href = "../css/orbit.css">
+    <!-- <link rel="icon" href = "../img/wally.png"> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script defer src = "../js/orbit.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id="title">Orbit</h1>
+
+<p id="text">
+    circa page 300
+
+    \[U_{eff}(r) = -\frac{Gm_1m_2}{r}+\frac{l^2}{2\mu r^2}\]
+
+    \[r(\phi)=\frac{c}{1+\epsilon\cos\phi}\]
+
+    where \(c=l^2/Gm_1m_2\mu\) and \(\mu=m_1m_2/(m_1+m_2)\) is the reduced mass
+
+    <br><br>
+    \[G=6.7\times 10^{-11} \ m^3 \ kg^{-1}\ s^{-2}\]
+    \[G=6.7\times 10^{-11} \ N \ m^2 \ kg^{-2}\]
+    \[G=\frac{6.7\times 10^{-11} \ m^3}{kg \ s^2}\left(\frac{6\times 10^{24} \ kg}{1 \ m_e}\right)=\frac{4\times 10^{14} \ m^3}{m_e \ s^2}\]
+    \[G=\frac{4\times 10^{14} \ m^3}{m_e \ s^2}\left(\frac{1 \ km}{1000 \ m}\right)^3=\frac{4\times 10^{5} \ km^3}{m_e \ s^2}\]
+    \[l = 2.7\times 10^{40} \ kg \ m^2 \ s^{-1}\]
+    \[l = \frac{2.7\times 10^{40} \ kg \ m^2}{s}\left(\frac{1 \ m_e}{6\times 10^{24} \ kg}\right)=\frac{4.5\times 10^{15} \ m_e \ m^2}{s}\]
+    \[l =\frac{4.5\times 10^{15} \ m_e \ m^2}{s}\left(\frac{1 \ km}{1000 \ m}\right)^2=\frac{4.5\times 10^{9} \ m_e \ km^2}{s}\]
+    \[1 \ AU = 1.5\times 10^{11} \ m\]
+    \[m_e = 6\times 10^{24} \ kg\]
+    \[m_s = 2\times 10^{30}\]
+
+    <br><br>
+    Average speed = \(30000 \ m/s\)
+    \[KE = \frac{1}{2}mv^2 = \frac{1}{2}(5.97\times 10^{24})(30000)^2=2.7\times 10^{33}\]
+
+    <br><br>
+
+    \(x=a\cos t\) and \(y=b\sin t\). We want to convert to polar but also a little different. The foci at \(a^2-b^2\)
+    \[\frac{b}{a}=\sqrt{1-\epsilon^2}\]
+    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta} \longleftrightarrow \frac{(x+d)^2}{a^2}+\frac{y^2}{b^2}=1\longleftrightarrow x=a\cos t - d\quad\text{ and }\quad y=b\sin t\]
+    \[c=r(\pi/2)\]
+    \[a=\frac{c}{1-\epsilon^2}\]
+    \[b=\frac{c}{\sqrt{1-\epsilon^2}}\]
+    \[d=a\epsilon\]
+
+    <br><br>
+
+    \[\mu=\frac{m_1m_2}{m_1+m_2}\]
+    \[\mu\ddot{r}=\frac{d}{dr}\left(\frac{Gm_1m_2}{r}-\frac{l^2}{2\mu r^2}\right)=\frac{l^2}{\mu r^3}-\frac{Gm_1m_2}{r^2}\]
+    \[c=\frac{l^2}{Gm_1m_2\mu}\]
+
+    <!-- \[L = \frac{1}{2}\mu\dot{r}^2+\left(\frac{Gm_1m_2}{r}-\frac{l^2}{2\mu r^2}\right)\]
+    \[\frac{dL}{dr}=\frac{d}{dt}\frac{dL}{d\dot{r}}\]
+    \[\frac{l^2}{\mu r^3}-\frac{Gm_1m_2}{r^2}=\mu\ddot{r}\] -->
+
+    <br><br>
+
+    \[\theta =\tan^{-1}\left(\frac{y}{x}\right)=\tan^{-1}\left(\frac{b\sin t}{a\cos t - d}\right)\]
+    \[r(\theta)=c(1+\epsilon\cos\theta)^{-1} \longrightarrow r'(\theta)=c\epsilon\sin\theta (1+\epsilon\cos\theta)^{-2}\]
+</p>
+
+<h1>Find the Fastest Path</h1>
+<p id="debug">debug text here</p>
+<div id="applet">
+    <div id="top-panel">
+        <canvas id="orbit-canvas" title="planetary-motion"></canvas>
+        <div id="potential-energy-graph"></div>
+    </div>
+
+    <div id="bottom-panel">
+        <div id="position-graph"></div>
+        <div id="angle-graph"></div>
+    </div>
+
+    <div id="inner-container">
+        <label for="earth-slider">d: <span id="print-earth">0.00</span></label>
+        <input id="earth-slider" class="slider" type="range" min="-180" max="180" value="0">
+        <br>
+        <label for="a-slider">a: <span id="print-a">2.00</span></label>
+        <input id="a-slider" class="slider" type="range" min="200" max="280" value="200">
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Position</label><br>
+            <label><span id="purple">.....</span> - Velocity</label><br>
+            <br>
+            <label><span id="red">.....</span> - Kinetic</label><br>
+            <label><span id="green">.....</span> - Potential</label><br>
+            <label><span id="blue">.....</span> - Action</label><br>
+        </fieldset>
+        <p>\(f=\) <span id="print-focus">2.00</span></p>
+        <p>\(\epsilon=\) <span id="print-epsilon">0.00</span></p>
+    </div>
+
+</div>
+
+</body>
+</html>
+
