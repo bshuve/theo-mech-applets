@@ -30,7 +30,7 @@ that would not make sense to someone who is not familiar with your code.
 Keep parameters like sizes of HTML elements, initial positions, 
 etc in this section */
 
-const CANVAS_WIDTH_1 = 270;
+const CANVAS_WIDTH_1 = 170;
 const CANVAS_WIDTH_2 = 380;
 const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 270;
@@ -473,7 +473,7 @@ var ki_point = integral_plot.svg.append("circle")
 .attr("id", "kinetic-integral-point").attr("r", 3).attr("fill", "red").attr("visibility", "visible");
 
 var pi_point = integral_plot.svg.append("circle")
-.attr("id", "potential-integral-point").attr("r", 3).attr("fill", "lime").attr("visibility", "hidden");
+.attr("id", "potential-integral-point").attr("r", 3).attr("fill", "grey").attr("visibility", "hidden");
 
 var nki_point = integral_plot.svg.append("circle")
 .attr("id", "kinetic-integral-point").attr("r", 3).attr("fill", "lightsalmon").attr("visibility", "hidden");
@@ -583,7 +583,7 @@ function plotEnergy(data) {
       line: npe_line,
       xScale: energy_plot.xScale,
       yScale: energy_plot.yScale,
-      color: "lime"};
+      color: "grey"};
 
     // plot the data
     plotData(input);
@@ -701,7 +701,7 @@ function plotIntegral() {
         line: pi_line,
         xScale: integral_plot.xScale,
         yScale: integral_plot.yScale,
-        color: "lime"}
+        color: "grey"}
     plotData(input);
 
     // -P

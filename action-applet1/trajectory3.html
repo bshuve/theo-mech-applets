@@ -3,7 +3,7 @@
 
 <head>
     <title>trajectory</title>
-    <link rel = "stylesheet" href = "trajectory3.css">
+    <link rel = "stylesheet" href = "trajectory.css">
 
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
@@ -72,7 +72,7 @@ Spend some time exploring the applet, and then answer the questions below.
 		    <br> <br>
 		    <b>Checkboxes</b> control which energies are being plotted 
 	 	    <br> <br>
-                    <ul>
+                    <ul class = "checkboxes">
                         <li><input type="checkbox" id="show-k" value="on" checked>
                         </label> <label><span id="red">.....</span></label>
                         <label for="show-k"> KE</label> </li>
@@ -83,7 +83,7 @@ Spend some time exploring the applet, and then answer the questions below.
                         </label> <label><span id="lightsalmon">.....</span></label>
                         <label for="show-nk"> -KE</label></li>
                         <li><input type="checkbox" id="show-p" value="off">
-                        </label> <label><span id="lime">.....</span></label>
+                        </label> <label><span id="grey">.....</span></label>
                         <label for="show-kp"> PE</label></li>
                         <li><input type="checkbox" id="show-kmp" value="off">
                         </label> <label><span id="blue">.....</span></label>
@@ -115,12 +115,17 @@ Spend some time exploring the applet, and then answer the questions below.
 <b>Question 5:</b> As best you can, and in your own words, explain why the classical path minimizes the action defined as the time integral of the kinetic minus potential energies over the path. Choosing two paths, one with \(p<0\) and another with \(p>0\), explain for each why the action is larger than the minimal value. Explain why some other candidates for the "action" (such as the integral of the <b>sum</b> of the kinetic and potential energies) are unsuitable for determining the classical path.
 </p>
 
+<br>
 
-<p id="text">
-When you are done, proceed to <a href="trajectory4.html">the next page.</a>
-</p>
+<div class="buttons">
+    <column id="previous-button">
+        <button onclick = "window.location.href = 'trajectory2.html'">PREVIOUS PAGE</button>
+    </column>
 
-<br><br><br>
+    <column id="next-button">
+        <button onclick = "window.location.href = 'trajectory4.html'">NEXT PAGE</button>
+    </column>
+</div>
 
 </body>
 </html>

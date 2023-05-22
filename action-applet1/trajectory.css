@@ -1,4 +1,6 @@
 body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
     position: relative;
     top: 70px;
     background-color:#edcdca;
@@ -11,6 +13,25 @@ svg, canvas {
     border-radius: 10px;
     border-style: solid;
     border-color: black;
+}
+
+button {
+    background: #b5cef5;
+    border: solid;
+    color: rgb(0, 0, 0);
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c2f0c8;
+    color: #000000;
 }
 
 .slider {
@@ -31,39 +52,32 @@ svg, canvas {
 }
 
 .slider::-moz-range-thumb {
+    /* what does this do */
     width: 15px;
     height: 15px;
     background: #04AA6D;
     cursor: pointer;
 }
 
-.button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    border-radius: 8px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+.button-spacing {
+    /* doesn't appear in html ? */
     width: 100%;
-    height: 42px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    cursor: pointer;
+    height: 100%;
+    padding: 10px;
 }
 
-.button:hover {
-    transition-duration: 0.4s;
-    background-color: white; /* white */
-    color:black;
+.buttons {
+    max-width: 950px;
 }
 
 #text {
-    width: 880px;
+    width: 950px;
 }
 
 #applet{
+    /* trajectory3 */
     background-color:#b5cef5;
+    border-radius: 10px;
     position: relative;
     height: 650px;
     width: 950px;
@@ -72,10 +86,10 @@ svg, canvas {
 #appletsingle{
     background-color:#b5cef5;
     position: relative;
-    height: 320px;
+    height: 340px;
     width: 950px;
+    border-radius: 10px;
 }
-
 
 #top-panel{
     /* background-color: green; */
@@ -86,7 +100,8 @@ svg, canvas {
 }
 
 #bottom-panel{
-    /* background-color:red; */
+    /* trajectory3 */
+    /* background-color: green; */
     position: absolute;
     height: 320px;
     width: 950px;
@@ -100,19 +115,15 @@ svg, canvas {
     padding: 10px;
     box-sizing: border-box;
 }
-  
-/* .left, .right {
-    background-color: #aaa;
-    width: 25%;
-} */
 
-/* .middle {
-    background-color: #bbb;
-    width: 50%;
-} */
+.checkboxes{
+    /* trajectory3 */
+    padding-left: 10px;
+}
 
 /* Clear floats after the columns: 
 IDK what that means*/
+
 .row:after {
     content: "";
     display: table;
@@ -132,33 +143,51 @@ IDK what that means*/
 #controls {
     background-color:#c2f0c8;
     box-sizing: border-box;
-    width: 270px;
+    width: 280px;
     height: 100%;
     padding: 10px;
+    border: solid;
+    border-radius: 10px;
+}
+
+#controls2 {
+    /* trajectory3 */
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 345px;
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: solid;
 }
 
 #checkbox-grid li {
+    /* trajectory3 */
     display: block;
     float: left;
     width: 50%;
 }
 
 #energy-graph{
-    /* background-color:red; */
+    /* trajectory3 */
+    /* background-color: green; */
     height: 300px;
     width: 260px;
 }
 
 #integral-graph{
-    /* background-color:green; */
+    /* trajectory3 */
+    /* background-color: green; */
     height: 300px;
     width: 260px;
 }
 
-#derivative-graph{
-    /* background-color:blue; */
-    height: 300px;
-    width: 260px;
+#previous-button{
+    float: left;
+}
+
+#next-button{
+    float: right;
 }
 
 #red {
@@ -179,9 +208,10 @@ IDK what that means*/
     width: 30px;
 }
 
-#aquamarine {
-    color: aquamarine;
-    background-color:aquamarine;
+#periwinkle {
+    /* rename */
+    color: rgb(127, 127, 255);
+    background-color:rgb(127, 127, 255);
     width: 30px;
 }
 
@@ -195,5 +225,29 @@ IDK what that means*/
 #purple {
     color: purple;
     background-color:purple;
+    width: 30px;
+}
+
+#grey {
+    color: rgb(142, 142, 139);
+    background-color:rgb(142, 142, 139);
+    width: 30px;
+}
+
+#lightsalmon {
+    color: lightsalmon;
+    background-color:lightsalmon;
+    width: 30px;
+}
+
+#cyan {
+    color: cyan;
+    background-color:cyan;
+    width: 30px;
+}
+
+#plum {
+    color: plum;
+    background-color:plum;
     width: 30px;
 }
