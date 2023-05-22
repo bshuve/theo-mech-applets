@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Right Hand Rule Practice</title>
+        <link rel = "stylesheet" href = "rhr.css">
+    
+        <!-- Load d3.js -->
+        <script src="https://d3js.org/d3.v4.js"></script>
+        
+        <script defer src = "rhr3.js"></script>
+    
+         <!-- LaTeX support -->
+         <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+<body id="body">
+    <h1 id="title">Right Hand Rule Practice: Page 3/3</h1>
+    <p id="text">
+        Using the right hand rule, practice identifying the direction of torque
+        \(\vec \tau\) based on the direction and location of force \(\vec F\).
+    </p>
+    <br>
+    <div>
+        <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+    <p id="text-middle">
+        The torque vector is:
+    </p>
+    <div class="buttons">
+        <button id = "into-button">Into the Page</button>
+        <button id = "out-button">Out of the Page</button>
+        <button id = "zero-button">Zero</button>
+    </div> 
+    <br><br>
+    <div>
+        <canvas id="feedback" width="640" height="120"></canvas>
+    </div>
+    <br><br>
+    <div class="buttons">
+        <button id = "reload-button" onclick = "window.location.href = 'rhr3.html'">Generate New Vectors</button>
+    </div>
+    <br><br>
+    <div class="buttons">
+        <column id="previous-button">
+            <button onclick = "window.location.href = 'rhr2.html'">PREVIOUS PAGE</button>
+        </column>
+    </div>
+    <br><br><br><br>
+</body>
+</html>
