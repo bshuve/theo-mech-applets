@@ -37,11 +37,11 @@ function startAnimation(p) {
 
     // 1D projectiles
     param1D = new component(10, 10, "orange", 1.*CANVAS_WIDTH_1/3, y_initial, 1, p);
-    classmod1D =  new component(10, 10, "aquamarine", 2*CANVAS_WIDTH_1/3, y_initial, 2, p);
+    classmod1D =  new component(10, 10, "rgb(127, 127, 255)", 2*CANVAS_WIDTH_1/3, y_initial, 2, p);
 
     // 2D projectiles
     param2D = new component(3, 3, "orange", x_initial, y_initial, 3, p);
-    classmod2D = new component(3, 3, "aquamarine", x_initial, y_initial, 4, p);
+    classmod2D = new component(3, 3, "rgb(127, 127, 255)", x_initial, y_initial, 4, p);
 
     animArea.start();
 }

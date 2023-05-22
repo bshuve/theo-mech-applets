@@ -142,14 +142,14 @@ var animArea = {
         this.interval = setInterval(updateFrame, FRAME_RATE);
 
 	// add text and ground to panel 1
-        this.context1.font = "20px Arial";
+        this.context1.font = "18px Verdana";
         this.context1.fillStyle = "black";
         this.context1.fillText("Projectile Motion", 10, 30);
         this.context1.fillStyle = "black";
         this.context1.fillRect(x_initial, transformYCoord(-0.05), CANVAS_WIDTH_1-40, 3);
 
         // add text and ground to panel 2
-        this.context2.font = "20px Arial";
+        this.context2.font = "18px Verdana";
         this.context2.fillText("Height vs Time", 10, 30);
         this.context2.fillStyle = "black";
         this.context2.fillRect(x_initial, transformYCoord(-0.05), CANVAS_WIDTH_2-40, 3);
@@ -227,7 +227,7 @@ function updateFrame() {
     // re-draw the text and ground on the left panel (1D)
     animArea.context1.fillStyle = "black";
     animArea.context1.fillRect(x_initial, transformYCoord(-0.05), CANVAS_WIDTH_1-40, 3);
-    animArea.context1.font = "20px Arial";
+    animArea.context1.font = "18px Verdana";
     animArea.context1.fillStyle = "black";
     animArea.context1.fillText("Projectile Motion", 10, 30);
 
