@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>force vs. acceleration</title>
+    <link rel = "stylesheet" href = "force-energy.css">
+
+    <!-- Load d3.js -->
+    <script src="../action-applet1/d3.v4.js"></script>
+    
+    <script defer src = "force-energy.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+
+<body id="body">
+
+<h1 id="title">Force vs. Acceleration: Page 1</h1>
+<h2 id="subtitle">How Lagrange's equations are equivalent to Newton's 2nd Law</h2>
+<p id="text">
+Consider an object of mass \(m\) constrained to move in the \(y\)-direction under uniform acceleration \(a\) or \(\ddot{y}\). Because there is no \(x\) component of the acceleration in this case, you can assume that \(a\) refers to \(\ddot{y}\) whenever used on this page. The object is launched from height \(h\) so that it experiences projectile motion. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=may\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
+</p>
+
+<p id="text">
+    Try dragging the values of the sliders in this applet to see how the animation and graphs change.
+</p>
+
+<br>
+<p id="text">
+    After dragging the sliders around, try answering the following question.
+</p>
+
+<label for="show-q1" id="text">
+    <b>Question 1: </b>What is the force acting on the object based on your inputs? Is it a conservative force?
+    <br><br>
+<button id="show-q1">Show answers</button>        
+<span id="answer1"></span>
+</label>
+
+<br><br> 
+
+<div id="applet">
+    <div id="top-panel" class="row">
+	<!-- First column: trajectory animation -->
+        <div class="column">
+            <canvas id="ball-launch" class="plot"
+            width="320px" height="294px" title="Actual Motion">
+            </canvas>
+        </div>
+
+	<!-- Second column: sliders -->
+        <div class="column">
+            <div id="controls">
+                <legend>Define Constants:</legend>
+                <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
+                <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
+                <label for="a-slider">\(a\): <span id="print-a">-9.8</span> m/s<sup>2</sup></label>
+                <input id="a-slider" class="slider" type="range" min="-15" max="15" step="0.1" value="-9.8">
+                <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
+                <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
+
+            </div>
+        </div>
+    <!-- Third column: question -->
+        <div class="column">
+            <div id="controls2">
+                <span id="green">....</span> Potential Energy
+                <br><br>
+                <span id="grey">....</span> Negative Potential Energy
+                <br><br>
+                <span id="red">....</span> Kinetic Energy
+                <br><br>
+
+            </div>
+        </div>
+    </div>
+    <div id="middle-panel" class="row">
+        <div class="column left">
+            <div id="PE-energy-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="KE-energy-graph"></div>
+        </div>
+    </div>
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="PE-derivative-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="KE-derivative-graph"></div>
+        </div>
+    </div>
+</div> 
+<br>
+
+<label for="show-q2" id="text">
+    <b>Question 2: </b>As you manipulated the sliders to change the force, how do the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? Is there a correlation between them?
+    <br><br>
+<button id="show-q2">Show answers</button>        
+<span id="answer2"></span>
+</label>
+<br><br>
+<p id="text" style="line-height: 1.8">
+    We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{y}^2\), \(U = may\) for this situation.
+    <br><br>
+    \(\frac{\partial L}{\partial y} = -\frac{\partial U}{\partial y} = F_y\) by definition.
+    <br><br>
+    \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}} = m\dot{y} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) = m\ddot{y} = F_y\) by definition.
+    <br><br>
+    Note that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\).
+    <br><br>
+    So, using the Euler-Langrange equation, we can prove that \(F=ma\), connecting our new findings in theoretical mechanics to what we learned from Newton's Laws!
+    <br><br>
+    The graphs above help demonstrate this connection as follows.
+    <br><br>
+    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\), which we know is equal to the force. If you compare your force calculation from using the sliders, it should match the value of the lines created from the graph. The potential energy derivatives are time-independent because they are derived with respect to \(y\) position.
+    Through the Kinetic Energy (kJ) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic.
+    When we look at the Kinetic Derivative \(\frac{\partial T}{\partial \dot{y}}\) vs. Time (s) graph though, we can see that the slope of this line \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}\)) is equal to the \(-\frac{\partial U}{\partial y}\) value to the left graph, as derived above.
+    
+</p>
+
+<br>
+
+<div class="buttons">
+    <column id="next-button">
+        <button onclick = "window.location.href = 'trajectory2.html'">NEXT PAGE</button>
+    </column>
+</div> 
+
+<br><br><br><br>
+
+<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</i>
+
+<br><br>
+
+</body>
+</html>
+
