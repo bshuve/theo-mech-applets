@@ -38,6 +38,11 @@ function timeIntegral(cx, cy) {
     return integral
 }
 
+// calculate point at certain time
+function point(time) {
+    
+}
+
 // generate energy data
 function integralData() {
     var all_data = [];
