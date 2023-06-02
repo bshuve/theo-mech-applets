@@ -1,5 +1,3 @@
-// TODO: add a legend to the right
-
 /* Parameters */
 const CANVAS_WIDTH = parseInt(document.getElementById("ball-launch").getAttribute("width"));
 const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribute("height"));
@@ -90,8 +88,8 @@ function component(width, height, color, x, y, m, a) {
   }
 }
 
-/* This updateFrame function is very important. It updates the position
-of everything on the canvas a little and then redraws everything */
+/* This updateFrame function updates the position of everything on the
+canvas a little and then redraws everything. */
 
 function updateFrame() {
   animArea.time += dt;
