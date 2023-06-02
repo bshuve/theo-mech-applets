@@ -88,8 +88,8 @@ function component(width, height, color, x, y, m, a) {
   }
 }
 
-/* This updateFrame function updates the position of everything on the
-canvas a little and then redraws everything. */
+/* This updateFrame function is very important. It updates the position
+of everything on the canvas a little and then redraws everything */
 
 function updateFrame() {
   animArea.time += dt;
@@ -492,6 +492,7 @@ on the HTML page (ex. button click, slider change, etc). */
 
 var showAnswer1 = 0; // by default, does not show the answer to the force question
 var showAnswer2 = 0;
+var showAnswer3 = 0;
 
 function slider_update() {
   // updates global values for m, a, h
@@ -506,8 +507,10 @@ function slider_update() {
       + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
   }
   if (showAnswer2 == 1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").innerHTML = "<br><br>"
-      + "Yes, the value of (d/dt)(∂T/∂ẏ) changes so the slope of the Kinetic Derivative graph is equal to -∂U/∂y which is the value of the negative potential derivative.";
+    document.getElementById("answer2").style.display = "block";
+  }
+  if (showAnswer3 == 1) {
+    document.getElementById("answer3").style.display = "block";
   }
   const data = energyAndDerivativeData();
   // update plots
@@ -545,11 +548,24 @@ document.getElementById("show-q1").addEventListener("click", function () {
 document.getElementById("show-q2").addEventListener("click", function () {
   if (showAnswer2 == 0) {
     showAnswer2 = 1;
-    document.getElementById("show-q2").innerHTML = "Hide Answers";
+    document.getElementById("show-q2").innerHTML = "Hide Answer";
     slider_update();
   } else if (showAnswer2 == 1) {
     showAnswer2 = 0;
-    document.getElementById("show-q2").innerHTML = "Show Answers";
-    document.getElementById("answer2").innerHTML = "";
+    document.getElementById("show-q2").innerHTML = "Show Answer";
+    document.getElementById("answer2").style.display = "none";
+  }
+});
+
+// shows the proof if the proof button is clicked
+document.getElementById("show-more").addEventListener("click", function () {
+  if (showAnswer3 == 0) {
+    showAnswer3 = 1;
+    document.getElementById("show-more").innerHTML = "Hide Proof";
+    slider_update();
+  } else if (showAnswer3 == 1) {
+    showAnswer3 = 0;
+    document.getElementById("show-more").innerHTML = "Show Proof";
+    document.getElementById("answer3").style.display = "none";
   }
 });

@@ -19,7 +19,7 @@
 <h1 id="title">Force vs. Acceleration: Page 1</h1>
 <h2 id="subtitle">How Lagrange's equations are equivalent to Newton's 2nd Law</h2>
 <p id="text">
-Consider an object of mass \(m\) constrained to move in the \(y\)-direction under uniform acceleration \(a\) or \(\ddot{y}\). Because there is no \(x\) component of the acceleration in this case, you can assume that \(a\) refers to \(\ddot{y}\) whenever used on this page. The object is launched from height \(h\) so that it experiences projectile motion. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=may\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
+Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(g \equiv \ddot{y}\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
 </p>
 
 <p id="text">
@@ -55,14 +55,14 @@ Consider an object of mass \(m\) constrained to move in the \(y\)-direction unde
                 <legend>Define Constants:</legend>
                 <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
                 <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
-                <label for="a-slider">\(a\): <span id="print-a">-9.8</span> m/s<sup>2</sup></label>
+                <label for="a-slider">\(g\): <span id="print-a">-9.8</span> m/s<sup>2</sup></label>
                 <input id="a-slider" class="slider" type="range" min="-15" max="15" step="0.1" value="-9.8">
                 <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
                 <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
 
             </div>
         </div>
-    <!-- Third column: legend -->
+    <!-- Third column: question -->
         <div class="column">
             <div id="controls2">
                 <span id="green">....</span> Potential Energy
@@ -96,33 +96,38 @@ Consider an object of mass \(m\) constrained to move in the \(y\)-direction unde
 </div> 
 <br>
 
-<label for="show-q2" id="text">
+<label for="show-q2" id="text" style="line-height: 2">
     <b>Question 2: </b>As you manipulated the sliders to change the force, how do the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? Is there a correlation between them?
-    <br><br>
-<button id="show-q2">Show answers</button>        
-<span id="answer2"></span>
 </label>
 <br><br>
-<p id="text" style="line-height: 1.8">
-    We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{y}^2\), \(U = may\) for this situation.
+<button id="show-q2">Show answer</button>
+<br><br>        
+<span id="answer2" style="display: none; line-height: 1.8">
+    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial y} = F_y\). 
+    If you compare your force calculation from using the sliders, it should match the value of the negative potential energy derivative on the graph. Note that the potential energy derivatives are time-independent because they are derived with respect to \(y\) position.
+    Through the Kinetic Energy (kJ) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic.
+    When we look at the Kinetic Derivative \((\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph though, we can see that the slope of this line \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}\)) is equal to the \(-\frac{\partial U}{\partial y}\) value on the left graph. 
+    Thus, we can derive the connection that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\).
+    <br><br>
+</span>
+<label for="show-more" id="text" style="line-height: 2">
+    But how does this connect with what we know from classical mechanics? We can actually mathematically prove the equivalence between the Euler-Lagrange equation and Newton's 2nd Law!
+</label>
+<br><br>
+<button id="show-more">Show Proof</button>
+<br><br>
+<span id="answer3" style="display: none; line-height: 1.8">
+    We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{y}^2\), \(U = mgy\) for this situation.
     <br><br>
     \(\frac{\partial L}{\partial y} = -\frac{\partial U}{\partial y} = F_y\) by definition.
     <br><br>
     \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}} = m\dot{y} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) = m\ddot{y} = F_y\) by definition.
     <br><br>
-    Note that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\).
+    Note that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) as seen in the graphs.
     <br><br>
-    So, using the Euler-Langrange equation, we can prove that \(F=ma\), connecting our new findings in theoretical mechanics to what we learned from Newton's Laws!
+    So, using the Euler-Langrange equation, we can prove Newton's 2nd Law, \(F=ma\).
     <br><br>
-    The graphs above help demonstrate this connection as follows.
-    <br><br>
-    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\), which we know is equal to the force. If you compare your force calculation from using the sliders, it should match the value of the lines created from the graph. The potential energy derivatives are time-independent because they are derived with respect to \(y\) position.
-    Through the Kinetic Energy (kJ) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic.
-    When we look at the Kinetic Derivative \(\frac{\partial T}{\partial \dot{y}}\) vs. Time (s) graph though, we can see that the slope of this line \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}\)) is equal to the \(-\frac{\partial U}{\partial y}\) value to the left graph, as derived above.
-    
-</p>
-
-<br>
+</span>
 
 <div class="buttons">
     <column id="next-button">
