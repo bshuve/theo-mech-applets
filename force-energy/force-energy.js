@@ -1,5 +1,3 @@
-// TODO: add a legend to the right
-
 /* Parameters */
 const CANVAS_WIDTH = parseInt(document.getElementById("ball-launch").getAttribute("width"));
 const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribute("height"));
