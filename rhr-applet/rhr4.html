@@ -7,48 +7,55 @@
         <!-- Load d3.js -->
         <script src="https://d3js.org/d3.v4.js"></script>
         
-        <script defer src = "rhr2.js"></script>
+        <script defer src = "rhr4.js"></script>
     
          <!-- LaTeX support -->
          <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </head>
 <body id="body">
-    <h1 id="title">Right Hand Rule Practice: Page 2/4</h1>
+    <h1 id="title">Right Hand Rule Practice: Page 4/4</h1>
     <p id="text">
         Using the right hand rule, practice identifying the direction of angular 
-        momentum \(\vec L\) based on the given reference point and \(\vec p\) vector.
+        momentum \(\vec L\) based on the given \(\vec r\) and \(\vec p\) vectors.
     </p>
     <br>
     <div>
         <canvas id="canvas" width="640" height="480"></canvas>
     </div>
     <p id="text-middle">
-        The angular momentum vector is:
+        The angular momentum vector's direction is:
     </p>
     <div class="buttons">
-        <button id = "into-button">Into the Page</button>
-        <button id = "out-button">Out of the Page</button>
-        <button id = "zero-button">Zero</button>
+        <button id = "+x-button">+x</button>
+        <button id = "+y-button">+y</button>
+        <button id = "+z-button">+z</button>
     </div> 
+    <br>
+    <div class="buttons">
+        <button id = "-x-button">-x</button>
+        <button id = "-y-button">-y</button>
+        <button id = "-z-button">-z</button>
+    </div>
+    <br>
+    <div class="buttons">
+        <button id = "zero-button">Zero</button>
+    </div>
     <br><br>
     <div>
         <canvas id="feedback" width="640" height="120"></canvas>
     </div>
     <br><br>
     <div class="buttons">
-        <button id = "reload-button" onclick = "window.location.href = 'rhr2.html'">Generate New Vectors</button>
+        <button id = "reload-button" onclick = "window.location.href = 'rhr4.html'">Generate New Vectors</button>
     </div>
     <br><br>
     <div class="buttons">
         <column id="previous-button">
-            <button onclick = "window.location.href = 'rhr.html'">PREVIOUS PAGE</button>
-        </column>
-    
-        <column id="next-button">
-            <button onclick = "window.location.href = 'rhr3.html'">NEXT PAGE</button>
+            <button onclick = "window.location.href = 'rhr3.html'">PREVIOUS PAGE</button>
         </column>
     </div>
     <br><br><br><br>
-
+    <i>Created by Ashley Kim, Isabel Godoy, Brian Shuve 2023.</i>
+<br><br>
 </body>
 </html>
