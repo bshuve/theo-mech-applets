@@ -39,7 +39,7 @@ var animArea = {
     this.panel.height = CANVAS_HEIGHT;
     this.context = this.panel.getContext("2d");
 
-    /* Set the initial time to -1 */
+    /* Set the initial time to 0 */
     this.time = 0;
 
     this.interval = setInterval(updateFrame, FRAME_RATE);
@@ -490,9 +490,11 @@ plotDerivative(initial_data);
 /* This section holds the functions that I call when something happens
 on the HTML page (ex. button click, slider change, etc). */
 
-var showAnswer1 = 0; // by default, does not show the answer to the force question
-var showAnswer2 = 0;
-var showAnswer3 = 0;
+// these booleans store whether answers are being shown
+// by default, all answers are hidden
+var showAnswer1 = false;
+var showAnswer2 = false;
+var showAnswer3 = false;
 
 function slider_update() {
   // updates global values for m, a, h
@@ -502,14 +504,14 @@ function slider_update() {
   document.getElementById("print-a").innerHTML = a.toFixed(1);
   h = parseFloat(document.getElementById("h-slider").value);
   document.getElementById("print-h").innerHTML = h.toFixed(1);
-  if (showAnswer1 == 1) { // checks if the answer is being shown before updating it
+  if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").innerHTML = "<br><br>Force = " + (m * a).toFixed(2) + " N"
       + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
   }
-  if (showAnswer2 == 1) { // checks if the answer is being shown before updating it
+  if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
   }
-  if (showAnswer3 == 1) {
+  if (showAnswer3) { // checks if the answer is being shown before updating it
     document.getElementById("answer3").style.display = "block";
   }
   const data = energyAndDerivativeData();
@@ -533,12 +535,12 @@ document.getElementById("h-slider").oninput = function () {
 
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
-  if (showAnswer1 == 0) {
-    showAnswer1 = 1;
+  if (!showAnswer1) {
+    showAnswer1 = true;
     document.getElementById("show-q1").innerHTML = "Hide Answers";
     slider_update();
-  } else if (showAnswer1 == 1) {
-    showAnswer1 = 0;
+  } else {
+    showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answers";
     document.getElementById("answer1").innerHTML = "";
   }
@@ -546,12 +548,12 @@ document.getElementById("show-q1").addEventListener("click", function () {
 
 // shows the answer if the q2 button is clicked
 document.getElementById("show-q2").addEventListener("click", function () {
-  if (showAnswer2 == 0) {
-    showAnswer2 = 1;
+  if (!showAnswer2) {
+    showAnswer2 = true;
     document.getElementById("show-q2").innerHTML = "Hide Answer";
     slider_update();
-  } else if (showAnswer2 == 1) {
-    showAnswer2 = 0;
+  } else {
+    showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
     document.getElementById("answer2").style.display = "none";
   }
@@ -559,12 +561,12 @@ document.getElementById("show-q2").addEventListener("click", function () {
 
 // shows the proof if the proof button is clicked
 document.getElementById("show-more").addEventListener("click", function () {
-  if (showAnswer3 == 0) {
-    showAnswer3 = 1;
+  if (!showAnswer3) {
+    showAnswer3 = true;
     document.getElementById("show-more").innerHTML = "Hide Proof";
     slider_update();
-  } else if (showAnswer3 == 1) {
-    showAnswer3 = 0;
+  } else {
+    showAnswer3 = false;
     document.getElementById("show-more").innerHTML = "Show Proof";
     document.getElementById("answer3").style.display = "none";
   }
