@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory4</title>
+    <link rel = "stylesheet" href = "global-local.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "global-local4.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+    <h1 id="title">Free-fall projectile in 1D: Page 4/4</h1>
+    <p id="text">
+        In this last page, all sliders are available to manipulate. Try moving the sliders and also taking a look at the integral plots 
+        for different points.<br><br>
+    </p>
+<div id="applet">
+    <div class="column">
+        <div id="position-graph"></div>
+    </div>
+
+    <div class="column">
+        <div id="integral-graph"></div>
+    </div>
+
+    <div class="column">
+        <div id="controls">
+            <div id="sliders">
+                <label for="y1-slider">y1:</label>
+                <input id="y1-slider" class="slider" type="range" min="0" max="200" value="51">
+                <span id="print-y1">51</span>
+
+                <label for="y2-slider">y2:</label>
+                <input id="y2-slider" class="slider" type="range" min="0" max="200" value="84">
+                <span id="print-y2">84</span>
+
+                <label for="y3-slider">y3:</label>
+                <input id="y3-slider" class="slider" type="range" min="0" max="200" value="100">
+                <span id="print-y3">100</span>
+
+                <label for="y4-slider">y4:</label>
+                <input id="y4-slider" class="slider" type="range" min="0" max="200" value="84">
+                <span id="print-y4">84</span>
+
+                <label for="y5-slider">y5:</label>
+                <input id="y5-slider" class="slider" type="range" min="0" max="200" value="51">
+                <span id="print-y5">51</span>
+            </div>
+            <p>Action: <span id="print-action">0</span></p>
+            <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
+            <button type="button" class="button" id="reset-button">RESET</button> 
+            <div id="checkbox-grid">
+                <ul>
+                    <li><input type="checkbox" id="show-action-1" value="on" checked>
+                    <label for="show-action-1"> 1</label></li>
+                    <li><input type="checkbox" id="show-action-2" value="off">
+                    <label for="show-action-2"> 2</label></li>
+                    <li><input type="checkbox" id="show-action-3" value="off">
+                    <label for="show-action-3"> 3</label></li>
+                    <li><input type="checkbox" id="show-action-4" value="off">
+                    <label for="show-action-4"> 4</label></li>
+                    <li><input type="checkbox" id="show-action-5" value="off">
+                    <label for="show-action-5"> 5</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<div class="buttons">
+    <column id="previous-button">
+        <button onclick = "window.location.href = 'global-local3.html'">PREVIOUS PAGE</button>
+    </column>
+</div>
+<br>
+<br>
+
+</body>
+</html>
+
