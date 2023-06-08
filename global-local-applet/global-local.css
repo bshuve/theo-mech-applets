@@ -13,6 +13,25 @@ svg, canvas {
     border-color: black;
 }
 
+button {
+    background: #b5cef5;
+    border: solid;
+    color: rgb(0, 0, 0);
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c2f0c8;
+    color: #000000;
+}
+
 .slider {
     -webkit-appearance: none;
     width: 100%;
@@ -59,7 +78,7 @@ svg, canvas {
 }
 
 #text {
-    width: 880px;
+    width: 1000px;
     margin: auto;
 }
 
@@ -99,12 +118,28 @@ IDK what that means*/
     grid-template-columns: max-content 1fr 20px;
     grid-gap:5px;
 }
+
 #sliders label { 
     text-align:right; 
+}
+
+#constants label{ 
+    display: block;
+    width: 100%;
+    margin-left: 10px;
 }
 
 #checkbox-grid li {
     display: block;
     float: left;
     width: 50%;
+}
+
+
+#previous-button{
+    float: left;
+}
+
+#next-button{
+    float: right;
 }
