@@ -482,6 +482,9 @@ plotEnergy(initial_data);
 // initialize energy lines
 plotDerivative(initial_data);
 
+// update slope on kinetic derivative plot
+document.getElementById("slope").innerHTML = (m*a).toFixed(2);
+
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -514,6 +517,8 @@ function slider_update() {
   if (showAnswer3) { // checks if the answer is being shown before updating it
     document.getElementById("answer3").style.display = "block";
   }
+  // update slope on kinetic derivative plot
+  document.getElementById("slope").innerHTML = (m*a).toFixed(2);
   const data = energyAndDerivativeData();
   // update plots
   plotEnergy(data);

@@ -113,8 +113,15 @@ button:hover {
     position: absolute;
     height: 320px;
     width: 950px;
-    bottom: 0px;
+    top: 640px;
     padding: 10px;
+}
+
+#slope-txt {
+    position: absolute;
+    bottom: 230px;
+    padding: 40px;
+    right: 0;
 }
 
 .column {
