@@ -21,7 +21,7 @@ class Vector {
         this.start_x = start_x;
         this.start_y = start_y;
         this.x = x;
-        this.y = y;
+        this.y = -1 * y;
         this.z = z;
     }
     
@@ -34,28 +34,36 @@ class Vector {
     }
 
     getEndY() {
-        return this.start_y + this.y;
+        return this.start_y - this.y;
     }
 
     crossDir(v) {
-        var cross = [Math.round(this.y * (-1) * v.z - this.z * v.y * (-1)),
-        Math.round(this.z * v.x - this.x * v.z),
-        Math.round(this.x * v.y * (-1) - this.y * (-1) * v.x)];
-        if (cross[2] == 0) {
-            if (cross[1] == 0) {
-                if (cross[0] == 0) {
+        console.log(this.direction());
+        console.log(v.direction());
+        var cross = new Vector(this.start_x, this.start_y, 
+        Math.round(this.y * v.z - this.z * v.y),
+        -1 * Math.round(this.z * v.x - this.x * v.z),
+        Math.round(this.x * v.y - this.y * v.x));
+        return cross.direction();
+    }
+
+    direction() {
+        console.log([this.x, this.y, this.z]);
+        if (this.z == 0) {
+            if (this.y == 0) {
+                if (this.x == 0) {
                     return "0";
-                } else if (cross[0] > 0) {
+                } else if (this.x > 0) {
                     return "+x";
                 } else {
                     return "-x";
                 }
-            } else if (cross[1] > 0) {
+            } else if (this.y > 0) {
                 return "+y";
             } else {
                 return "-y";
             }
-        } else if (cross[2] > 0) {
+        } else if (this.z > 0) {
             return "+z";
         } else {
             return "-z";
@@ -86,17 +94,17 @@ class Vector {
             ctx.beginPath();
             ctx.moveTo(end_x, end_y);
             ctx.lineTo(end_x - tipLen * Math.cos(angle - Math.PI / 7),
-                end_y - tipLen * Math.sin(angle - Math.PI / 7));
+                end_y + tipLen * Math.sin(angle - Math.PI / 7));
 
             // path from the side point of the arrow, to the other side point
             ctx.lineTo(end_x - tipLen * Math.cos(angle + Math.PI / 7),
-                end_y - tipLen * Math.sin(angle + Math.PI / 7));
+                end_y + tipLen * Math.sin(angle + Math.PI / 7));
 
             //path from the side point back to the tip of the arrow, and then
             //again to the opposite side point
             ctx.lineTo(end_x, end_y);
             ctx.lineTo(end_x - tipLen * Math.cos(angle - Math.PI / 7),
-                end_y - tipLen * Math.sin(angle - Math.PI / 7));
+                end_y + tipLen * Math.sin(angle - Math.PI / 7));
 
             //draws the paths created above
             ctx.stroke();
@@ -150,61 +158,49 @@ ctx.fillText("z", 25, 95);
 
 /* Creating Legend */
 ctx.beginPath();
-ctx.rect(540, 20, 20, 20);
+ctx.rect(505, 20, 20, 20);
 ctx.fillStyle = "purple";
 ctx.fill();
-ctx.fillText("r Vector", 565, 35);
+ctx.fillText("First Vector", 530, 35);
 ctx.closePath();
 
 ctx.beginPath();
-ctx.rect(540, 50, 20, 20);
+ctx.rect(505, 50, 20, 20);
 ctx.fillStyle = "green";
 ctx.fill();
-ctx.fillText("p Vector", 565, 65);
+ctx.fillText("Second Vector", 530, 65);
 ctx.closePath();
 
 /* Creating random r vector*/
 // Choose a random direction
-var angles = [0, 0, Math.PI/4, Math.PI/2, Math.PI/2, 3*Math.PI/4, Math.PI, Math.PI/2,
-            5*Math.PI/4, 3*Math.PI/2, 3*Math.PI/2, 7*Math.PI/4, "+z", "-z"];
-var rDir = angles[Math.floor(Math.random()*angles.length)];
-if (rDir == "+z") {
-    var r = new Vector(center_x, center_y, 0, 0, 1);
-} else if (rDir == "-z") {
-    var r = new Vector(center_x, center_y, 0, 0, -1);
-} else {
-    var r = new Vector(center_x, center_y, 100*Math.cos(rDir), 100*Math.sin(rDir), 0);
-}
+var directions = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
+var i = Math.floor(Math.random()*directions.length);
+var rDir = directions[i];
+var r = new Vector(center_x, center_y, 100*rDir[0], 100*rDir[1], rDir[2]);
 r.drawVec('purple');
 
-/* Creating random p vector */
-if ((r.x == 0 || r.y == 0) && (r.z == 0)) {
-    // If r is a unit vector in the xy plane, p can be in any direction
-    angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
-            5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4,
-            "+z", "+z", "+z", "+z", "+z", "+z", "+z", "-z", "-z", "-z", "-z", "-z", "-z", "-z"];
-    var pDir = angles[Math.floor(Math.random()*angles.length)];
-    if (pDir == "+z") {
-        var p = new Vector(r.getEndX(), r.getEndY(), 0, 0, 1);
-    } else if (pDir == "-z") {
-        var p = new Vector(r.getEndX(), r.getEndY(), 0, 0, -1);
-    } else {
-        var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
-    }
-} else if (r.z == 0) {
-    // If r is not a unit vector, but is in the xy plane, p cannot be in the z direction
-    angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
-            5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
-    var pDir = angles[Math.floor(Math.random()*angles.length)];
-    var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+// Update directions so that r and p cannot be the same vector
+if (r.z != 0) {
+    var i1 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === 1);
+    directions.splice(i1, 1);
+    var i2 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === -1);
+    directions.splice(i2, 1);
 } else {
-    // If r is in the z direction, then p cannot be in the z direction
-    angles = [0, Math.PI/2, Math.PI, 3*Math.PI/2];
-    var pDir = angles[Math.floor(Math.random()*angles.length)];
-    var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+    directions.splice(i, 1);
 }
 
+/* Creating random p vector */
+var pDir = directions[Math.floor(Math.random()*directions.length)];
+var p = new Vector(center_x, center_y, 100*pDir[0], 100*pDir[1], pDir[2]);
 p.drawVec('green');
+
+// Creating title
+ctx.beginPath();
+ctx.fillStyle = "black";
+var rTitle = r.direction();
+var pTitle = p.direction();
+ctx.fillText(rTitle + " cross " + pTitle, center_x-50, 50);
+ctx.closePath();
 
 /* Event Listeners */
 // Get the user's input

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory4</title>
+    <link rel = "stylesheet" href = "global-local.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "global-local3.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 1D: Page 3/4</h1>
+<p id="text">
+    In this second page, y1 and y5 have been set to 0. Try moving the sliders for y2, y3, and y4. The red line represents the local classical path 
+    between points y1 and y5. <br><br>
+    You can see that the the values for y2, y3, and y4 that minimize the action is not the global classical trajectory from the boundary endpoints, 
+    but it is the classical trajectory between points y1 and y5. Changing y2, y3, and y4 allow us to locally minimize the action to find 
+    the classical path subject to a set of boundary conditions that differ from the original ones provided. This action is still larger than 
+    the global classical path (the black line global classical trajectory has a minimum action of -1334), but it is the minimum for the local set conditions.
+    <br><br>
+</p>
+
+<div id="applet">
+    <div class="column">
+        <div id="position-graph"></div>
+    </div>
+
+    <div class="column">
+        <div id="integral-graph"></div>
+    </div>
+
+    <div class="column">
+        <div id="controls">
+            <div id="sliders">
+                <label id="constants">y1: </label><div>0</div><div></div>
+
+                <label for="y2-slider">y2:</label>
+                <input id="y2-slider" class="slider" type="range" min="0" max="200" value="33">
+                <span id="print-y2">33</span>
+
+                <label for="y3-slider">y3:</label>
+                <input id="y3-slider" class="slider" type="range" min="0" max="200" value="49">
+                <span id="print-y3">49</span>
+
+                <label for="y4-slider">y4:</label>
+                <input id="y4-slider" class="slider" type="range" min="0" max="200" value="33">
+                <span id="print-y4">33</span>
+
+                <label id="constants">y5: </label><div>0</div><div></div>
+            </div>
+            <p>Action: <span id="print-action">0</span></p>
+            <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
+            <button type="button" class="button" id="reset-button">RESET</button> 
+            <div id="checkbox-grid">
+                <ul>
+                    <li><input type="checkbox" id="show-action-1" value="off">
+                    <label for="show-action-1"> 1</label></li>
+                    <li><input type="checkbox" id="show-action-2" value="on" checked>
+                    <label for="show-action-2"> 2</label></li>
+                    <li><input type="checkbox" id="show-action-3" value="on" checked>
+                    <label for="show-action-3"> 3</label></li>
+                    <li><input type="checkbox" id="show-action-4" value="on" checked>
+                    <label for="show-action-4"> 4</label></li>
+                    <li><input type="checkbox" id="show-action-5" value="off">
+                    <label for="show-action-5"> 5</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<div class="buttons">
+    <column id="previous-button">
+        <button onclick = "window.location.href = 'global-local2.html'">PREVIOUS PAGE</button>
+    </column>
+
+    <column id="next-button">
+        <button onclick = "window.location.href = 'global-local4.html'">NEXT PAGE</button>
+    </column>
+</div>
+<br>
+<br>
+</body>
+</html>
+

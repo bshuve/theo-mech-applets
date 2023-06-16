@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>force vs. acceleration</title>
+    <link rel = "stylesheet" href = "force-energy.css">
+
+    <!-- Load d3.js -->
+    <script src="../action-applet1/d3.v4.js"></script>
+    
+    <script defer src = "force-energy2.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+
+<body id="body">
+
+<h1 id="title">Force vs. Acceleration: Page 2</h1>
+<h2 id="subtitle">Spring</h2>
+<p id="text">
+Consider an object of mass \(m\) attached to a spring with spring constant \(k\) stretched an amount \(A\) in the \(x\) direction. <br>
+</p>
+
+<p id="text">
+    Try dragging the values of the sliders in this applet to see how the animation and graphs change.
+</p>
+
+<br>
+<p id="text">
+    After dragging the sliders around, try answering the following question.
+</p>
+
+<label for="show-q1" id="text">
+    <b>Question 1: </b>What is the force acting on the object based on your inputs? Is it a conservative force?
+    <br><br>
+<button id="show-q1">Show answers</button>        
+<span id="answer1"></span>
+</label>
+
+<br><br> 
+
+<div id="applet2">
+    <div id="top-panel" class="row">
+	<!-- First column: trajectory animation -->
+        <div class="column">
+            <canvas id="spring-canvas" class="plot"
+            width="320px" height="294px" title="Actual Motion">
+            </canvas>
+        </div>
+
+	<!-- Second column: sliders -->
+        <div class="column">
+            <div id="controls">
+                <legend>Define Constants:</legend>
+                <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
+                <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
+                <label for="k-slider">\(k\): <span id="print-k">5.0</span> N/m</label>
+                <input id="k-slider" class="slider" type="range" min="1" max="10" step="1" value="5">
+                <label for="A-slider">\(A\): <span id="print-A">0.00</span> m</label>
+                <input id="A-slider" class="slider" type="range" min="-0.1" max="0.1" step="0.01" value="0">
+
+            </div>
+        </div>
+    <!-- Third column: question -->
+        <div class="column">
+            <div id="controls2">
+                <span id="green">....</span> Potential Energy
+                <br><br>
+                <span id="grey">....</span> Negative Potential Energy
+                <br><br>
+                <span id="red">....</span> Kinetic Energy
+                <br><br>
+                <span id="blue">....</span> Derivative Kinetic Energy
+
+            </div>
+        </div>
+    </div>
+    <div id="middle-panel" class="row">
+        <div class="column left">
+            <div id="PE-energy-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="KE-energy-graph"></div>
+        </div>
+    </div>
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="PE-derivative-graph"></div>
+        </div>
+        <div class="column-right">
+            <div id="KE-derivative-graph"></div>
+        </div>
+    </div>
+    <div id="bottom2-panel" class="row">
+        <div class="column right">
+            <div id="dKE-derivative-graph"></div>
+            <!--
+                maybe this works better under the potential derivative graph
+                so you can see that the negative derivative potential energy is equal to the derivative^2 kinetic
+             -->
+        </div>
+    </div>
+</div> 
+<br>
+
+<label for="show-q2" id="text" style="line-height: 2">
+    <b>Question 2: </b>As you manipulated the sliders to change the force, how do the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? Is there a correlation between them?
+</label>
+<br><br>
+<button id="show-q2">Show answer</button>
+<br><br>        
+<span id="answer2" style="display: none; line-height: 1.8">
+    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial y} = F_y\). 
+    If you compare your force calculation from using the sliders, it should match the value of the negative potential energy derivative on the graph. Note that the potential energy derivatives are time-independent because they are derived with respect to \(y\) position.
+    Through the Kinetic Energy (kJ) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic.
+    When we look at the Kinetic Derivative \((\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph though, we can see that the slope of this line \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}\)) is equal to the \(-\frac{\partial U}{\partial y}\) value on the left graph. 
+    Thus, we can derive the connection that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\).
+    <br><br>
+</span>
+<label for="show-more" id="text" style="line-height: 2">
+    But how does this connect with what we know from classical mechanics? We can actually mathematically prove the equivalence between the Euler-Lagrange equation and Newton's 2nd Law!
+</label>
+<br><br>
+<button id="show-more">Show Proof</button>
+<br><br>
+<span id="answer3" style="display: none; line-height: 1.8">
+    We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{y}^2\), \(U = mgy\) for this situation.
+    <br><br>
+    \(\frac{\partial L}{\partial y} = -\frac{\partial U}{\partial y} = F_y\) by definition.
+    <br><br>
+    \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}} = m\dot{y} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) = m\ddot{y} = F_y\) by definition.
+    <br><br>
+    Note that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) as seen in the graphs.
+    <br><br>
+    So, using the Euler-Langrange equation, we can prove Newton's 2nd Law, \(F=ma\).
+    <br><br>
+</span>
+
+<div class="buttons">
+    <column id="prev-button">
+        <button onclick = "window.location.href = 'force-energy.html'">PREVIOUS PAGE</button>
+    </column>
+</div> 
+
+<br><br><br><br>
+
+<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</i>
+
+<br><br>
+
+</body>
+</html>
+

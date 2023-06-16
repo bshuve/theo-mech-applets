@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory4</title>
+    <link rel = "stylesheet" href = "global-local.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "global-local2.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Free-fall projectile in 1D: Page 2/4</h1>
+<p id="text">
+    In this applet, you are going to be looking at global vs. local action. The black line in the plots represents the classical path globally. 
+    The white one minimizes the local action between the two points it connects, so it shows the classical path locally between those two points. 
+    In this first page, y2, y3, y4, and y5 are randomized each time. Using the slider, y1 can be varied. Try moving the slider to see how varying 
+    one point can affect the action value.<br><br>
+</p>
+
+<label for="show-q1" id="text">
+    <b>Question 1: </b> When changing the y1 slider, which value of y1 minimizes the action between y0 and y2, resulting in a local classical path between 
+    those two points?
+</label>
+<br><br>
+<button id="show-q1">Show answer</button>
+<br><br>        
+<span id="answer1" style="display: none">
+    The action is minimized when y1 is <span id="y-at-t1"></span>. This shows that in order to minimize the action, we must follow the classical path locally. 
+    Since we are minimizing the actions locally between points y0 and y2, we are able to minimize the action of the entire path, for the constrained y2, y3, y4, and y5 points.
+    <br><br>
+</span>
+
+<p id="text">
+The Integral of Energy graph to the right also shows the action as a function of the given y, assuming that all other points are fixed. For example, 
+plot 1 shows the action as a function of y1, assuming that y2, y3, y4, and y5 don't change. You can click 
+the checkboxes to look at how other plots are affected by changing the y1 value with the slider. <br><br>
+</p>
+
+<div id="applet">
+    <div class="column">
+        <div id="position-graph"></div>
+    </div>
+
+    <div class="column">
+        <div id="integral-graph"></div>
+    </div>
+
+    <div class="column">
+        <div id="controls">
+            <div id="sliders">
+                <label for="y1-slider">y1:</label>
+                <input id="y1-slider" class="slider" type="range" min="0" max="200" value="0">
+                <span id="print-y1">0</span>
+                <label id="constants">y2: </label><span id="y2">84</span><div></div>
+                <label id="constants">y3: </label><span id="y3">100</span><div></div>
+                <label id="constants">y4: </label><span id="y4">84</span><div></div>
+                <label id="constants">y5: </label><span id="y5">51</span><div></div>
+            </div>
+            <p>Action: <span id="print-action">0</span></p>
+            <button type="button" class="button" id="randomize-button" onclick="window.location.href = 'global-local1 copy.html'">RANDOMIZE</button> 
+            <button type="button" class="button" id="reset-button">MINIMUM ACTION FOR Y1</button> 
+            <div id="checkbox-grid">
+                <ul>
+                    <li><input type="checkbox" id="show-action-1" value="on" checked>
+                    <label for="show-action-1"> 1</label></li>
+                    <li><input type="checkbox" id="show-action-2" value="off">
+                    <label for="show-action-2"> 2</label></li>
+                    <li><input type="checkbox" id="show-action-3" value="off">
+                    <label for="show-action-3"> 3</label></li>
+                    <li><input type="checkbox" id="show-action-4" value="off">
+                    <label for="show-action-4"> 4</label></li>
+                    <li><input type="checkbox" id="show-action-5" value="off">
+                    <label for="show-action-5"> 5</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<div class="buttons">
+    <column id="previous-button">
+        <button onclick = "window.location.href = 'global-local1.html'">PREVIOUS PAGE</button>
+    </column>
+
+    <column id="next-button">
+        <button onclick = "window.location.href = 'global-local3.html'">NEXT PAGE</button>
+    </column>
+</div>
+<br><br>
+</body>
+</html>
+
