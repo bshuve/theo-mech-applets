@@ -32,9 +32,9 @@ class Vector {
         if (z == 0) {
             return "0";
         } else if (z < 0) {
-            return "-z, into page";
+            return "-z";
         } else {
-            return "+z, out of page";
+            return "+z";
         }
     }
 
@@ -175,23 +175,23 @@ p.drawVec('green');
 // Get the user's input
 var guess;
 document.getElementById('into-button').addEventListener('click', function () {
-    check("-z, into page");
+    check("-z");
     });
 document.getElementById('out-button').addEventListener('click', function () {
-    check("+z, out of page");
+    check("+z");
     });
  document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
     });
 
 // Display whether it's correct or not
-ctx2.font = "18px Verdana";
+ctx2.font = "16px Verdana";
 ctx2.fillStyle = "black";
 function check(guess) {
     ctx2.clearRect(0, 0, feedback.width, feedback.height);
     if (guess == r.crossDir(p)) {
-        ctx2.fillText("Correct!", feedback.width/2-10, feedback.height/2);
+        ctx2.fillText("Correct! The direction is " + r.crossDir(p) + ".", feedback.width/6, feedback.height/2);
     } else {
-        ctx2.fillText("Incorrect! Correct answer: " + r.crossDir(p) + ".", feedback.width/4, feedback.height/2);
+        ctx2.fillText("Incorrect! Correct answer: " + r.crossDir(p) + ".", feedback.width/7, feedback.height/2);
     }
 }
