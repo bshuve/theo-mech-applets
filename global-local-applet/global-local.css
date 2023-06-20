@@ -143,3 +143,33 @@ IDK what that means*/
 #next-button{
     float: right;
 }
+
+#red {
+    color: red;
+    background-color:red;
+    width: 30px;
+}
+
+#orange {
+    color: orange;
+    background-color:orange;
+    width: 30px;
+}
+
+#green {
+    color: green;
+    background-color:green;
+    width: 30px;
+}
+
+#blue {
+    color: blue;
+    background-color:blue;
+    width: 30px;
+}
+
+#purple {
+    color: purple;
+    background-color: purple;
+    width: 30px;
+}
