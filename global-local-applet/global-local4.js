@@ -19,17 +19,24 @@ const y0 = 0;
 const g = 2;
 const m = 1;
 
-const min_y = parseInt(document.getElementById("y1-slider").min);
-const max_y = parseInt(document.getElementById("y1-slider").max);
+const min_y = 0;
+const max_y = 200;
+
+// corresponding t coordinates for each y coordinate above
+var y1 = Math.floor(max_y*Math.random());
+var y2 = Math.floor(max_y*Math.random());
+var y3 = Math.floor(max_y*Math.random()); 
+var y4 = Math.floor(max_y*Math.random());  
+var y5 = Math.floor(max_y*Math.random());
 
 var yList = [0, 
-              parseInt(document.getElementById("y1-slider").value), 
-              parseInt(document.getElementById("y2-slider").value), 
-              parseInt(document.getElementById("y3-slider").value), 
-              parseInt(document.getElementById("y4-slider").value),  
-              parseInt(document.getElementById("y5-slider").value), 
+              y1,
+              y2,
+              y3,
+              y4,
+              y5,
               0];
-
+            
 const tList = [0, 3, 6, 10, 14, 17, 20];
 
 
@@ -41,7 +48,6 @@ const tList = [0, 3, 6, 10, 14, 17, 20];
 function startAnimation() {
     // 1D projectiles
     param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y0), 1);
-    actual1D = new component(10, 10, "purple", 2 * CANVAS_WIDTH/3, transformYCoord(y0), 2);
     document.getElementById("print-action").innerHTML = Math.floor(action(yList));
     animArea.start();
 }
@@ -68,7 +74,6 @@ function transformYCoord(y) {
 // JS object for both canvases
 var animArea = {
     parameterized_data: [],
-    actual_data: [],
     // panel: document.getElementById("projectile-motion-canvas"),
     start: function(){
         this.time = 0;   
@@ -80,7 +85,6 @@ var animArea = {
     stop : function() {
         this.time = 0;
         this.parameterized_data = [];
-        this.actual_data = [];
         clearInterval(this.interval); 
       }
 }
@@ -130,9 +134,6 @@ function component(width, height, color, x, y, type) {
             }
 
             this.y = yList[i-1] + ((yList[i] - yList[i-1] + 0.5 * g * (tList[i] - tList[i-1]) ** 2) / (tList[i] - tList[i-1])) * (t - tList[i-1]) - 0.5 * g * (t - tList[i-1]) ** 2;
-
-        } else if (this.type == 2) {   // actual 1D
-            this.y = t * (20 - t);
         }
     }
 }
@@ -144,11 +145,9 @@ function updateFrame() {
 
     // update projectile positions
     param1D.newPos(animArea.time);
-    actual1D.newPos(animArea.time);
     animArea.parameterized_data.push({x: animArea.time, y: param1D.y});
-    animArea.actual_data.push({x: animArea.time, y: actual1D.y});
 
-    plotPosition(animArea.actual_data, animArea.parameterized_data);
+    plotPosition(animArea.parameterized_data);
 
     // end animation when t = 20
     if (animArea.time >= tList[6]) {endAnimation();}
@@ -244,7 +243,6 @@ const position_input = {
   range: {lower: 0, upper: 200},
   yLabel: "Displacement"};
 const position_plot = createPlot(position_input);
-var x_actual_line = position_plot.svg.append("g").attr("id", "x-actual-line").attr("stroke", "black");
 var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line").attr("stroke", "white");
 
 y1_point = position_plot.svg.append("circle")
@@ -268,21 +266,10 @@ y5_point = position_plot.svg.append("circle")
 .attr("cx", position_plot.xScale(tList[5])).attr("cy", position_plot.yScale(yList[5]));
 
 // update position plot
-function plotPosition(actual, parameterized) {
-
-    // prepare input for actual displacement plot
-    var input = {
-      data: actual,
-      svg: position_plot.svg,
-      line: x_actual_line,
-      xScale: position_plot.xScale,
-      yScale: position_plot.yScale};
-  
-    // plot the data
-    plotData(input);
+function plotPosition(parameterized) {
   
     // prepare input for parameterized displacement plot
-    input = {
+    var input = {
       data: parameterized,
       svg: position_plot.svg,
       line: x_parameterized_line,
@@ -402,12 +389,9 @@ document.getElementById("randomize-button").onclick = function() {
   }
   plotIntegral();
   plotIntegralPoint();
-  endAnimation();
-  startAnimation();
 }
 
 function updateSliderInfo(x) {
-    endAnimation();
     yList[x] = parseInt(document.getElementById(`y${x}-slider`).value);
     document.getElementById(`print-y${x}`).innerHTML = yList[x];
     if (x == 1) {y1_point.attr("cy", position_plot.yScale(yList[x]));}
@@ -415,6 +399,8 @@ function updateSliderInfo(x) {
     else if (x == 3) {y3_point.attr("cy", position_plot.yScale(yList[x]));}
     else if (x == 4) {y4_point.attr("cy", position_plot.yScale(yList[x]));}
     else if (x == 5) {y5_point.attr("cy", position_plot.yScale(yList[x]));}
+    endAnimation();
+    startAnimation();
 }
 
 document.getElementById("y1-slider").oninput = function() {
@@ -424,62 +410,32 @@ document.getElementById("y1-slider").oninput = function() {
     updateSliderInfo(1);
 }
 
-document.getElementById("y1-slider").onchange = function() {
-    updateSliderInfo(1);
-    endAnimation();
-    startAnimation();
-}
-
 document.getElementById("y2-slider").oninput = function() {
-  plotIntegral();
-  plotIntegralPoint();
-  // plotIntegral(2, integralData(2));
-  updateSliderInfo(2);
-}
-
-document.getElementById("y2-slider").onchange = function() {
-  updateSliderInfo(2);
-  endAnimation();
-  startAnimation();
+    plotIntegral();
+    plotIntegralPoint();
+    // plotIntegral(2, integralData(2));
+    updateSliderInfo(2);
 }
 
 document.getElementById("y3-slider").oninput = function() {
-  plotIntegral();
-  plotIntegralPoint();
-  // plotIntegral(3, integralData(3));
-  updateSliderInfo(3);
-}
-
-document.getElementById("y3-slider").onchange = function() {
-  updateSliderInfo(3);
-  endAnimation();
-  startAnimation();
+    plotIntegral();
+    plotIntegralPoint();
+    // plotIntegral(3, integralData(3));
+    updateSliderInfo(3);
 }
 
 document.getElementById("y4-slider").oninput = function() {
-  plotIntegral();
-  plotIntegralPoint();
-  // plotIntegral(4, integralData(4));
-  updateSliderInfo(4);
-}
-
-document.getElementById("y4-slider").onchange = function() {
-  updateSliderInfo(4);
-  endAnimation();
-  startAnimation();
+    plotIntegral();
+    plotIntegralPoint();
+    // plotIntegral(4, integralData(4));
+    updateSliderInfo(4);
 }
 
 document.getElementById("y5-slider").oninput = function() {
-  plotIntegral();
-  plotIntegralPoint();
-  // plotIntegral(5, integralData(5));
-  updateSliderInfo(5);
-}
-
-document.getElementById("y5-slider").onchange = function() {
-  updateSliderInfo(5);
-  endAnimation();
-  startAnimation();
+    plotIntegral();
+    plotIntegralPoint();
+    // plotIntegral(5, integralData(5));
+    updateSliderInfo(5);
 }
 
 function hide(id, point, line) {
@@ -515,3 +471,7 @@ document.getElementById("show-action-5").onchange = function() {
   hide("show-action-5", si_point_5, si_line_5);
 }
 
+for (let i = 1; i <= 5; i++) {
+  document.getElementById(`y${i}-slider`).value = Math.floor(max_y*Math.random());
+  updateSliderInfo(i);
+}
