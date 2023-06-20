@@ -48,7 +48,6 @@ class Vector {
     }
 
     direction() {
-        console.log([this.x, this.y, this.z]);
         if (this.z == 0) {
             if (this.y == 0) {
                 if (this.x == 0) {
