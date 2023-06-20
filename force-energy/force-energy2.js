@@ -199,7 +199,7 @@ function energyAndDerivativeData() {
     let dKE = m * v; // dT/dv
     let dPE = k * x; // -dU/dy
     let dnPE = -dPE; // dU/dy
-    let ddKE = m * a;
+    let ddKE = m * a; // d/dt(dT/dv)
 
     // push all data into arrays
     kinetic_energy_data.push({ "x": v, "y": KE});
@@ -305,7 +305,7 @@ function createPlot(input) {
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
     .attr("y", -margin.left + 15)
-    .attr("x", -margin.top + 25)
+    .attr("x", -margin.top)
     .text(input.yLabel)
 
   return { svg: svg, xScale: xScale, yScale: yScale };
@@ -343,10 +343,23 @@ const potential_derivative_input = {
 
 const potential_derivative_plot = createPlot(potential_derivative_input);
 
-// -dU/dy
-var npd_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line").attr("visibility", "visible");
 // dU/dy
 var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-derivative-line").attr("visibility", "visible");
+
+// nPE DERIVATIVE OF ENERGY
+const npotential_derivative_input = {
+  divID: "#nPE-derivative-graph",
+  svgID: "svg-for-nPE-derivative",
+  domain: { lower: 0, upper: 20 },
+  xLabel: "Time (s)",
+  range: { lower: -1, upper: 1 },
+  yLabel: "Potential Derivative (∂U/∂y)"
+};
+
+const npotential_derivative_plot = createPlot(npotential_derivative_input);
+
+// -dU/dy
+var npd_line = npotential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line").attr("visibility", "visible");
 
 // KINETIC ENERGY GRAPH
 const kinetic_energy_input = {
@@ -385,7 +398,7 @@ const derivative_kinetic_derivative_input = {
   domain: { lower: 0, upper: 20 },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
-  yLabel: "d/dt of Kinetic Derivative (d/dt(∂T/∂ẏ))"
+  yLabel: "dKinetic Derivative (d/dt(∂T/∂ẏ))"
 };
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
@@ -481,10 +494,10 @@ function plotDerivative(data) {
   // -dU/dy
   var input = {
     data: data.npd,
-    svg: potential_derivative_plot.svg,
+    svg: npotential_derivative_plot.svg,
     line: npd_line,
-    xScale: potential_derivative_plot.xScale,
-    yScale: potential_derivative_plot.yScale,
+    xScale: npotential_derivative_plot.xScale,
+    yScale: npotential_derivative_plot.yScale,
     color: "gray"
   };
 
