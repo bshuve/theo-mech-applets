@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Global-Local</title>
+    <title>trajectory4</title>
     <link rel = "stylesheet" href = "global-local.css">
 
     <!-- Load d3.js -->
@@ -18,8 +18,10 @@
 
     <h1 id="title">Free-fall projectile in 1D: Page 4/4</h1>
     <p id="text">
-        In this last page, all sliders are available to manipulate. Try moving the sliders and also taking a look at the integral plots (clicking the checkboxes)
-        for different points.<br><br>
+        In this last page, all sliders are available to manipulate and the points y1-y5 are randomized. Attempt to find the global classical path by changing the 
+        slider values and taking a look at the integral plots for the separate y points. Hint: the global classical trajectory has an action of -1334. <br><br>
+
+        When you think you've found the trajectory that minimizes the global action, check your answer by clicking the "Global Classical Path" button. <br><br>
     </p>
 <div id="applet">
     <div class="column">
@@ -34,28 +36,28 @@
         <div id="controls">
             <div id="sliders">
                 <label for="y1-slider"><span id="red">.....</span> y1:</label>
-                <input id="y1-slider" class="slider" type="range" min="0" max="200" value="51">
-                <span id="print-y1">51</span>
+                <input id="y1-slider" class="slider" type="range" min="0" max="200">
+                <span id="print-y1"></span>
 
                 <label for="y2-slider"><span id="orange">.....</span> y2:</label>
-                <input id="y2-slider" class="slider" type="range" min="0" max="200" value="84">
-                <span id="print-y2">84</span>
+                <input id="y2-slider" class="slider" type="range" min="0" max="200">
+                <span id="print-y2"></span>
 
                 <label for="y3-slider"><span id="green">.....</span> y3:</label>
-                <input id="y3-slider" class="slider" type="range" min="0" max="200" value="100">
-                <span id="print-y3">100</span>
+                <input id="y3-slider" class="slider" type="range" min="0" max="200">
+                <span id="print-y3"></span>
 
                 <label for="y4-slider"><span id="blue">.....</span> y4:</label>
-                <input id="y4-slider" class="slider" type="range" min="0" max="200" value="84">
-                <span id="print-y4">84</span>
+                <input id="y4-slider" class="slider" type="range" min="0" max="200">
+                <span id="print-y4"></span>
 
                 <label for="y5-slider"><span id="purple">.....</span> y5:</label>
-                <input id="y5-slider" class="slider" type="range" min="0" max="200" value="51">
-                <span id="print-y5">51</span>
+                <input id="y5-slider" class="slider" type="range" min="0" max="200">
+                <span id="print-y5"></span>
             </div>
             <p>Action: <span id="print-action">0</span></p>
             <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
-            <button type="button" class="button" id="reset-button">RESET</button> 
+            <button type="button" class="button" id="reset-button">GLOBAL CLASSICAL PATH</button> 
             <div id="checkbox-grid">
                 <ul>
                     <li><input type="checkbox" id="show-action-1" value="on" checked>
