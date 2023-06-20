@@ -305,7 +305,7 @@ const position_input = {
   range: {lower: 0, upper: 200},
   yLabel: "Displacement"};
 const position_plot = createPlot(position_input);
-var x_local_line = position_plot.svg.append("g").attr("id", "x-local-line").attr("stroke", "red");
+var x_local_line = position_plot.svg.append("g").attr("id", "x-local-line").attr("stroke", "gray");
 var x_actual_line = position_plot.svg.append("g").attr("id", "x-actual-line").attr("stroke", "black");
 var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line").attr("stroke", "white");
 

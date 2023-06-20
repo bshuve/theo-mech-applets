@@ -305,7 +305,7 @@ function createPlot(input) {
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
     .attr("y", -margin.left + 15)
-    .attr("x", -margin.top)
+    .attr("x", -margin.top + 15)
     .text(input.yLabel)
 
   return { svg: svg, xScale: xScale, yScale: yScale };
@@ -338,7 +338,7 @@ const potential_derivative_input = {
   domain: { lower: 0, upper: 20 },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
-  yLabel: "Potential Derivative (∂U/∂y)"
+  yLabel: "Potential Derivative (∂U/∂x)"
 };
 
 const potential_derivative_plot = createPlot(potential_derivative_input);
@@ -353,7 +353,7 @@ const npotential_derivative_input = {
   domain: { lower: 0, upper: 20 },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
-  yLabel: "Potential Derivative (∂U/∂y)"
+  yLabel: "Potential Derivative (∂U/∂x)"
 };
 
 const npotential_derivative_plot = createPlot(npotential_derivative_input);
@@ -366,7 +366,7 @@ const kinetic_energy_input = {
   divID: "#KE-energy-graph",
   svgID: "svg-for-KE-plot",
   domain: { lower: -0.35, upper: 0.35 },
-  xLabel: "ẏ Velocity (m/s)",
+  xLabel: "ẋ Velocity (m/s)",
   range: { lower: 0, upper: 0.05 },
   yLabel: "Kinetic Energy (J)"
 };
@@ -383,7 +383,7 @@ const kinetic_derivative_input = {
   domain: { lower: 0, upper: 20 },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
-  yLabel: "Kinetic Derivative (∂T/∂ẏ)"
+  yLabel: "Kinetic Derivative (∂T/∂ẋ)"
 };
 
 const kinetic_derivative_plot = createPlot(kinetic_derivative_input);
@@ -398,7 +398,7 @@ const derivative_kinetic_derivative_input = {
   domain: { lower: 0, upper: 20 },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
-  yLabel: "dKinetic Derivative (d/dt(∂T/∂ẏ))"
+  yLabel: "d/dt Kinetic Derivative (d/dt(∂T/∂ẋ))"
 };
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
@@ -472,7 +472,7 @@ function plotDerivative(data) {
     line: kdd_line,
     xScale: derivative_kinetic_derivative_plot.xScale,
     yScale: derivative_kinetic_derivative_plot.yScale,
-    color: "blue"
+    color: "red"
   };
 
   // plot the data
@@ -525,7 +525,6 @@ on the HTML page (ex. button click, slider change, etc). */
 // these booleans store whether answers are being shown
 // by default, all answers are hidden
 var showAnswer1 = false;
-var showAnswer2 = false;
 var showAnswer3 = false;
 
 function slider_update() {
@@ -538,10 +537,7 @@ function slider_update() {
   document.getElementById("print-A").innerHTML = A.toFixed(2);
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").innerHTML = "<br><br>Force = " + (k * A).toFixed(2) + " N"
-      + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
-  }
-  if (showAnswer2) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").style.display = "block";
+      + "<br><br>Yes, this is a conservative force because the displacement force results in the spring having potential energy, which means that the force has to be conservative.<br>";
   }
   if (showAnswer3) { // checks if the answer is being shown before updating it
     document.getElementById("answer3").style.display = "block";
@@ -584,19 +580,6 @@ document.getElementById("show-q1").addEventListener("click", function () {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answers";
     document.getElementById("answer1").innerHTML = "";
-  }
-});
-
-// shows the answer if the q2 button is clicked
-document.getElementById("show-q2").addEventListener("click", function () {
-  if (!showAnswer2) {
-    showAnswer2 = true;
-    document.getElementById("show-q2").innerHTML = "Hide Answer";
-    slider_update();
-  } else {
-    showAnswer2 = false;
-    document.getElementById("show-q2").innerHTML = "Show Answer";
-    document.getElementById("answer2").style.display = "none";
   }
 });
 

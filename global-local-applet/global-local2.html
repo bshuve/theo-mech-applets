@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>trajectory4</title>
+    <title>Global-Local</title>
     <link rel = "stylesheet" href = "global-local.css">
 
     <!-- Load d3.js -->
@@ -33,14 +33,14 @@
 <br><br>        
 <span id="answer1" style="display: none">
     The action is minimized when y1 is <span id="y-at-t1"></span>. This shows that in order to minimize the action, we must follow the classical path locally. 
-    Since we are minimizing the actions locally between points y0 and y2, we are able to minimize the action of the entire path, for the constrained y2, y3, y4, and y5 points.
-    <br><br>
+    Since we are minimizing the actions locally between points y0 and y2, we are able to minimize the action of the entire path, for the constrained y2, y3, y4, and y5 points. Although, 
+    we are able to minimize the action of the local path, the global action is not minimized.
+    <br><br><br>
 </span>
 
 <p id="text">
-The Integral of Energy graph to the right also shows the action as a function of the given y, assuming that all other points are fixed. For example, 
-plot 1 shows the action as a function of y1, assuming that y2, y3, y4, and y5 don't change. You can click 
-the checkboxes to look at how other plots are affected by changing the y1 value with the slider. <br><br>
+    The Integral of Energy graph to the right also shows the action as a function of the given y, assuming that all other points are fixed. Here,
+    it shows the action as a function of y1, assuming that y2, y3, y4, and y5 don't change. <br><br>
 </p>
 
 <div id="applet">
@@ -66,20 +66,6 @@ the checkboxes to look at how other plots are affected by changing the y1 value 
             <p>Action: <span id="print-action">0</span></p>
             <button type="button" class="button" id="randomize-button" onclick="window.location.href = 'global-local1 copy.html'">RANDOMIZE</button> 
             <button type="button" class="button" id="reset-button">MINIMUM ACTION FOR Y1</button> 
-            <div id="checkbox-grid">
-                <ul>
-                    <li><input type="checkbox" id="show-action-1" value="on" checked>
-                    <label for="show-action-1"> 1</label></li>
-                    <li><input type="checkbox" id="show-action-2" value="off">
-                    <label for="show-action-2"> 2</label></li>
-                    <li><input type="checkbox" id="show-action-3" value="off">
-                    <label for="show-action-3"> 3</label></li>
-                    <li><input type="checkbox" id="show-action-4" value="off">
-                    <label for="show-action-4"> 4</label></li>
-                    <li><input type="checkbox" id="show-action-5" value="off">
-                    <label for="show-action-5"> 5</label></li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

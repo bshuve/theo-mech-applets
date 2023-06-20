@@ -1,4 +1,6 @@
 body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
     position: relative;
     top: 70px;
     background-color:#edcdca;

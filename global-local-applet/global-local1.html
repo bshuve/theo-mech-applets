@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>trajectory4</title>
+    <title>Global-Local</title>
     <link rel = "stylesheet" href = "global-local.css">
 
     <!-- Load d3.js -->
@@ -20,7 +20,7 @@
 <p id="text">
     In this applet, you are going to be looking at global vs. local action. The black line in the plots represents the classical path globally. 
     The white one minimizes the local action between the two points it connects, so it shows the classical path locally. In this first page, 
-    y2, y3, y4, and y5 are set at their respective points that follow the global trajectory. Using the slider, y1 can be varied. Try moving the 
+    y2, y3, y4, and y5 are set at their respective points that follow the global classical trajectory. Using the slider, y1 can be varied. Try moving the 
     sliders to see how varying one point can affect the action value.<br><br>
 </p>
 
@@ -34,13 +34,12 @@
     The action is minimized when y1 is 51, and falls on the global classical trajectory path.
     This shows that in order to minimize the action, we must follow the classical path. Since we are minimizing the actions locally between
     each of the points, by putting y1 at 51, we are minimizing the global path.
-    <br><br>
+    <br><br><br>
 </span>
 
 <p id="text">
-The Integral of Energy graph to the right also shows the action as a function of the given y, assuming that all other points are fixed. For example, 
-plot 1 shows the action as a function of y1, assuming that y2, y3, y4, and y5 don't change. You can click 
-the checkboxes to look at how other plots are affected by changing the y1 value with the slider. <br><br>
+The Integral of Energy graph to the right also shows the action as a function of the given y, assuming that all other points are fixed. Here,
+it shows the action as a function of y1, assuming that y2, y3, y4, and y5 don't change. <br><br>
 </p>
 
 <div id="applet">
@@ -66,20 +65,6 @@ the checkboxes to look at how other plots are affected by changing the y1 value 
             <p>Action: <span id="print-action">0</span></p>
             <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
             <button type="button" class="button" id="reset-button">CLASSICAL PATH</button> 
-            <div id="checkbox-grid">
-                <ul>
-                    <li><input type="checkbox" id="show-action-1" value="on" checked>
-                    <label for="show-action-1"> 1</label></li>
-                    <li><input type="checkbox" id="show-action-2" value="off">
-                    <label for="show-action-2"> 2</label></li>
-                    <li><input type="checkbox" id="show-action-3" value="off">
-                    <label for="show-action-3"> 3</label></li>
-                    <li><input type="checkbox" id="show-action-4" value="off">
-                    <label for="show-action-4"> 4</label></li>
-                    <li><input type="checkbox" id="show-action-5" value="off">
-                    <label for="show-action-5"> 5</label></li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>
@@ -91,6 +76,8 @@ the checkboxes to look at how other plots are affected by changing the y1 value 
         <button onclick = "window.location.href = 'global-local2.html'">NEXT PAGE</button>
     </column>
 </div>
+<br><br><br><br>
+    <i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</i>
 <br><br>
 </body>
 </html>
