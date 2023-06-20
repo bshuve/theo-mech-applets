@@ -305,7 +305,7 @@ function createPlot(input) {
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
     .attr("y", -margin.left + 15)
-    .attr("x", -margin.top)
+    .attr("x", -margin.top + 25)
     .text(input.yLabel)
 
   return { svg: svg, xScale: xScale, yScale: yScale };
@@ -385,7 +385,7 @@ const derivative_kinetic_derivative_input = {
   domain: { lower: 0, upper: 20 },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
-  yLabel: "Derivative Kinetic Derivative (d/dt(∂T/∂ẏ))"
+  yLabel: "d/dt of Kinetic Derivative (d/dt(∂T/∂ẏ))"
 };
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
