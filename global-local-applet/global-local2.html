@@ -18,23 +18,22 @@
 
 <h1 id="title">Free-fall projectile in 1D: Page 2/4</h1>
 <p id="text">
-    In this applet, you are going to be looking at global vs. local action. The black line in the plots represents the classical path globally. 
-    The white one minimizes the local action between the two points it connects, so it shows the classical path locally between those two points. 
-    In this first page, y2, y3, y4, and y5 are randomized each time. Using the slider, y1 can be varied. Try moving the slider to see how varying 
+    On this page, y2, y3, y4, and y5 are randomized each time. Using the slider, y1 can be varied. Try moving the slider to see how varying 
     one point can affect the action value.<br><br>
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b> When changing the y1 slider, which value of y1 minimizes the action between y0 and y2, resulting in a local classical path between 
-    those two points?
+    <b>Question 1: </b> How would you approach finding the value of y1 that minimizes the action between points y0 and y2?
+     Even when this local action is minimized, what happens to the global action? How does it compare to the global minimum action from the previous page?
 </label>
 <br><br>
 <button id="show-q1">Show answer</button>
 <br><br>        
 <span id="answer1" style="display: none">
-    The action is minimized when y1 is <span id="y-at-t1"></span>. This shows that in order to minimize the action, we must follow the classical path locally. 
-    Since we are minimizing the actions locally between points y0 and y2, we are able to minimize the action of the entire path, for the constrained y2, y3, y4, and y5 points. Although, 
-    we are able to minimize the action of the local path, the global action is not minimized.
+    The action is minimized when y1 is <span id="y-at-t1"></span>. In order to find the y1 that minimizes local action, we must follow the classical path locally.
+     Since we are minimizing the action locally between points y0 and y2, we are able to minimize the action of the entire path for the constrained y2, y3, y4, and y5 points.
+     This minimizes our global action for these constrained points, although we are unable to achieve the global minimum action,
+      because that would require minimizing the action throughout the whole path as shown through the black path (which has an action of -1334).
     <br><br><br>
 </span>
 
