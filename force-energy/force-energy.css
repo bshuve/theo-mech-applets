@@ -100,6 +100,14 @@ button:hover {
     padding: 10px;
 }
 
+#top-panel-pg3{
+    /* background-color: green; */
+    position: absolute;
+    height: 303px;
+    width: 950px;
+    padding: 10px;
+}
+
 #middle-panel {
     /* trajectory3 */
     /* background-color: green; */
@@ -172,11 +180,30 @@ IDK what that means*/
     border-radius: 10px;
 }
 
+#controls-pg3 {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 242px;
+    height: 100%;
+    padding: 10px;
+    border: solid;
+    border-radius: 10px;
+}
 
 #controls2 {
     background-color:#c2f0c8;
     box-sizing: border-box;
     width: 272px;
+    height: 100%;
+    padding: 20px;
+    border: solid;
+    border-radius: 10px;
+}
+
+#controls2-pg3 {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 242px;
     height: 100%;
     padding: 20px;
     border: solid;

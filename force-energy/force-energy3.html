@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>force vs. acceleration</title>
+    <link rel = "stylesheet" href = "force-energy.css">
+
+    <!-- Load d3.js -->
+    <script src="../action-applet1/d3.v4.js"></script>
+    
+    <script defer src = "force-energy3.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+
+<body id="body">
+
+<h1 id="title">Force vs. Acceleration: Page 3</h1>
+<h2 id="subtitle">Non-Uniform Acceleration</h2>
+<p id="text" style="line-height: 1.8">
+    Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under uniform gravitational acceleration \(-g\). The kinetic energy of the object is \(T=m\dot{y}^2/2\) and the potential energy is \(U=mgy\). We consider the motion of the object from \(t=-1\) s to \(t=+1\) s, with its position beginning and ending at \(y=0\).
+    In this case, the path is parametrized by the function \(y(t) = (1+p)(1-t^2)\).
+</p>
+
+<p id="text">
+    Try dragging the value of the p-slider in this applet to see how the animation and graphs change.
+</p>
+
+<br>
+<p id="text">
+    After dragging the sliders around, try answering the following question.
+</p>
+
+<label for="show-q1" id="text">
+    <b>Question 1: </b>What is the force acting on the object? Is it a conservative force?
+    <br><br>
+<button id="show-q1">Show answers</button>        
+<span id="answer1"></span>
+</label>
+
+<br><br> 
+
+<div id="applet">
+    <div id="top-panel-pg3" class="row">
+	<!-- First column: trajectory animation -->
+        <div class="column">
+            <canvas id="ball-launch" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+	<!-- Second column: sliders -->
+        <div class="column">
+            <div id="controls-pg3">
+                <legend>Define Constants:</legend>
+                <p>\(m\): <span id="print-m">1.0</span> kg</p>
+                <p>\(g\): <span id="print-a">2.0</span> m/s<sup>2</sup></p>
+                <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
+                <input id="p-slider" class="slider" type="range" min="-1" max="1" step="0.1" value="0">
+            </div>
+        </div>
+    <!-- Third column: question -->
+        <div class="column">
+            <div id="controls2-pg3">
+                <span id="green">....</span> Potential Energy
+                <br><br>
+                <span id="grey">....</span> Negative Potential Energy
+                <br><br>
+                <span id="red">....</span> Kinetic Energy
+                <br><br>
+
+            </div>
+        </div>
+    </div>
+    <div id="middle-panel" class="row">
+        <div class="column left">
+            <div id="PE-energy-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="KE-energy-graph"></div>
+        </div>
+    </div>
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="PE-derivative-graph"></div>
+        </div>
+        <div class="column-right">
+            <div id="KE-derivative-graph"></div>
+        </div>
+    </div>
+    <div id="slope-txt">
+        <p>Slope: \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) \) = <span id="slope">dPE</span> N</p>
+    </div>
+</div> 
+<br>
+
+<label for="show-q2" id="text" style="line-height: 2">
+    <b>Question 2: </b>As you manipulated the p-slider, how did the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? Is there a correlation between them?
+</label>
+<br><br>
+<button id="show-q2">Show answer</button>
+<br><br>        
+<span id="answer2" style="display: none; line-height: 1.8">
+    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial y} = F_y\). 
+    If you compare your force calculation from above, it should match the value of the negative potential energy derivative on the graph. Note that the potential energy derivatives are time-independent because they are derived with respect to \(y\) position, and that the potential energy 
+    derivative graphs are not affected by changing \(p\).<br><br>
+    Through the Kinetic Energy (J) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic. When we look at the Kinetic Derivative \((\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph though, we can see that the slope of this line 
+    \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}\)) is only equal to the \(-\frac{\partial U}{\partial y}\) value on the left graph when \(p=0\). Thus, \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) is only true when \(p=0\).
+    We can think of \(p\) as representing deviation from the "classical" projectile motion trajectory.<br><br>
+    By explicit differentiation, we obtain the object's acceleration in the y direction \(a=-2(1+p)\) which is only equal to the force \(F_y = -2.00\) when \(p=0\). This means that \(F=ma\) will only be true for the classical path.
+    <br><br>
+</span>
+<br><br>
+
+<div class="buttons">
+    <column id="prev-button">
+        <button onclick = "window.location.href = 'force-energy2.html'">PREVIOUS PAGE</button>
+    </column>
+</div> 
+
+<br><br>
+
+</body>
+</html>
+
