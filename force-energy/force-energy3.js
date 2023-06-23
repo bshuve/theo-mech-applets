@@ -1,6 +1,6 @@
 /* Parameters */
 const CANVAS_WIDTH = 380;
-const CANVAS_HEIGHT = 280;
+const CANVAS_HEIGHT = 294;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
