@@ -391,7 +391,7 @@ const kinetic_derivative_plot = createPlot(kinetic_derivative_input);
 // dT/dv
 var kd_line = kinetic_derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line");
 
-// KE DERIVATIVE OF ENERGY
+// d/dt KE DERIVATIVE OF ENERGY
 const derivative_kinetic_derivative_input = {
   divID: "#dKE-derivative-graph",
   svgID: "svg-for-dKE-derivative",
