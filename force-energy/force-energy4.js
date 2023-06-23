@@ -471,15 +471,15 @@ document.getElementById("show-q2").addEventListener("click", function () {
   }
 });
 
-// shows the proof if the proof button is clicked
-document.getElementById("show-more").addEventListener("click", function () {
+// shows the answer if the q3 button is clicked
+document.getElementById("show-q3").addEventListener("click", function () {
   if (!showAnswer3) {
     showAnswer3 = true;
-    document.getElementById("show-more").innerHTML = "Hide Proof";
+    document.getElementById("show-q3").innerHTML = "Hide Answer";
     slider_update();
   } else {
     showAnswer3 = false;
-    document.getElementById("show-more").innerHTML = "Show Proof";
+    document.getElementById("show-q3").innerHTML = "Show Answer";
     document.getElementById("answer3").style.display = "none";
   }
 });
