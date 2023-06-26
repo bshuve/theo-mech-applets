@@ -86,7 +86,8 @@ function component(width, height, color, x, y, B) {
     this.color = color;
     this.x = x;
     this.y = y;
-    this.B = B * 10;
+    this.B = B * 5;
+    this.A = A * 5;
   
     this.update = function(){
         animArea.context.fillStyle = this.color;
@@ -94,7 +95,7 @@ function component(width, height, color, x, y, B) {
     }
   
     this.newPos = function(t) {
-      this.x = transformXCoord(A * Math.cos(w * t) + B * Math.sin(w * t));
+      this.x = transformXCoord(this.A * Math.cos(w * t) + this.B * Math.sin(w * t));
     }  
 }
   
@@ -133,15 +134,9 @@ function updateFrame() {
   
     // update positions
     mass.newPos(animArea.time);
-    /* This statement only starts counting oscillations if mass is displaced from equilibrium.
-       It counts 1/2 oscillation every time the mass passes through the equilibrium
-       point using an error interval that is proportional to the amplitude. This is more accurate
-       as opposed to using Math.round() because it ensures higher tolerance for when the mass is
-       traveling faster, and lower tolerance when it is traveling slower. Otherwise, at higher speeds,
-       the exact equilibrium point may be passed "in between frames" and thus cannot be counted. */
-    if (mass.x > CANVAS_WIDTH/2 - Math.abs(A)/2 && mass.x < CANVAS_WIDTH/2 + Math.abs(A)/2) {
+    /* This statement counts oscillations of the spring to decide when to stop the animation. */
+    if (Math.round(Math.cos(animArea.time)*200)/200 == 0) {
       oscillations += 0.5;
-      console.log(mass.x);
       console.log(oscillations);
     }
   

@@ -134,15 +134,10 @@ function updateFrame() {
   
     // update positions
     mass.newPos(animArea.time);
-    /* This statement only starts counting oscillations if mass is displaced from equilibrium.
-       It counts 1/2 oscillation every time the mass passes through the equilibrium
-       point using an error interval that is proportional to the amplitude. This is more accurate
-       as opposed to using Math.round() because it ensures higher tolerance for when the mass is
-       traveling faster, and lower tolerance when it is traveling slower. Otherwise, at higher speeds,
-       the exact equilibrium point may be passed "in between frames" and thus cannot be counted. */
-    if (mass.A != 0 && mass.x > CANVAS_WIDTH/2 - Math.abs(this.A)*3 && mass.x < CANVAS_WIDTH/2 + Math.abs(this.A)*3) {
+    /* This statement counts oscillations of the spring to decide when to stop the animation
+    once the mass is displaced from equilibrium. */
+    if (mass.A != 0 && Math.round(Math.cos(animArea.time)*200)/200 == 0) {
       oscillations += 0.5;
-      console.log(mass.x);
       console.log(oscillations);
     }
   
