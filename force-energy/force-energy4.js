@@ -182,6 +182,7 @@ function energyAndDerivativeData() {
   var derivative_kinetic_derivative_data = [];
   var t = 0;
 
+  // update data for t = 0-20 s
   while (t <= 20) {
     //parametrize graphs
     var w = Math.sqrt(k/m);
@@ -235,28 +236,6 @@ function plotData(input) {
     .attr("stroke", input.color)
     .attr("stroke-width", 1.5);
 }
-
-/*
-function dashplotData(input) {
-  // update the line
-  var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
-
-  u.enter()
-    .append("path")
-    .attr("class", "line")
-    .merge(u)
-    .transition()
-    .duration(TRANSITION_TIME)
-    .attr("d", d3.line()
-      .x((d) => input.xScale(d.x))
-      .y((d) => input.yScale(d.y))
-    )
-    .attr("fill", "none")
-    .attr("stroke", input.color)
-    .attr("stroke-dasharray", 5)
-    .attr("stroke-width", 1.5);
-}
-*/
 
 // initialize the svg element for a graph
 function createPlot(input) {
@@ -398,7 +377,7 @@ const derivative_kinetic_derivative_input = {
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
 
-// dT/dv
+// d/dt(dT/dv)
 var kdd_line = derivative_kinetic_derivative_plot.svg.append("g").attr("id", "derivative-kinetic-derivative-line");
 
 // update energy plots
@@ -523,7 +502,7 @@ var showAnswer1 = false;
 var showAnswer3 = false;
 
 function slider_update() {
-  // updates global values for m, a, h
+  // updates global values for m, k, A
   m = parseFloat(document.getElementById("m-slider").value);
   document.getElementById("print-m").innerHTML = m.toFixed(1);
   k = parseFloat(document.getElementById("k-slider").value);

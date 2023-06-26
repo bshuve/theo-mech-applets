@@ -86,7 +86,9 @@ function component(width, height, color, x, y, B) {
     this.color = color;
     this.x = x;
     this.y = y;
-    this.B = B * 5;
+
+    // scaling the amplitudes so more visible in animation
+    this.B = B * 5; 
     this.A = A * 5;
   
     this.update = function(){
@@ -95,7 +97,7 @@ function component(width, height, color, x, y, B) {
     }
   
     this.newPos = function(t) {
-      this.x = transformXCoord(this.A * Math.cos(w * t) + this.B * Math.sin(2 * w * t));
+      this.x = transformXCoord(this.A * Math.cos(w * t) + this.B * Math.sin(2 * w * t)); // x(t) equation used for newPos
     }  
 }
   
@@ -181,17 +183,18 @@ function energyAndDerivativeData() {
   var derivative_kinetic_derivative_data = [];
   var t = 0;
 
+  // update data for 3 periods (3*2pi)
   while (t <= 6*Math.PI) {
     //parametrize graphs
-    let x = A * Math.cos(w * t) + B * Math.sin(2 * w * t);
-    let v = -w * A * Math.sin(w * t) + 2 * B * w * Math.cos(2 * w * t);
-    let a = -(w**2) * A * Math.cos(w * t) - (2**2) * B * (w**2) * Math.sin(2 * w * t);
+    let x = A * Math.cos(w * t) + B * Math.sin(2 * w * t); // x(t)
+    let v = -w * A * Math.sin(w * t) + 2 * B * w * Math.cos(2 * w * t); // derivative of x(t)
+    let a = -(w**2) * A * Math.cos(w * t) - (2**2) * B * (w**2) * Math.sin(2 * w * t); // second derivative of x(t)
     let KE = 0.5 * m * v ** 2; // kinetic energy T
     let PE = 0.5 * k * x ** 2; // potential energy U
     let nPE = -PE; // negative potential energy -U
     let dKE = m * v; // dT/dv
-    let dPE = k * x; // -dU/dy
-    let dnPE = -dPE; // dU/dy
+    let dPE = k * x; // dU/dx
+    let dnPE = -dPE; // -dU/dx
     let ddKE = m * a; // d/dt(dT/dv)
 
     // push all data into arrays
@@ -233,28 +236,6 @@ function plotData(input) {
     .attr("stroke", input.color)
     .attr("stroke-width", 1.5);
 }
-
-/*
-function dashplotData(input) {
-  // update the line
-  var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
-
-  u.enter()
-    .append("path")
-    .attr("class", "line")
-    .merge(u)
-    .transition()
-    .duration(TRANSITION_TIME)
-    .attr("d", d3.line()
-      .x((d) => input.xScale(d.x))
-      .y((d) => input.yScale(d.y))
-    )
-    .attr("fill", "none")
-    .attr("stroke", input.color)
-    .attr("stroke-dasharray", 5)
-    .attr("stroke-width", 1.5);
-}
-*/
 
 // initialize the svg element for a graph
 function createPlot(input) {
@@ -396,7 +377,7 @@ const derivative_kinetic_derivative_input = {
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
 
-// dT/dv
+// d/dt(dT/dv)
 var kdd_line = derivative_kinetic_derivative_plot.svg.append("g").attr("id", "derivative-kinetic-derivative-line");
 
 // update energy plots
@@ -471,7 +452,7 @@ function plotDerivative(data) {
   // plot the data
   plotData(input);
 
-  // dU/dy
+  // dU/dx
   var input = {
     data: data.pd,
     svg: potential_derivative_plot.svg,
@@ -484,7 +465,7 @@ function plotDerivative(data) {
   // plot the data
   plotData(input);
 
-  // -dU/dy
+  // -dU/dx
   var input = {
     data: data.npd,
     svg: npotential_derivative_plot.svg,
@@ -520,7 +501,7 @@ on the HTML page (ex. button click, slider change, etc). */
 var showAnswer1 = false;
 
 function slider_update() {
-  // updates global values for m, a, h
+  // updates global values for B
   B = parseFloat(document.getElementById("B-slider").value);
   document.getElementById("print-B").innerHTML = B.toFixed(2);
   if (showAnswer1) { // checks if the answer is being shown before updating it
