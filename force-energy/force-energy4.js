@@ -4,7 +4,7 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.001;
+const dt = 0.002;
 const end_time = 4;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
@@ -14,6 +14,96 @@ const g = 2;
 const p_initial = parseInt(document.getElementById("p-slider").value);
 var p = parseInt(document.getElementById("p-slider").value); // 0.0
 const range_p = parseInt(document.getElementById("p-slider").max);
+
+/* Canvas Animation */
+function startAnimation(p) {
+  projectile = new component(3, 3, "purple", x_initial, y_initial, p);
+  animArea.start();
+}
+
+// wrapper function to end animations
+function endAnimation() {
+  animArea.stop();
+}
+
+/* Coordinate transformations */
+function transformXCoord(x) {
+  return x_initial + (x) * (CANVAS_WIDTH) / 2;
+}
+
+function transformYCoord(y) {
+  return 3*CANVAS_HEIGHT/4 - y * (CANVAS_HEIGHT/2);
+}
+
+var animArea = {
+  panel: document.getElementById("ball-launch"),
+  start: function () {
+    this.panel.width = CANVAS_WIDTH;
+    this.panel.height = CANVAS_HEIGHT;
+    this.context = this.panel.getContext("2d");
+
+    /* Set the initial time to -1 */
+    this.time = 0.01;
+
+    this.interval = setInterval(updateFrame, FRAME_RATE);
+
+    // add text to panel
+    this.context.font = "18px Verdana";
+    this.context.fillStyle = "black";
+    this.context.fillText("Height vs Time", 10, 30);
+  },
+  stop: function () {
+    this.time = 0.01;
+    // Terminate setInterval
+    clearInterval(this.interval);
+  },
+}
+
+/* Define component Objects */
+function component(width, height, color, x, y, p) {
+  this.width = width;
+  this.height = height;
+  this.color = color;
+  this.x = x;
+  this.y = y;
+  this.p = p;
+
+  /* This is the function that draws the projectiles using
+  the built-in fillRect() function. */
+
+  this.update = function () {
+    var ctx = animArea.context;
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+
+  /* This is the function that updates the projectile positions.
+  Notice the use of the transform() functions. */
+
+  this.newPos = function (t) {
+    this.x = transformXCoord(t);
+    this.y = transformYCoord(1-t**this.p);
+  }
+}
+
+/* This updateFrame function is very important. It updates the position
+of everything on the canvas a little and then redraws everything */
+
+function updateFrame() {
+  animArea.time += dt;
+
+  // update projectile position
+  projectile.newPos(animArea.time)
+
+  // draw projectile with updated position on the canvas
+  projectile.update();
+
+  // end animation when t = end_time
+  if (animArea.time >= end_time) { endAnimation(); }
+}
+
+// run animation on load
+startAnimation(p_initial);
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -438,6 +528,8 @@ function slider_update() {
   // update plots
   plotEnergy(data);
   plotDerivative(data);
+  endAnimation();
+  startAnimation(p);
 }
 
 // checks if any sliders have been changed
