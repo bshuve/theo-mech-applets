@@ -181,7 +181,7 @@ function energyAndDerivativeData() {
   var derivative_kinetic_derivative_data = [];
   var t = 0;
 
-  while (t <= 20) {
+  while (t <= 6*Math.PI) {
     //parametrize graphs
     let x = A * Math.cos(w * t) + B * Math.sin(2 * w * t);
     let v = -w * A * Math.sin(w * t) + 2 * B * w * Math.cos(2 * w * t);
@@ -309,9 +309,9 @@ function createPlot(input) {
 const potential_energy_input = {
   divID: "#PE-energy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: -0.1, upper: 0.1 }, // domain of the plot
+  domain: { lower: -0.2, upper: 0.2 }, // domain of the plot
   xLabel: "x Position (m)", // x-axis label
-  range: { lower: -0.05, upper: 0.05 }, // range of the plot
+  range: { lower: -0.08, upper: 0.08 }, // range of the plot
   yLabel: "Potential Energy (J)"// y-axis label
 };                   
 
@@ -328,7 +328,7 @@ var npe_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential
 const potential_derivative_input = {
   divID: "#PE-derivative-graph",
   svgID: "svg-for-PE-derivative",
-  domain: { lower: 0, upper: 20 },
+  domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
   yLabel: "Potential Derivative (∂U/∂x)"
@@ -343,7 +343,7 @@ var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-de
 const npotential_derivative_input = {
   divID: "#nPE-derivative-graph",
   svgID: "svg-for-nPE-derivative",
-  domain: { lower: 0, upper: 20 },
+  domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
   range: { lower: -1, upper: 1 },
   yLabel: "Potential Derivative (∂U/∂x)"
@@ -360,7 +360,7 @@ const kinetic_energy_input = {
   svgID: "svg-for-KE-plot",
   domain: { lower: -0.35, upper: 0.35 },
   xLabel: "ẋ Velocity (m/s)",
-  range: { lower: 0, upper: 0.05 },
+  range: { lower: 0, upper: 0.24 },
   yLabel: "Kinetic Energy (J)"
 };
 
@@ -373,9 +373,9 @@ var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-lin
 const kinetic_derivative_input = {
   divID: "#KE-derivative-graph",
   svgID: "svg-for-KE-derivative",
-  domain: { lower: 0, upper: 20 },
+  domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
-  range: { lower: -1, upper: 1 },
+  range: { lower: -1.6, upper: 1.6 },
   yLabel: "Kinetic Derivative (∂T/∂ẋ)"
 };
 
@@ -388,9 +388,9 @@ var kd_line = kinetic_derivative_plot.svg.append("g").attr("id", "kinetic-deriva
 const derivative_kinetic_derivative_input = {
   divID: "#dKE-derivative-graph",
   svgID: "svg-for-dKE-derivative",
-  domain: { lower: 0, upper: 20 },
+  domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
-  range: { lower: -1, upper: 1 },
+  range: { lower: -2.5, upper: 2.5 },
   yLabel: "d/dt Kinetic Derivative (d/dt(∂T/∂ẋ))"
 };
 
