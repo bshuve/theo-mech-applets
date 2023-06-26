@@ -9,9 +9,11 @@ const SVG_HEIGHT = 300;
 const dt = 0.005;
 const FRAME_RATE = 1;   // ms
 const TRANSITION_TIME = 10; // ms
-var A = parseFloat(document.getElementById("A-slider").value); // 0.05
-var k = parseFloat(document.getElementById("k-slider").value); // 8
-var m = parseFloat(document.getElementById("m-slider").value); // 10
+const A = 0.1;
+const k = 5;
+const m = 5;
+const w = Math.sqrt(k/m); // 1
+var B = parseFloat(document.getElementById("B-slider").value); // 0
 // keep track of number of oscillations
 var oscillations = 0;
 
@@ -20,14 +22,14 @@ var oscillations = 0;
 /////////////////////////////////////////////////
 
 // wrapper function to start animations
-function startAnimation(A, k, m) {
-    mass = new component(20, 20, "blue", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, A, k, m);
+function startAnimation(B) {
+    mass = new component(20, 20, "blue", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, B);
     oscillations = 0;
     animArea.start();
 }
 
-function runAnimation(A, k, m) {
-    startAnimation(A, k, m);
+function runAnimation(B) {
+    startAnimation(B);
     animArea.run();
 }
 
@@ -78,15 +80,13 @@ var animArea = {
 }
 
 // to create components
-function component(width, height, color, x, y, A, k, m) {
+function component(width, height, color, x, y, B) {
     this.width = width;
     this.height = height;
     this.color = color;
     this.x = x;
     this.y = y;
-    this.A = A * 10;
-    this.k = k;
-    this.m = m;
+    this.B = B * 10;
   
     this.update = function(){
         animArea.context.fillStyle = this.color;
@@ -94,8 +94,7 @@ function component(width, height, color, x, y, A, k, m) {
     }
   
     this.newPos = function(t) {
-        var w = Math.sqrt(k/m);
-        this.x = transformXCoord(this.A * Math.cos(w * t));
+      this.x = transformXCoord(A * Math.cos(w * t) + B * Math.sin(w * t));
     }  
 }
   
@@ -140,7 +139,7 @@ function updateFrame() {
        as opposed to using Math.round() because it ensures higher tolerance for when the mass is
        traveling faster, and lower tolerance when it is traveling slower. Otherwise, at higher speeds,
        the exact equilibrium point may be passed "in between frames" and thus cannot be counted. */
-    if (mass.A != 0 && mass.x > CANVAS_WIDTH/2 - Math.abs(this.A)*3 && mass.x < CANVAS_WIDTH/2 + Math.abs(this.A)*3) {
+    if (mass.x > CANVAS_WIDTH/2 - Math.abs(A)/2 && mass.x < CANVAS_WIDTH/2 + Math.abs(A)/2) {
       oscillations += 0.5;
       console.log(mass.x);
       console.log(oscillations);
@@ -167,8 +166,8 @@ function updateFrame() {
 }
 
 // run animation on load
-startAnimation(A, k, m);
-runAnimation(A, k, m);
+startAnimation(B);
+runAnimation(B);
 
 
 /////////////////////////////////////////////////
@@ -189,10 +188,9 @@ function energyAndDerivativeData() {
 
   while (t <= 20) {
     //parametrize graphs
-    var w = Math.sqrt(k/m);
-    let x = A*Math.cos(w * t);
-    let v = -w * A * Math.sin(w * t);
-    let a = -(w**2) * A * Math.cos(w * t);
+    let x = A * Math.cos(w * t) + B * Math.sin(w * t);
+    let v = -w * A * Math.sin(w * t) + B * w * Math.cos(w * t);
+    let a = -(w**2) * A * Math.cos(w * t) - B * (w**2) * Math.sin(w * t);
     let KE = 0.5 * m * v ** 2; // kinetic energy T
     let PE = 0.5 * k * x ** 2; // potential energy U
     let nPE = -PE; // negative potential energy -U
@@ -529,12 +527,8 @@ var showAnswer3 = false;
 
 function slider_update() {
   // updates global values for m, a, h
-  m = parseFloat(document.getElementById("m-slider").value);
-  document.getElementById("print-m").innerHTML = m.toFixed(1);
-  k = parseFloat(document.getElementById("k-slider").value);
-  document.getElementById("print-k").innerHTML = k.toFixed(1);
-  A = parseFloat(document.getElementById("A-slider").value);
-  document.getElementById("print-A").innerHTML = A.toFixed(2);
+  B = parseFloat(document.getElementById("B-slider").value);
+  document.getElementById("print-B").innerHTML = B.toFixed(2);
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").innerHTML = "<br><br>Force = " + (k * A).toFixed(2) + " N"
       + "<br><br>Yes, this is a conservative force because the displacement force results in the spring having potential/stored energy, which is independent on the path taken.<br>";
@@ -547,27 +541,15 @@ function slider_update() {
   plotEnergy(data);
   plotDerivative(data);
   endAnimation();
-  startAnimation(A, k, m);
+  startAnimation(B);
 }
 
-// checks if any sliders have been changed
-document.getElementById("m-slider").oninput = function () {
+// checks if the B slider has been changed
+document.getElementById("B-slider").oninput = function () {
   slider_update();
 }
-document.getElementById("m-slider").onchange = function() {
-  runAnimation(A, k, m);
-}
-document.getElementById("k-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("k-slider").onchange = function() {
-  runAnimation(A, k, m);
-}
-document.getElementById("A-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("A-slider").onchange = function() {
-  runAnimation(A, k, m);
+document.getElementById("B-slider").onchange = function() {
+  runAnimation(B);
 }
 
 // shows the answer if the q1 button is clicked
