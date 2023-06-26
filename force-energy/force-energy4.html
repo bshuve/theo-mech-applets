@@ -17,65 +17,59 @@
 <body id="body">
 
 <h1 id="title">Force vs. Acceleration: Page 4</h1>
-<h2 id="subtitle">Non-Uniform Acceleration</h2>
-<p id="text" style="line-height: 1.8">
-    Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under gravitational acceleration \(-g\). The kinetic energy of the object is \(T=m\dot{y}^2/2\) and the potential energy is \(U=mgy\).
-    In this case, the path is parametrized by the function \(y(t) = 1-t^p\).
+<h2 id="subtitle">Spring</h2>
+<p id="text">
+    Consider an object of mass \(m\) attached to a spring with spring constant \(k\) stretched \(A\) meters in the \(x\) direction. <br>
 </p>
 
 <p id="text">
-    Try dragging the value of the p-slider in this applet to see how the animation and graphs change.
+    Try dragging the values of the sliders in this applet to see how the animation and graphs change.
 </p>
 
 <br>
 <p id="text">
-    After testing different \(p\) values, try answering the following questions.
+    After dragging the sliders around, try answering the following question.
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b>What is the force acting on the object? Is it a conservative force?
+    <b>Question 1: </b>What is the initial applied force acting on the object based on your inputs? Is it a conservative force?
     <br><br>
-</label>
 <button id="show-q1">Show answers</button>        
 <span id="answer1"></span>
-<br><br>
-<label for="show-q2" id="text">
-    <b>Question 2: </b>Through explicit differentiation, find the acceleration of the object as a function of time. Is this acceleration uniform?
-    <br><br>
 </label>
-<button id="show-q2">Show answers</button>       
-<span id="answer2" style="display: none"><br>
-    The object's acceleration is described by \(a(t) = -p(p-1) t^{p-2}\). In this scenario, the acceleration is not uniform.
-</span>
 
 <br><br> 
 
 <div id="applet2">
     <div id="top-panel" class="row">
-    <!-- First column: trajectory animation -->
+	<!-- First column: trajectory animation -->
         <div class="column">
-            <canvas id="ball-launch" class="plot" title="Actual Motion"></canvas>
+            <canvas id="spring-canvas" class="plot"
+            width="320px" height="294px" title="Actual Motion">
+            </canvas>
         </div>
+
 	<!-- Second column: sliders -->
         <div class="column">
-            <div id="controls-pg3">
+            <div id="controls">
                 <legend>Define Constants:</legend>
-                <p>\(m\): <span id="print-m">1.0</span> kg</p>
-                <p>\(g\): <span id="print-a">2.0</span> m/s<sup>2</sup></p>
-                <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
-                <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
+                <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
+                <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
+                <label for="k-slider">\(k\): <span id="print-k">5.0</span> N/m</label>
+                <input id="k-slider" class="slider" type="range" min="1" max="10" step="1" value="5">
+                <label for="A-slider">\(A\): <span id="print-A">0.00</span> m</label>
+                <input id="A-slider" class="slider" type="range" min="-0.1" max="0.1" step="0.01" value="0">
+
             </div>
         </div>
     <!-- Third column: question -->
         <div class="column">
-            <div id="controls2-pg3">
+            <div id="controls2">
                 <span id="green">....</span> Potential Energy
                 <br><br>
                 <span id="grey">....</span> Negative Potential Energy
                 <br><br>
                 <span id="red">....</span> Kinetic Energy
-                <br><br>
-
             </div>
         </div>
     </div>
@@ -107,19 +101,24 @@
 </div> 
 <br>
 
-<label for="show-q3" id="text" style="line-height: 2">
-    <b>Question 3: </b>As you manipulated the p-slider, how did the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? What value of \(p\) satisfies Lagrange equation?
+<label for="show-more" id="text" style="line-height: 2">
+    Attempt to prove Newton's Second Law applied to this spring system using the Euler-Lagrange equation. Once you've done that, feel free to check your answer below!
 </label>
 <br><br>
-<button id="show-q3">Show answer</button>
-<br><br>        
+<button id="show-more">Show Proof</button>
+<br><br>
 <span id="answer3" style="display: none; line-height: 1.8">
-    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial y} = F_y\). 
-    The force from Question 1 should match the value of the negative potential energy derivative on the graph. Note that the potential energy derivatives are time-independent because they are derived with respect to \(y\) position, and that the potential energy 
-    derivative graphs are not affected by changing \(p\).<br><br>
-    Through the Kinetic Energy (J) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic. When we look at the Kinetic Derivative \((\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph though, we can see that the only \(p\) value
-    that satisfies \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) is \(p=2\).<br><br>
-    As before, \(F=ma\) is only true for the classical path. When \(p=2\), \(a=-2\), which satisfies \(F=ma\).
+    We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial x} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{x}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{x}^2\), \(U = \frac{1}{2}k{x}^2\) for this situation.
+    <br><br>
+    \(\frac{\partial L}{\partial x} = -\frac{\partial U}{\partial x} = kx\)
+    <br><br>
+    \(\frac{\partial L}{\partial \dot{x}} = \frac{\partial T}{\partial \dot{x}} = m\dot{x} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}}) = m\ddot{x} = F_x\) by definition.
+    <br><br>
+    We know that there is only the spring potential energy force from the initial applied force to stretch the spring acting on the system, so the net force in the \(x\) direction is just \(F_x=kx\) by definition as well.
+    <br><br>
+    Note that \(-\frac{\partial U}{\partial x} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}})\) as seen in the graphs.
+    <br><br>
+    So, using the Euler-Lagrange equation, we can prove Newton's 2nd Law, \(F=ma\).
     <br><br>
 </span>
 <br><br>
