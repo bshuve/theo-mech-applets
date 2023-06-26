@@ -456,16 +456,3 @@ document.getElementById("show-q2").addEventListener("click", function () {
     document.getElementById("answer2").style.display = "none";
   }
 });
-
-// shows the proof if the proof button is clicked
-document.getElementById("show-more").addEventListener("click", function () {
-  if (!showAnswer3) {
-    showAnswer3 = true;
-    document.getElementById("show-more").innerHTML = "Hide Proof";
-    slider_update();
-  } else {
-    showAnswer3 = false;
-    document.getElementById("show-more").innerHTML = "Show Proof";
-    document.getElementById("answer3").style.display = "none";
-  }
-});

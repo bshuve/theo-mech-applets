@@ -138,7 +138,7 @@ function updateFrame() {
     once the mass is displaced from equilibrium. */
     if (mass.A != 0 && Math.round(Math.cos(animArea.time)*200)/200 == 0) {
       oscillations += 0.5;
-      console.log(oscillations);
+      // console.log(oscillations);
     }
   
     // add spring

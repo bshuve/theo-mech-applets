@@ -137,7 +137,7 @@ function updateFrame() {
     /* This statement counts oscillations of the spring to decide when to stop the animation. */
     if (Math.round(Math.cos(animArea.time)*200)/200 == 0) {
       oscillations += 0.5;
-      console.log(oscillations);
+      // console.log(oscillations);
     }
   
     // add spring
@@ -518,18 +518,13 @@ on the HTML page (ex. button click, slider change, etc). */
 // these booleans store whether answers are being shown
 // by default, all answers are hidden
 var showAnswer1 = false;
-var showAnswer3 = false;
 
 function slider_update() {
   // updates global values for m, a, h
   B = parseFloat(document.getElementById("B-slider").value);
   document.getElementById("print-B").innerHTML = B.toFixed(2);
   if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (k * A).toFixed(2) + " N"
-      + "<br><br>Yes, this is a conservative force because the displacement force results in the spring having potential/stored energy, which is independent on the path taken.<br>";
-  }
-  if (showAnswer3) { // checks if the answer is being shown before updating it
-    document.getElementById("answer3").style.display = "block";
+    document.getElementById("answer1").style.display = "block";
   }
   const data = energyAndDerivativeData();
   // update plots
@@ -556,19 +551,6 @@ document.getElementById("show-q1").addEventListener("click", function () {
   } else {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answers";
-    document.getElementById("answer1").innerHTML = "";
-  }
-});
-
-// shows the proof if the proof button is clicked
-document.getElementById("show-more").addEventListener("click", function () {
-  if (!showAnswer3) {
-    showAnswer3 = true;
-    document.getElementById("show-more").innerHTML = "Hide Proof";
-    slider_update();
-  } else {
-    showAnswer3 = false;
-    document.getElementById("show-more").innerHTML = "Show Proof";
-    document.getElementById("answer3").style.display = "none";
+    document.getElementById("answer1").style.display = "none";
   }
 });
