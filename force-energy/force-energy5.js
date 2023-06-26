@@ -95,7 +95,7 @@ function component(width, height, color, x, y, B) {
     }
   
     this.newPos = function(t) {
-      this.x = transformXCoord(this.A * Math.cos(w * t) + this.B * Math.sin(w * t));
+      this.x = transformXCoord(this.A * Math.cos(w * t) + this.B * Math.sin(2 * w * t));
     }  
 }
   
@@ -183,9 +183,9 @@ function energyAndDerivativeData() {
 
   while (t <= 20) {
     //parametrize graphs
-    let x = A * Math.cos(w * t) + B * Math.sin(w * t);
-    let v = -w * A * Math.sin(w * t) + B * w * Math.cos(w * t);
-    let a = -(w**2) * A * Math.cos(w * t) - B * (w**2) * Math.sin(w * t);
+    let x = A * Math.cos(w * t) + B * Math.sin(2 * w * t);
+    let v = -w * A * Math.sin(w * t) + 2 * B * w * Math.cos(2 * w * t);
+    let a = -(w**2) * A * Math.cos(w * t) - (2**2) * B * (w**2) * Math.sin(2 * w * t);
     let KE = 0.5 * m * v ** 2; // kinetic energy T
     let PE = 0.5 * k * x ** 2; // potential energy U
     let nPE = -PE; // negative potential energy -U
