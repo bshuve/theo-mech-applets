@@ -345,7 +345,7 @@ const npotential_derivative_input = {
   svgID: "svg-for-nPE-derivative",
   domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
-  range: { lower: -1, upper: 1 },
+  range: { lower: -2.5, upper: 2.5 },
   yLabel: "Potential Derivative (∂U/∂x)"
 };
 
