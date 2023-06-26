@@ -132,8 +132,8 @@ function energyAndDerivativeData() {
     let KEl = (1/2 * m * (-(4)*t**((4)-1))**2); // kinetic energy T left
     let KEr = (1/2 * m * (-(-0.40200451)*t**((-0.40200451)-1))**2); // kinetic energy T right 
                                                                   // p = −0.40200451 to mimic left side of graph going from v= 0 to v=-256
-    let PEl = m * g * y; // potential energy U
-    let nPEl = -PEl; // negative potential energy -U
+    let PEl = m * g * y; // potential energy U right
+    let nPEl = -PEl; // negative potential energy -U left
     let dKE = m * v; // dT/dv
     let dPE = m * g; // dU/dy
     let dnPE = -dPE; // -dU/dy
@@ -151,23 +151,20 @@ function energyAndDerivativeData() {
 
     t += dt;
   }
-
+  // separate time loop is used for this graph so it covers a larger range
   var ti = -0.01;
   while (ti >= -end_time) {
     //parametrize graphs
     let y = 1-ti**(5);
-    let PEr = m * g * y; // potential energy U
-    let nPEr = -PEr;
+    let PEr = m * g * y; // potential energy U right
+    let nPEr = -PEr; // negative potential energy -U right
     if (y <= 260) {
       // push all data into arrays
       potential_energy_r_data.push({ "x": y, "y": PEr });
       minus_potential_energy_r_data.push({ "x": y, "y": nPEr });
-
     }
     ti -= dt;
   }
-
-  // note that this iterates for all values of h for each dt
 
   return {
     kl: kinetic_energy_l_data, kr: kinetic_energy_r_data, npl: minus_potential_energy_l_data, npr: minus_potential_energy_r_data,
@@ -263,12 +260,14 @@ const potential_energy_input = {
 const potential_energy_plot = createPlot(potential_energy_input);
 
 // graph each line on the plot
-// potential energy U
+// potential energy U left side
 var pe_l_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy-l-line").attr("visibility", "visible");
-// negative potential energy -U
+// negative potential energy -U left side
 var npe_l_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-l-line").attr("visibility", "visible");
 
+// potential energy U right side
 var pe_r_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy-r-line").attr("visibility", "visible");
+// negative potential -U right side
 var npe_r_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-r-line").attr("visibility", "visible");
 
 // PE DERIVATIVE OF ENERGY
@@ -316,8 +315,9 @@ const kinetic_energy_input = {
 const kinetic_energy_plot = createPlot(kinetic_energy_input);
 
 
-// kinetic energy T
+// kinetic energy T left side
 var ke_l_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-l-line").attr("visibility", "visible");
+// kinetic energy T right side
 var ke_r_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-r-line").attr("visibility", "visible");
 
 // KE DERIVATIVE OF ENERGY
@@ -347,12 +347,12 @@ const derivative_kinetic_derivative_input = {
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
 
-// dT/dv
+// d/dt(dT/dv)
 var kdd_line = derivative_kinetic_derivative_plot.svg.append("g").attr("id", "derivative-kinetic-derivative-line");
 
 // update energy plots
 function plotEnergy(data) {
-  // kinetic energy
+  // kinetic energy left
   var input = {
     data: data.kl,
     svg: kinetic_energy_plot.svg,
@@ -365,6 +365,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
+  // kinetic energy right
   var input = {
     data: data.kr,
     svg: kinetic_energy_plot.svg,
@@ -377,7 +378,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
-  // potential energy
+  // potential energy left
   input = {
     data: data.pl,
     svg: potential_energy_plot.svg,
@@ -390,7 +391,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
-  // potential energy
+  // potential energy right
   input = {
     data: data.pr,
     svg: potential_energy_plot.svg,
@@ -403,7 +404,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
-  // negative potential energy
+  // negative potential energy left
   input = {
     data: data.npl,
     svg: potential_energy_plot.svg,
@@ -416,6 +417,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
+  // negative potential energy right
   input = {
     data: data.npr,
     svg: potential_energy_plot.svg,

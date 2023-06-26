@@ -142,11 +142,10 @@ function energyAndDerivativeData() {
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
     t += dt;
   }
-  // note that this iterates for all values of h for each dt
 
   return {
-    k: kinetic_energy_data, np: minus_potential_energy_data,
-    p: potential_energy_data, kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
+    k: kinetic_energy_data, np: minus_potential_energy_data, p: potential_energy_data, 
+    kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
   };
 }
 
@@ -399,7 +398,6 @@ on the HTML page (ex. button click, slider change, etc). */
 // by default, all answers are hidden
 var showAnswer1 = false;
 var showAnswer2 = false;
-var showAnswer3 = false;
 
 function slider_update() {
   // updates global value for p
@@ -412,9 +410,6 @@ function slider_update() {
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
   }
-  if (showAnswer3) { // checks if the answer is being shown before updating it
-    document.getElementById("answer3").style.display = "block";
-  }
   // update slope on kinetic derivative plot
   let a = -2*(1+p)
   document.getElementById("slope").innerHTML = (m * a).toFixed(2);
@@ -426,7 +421,7 @@ function slider_update() {
   startAnimation(p);
 }
 
-// checks if any sliders have been changed
+// checks if the p-slider has been changed
 document.getElementById("p-slider").oninput = function () {
   slider_update();
 }
