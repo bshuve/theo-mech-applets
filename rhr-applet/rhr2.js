@@ -7,32 +7,31 @@ const t = 0.1;
 const canvas = document.getElementById('canvas');
 const feedback = document.getElementById('feedback');
 
+//store the center coordinates of the canvas
+const center_x = canvas.width/2;
+const center_y = canvas.height/2;
+
 // set the rendering context to 2D
 const ctx = canvas.getContext('2d');
 const ctx2 = feedback.getContext('2d');
 
 /* The Vector class */
 class Vector {
-    constructor(start_x, start_y, x, y){
+    constructor(start_x, start_y, x, y, z){
         this.start_x = start_x;
         this.start_y = start_y;
         this.x = x;
-        this.y = y;
+        this.y = -1 * y;
+        this.z = z;
     }
     
     mag() {
-        return Math.sqrt(this.x**2 + this.y**2);
+        return Math.sqrt(this.x**2 + this.y**2 + this.z**2);
     }
 
-    crossDir(v) {
-        var z = Math.round(this.x * v.y*(-1) - this.y*(-1) * v.x);
-        if (z == 0) {
-            return "0";
-        } else if (z < 0) {
-            return "-z";
-        } else {
-            return "+z";
-        }
+    scale() {
+        this.x = this.x/2;
+        this.y = this.y/2;
     }
 
     getEndX() {
@@ -40,68 +39,125 @@ class Vector {
     }
 
     getEndY() {
-        return this.start_y + this.y;
+        return this.start_y - this.y;
     }
 
-    drawVec(color) {
-        // store the endpoint coordinates of the arrow
-        var end_x = this.getEndX();
-        var end_y = this.getEndY();
-        // set the length of the arrow tip
-        var tipLen = t*this.mag();
-        // get the angle between the arrow and the x-axis
-        var angle = Math.atan2(this.y, this.x);
-
-        ctx.save();
-        ctx.strokeStyle = color;
-
-        // drawing a line for the magnitude of the arrow
-        ctx.beginPath();
-        ctx.moveTo(this.start_x, this.start_y);
-        ctx.lineTo(end_x, end_y);
-        ctx.stroke();
-        ctx.closePath();
-
-        // path from the head of the arrow to one of the sides of the point
-        ctx.beginPath();
-        ctx.moveTo(end_x, end_y);
-        ctx.lineTo(end_x-tipLen*Math.cos(angle-Math.PI/7),
-                   end_y-tipLen*Math.sin(angle-Math.PI/7));
-    
-        // path from the side point of the arrow, to the other side point
-        ctx.lineTo(end_x-tipLen*Math.cos(angle+Math.PI/7),
-                   end_y-tipLen*Math.sin(angle+Math.PI/7));
-    
-        //path from the side point back to the tip of the arrow, and then
-        //again to the opposite side point
-        ctx.lineTo(end_x, end_y);
-        ctx.lineTo(end_x-tipLen*Math.cos(angle-Math.PI/7),
-                   end_y-tipLen*Math.sin(angle-Math.PI/7));
-    
-        //draws the paths created above
-        ctx.stroke();
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.restore();
+    cross(v) { 
+        var product = [Math.round(this.y * v.z - this.z * v.y),
+            -1 * Math.round(this.z * v.x - this.x * v.z),
+            Math.round(this.x * v.y - this.y * v.x)];
+        var height;
+        if (product[1] < 0) {
+            height = feedback.height/1.15; // +y
+        } else if (product[1] > 0) {
+            height = feedback.height/2.3; // -y
+        } else {
+            height = feedback.height*0.6;
+        }
+        var cross = new Vector(feedback.width/2, height, product[0], product[1], product[2]);
+        return cross;
     }
+
+    direction() {
+        if (this.z == 0) {
+            if (this.y == 0) {
+                if (this.x == 0) {
+                    return "0";
+                } else if (this.x > 0) {
+                    return "+x";
+                } else {
+                    return "-x";
+                }
+            } else if (this.y > 0) {
+                return "+y";
+            } else {
+                return "-y";
+            }
+        } else if (this.z > 0) {
+            return "+z";
+        } else {
+            return "-z";
+        }
+    }
+
+    drawVec(color, context) {
+        context.strokeStyle = color;
+        context.fillStyle = color;
+       if (this.z == 0) { // if z component is zero, draw arrow as usual
+           // store the endpoint coordinates of the arrow
+           var end_x = this.getEndX();
+           var end_y = this.getEndY();
+           // set the length of the arrow tip
+           var tipLen = t * this.mag();
+           // get the angle between the arrow and the x-axis
+           var angle = Math.atan2(this.y, this.x);
+           context.save();
+
+           // drawing a line for the magnitude of the arrow
+           context.beginPath();
+           context.moveTo(this.start_x, this.start_y);
+           context.lineTo(end_x, end_y);
+           context.stroke();
+           context.closePath();
+
+           // path from the head of the arrow to one of the sides of the point
+           context.beginPath();
+           context.moveTo(end_x, end_y);
+           context.lineTo(end_x - tipLen * Math.cos(angle - Math.PI / 7),
+               end_y + tipLen * Math.sin(angle - Math.PI / 7));
+
+           // path from the side point of the arrow, to the other side point
+           context.lineTo(end_x - tipLen * Math.cos(angle + Math.PI / 7),
+               end_y + tipLen * Math.sin(angle + Math.PI / 7));
+
+           //path from the side point back to the tip of the arrow, and then
+           //again to the opposite side point
+           context.lineTo(end_x, end_y);
+           context.lineTo(end_x - tipLen * Math.cos(angle - Math.PI / 7),
+               end_y + tipLen * Math.sin(angle - Math.PI / 7));
+
+           //draws the paths created above
+           context.stroke();
+           context.fill();
+           context.restore();
+       } else if (this.z > 0) { // draw a circle with a dot inside for +z
+            context.beginPath();
+            context.arc(this.start_x, this.start_y, 7, 0, 2 * Math.PI);
+            context.stroke();
+            context.closePath();
+            context.beginPath();
+            context.arc(this.start_x, this.start_y, 3, 0, 2 * Math.PI);
+            context.fill();
+            context.closePath();
+        } else { // draw a circle with an x inside for -z
+            context.beginPath();
+            context.arc(this.start_x, this.start_y, 7, 0, 2 * Math.PI);
+            context.stroke();
+            context.closePath();
+            context.beginPath();
+            context.moveTo(this.start_x-7*Math.sqrt(2)/2, this.start_y-7*Math.sqrt(2)/2);
+            context.lineTo(this.start_x+7*Math.sqrt(2)/2, this.start_y+7*Math.sqrt(2)/2);
+            context.stroke();
+            context.closePath();
+            context.beginPath();
+            context.moveTo(this.start_x+7*Math.sqrt(2)/2, this.start_y-7*Math.sqrt(2)/2);
+            context.lineTo(this.start_x-7*Math.sqrt(2)/2, this.start_y+7*Math.sqrt(2)/2);
+            context.stroke();
+            context.closePath();
+       }
+   }
 }
 
 /* Unit Vectors x,y */
-const x_unit_vec = new Vector(40, 80, 50, 0);
-x_unit_vec.drawVec('black');
+const x_unit_vec = new Vector(40, 80, 50, 0, 0);
+x_unit_vec.drawVec('black', ctx);
 
-const y_unit_vec = new Vector(40, 80, 0, -50);
-y_unit_vec.drawVec('black');
+const y_unit_vec = new Vector(40, 80, 0, -50, 0);
+y_unit_vec.drawVec('black', ctx);
 
 /* Unit Vector z */
-ctx.beginPath();
-ctx.arc(40, 80, 7, 0, 2*Math.PI);
-ctx.stroke()
-ctx.closePath();
-ctx.beginPath();
-ctx.arc(40, 80, 3, 0, 2*Math.PI);
-ctx.fill();
-ctx.closePath();
+const z_unit_vec = new Vector(40, 80, 0, 0, 1);
+z_unit_vec.drawVec('black', ctx);
 
 /* Labeling Unit Vectors */
 ctx.font = "14px Verdana";
@@ -127,7 +183,7 @@ ctx.closePath();
 
 /* Creating the circle object/particle */
 ctx.beginPath();
-ctx.arc(canvas.width/2, canvas.height/2, 40, 0, 2*Math.PI);
+ctx.arc(center_x, center_y, 40, 0, 2*Math.PI);
 ctx.stroke()
 ctx.closePath();
 
@@ -136,15 +192,15 @@ ctx.closePath();
 angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
             5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
 var randAngle = angles[Math.floor(Math.random()*angles.length)];
-var p = new Vector(canvas.width/2, canvas.height/2, 100*Math.cos(randAngle), 100*Math.sin(randAngle));
-p.drawVec('green');
+var p = new Vector(center_x, center_y, 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
+p.drawVec('green', ctx);
 
 /* Creating random reference point */
 // Choose a random X and Y between general empty area of canvas
-var magnitude = (Math.random()*(canvas.height/2 - 20)+10);
+var magnitude = (Math.random()*(center_y - 20)+10);
 randAngle = angles[Math.floor(Math.random()*angles.length)];
-var randX = (canvas.width/2)+magnitude*Math.cos(randAngle);
-var randY = (canvas.height/2)+magnitude*Math.sin(randAngle);
+var randX = center_x + magnitude * Math.cos(randAngle);
+var randY = center_y + magnitude * Math.sin(randAngle);
 
 /* Drawing the random reference point */
 ctx.beginPath();
@@ -154,8 +210,8 @@ ctx.fill();
 ctx.closePath();
 
 /* Creating an invisible vector from the random reference point to the origin where p vector starts*/
-var ref = new Vector(randX, randY, p.start_x-randX, p.start_y-randY);
-/* ref.drawVec('purple');
+var ref = new Vector(randX, randY, p.start_x-randX, p.start_y-randY, 0);
+// ref.drawVec('purple');
 
 /* Event Listeners */
 // Get the user's input
@@ -175,9 +231,13 @@ ctx2.font = "16px Verdana";
 ctx2.fillStyle = "black";
 function check(guess) {
     ctx2.clearRect(0, 0, feedback.width, feedback.height);
-    if (guess == ref.crossDir(p)) {
-        ctx2.fillText("Correct! The direction is " + ref.crossDir(p) + ".", feedback.width/6, feedback.height/2);
+    var rxp = ref.cross(p);
+    if (guess == rxp.direction()) {
+        ctx2.fillText("Correct! The direction is " + rxp.direction() + ".", feedback.width/6, feedback.height/3);
+        rxp.scale();
+        rxp.drawVec("orange", ctx2);
     } else {
-        ctx2.fillText("Incorrect! Correct answer: " + ref.crossDir(p) + ".", feedback.width/7, feedback.height/2);
+        ctx2.fillText("Incorrect! Correct answer: " + rxp.direction() + ".", feedback.width/7, feedback.height/2);
     }
+    ctx2.fillStyle = "black";
 }
