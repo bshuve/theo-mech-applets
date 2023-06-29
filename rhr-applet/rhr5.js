@@ -37,14 +37,14 @@ class Vector {
         return this.start_y - this.y;
     }
 
-    crossDir(v) {
+    cross(v) {
         console.log(this.direction());
         console.log(v.direction());
         var cross = new Vector(this.start_x, this.start_y, 
         Math.round(this.y * v.z - this.z * v.y),
         -1 * Math.round(this.z * v.x - this.x * v.z),
         Math.round(this.x * v.y - this.y * v.x));
-        return cross.direction();
+        return cross;
     }
 
     direction() {
@@ -231,9 +231,17 @@ ctx2.font = "16px Verdana";
 ctx2.fillStyle = "black";
 function check(guess) {
     ctx2.clearRect(0, 0, feedback.width, feedback.height);
-    if (guess == r.crossDir(p)) {
-        ctx2.fillText("Correct! The direction is " + r.crossDir(p) + ".", feedback.width/6, feedback.height/2);
+    var rxp = r.cross(p);
+    if (guess == rxp.direction()) {
+        ctx2.fillText("Correct! The direction is " + rxp.direction() + ".", feedback.width/6, feedback.height/2);
+        rxp.drawVec("orange");
+        ctx.beginPath();
+        ctx.rect(505, 80, 20, 20);
+        ctx.fillStyle = "orange";
+        ctx.fill();
+        ctx.fillText("Answer Vector", 530, 95);
+        ctx.closePath();
     } else {
-        ctx2.fillText("Incorrect! Correct answer: " + r.crossDir(p) + ".", feedback.width/7, feedback.height/2);
+        ctx2.fillText("Incorrect! Correct answer: " + rxp.direction() + ".", feedback.width/7, feedback.height/2);
     }
 }

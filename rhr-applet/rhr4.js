@@ -21,7 +21,7 @@ class Vector {
         this.start_x = start_x;
         this.start_y = start_y;
         this.x = x;
-        this.y = y;
+        this.y = -1 * y;
         this.z = z;
     }
     
@@ -34,7 +34,7 @@ class Vector {
     }
 
     getEndY() {
-        return this.start_y + this.y;
+        return this.start_y - this.y;
     }
 
     crossDir(v) {
@@ -239,6 +239,7 @@ function check(guess) {
     if (guess == r.crossDir(p)) {
         ctx2.fillText("Correct! The direction is " + r.crossDir(p) + ".", feedback.width/6, feedback.height/2);
     } else {
+
         ctx2.fillText("Incorrect! Correct answer: " + r.crossDir(p) + ".", feedback.width/7, feedback.height/2);
     }
 }
