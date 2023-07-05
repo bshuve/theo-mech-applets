@@ -225,7 +225,7 @@ function createPlot(input) {
 // this input format will be followed by each plot after this
 const potential_energy_input = {
   divID: "#PE-y-energy-graph", // the id of the <div> element in your HTML file where the plot will go
-  svgID: "svg-for-PE-plot", // what you want the svg element to be named (not super important)
+  svgID: "svg-for-PE-y-plot", // what you want the svg element to be named (not super important)
   domain: { lower: 0, upper: 100 }, // domain of the plot
   xLabel: "y Position (m)", // x-axis label
   range: { lower: -15, upper: 15 }, // range of the plot
@@ -241,10 +241,27 @@ var pe_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy
 // negative potential energy -U
 var npe_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-line").attr("visibility", "visible");
 
+// w POTENTIAL ENERGY GRAPH
+const potential_energy_input_w = {
+  divID: "#PE-w-energy-graph",
+  svgID: "svg-for-PE-w-plot",
+  domain: { lower: 0, upper: 100 },
+  xLabel: "w Position (m)",
+  range: { lower: -15, upper: 15 },
+  yLabel: "Potential Energy (kJ)"
+};              
+
+const potential_energy_plot_w = createPlot(potential_energy_input_w);
+
+// potential energy U
+var pew_line = potential_energy_plot_w.svg.append("g").attr("id", "potential-energy-line-w").attr("visibility", "visible");
+// negative potential energy -U
+var npew_line = potential_energy_plot_w.svg.append("g").attr("id", "minus-potential-energy-line-w").attr("visibility", "visible");
+
 // PE DERIVATIVE OF ENERGY
 const potential_derivative_input = {
   divID: "#PE-y-derivative-graph",
-  svgID: "svg-for-PE-derivative",
+  svgID: "svg-for-PE-y-derivative",
   domain: { lower: 0, upper: 2 },
   xLabel: "Time (s)",
   range: { lower: -175, upper: 175 },
@@ -258,10 +275,27 @@ var npd_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential
 // dU/dy
 var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-derivative-line").attr("visibility", "visible");
 
+// w PE DERIVATIVE OF ENERGY
+const potential_derivative_input_w = {
+  divID: "#PE-w-derivative-graph",
+  svgID: "svg-for-PE-w-derivative",
+  domain: { lower: 0, upper: 2 },
+  xLabel: "Time (s)",
+  range: { lower: -175, upper: 175 },
+  yLabel: "Potential Derivative (∂U/∂y)"
+};
+
+const potential_derivative_plot_w = createPlot(potential_derivative_input_w);
+
+// -dU/dw
+var npdw_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line-w").attr("visibility", "visible");
+// dU/dw
+var pdw_line = potential_derivative_plot.svg.append("g").attr("id", "potential-derivative-line-w").attr("visibility", "visible");
+
 // KINETIC ENERGY GRAPH
 const kinetic_energy_input = {
   divID: "#KE-y-energy-graph",
-  svgID: "svg-for-KE-plot",
+  svgID: "svg-for-KE-y-plot",
   domain: { lower: -30, upper: 30 },
   xLabel: "ẏ Velocity (m/s)",
   range: { lower: 0, upper: 4.5 },
@@ -272,6 +306,21 @@ const kinetic_energy_plot = createPlot(kinetic_energy_input);
 
 // kinetic energy T
 var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line").attr("visibility", "visible");
+
+// w KINETIC ENERGY GRAPH
+const kinetic_energy_input_w = {
+  divID: "#KE-w-energy-graph",
+  svgID: "svg-for-KE-w-plot",
+  domain: { lower: -30, upper: 30 },
+  xLabel: "ẇ Velocity (m/s)",
+  range: { lower: 0, upper: 4.5 },
+  yLabel: "Kinetic Energy (kJ)"
+};
+
+const kinetic_energy_plot_w = createPlot(kinetic_energy_input_w);
+
+// kinetic energy T
+var kew_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line-w").attr("visibility", "visible");
 
 // KE DERIVATIVE OF ENERGY
 const kinetic_derivative_input = {
@@ -288,6 +337,21 @@ const kinetic_derivative_plot = createPlot(kinetic_derivative_input);
 // dT/dv
 var kd_line = kinetic_derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line");
 
+// w KE DERIVATIVE OF ENERGY
+const kinetic_derivative_input_w = {
+  divID: "#KE-w-derivative-graph",
+  svgID: "svg-for-KE-w-derivative",
+  domain: { lower: 0, upper: 2 },
+  xLabel: "Time (s)",
+  range: { lower: -300, upper: 300 },
+  yLabel: "Kinetic Derivative (∂T/∂ẇ)"
+};
+
+const kinetic_derivative_plot_w = createPlot(kinetic_derivative_input_w);
+
+// dT/dv
+var kdw_line = kinetic_derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line-w");
+
 // update energy plots
 function plotEnergy(data) {
   // kinetic energy
@@ -297,6 +361,19 @@ function plotEnergy(data) {
     line: ke_line,
     xScale: kinetic_energy_plot.xScale,
     yScale: kinetic_energy_plot.yScale,
+    color: "red"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // w kinetic energy
+  var input = {
+    data: data.kw,
+    svg: kinetic_energy_plot_w.svg,
+    line: ke_line,
+    xScale: kinetic_energy_plot_w.xScale,
+    yScale: kinetic_energy_plot_w.yScale,
     color: "red"
   };
 
@@ -316,6 +393,19 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
+  // w potential energy
+  input = {
+    data: data.pw,
+    svg: potential_energy_plot_w.svg,
+    line: pe_line,
+    xScale: potential_energy_plot_w.xScale,
+    yScale: potential_energy_plot_w.yScale,
+    color: "green"
+  };
+
+  // plot the data
+  plotData(input);
+
   // negative potential energy
   input = {
     data: data.np,
@@ -323,6 +413,19 @@ function plotEnergy(data) {
     line: npe_line,
     xScale: potential_energy_plot.xScale,
     yScale: potential_energy_plot.yScale,
+    color: "grey"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // w negative potential energy
+  input = {
+    data: data.npw,
+    svg: potential_energy_plot_w.svg,
+    line: npew_line,
+    xScale: potential_energy_plot_w.xScale,
+    yScale: potential_energy_plot_w.yScale,
     color: "grey"
   };
 
@@ -346,6 +449,19 @@ function plotDerivative(data) {
   // plot the data
   plotData(input);
 
+  // dT/dẇ
+  var input = {
+    data: data.kdw,
+    svg: kinetic_derivative_plot_w.svg,
+    line: kdw_line,
+    xScale: kinetic_derivative_plot_w.xScale,
+    yScale: kinetic_derivative_plot_w.yScale,
+    color: "red"
+  };
+
+  // plot the data
+  plotData(input);
+
   // dU/dy
   var input = {
     data: data.pd,
@@ -359,6 +475,19 @@ function plotDerivative(data) {
   // plot the data
   plotData(input);
 
+  // dU/dw
+  var input = {
+    data: data.pdw,
+    svg: potential_derivative_plot_w.svg,
+    line: pdw_line,
+    xScale: potential_derivative_plot_w.xScale,
+    yScale: potential_derivative_plot_w.yScale,
+    color: "green"
+  };
+
+  // plot the data
+  plotData(input);
+
   // -dU/dy
   var input = {
     data: data.npd,
@@ -366,6 +495,19 @@ function plotDerivative(data) {
     line: npd_line,
     xScale: potential_derivative_plot.xScale,
     yScale: potential_derivative_plot.yScale,
+    color: "gray"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // -dU/dw
+  var input = {
+    data: data.npdw,
+    svg: potential_derivative_plot_w.svg,
+    line: npdw_line,
+    xScale: potential_derivative_plot_w.xScale,
+    yScale: potential_derivative_plot_w.yScale,
     color: "gray"
   };
 
