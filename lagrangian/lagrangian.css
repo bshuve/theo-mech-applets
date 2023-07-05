@@ -4,7 +4,7 @@ body {
     position: relative;
     top: 70px;
     background-color:#edcdca;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: auto;
 }
 
@@ -81,7 +81,7 @@ button:hover {
     position: relative;
     margin: auto;
     height: 980px;
-    width: 1200px;
+    width: 1300px;
 }
 
 #applet2{
@@ -97,7 +97,7 @@ button:hover {
     /* background-color: green; */
     position: absolute;
     height: 320px;
-    width: 950px;
+    width: 1300px;
     padding: 10px;
 }
 
@@ -107,7 +107,7 @@ button:hover {
     /* background-color: green; */
     position: absolute;
     height: 320px;
-    width: 950px;
+    width: 1300px;
     top: 320px;
     padding: 10px;
 }
@@ -115,7 +115,7 @@ button:hover {
 #bottom-panel {
     position: absolute;
     height: 320px;
-    width: 950px;
+    width: 1300px;
     top: 640px;
     padding: 10px;
 }
