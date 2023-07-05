@@ -324,9 +324,9 @@ const potential_derivative_input_w = {
 const potential_derivative_plot_w = createPlot(potential_derivative_input_w);
 
 // -dU/dw
-var npdw_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line-w").attr("visibility", "visible");
+var npdw_line = potential_derivative_plot_w.svg.append("g").attr("id", "n_potential-derivative-line-w").attr("visibility", "visible");
 // dU/dw
-var pdw_line = potential_derivative_plot.svg.append("g").attr("id", "potential-derivative-line-w").attr("visibility", "visible");
+var pdw_line = potential_derivative_plot_w.svg.append("g").attr("id", "potential-derivative-line-w").attr("visibility", "visible");
 
 // KINETIC ENERGY GRAPH
 const kinetic_energy_input = {
@@ -356,7 +356,7 @@ const kinetic_energy_input_w = {
 const kinetic_energy_plot_w = createPlot(kinetic_energy_input_w);
 
 // kinetic energy T
-var kew_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line-w").attr("visibility", "visible");
+var kew_line = kinetic_energy_plot_w.svg.append("g").attr("id", "kinetic-energy-line-w").attr("visibility", "visible");
 
 // KE DERIVATIVE OF ENERGY
 const kinetic_derivative_input = {
@@ -386,7 +386,7 @@ const kinetic_derivative_input_w = {
 const kinetic_derivative_plot_w = createPlot(kinetic_derivative_input_w);
 
 // dT/dv
-var kdw_line = kinetic_derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line-w");
+var kdw_line = kinetic_derivative_plot_w.svg.append("g").attr("id", "kinetic-derivative-line-w");
 
 // update energy plots
 function plotEnergy(data) {
