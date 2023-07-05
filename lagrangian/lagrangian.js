@@ -116,20 +116,15 @@ function energyAndDerivativeData() {
   // create arrays of data for each plot
   var kinetic_energy_data = [];
   var potential_energy_data = [];
-  var dashed_potential_data = [];
   var minus_potential_energy_data = [];
-  var dashed_n_potential_data = [];
   var kinetic_derivative_data = [];
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
-  var dashed_kinetic_energy_pos_data = [];
-  var dashed_kinetic_energy_neg_data = [];
   var t = 0;
 
   while (t <= 2) {
     //parametrize graphs
     let KE = 1 / 2 * (m * (a * t) ** 2); // kinetic energy T
-    let KEdp = 1 / 2 * (m * (15 * t) ** 2); // dashed plot for kinetic energy T
     let PE = -m * a * (1 / 2 * a * t ** 2 + h); // potential energy U
     let nPE = -PE; // negative potential energy -U
     let dKE = m * a * t; // dT/dv
@@ -138,8 +133,6 @@ function energyAndDerivativeData() {
 
     // push all data into arrays
     kinetic_energy_data.push({ "x": (a * t), "y": KE / 1000 });
-    dashed_kinetic_energy_pos_data.push({ "x": (15 * t), "y": KEdp / 1000 });
-    dashed_kinetic_energy_neg_data.push({ "x": (-15 * t), "y": KEdp / 1000 });
     if (1 / 2 * a * t ** 2 + h >= 0) { // this condition prevents the PE from being graphed for -y positions
       potential_energy_data.push({ "x": 1 / 2 * a * t ** 2 + h, "y": PE / 1000 });
       minus_potential_energy_data.push({ "x": 1 / 2 * a * t ** 2 + h, "y": nPE / 1000 });
@@ -149,23 +142,10 @@ function energyAndDerivativeData() {
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
     t += dt;
   }
-  // push data for dashed potential energy plots
-  // note that this iterates for all values of h for each dt
-  var ti = 0;
-  var hi = 0;
-  while (ti <= 2) {
-    while (hi <= 100) {
-      let dashPE = -m * a * (1 / 2 * a * ti ** 2 + hi); // dashed PE plot
-      let dashnPE = -dashPE; // negative dashed PE plot
-      dashed_potential_data.push({ "x": (1 / 2 * a * ti ** 2 + hi), "y": dashPE / 1000 });
-      dashed_n_potential_data.push({ "x": (1 / 2 * a * ti ** 2 + hi), "y": dashnPE / 1000 });
-      hi += 0.5;
-    }
-    ti += dt;
-  }
+
   return {
-    k: kinetic_energy_data, np: minus_potential_energy_data, dkp: dashed_kinetic_energy_pos_data, dkn: dashed_kinetic_energy_neg_data,
-    p: potential_energy_data, dp: dashed_potential_data, dnp: dashed_n_potential_data, kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
+    k: kinetic_energy_data, np: minus_potential_energy_data,
+    p: potential_energy_data, kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
   };
 }
 
@@ -190,26 +170,6 @@ function plotData(input) {
     )
     .attr("fill", "none")
     .attr("stroke", input.color)
-    .attr("stroke-width", 1.5);
-}
-
-function dashplotData(input) {
-  // update the line
-  var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
-
-  u.enter()
-    .append("path")
-    .attr("class", "line")
-    .merge(u)
-    .transition()
-    .duration(TRANSITION_TIME)
-    .attr("d", d3.line()
-      .x((d) => input.xScale(d.x))
-      .y((d) => input.yScale(d.y))
-    )
-    .attr("fill", "none")
-    .attr("stroke", input.color)
-    .attr("stroke-dasharray", 5)
     .attr("stroke-width", 1.5);
 }
 
@@ -280,10 +240,6 @@ const potential_energy_plot = createPlot(potential_energy_input);
 var pe_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy-line").attr("visibility", "visible");
 // negative potential energy -U
 var npe_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-line").attr("visibility", "visible");
-// dashed plot for U
-var dpe_line = potential_energy_plot.svg.append("g").attr("id", "dashed-potential-energy-line").attr("visibility", "visible");
-// dashed plot for -U
-var dnpe_line = potential_energy_plot.svg.append("g").attr("id", "dashed-n-potential-energy-line").attr("visibility", "visible");
 
 // PE DERIVATIVE OF ENERGY
 const potential_derivative_input = {
@@ -316,10 +272,6 @@ const kinetic_energy_plot = createPlot(kinetic_energy_input);
 
 // kinetic energy T
 var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line").attr("visibility", "visible");
-// dashed plot for T
-var dkep_line = kinetic_energy_plot.svg.append("g").attr("id", "dashed-kinetic-energy-pos-line").attr("visibility", "visible");
-// dashed plot for -T
-var dken_line = kinetic_energy_plot.svg.append("g").attr("id", "dashed-kinetic-energy-neg-line").attr("visibility", "visible");
 
 // KE DERIVATIVE OF ENERGY
 const kinetic_derivative_input = {
@@ -350,58 +302,6 @@ function plotEnergy(data) {
 
   // plot the data
   plotData(input);
-
-  // kinetic energy dashed
-  var input = {
-    data: data.dkp,
-    svg: kinetic_energy_plot.svg,
-    line: dkep_line,
-    xScale: kinetic_energy_plot.xScale,
-    yScale: kinetic_energy_plot.yScale,
-    color: "red"
-  };
-
-  // plot the data
-  dashplotData(input);
-
-  // negative kinetic energy dashed
-  var input = {
-    data: data.dkn,
-    svg: kinetic_energy_plot.svg,
-    line: dken_line,
-    xScale: kinetic_energy_plot.xScale,
-    yScale: kinetic_energy_plot.yScale,
-    color: "red"
-  };
-
-  // plot the data
-  dashplotData(input);
-
-  // potential energy dashed
-  input = {
-    data: data.dp,
-    svg: potential_energy_plot.svg,
-    line: dpe_line,
-    xScale: potential_energy_plot.xScale,
-    yScale: potential_energy_plot.yScale,
-    color: "green"
-  };
-
-  // plot the data
-  dashplotData(input);
-
-  // negative potential energy dashed
-  input = {
-    data: data.dnp,
-    svg: potential_energy_plot.svg,
-    line: dnpe_line,
-    xScale: potential_energy_plot.xScale,
-    yScale: potential_energy_plot.yScale,
-    color: "gray"
-  };
-
-  // plot the data
-  dashplotData(input);
 
   // potential energy
   input = {
