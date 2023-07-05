@@ -90,7 +90,7 @@ button:hover {
     border-radius: 10px;
     position: relative;
     height: 1300px;
-    width: 950px;
+    width: 1300px;
 }
 
 #top-panel{
@@ -123,7 +123,7 @@ button:hover {
 #bottom2-panel {
     position: absolute;
     height: 320px;
-    width: 950px;
+    width: 1300px;
     top: 960px;
     padding: 10px;
 }
