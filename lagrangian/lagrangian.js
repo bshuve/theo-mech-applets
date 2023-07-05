@@ -1,7 +1,7 @@
 /* Parameters */
 const CANVAS_WIDTH = parseInt(document.getElementById("ball-launch").getAttribute("width"));
 const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribute("height"));
-const SVG_WIDTH = 445;
+const SVG_WIDTH = 300;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
@@ -264,7 +264,7 @@ function createPlot(input) {
 // POTENTIAL ENERGY GRAPH
 // this input format will be followed by each plot after this
 const potential_energy_input = {
-  divID: "#PE-energy-graph", // the id of the <div> element in your HTML file where the plot will go
+  divID: "#PE-y-energy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-plot", // what you want the svg element to be named (not super important)
   domain: { lower: 0, upper: 100 }, // domain of the plot
   xLabel: "y Position (m)", // x-axis label
@@ -287,7 +287,7 @@ var dnpe_line = potential_energy_plot.svg.append("g").attr("id", "dashed-n-poten
 
 // PE DERIVATIVE OF ENERGY
 const potential_derivative_input = {
-  divID: "#PE-derivative-graph",
+  divID: "#PE-y-derivative-graph",
   svgID: "svg-for-PE-derivative",
   domain: { lower: 0, upper: 2 },
   xLabel: "Time (s)",
@@ -304,7 +304,7 @@ var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-de
 
 // KINETIC ENERGY GRAPH
 const kinetic_energy_input = {
-  divID: "#KE-energy-graph",
+  divID: "#KE-y-energy-graph",
   svgID: "svg-for-KE-plot",
   domain: { lower: -30, upper: 30 },
   xLabel: "ẏ Velocity (m/s)",
@@ -323,7 +323,7 @@ var dken_line = kinetic_energy_plot.svg.append("g").attr("id", "dashed-kinetic-e
 
 // KE DERIVATIVE OF ENERGY
 const kinetic_derivative_input = {
-  divID: "#KE-derivative-graph",
+  divID: "#KE-y-derivative-graph",
   svgID: "svg-for-KE-derivative",
   domain: { lower: 0, upper: 2 },
   xLabel: "Time (s)",
@@ -482,8 +482,6 @@ plotEnergy(initial_data);
 // initialize energy lines
 plotDerivative(initial_data);
 
-// update slope on kinetic derivative plot
-document.getElementById("slope").innerHTML = (m*a).toFixed(2);
 
 
 /////////////////////////////////////////////////
@@ -511,8 +509,6 @@ function slider_update() {
   if (showAnswer3) { // checks if the answer is being shown before updating it
     document.getElementById("answer3").style.display = "block";
   }
-  // update slope on kinetic derivative plot
-  document.getElementById("slope").innerHTML = (m*a).toFixed(2);
   const data = energyAndDerivativeData();
   // update plots
   plotEnergy(data);
