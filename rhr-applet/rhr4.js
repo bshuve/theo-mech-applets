@@ -259,7 +259,7 @@ function check(guess) {
         rxp.scale();
         rxp.drawVec("orange", ctx2);
     } else {
-        ctx2.fillText("Incorrect! Correct answer: " + rxp.direction() + ".", feedback.width/7, feedback.height/2);
+        ctx2.fillText("Incorrect! Try again :)", feedback.width/4.5, feedback.height/2);
     }
     ctx2.fillStyle = "black";
 }
