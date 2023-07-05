@@ -17,13 +17,13 @@
 <body id="body">
 
 <h1 id="title">Lagrangian: Page 1</h1>
-<h2 id="subtitle">How Lagrange's equations do not depend on coordinates</h2>
+<h2 id="subtitle">How Lagrange's equations are the same in each coordinate system</h2>
 <p id="text">
 Consider ... <br>
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b>Question
+    <b>Question 1: </b>What is the force acting on the object based on your inputs? Is it a conservative force?
     <br><br>
 <button id="show-q1">Show answers</button>        
 <span id="answer1"></span>
@@ -32,12 +32,52 @@ Consider ... <br>
 <br><br> 
 
 <div id="applet">
-    <div id="top-panel" class="row"></div> 
-</div>
+    <div id="top-panel" class="row">
+	<!-- First column: trajectory animation -->
+        <div class="column">
+            <canvas id="ball-launch" class="plot"
+            width="320px" height="294px" title="Actual Motion">
+            </canvas>
+        </div>
+
+    <!-- Third column: question -->
+        <div class="column">
+            <div id="controls2">
+                <span id="green">....</span> Potential Energy
+                <br><br>
+                <span id="grey">....</span> Negative Potential Energy
+                <br><br>
+                <span id="red">....</span> Kinetic Energy
+                <br><br>
+
+            </div>
+        </div>
+    </div>
+    <div id="middle-panel" class="row">
+        <div class="column left">
+            <div id="PE-energy-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="KE-energy-graph"></div>
+        </div>
+    </div>
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="PE-derivative-graph"></div>
+        </div>
+        <div class="column-right">
+            <div id="KE-derivative-graph"></div>
+        </div>
+    </div>
+    <div id="slope-txt">
+        <p>Slope: \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) \) = <span id="slope">dPE</span> N</p>
+    </div>
+</div> 
 <br>
 
 <label for="show-q2" id="text" style="line-height: 2">
-    <b>Question 2: </b>Question
+    <b>Question 2: </b> ???
 </label>
 <br><br>
 <button id="show-q2">Show answer</button>
