@@ -114,24 +114,44 @@ startAnimation(h, m, a);
 // generate energy data
 function energyAndDerivativeData() {
   // create arrays of data for each plot
+  // for y param
   var kinetic_energy_data = [];
   var potential_energy_data = [];
   var minus_potential_energy_data = [];
   var kinetic_derivative_data = [];
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
-  var t = 0;
 
-  while (t <= 2) {
-    //parametrize graphs
+  // for w param, where w = y^2
+  var kinetic_energy_data_w = [];
+  var potential_energy_data_w = [];
+  var minus_potential_energy_data_w = [];
+  var kinetic_derivative_data_w = [];
+  var potential_derivative_data_w = [];
+  var n_potential_derivative_data_w = [];
+
+  var t = -3;
+
+  while (t <= 3) {
+    // parametrize graphs
+    // for y param
     let KE = 1 / 2 * (m * (a * t) ** 2); // kinetic energy T
     let PE = -m * a * (1 / 2 * a * t ** 2 + h); // potential energy U
     let nPE = -PE; // negative potential energy -U
     let dKE = m * a * t; // dT/dv
     let dPE = -m * a; // -dU/dy
-    let dnPE = m * a; // dU/dy
+    let dnPE = -dPE; // dU/dy
+
+    // for w param
+    let KEw = 1 / 2 * (m * (a * t) ** 2); // kinetic energy T
+    let PEw = -m * a * (1 / 2 * a * t ** 2 + h); // potential energy U
+    let nPEw = -PEw; // negative potential energy -U
+    let dKEw = m * a * t; // dT/dv
+    let dPEw = -m * a; // -dU/dy
+    let dnPEw = -dPEw; // dU/dy
 
     // push all data into arrays
+    // for y param
     kinetic_energy_data.push({ "x": (a * t), "y": KE / 1000 });
     if (1 / 2 * a * t ** 2 + h >= 0) { // this condition prevents the PE from being graphed for -y positions
       potential_energy_data.push({ "x": 1 / 2 * a * t ** 2 + h, "y": PE / 1000 });
@@ -140,12 +160,28 @@ function energyAndDerivativeData() {
     kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dKE });
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
+
+    // for w param
+    kinetic_energy_data_w.push({ "x": (a * t), "y": KEw / 1000 });
+    if (1 / 2 * a * t ** 2 + h >= 0) { // this condition prevents the PE from being graphed for -y positions
+      potential_energy_data_w.push({ "x": 1 / 2 * a * t ** 2 + h, "y": PEw / 1000 });
+      minus_potential_energy_data_w.push({ "x": 1 / 2 * a * t ** 2 + h, "y": nPEw / 1000 });
+    }
+    kinetic_derivative_data_w.push({ "x": Math.round(t * 10000) / 10000, "y": dKEw });
+    potential_derivative_data_w.push({ "x": Math.round(t * 10000) / 10000, "y": dPEw });
+    n_potential_derivative_data_w.push({ "x": Math.round(t * 10000) / 10000, "y": dnPEw });
     t += dt;
+
   }
 
   return {
-    k: kinetic_energy_data, np: minus_potential_energy_data,
-    p: potential_energy_data, kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
+    // for y param
+    k: kinetic_energy_data, np: minus_potential_energy_data, p: potential_energy_data,
+    kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data,
+
+    // for w param
+    kw: kinetic_energy_data_w, npw: minus_potential_energy_data_w, pw: potential_energy_data_w, 
+    kdw: kinetic_derivative_data_w, pdw: potential_derivative_data_w, npdw: n_potential_derivative_data_w
   };
 }
 
