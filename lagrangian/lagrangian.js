@@ -407,7 +407,7 @@ function plotEnergy(data) {
   var input = {
     data: data.kw,
     svg: kinetic_energy_plot_w.svg,
-    line: ke_line,
+    line: kew_line,
     xScale: kinetic_energy_plot_w.xScale,
     yScale: kinetic_energy_plot_w.yScale,
     color: "red"
@@ -433,7 +433,7 @@ function plotEnergy(data) {
   input = {
     data: data.pw,
     svg: potential_energy_plot_w.svg,
-    line: pe_line,
+    line: pew_line,
     xScale: potential_energy_plot_w.xScale,
     yScale: potential_energy_plot_w.yScale,
     color: "green"
@@ -595,17 +595,6 @@ function slider_update() {
   startAnimation(h, m, a);
 }
 
-// checks if any sliders have been changed
-document.getElementById("m-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("a-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("h-slider").oninput = function () {
-  slider_update();
-}
-
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
@@ -629,18 +618,5 @@ document.getElementById("show-q2").addEventListener("click", function () {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
     document.getElementById("answer2").style.display = "none";
-  }
-});
-
-// shows the proof if the proof button is clicked
-document.getElementById("show-more").addEventListener("click", function () {
-  if (!showAnswer3) {
-    showAnswer3 = true;
-    document.getElementById("show-more").innerHTML = "Hide Proof";
-    slider_update();
-  } else {
-    showAnswer3 = false;
-    document.getElementById("show-more").innerHTML = "Show Proof";
-    document.getElementById("answer3").style.display = "none";
   }
 });
