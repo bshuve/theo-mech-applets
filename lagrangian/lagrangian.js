@@ -8,9 +8,9 @@ const dt = 0.002;
 const end_time = 2;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
-var h = 50
-var a = -9.8
-var m = 10.0
+const h = 50;
+const a = -9.8;
+const m = 10.0;
 
 /* Canvas Animation */
 function startAnimation(y, m, a) {
@@ -657,10 +657,8 @@ const initial_data = energyAndDerivativeData();
 // initialize energy lines
 plotEnergy(initial_data);
 
-// initialize energy lines
+// initialize energy derivative lines
 plotDerivative(initial_data);
-
-
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -673,33 +671,13 @@ on the HTML page (ex. button click, slider change, etc). */
 // by default, all answers are hidden
 var showAnswer1 = false;
 var showAnswer2 = false;
-var showAnswer3 = false;
-
-function slider_update() {
-  // updates global values for m, a, h
-  if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Answer<br>";
-  }
-  if (showAnswer2) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").style.display = "block";
-  }
-  if (showAnswer3) { // checks if the answer is being shown before updating it
-    document.getElementById("answer3").style.display = "block";
-  }
-  const data = energyAndDerivativeData();
-  // update plots
-  plotEnergy(data);
-  plotDerivative(data);
-  endAnimation();
-  startAnimation(h, m, a);
-}
 
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
     document.getElementById("show-q1").innerHTML = "Hide Answers";
-    slider_update();
+    document.getElementById("answer1").innerHTML = "<br><br>Answer<br>";
   } else {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answers";
@@ -712,7 +690,7 @@ document.getElementById("show-q2").addEventListener("click", function () {
   if (!showAnswer2) {
     showAnswer2 = true;
     document.getElementById("show-q2").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer2").style.display = "block";
   } else {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
