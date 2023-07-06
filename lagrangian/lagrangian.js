@@ -276,7 +276,7 @@ function createPlot(input) {
 const potential_energy_input = {
   divID: "#PE-y-energy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-y-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: 0, upper: 100 }, // domain of the plot
+  domain: { lower: 0, upper: 70 }, // domain of the plot
   xLabel: "y Position (m)", // x-axis label
   range: { lower: -15, upper: 15 }, // range of the plot
   yLabel: "Potential Energy (kJ)"// y-axis label
@@ -344,7 +344,7 @@ const potential_derivative_input_w = {
   svgID: "svg-for-PE-w-derivative",
   domain: { lower: -3, upper: 3 },
   xLabel: "Time (s)",
-  range: { lower: -5, upper: 5 },
+  range: { lower: 0, upper: 10 },
   yLabel: "Potential Derivative (∂U/∂y)"
 };
 
@@ -359,7 +359,7 @@ const npotential_derivative_input_w = {
     svgID: "svg-for-nPE-w-derivative",
     domain: { lower: -3, upper: 3 },
     xLabel: "Time (s)",
-    range: { lower: -140, upper: 0 },
+    range: { lower: -10, upper: 0 },
     yLabel: "Potential Derivative (∂U/∂y)"
 };
   
@@ -452,7 +452,7 @@ const derivative_kinetic_derivative_input_w = {
     svgID: "svg-for-dKE-w-derivative",
     domain: { lower: -3, upper: 3 },
     xLabel: "Time (s)",
-    range: { lower: -140, upper: 0 },
+    range: { lower: -10, upper: 0 },
     yLabel: "d/dt Kinetic Derivative (d/dt(∂T/∂ẇ))"
 };
 
@@ -678,8 +678,7 @@ var showAnswer3 = false;
 function slider_update() {
   // updates global values for m, a, h
   if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (m * a).toFixed(2) + " N"
-      + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
+    document.getElementById("answer1").innerHTML = "<br><br>Answer<br>";
   }
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
