@@ -14,6 +14,8 @@ const g = 2;
 const p_initial = parseInt(document.getElementById("p-slider").value);
 var p = parseInt(document.getElementById("p-slider").value); // 0.0
 const range_p = parseInt(document.getElementById("p-slider").max);
+// create action variable
+var S = 0;
 
 /* Canvas Animation */
 function startAnimation(p) {
@@ -121,6 +123,8 @@ function energyAndDerivativeData() {
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
   var t = -1;
+  // reset action
+  S = 0;
 
   while (t <= 1) {
     //parametrize graphs
@@ -132,6 +136,7 @@ function energyAndDerivativeData() {
     let dKE = m * v; // dT/dv
     let dPE = m * g; // dU/dy
     let dnPE = -dPE; // -dU/dy
+    S += dt * (KE - PE);
 
     // push all data into arrays
     kinetic_energy_data.push({ "x": (v), "y": KE });
@@ -386,6 +391,8 @@ plotDerivative(initial_data);
 let a = -2*(1+p)
 document.getElementById("slope").innerHTML = (m * a).toFixed(2);
 
+// calculate action on load
+document.getElementById("print-S").innerHTML = S.toFixed(2);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -417,6 +424,7 @@ function slider_update() {
   // update plots
   plotEnergy(data);
   plotDerivative(data);
+  document.getElementById("print-S").innerHTML = S.toFixed(2);
   endAnimation();
   startAnimation(p);
 }

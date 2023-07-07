@@ -16,6 +16,8 @@ const w = Math.sqrt(k/m); // 1
 var B = parseFloat(document.getElementById("B-slider").value); // 0
 // keep track of number of oscillations
 var oscillations = 0;
+// create action variable
+var S = 0;
 
 /////////////////////////////////////////////////
 /* CANVAS ANIMATIONS */
@@ -182,6 +184,8 @@ function energyAndDerivativeData() {
   var n_potential_derivative_data = [];
   var derivative_kinetic_derivative_data = [];
   var t = 0;
+  // reset action
+  S = 0;
 
   // update data for 3 periods (3*2pi)
   while (t <= 6*Math.PI) {
@@ -205,6 +209,10 @@ function energyAndDerivativeData() {
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
     derivative_kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": ddKE})
+    
+    // add to the action integral
+    S += dt * (KE - PE);
+    
     t += dt;
   }
   return {
@@ -488,6 +496,9 @@ plotEnergy(initial_data);
 // initialize energy lines
 plotDerivative(initial_data);
 
+// calculate action on load
+S = Math.round(S * 100)/100;
+document.getElementById("print-S").innerHTML = S.toFixed(2);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -511,6 +522,8 @@ function slider_update() {
   // update plots
   plotEnergy(data);
   plotDerivative(data);
+  S = Math.round(S * 100)/100;
+  document.getElementById("print-S").innerHTML = S.toFixed(2);
   endAnimation();
   startAnimation(B);
 }
