@@ -20,11 +20,12 @@
 <h2 id="subtitle">Non-Uniform Acceleration</h2>
 <p id="text" style="line-height: 1.8">
     Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under gravitational acceleration \(-g\). The kinetic energy of the object is \(T=m\dot{y}^2/2\) and the potential energy is \(U=mgy\).
-    In this case, the path is parametrized by the function \(y(t) = 1-t^p\).
+    In this case, the path is parametrized by the function \(y(t) = 1-t^p\). <br>
+    The action of the object is given by \(S = \int_{0}^{4} (KE-PE) \ dt \).
 </p>
 
 <p id="text">
-    Try dragging the value of the p-slider in this applet to see how the animation and graphs change.
+    Try dragging the value of the p-slider in this applet to see how the animation and graphs change. Notice how the action \(S\) reaches a minimum when the path is classical.
 </p>
 
 <br>
@@ -64,6 +65,7 @@
                 <p>\(g\): <span id="print-a">2.0</span> m/s<sup>2</sup></p>
                 <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
                 <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
+                <p>Action \(S\): <span id="print-S"></span></p>
             </div>
         </div>
     <!-- Third column: legend -->

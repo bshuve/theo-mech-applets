@@ -14,6 +14,8 @@ const g = 2;
 const p_initial = parseInt(document.getElementById("p-slider").value);
 var p = parseInt(document.getElementById("p-slider").value); // 0.0
 const range_p = parseInt(document.getElementById("p-slider").max);
+// create action variable
+var S = 0;
 
 /* Canvas Animation */
 function startAnimation(p) {
@@ -122,11 +124,15 @@ function energyAndDerivativeData() {
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
   var derivative_kinetic_derivative_data = [];
-  var t = 0.01;
+  var t = 0.0001;
+  // reset action
+  S = 0;
 
   while (t <= end_time) {
     //parametrize graphs
+    // when p is equal to 4, we can see the graphs over the full domain
     let y = 1-t**4;
+    let y_exact = 1-t**p;
     let v = -p*t**(p-1);
     let a = -p*(p-1)*t**(p-2);
     let KEl = (1/2 * m * (-(4)*t**((4)-1))**2); // kinetic energy T left
@@ -148,6 +154,9 @@ function energyAndDerivativeData() {
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
     derivative_kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": ddKE });
+
+    // add to the action integral
+    S += dt * ((1/2 * m * v**2) - (m * g * y_exact));
 
     t += dt;
   }
@@ -498,6 +507,8 @@ plotEnergy(initial_data);
 // initialize energy lines
 plotDerivative(initial_data);
 
+// calculate action on load
+document.getElementById("print-S").innerHTML = S.toFixed(2);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -530,6 +541,7 @@ function slider_update() {
   // update plots
   plotEnergy(data);
   plotDerivative(data);
+  document.getElementById("print-S").innerHTML = S.toFixed(2);
   endAnimation();
   startAnimation(p);
 }
