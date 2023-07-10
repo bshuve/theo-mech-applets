@@ -261,7 +261,7 @@ const dL_dy_input = {
   domain: { lower: -3, upper: 3 }, // domain of the plot
   xLabel: "Time (s)", // x-axis label
   range: { lower: -25, upper: -15 }, // range of the plot
-  yLabel: "dL/dy (N)"// y-axis label
+  yLabel: "\u2202L/\u2202y (N)"// y-axis label
 };              
 
 // the svg element is essentially saved as this const variable
@@ -278,7 +278,7 @@ const dt_dL_dydot_input = {
   domain: { lower: -3, upper: 3 },
   xLabel: "Time (s)",
   range: { lower: -25, upper: -15 },
-  yLabel: "d/dt(dL/dydot)"
+  yLabel: "d/dt(\u2202L/\u2202\u1E8F)"
 };              
 
 const dt_dL_dydot_plot = createPlot(dt_dL_dydot_input);
@@ -294,7 +294,7 @@ const dL_dw_input = {
   domain: { lower: -3, upper: 3 }, 
   xLabel: "Time (s)", 
   range: { lower: -1000, upper: 0 }, 
-  yLabel: "dL/dw (N)"
+  yLabel: "\u2202L/\u2202w (N)"
 };              
 
 const dL_dw_plot = createPlot(dL_dw_input);
@@ -309,7 +309,7 @@ const dt_dL_dwdot_input = {
   domain: { lower: -3, upper: 3 },
   xLabel: "Time (s)",
   range: { lower: -1000, upper: 0 },
-  yLabel: "d/dt(dL/dwdot)"
+  yLabel: "d/dt(\u2202L/\u2202\u1E87)"
 };              
 
 const dt_dL_dwdot_plot = createPlot(dt_dL_dwdot_input);
