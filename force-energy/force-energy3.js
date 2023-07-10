@@ -11,9 +11,9 @@ const x_initial = 20;
 const y_initial = 100;
 const m = 1;
 const g = 2;
-const p_initial = parseInt(document.getElementById("p-slider").value);
+const p_initial = parseInt(document.getElementById("p-slider").value); // 0.0
 var p = parseInt(document.getElementById("p-slider").value); // 0.0
-const range_p = parseInt(document.getElementById("p-slider").max);
+const range_p = parseInt(document.getElementById("p-slider").max); // 4.0
 // create action variable
 var S = 0;
 
@@ -30,11 +30,11 @@ function endAnimation() {
 
 /* Coordinate transformations */
 function transformXCoord(x) {
-  return x_initial + (x) * (CANVAS_WIDTH) / 2;
+  return x_initial + x * (CANVAS_WIDTH / 1.2);
 }
 
 function transformYCoord(y) {
-  return 3*CANVAS_HEIGHT/4 - y * (CANVAS_HEIGHT/2);
+  return (y_initial * 2.3) - y * (CANVAS_HEIGHT / 1.8);
 }
 
 var animArea = {
@@ -438,7 +438,7 @@ plotEnergy(initial_data);
 plotDerivative(initial_data);
 
 // calculate action on load
-document.getElementById("print-S").innerHTML = S.toFixed(3);
+document.getElementById("print-S").innerHTML = S.toFixed(4);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -471,7 +471,7 @@ function slider_update() {
   // update plots
   plotEnergy(data);
   plotDerivative(data);
-  document.getElementById("print-S").innerHTML = S.toFixed(3);
+  document.getElementById("print-S").innerHTML = S.toFixed(4);
   endAnimation();
   startAnimation(p);
 }
