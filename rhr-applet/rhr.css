@@ -2,7 +2,7 @@ body {
     position: relative;
     top: 70px;
     background-color: #edcdca;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -90,6 +90,7 @@ button:hover {
 
 #next-button{
     float: right;
+    margin-right: 100px;
 }
 
 .button-spacing {
