@@ -158,12 +158,15 @@ function ELData() {
     // push all data into arrays
     // for y param
     dL_dy_data.push({ "x": Math.round(t * 10000) / 10000, "y": dLdy });
-    dt_dL_dydot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdydot });
+    if (dtdLdydot > -10000) { // don't graph at the asymptote to avoid errors
+      dt_dL_dydot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdydot });
+    }
 
     // for w param
     dL_dw_data.push({ "x": Math.round(t * 10000) / 10000, "y": dLdw });
-    dt_dL_dwdot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdwdot });
-
+    if (dtdLdwdot > -10000) { // don't graph at the asymptote to avoid errors
+      dt_dL_dwdot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdwdot });
+    }
     t += dt;
 
   }
@@ -278,7 +281,7 @@ const dt_dL_dydot_input = {
   domain: { lower: -3, upper: 3 },
   xLabel: "Time (s)",
   range: { lower: -25, upper: -15 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E8F)"
+  yLabel: "d/dt(\u2202L/\u2202\u1E8F) (N)"
 };              
 
 const dt_dL_dydot_plot = createPlot(dt_dL_dydot_input);
@@ -309,7 +312,7 @@ const dt_dL_dwdot_input = {
   domain: { lower: -3, upper: 3 },
   xLabel: "Time (s)",
   range: { lower: -1000, upper: 0 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E87)"
+  yLabel: "d/dt(\u2202L/\u2202\u1E87) (N)"
 };              
 
 const dt_dL_dwdot_plot = createPlot(dt_dL_dwdot_input);
