@@ -126,7 +126,7 @@ function energyAndDerivativeData() {
   // reset action
   S = 0;
 
-  while (t <= 1) {
+  while (t <= end_time) {
     //parametrize graphs
     let y = (1 + p) * (1 - t**2);
     let v = -2*t*(1+p);
