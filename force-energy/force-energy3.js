@@ -131,8 +131,8 @@ function energyAndDerivativeData() {
     let y = 1-t**p;
     let v = -p*t**(p-1);
     let a = -p*(p-1)*t**(p-2);
-    let KE = 1/2 * m * (v**2); // kinetic energy T 
-    let PE = m * g * y; // potential energy U 
+    let KE = 1/2 * m * ((-4*t**(4-1))**2); // graph kinetic energy T when p=4 to get the full graph since graph doesn't change with path
+    let PE = m * g * (1-t**4); // graph potential energy U when p=4 to get the full graph since graph doesn't change with path
     let nPE = -PE; // negative potential energy -U
     let dKE = m * v; // dT/dv
     let dPE = m * g; // dU/dy
@@ -141,9 +141,9 @@ function energyAndDerivativeData() {
     S += dt * (KE - PE);
 
     // push all data into arrays
-    kinetic_energy_data.push({ "x": v, "y": KE });
-    potential_energy_data.push({ "x": y, "y": PE });
-    minus_potential_energy_data.push({ "x": y, "y": nPE });
+    kinetic_energy_data.push({ "x": -4*t**(4-1), "y": KE });
+    potential_energy_data.push({ "x": 1-t**4, "y": PE });
+    minus_potential_energy_data.push({ "x": 1-t**4, "y": nPE });
     kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dKE });
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
