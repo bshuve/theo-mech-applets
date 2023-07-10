@@ -286,7 +286,7 @@ const potential_derivative_input = {
   domain: { lower: 0, upper: 4 },
   xLabel: "Time (s)",
   range: { lower: -4, upper: 4 },
-  yLabel: "Potential Derivative (∂U/∂y)"
+  yLabel: "Potential Derivative (\u2202U/\u2202y)"
 };
 
 const potential_derivative_plot = createPlot(potential_derivative_input);
@@ -303,7 +303,7 @@ const npotential_derivative_input = {
   domain: { lower: 0, upper: 4 },
   xLabel: "Time (s)",
   range: { lower: -4, upper: 4 },
-  yLabel: "Potential Derivative (∂U/∂x)"
+  yLabel: "Potential Derivative (\u2202U/\u2202y)"
 };
 
 const npotential_derivative_plot = createPlot(npotential_derivative_input);
@@ -316,7 +316,7 @@ const kinetic_energy_input = {
   divID: "#KE-energy-graph",
   svgID: "svg-for-KE-plot",
   domain: { lower: -300, upper: 300},
-  xLabel: "ẏ Velocity (m/s)",
+  xLabel: "\u1E8F Velocity (m/s)",
   range: { lower: 0, upper: 35 },
   yLabel: "Kinetic Energy (kJ)"
 };
@@ -336,7 +336,7 @@ const kinetic_derivative_input = {
   domain: { lower: 0, upper: 4 },
   xLabel: "Time (s)",
   range: { lower: -10, upper: 10 },
-  yLabel: "Kinetic Derivative (∂T/∂ẏ)"
+  yLabel: "Kinetic Derivative (\u2202T/\u2202\u1E8F)"
 };
 
 const kinetic_derivative_plot = createPlot(kinetic_derivative_input);
@@ -351,7 +351,7 @@ const derivative_kinetic_derivative_input = {
   domain: { lower: 0, upper: 4 },
   xLabel: "Time (s)",
   range: { lower: -4, upper: 4 },
-  yLabel: "d/dt Kinetic Derivative (d/dt(∂T/∂ẋ))"
+  yLabel: "d/dt Kinetic Derivative (d/dt(\u2202T/\u2202\u1E8F))"
 };
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
