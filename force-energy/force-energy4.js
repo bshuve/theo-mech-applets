@@ -510,7 +510,7 @@ function slider_update() {
   A = parseFloat(document.getElementById("A-slider").value);
   document.getElementById("print-A").innerHTML = A.toFixed(2);
   if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (k * A).toFixed(2) + " N"
+    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (-k * A).toFixed(2) + " N"
       + "<br><br>Yes, this is a conservative force because the displacement force results in the spring having potential/stored energy, which is independent on the path taken.<br>";
   }
   if (showAnswer3) { // checks if the answer is being shown before updating it

@@ -32,7 +32,7 @@
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b>What is the initial applied force acting on the object based on your inputs? Is it a conservative force?
+    <b>Question 1: </b>What is the spring force acting on the object based on your inputs? Is it a conservative force?
     <br><br>
 <button id="show-q1">Show answers</button>        
 <span id="answer1"></span>
@@ -110,11 +110,11 @@
 <span id="answer3" style="display: none; line-height: 1.8">
     We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial x} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{x}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{x}^2\), \(U = \frac{1}{2}k{x}^2\) for this situation.
     <br><br>
-    \(\frac{\partial L}{\partial x} = -\frac{\partial U}{\partial x} = kx\)
+    \(\frac{\partial L}{\partial x} = -\frac{\partial U}{\partial x} = -kx\)
     <br><br>
     \(\frac{\partial L}{\partial \dot{x}} = \frac{\partial T}{\partial \dot{x}} = m\dot{x} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}}) = m\ddot{x} = F_x\) by definition.
     <br><br>
-    We know that there is only the spring potential energy force from the initial applied force to stretch the spring acting on the system, so the net force in the \(x\) direction is just \(F_x=kx\) by definition as well.
+    We know that there is only the spring potential energy force from the initial applied force to stretch the spring acting on the system, so the net force in the \(x\) direction is just \(F_x=-kx\) by definition as well.
     <br><br>
     Note that \(-\frac{\partial U}{\partial x} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}})\) as seen in the graphs.
     <br><br>

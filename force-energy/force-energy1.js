@@ -9,7 +9,7 @@ const end_time = 2;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
 var h = parseFloat(document.getElementById("h-slider").value); // 50.0
-var a = parseFloat(document.getElementById("a-slider").value); // -9.8
+var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -9.8
 var m = parseFloat(document.getElementById("m-slider").value); // 10.0
 
 /* Canvas Animation */
@@ -130,7 +130,7 @@ function energyAndDerivativeData() {
     //parametrize graphs
     let KE = 1 / 2 * (m * (a * t) ** 2); // kinetic energy T
     let KEdp = 1 / 2 * (m * (15 * t) ** 2); // dashed plot for kinetic energy T
-    let PE = -m * a * (1 / 2 * a * t ** 2 + h); // potential energy U
+    let PE = m * a * (1 / 2 * a * t ** 2 + h); // potential energy U
     let nPE = -PE; // negative potential energy -U
     let dKE = m * a * t; // dT/dv
     let dPE = -m * a; // -dU/dy
@@ -503,8 +503,8 @@ function slider_update() {
   // updates global values for m, a, h
   m = parseFloat(document.getElementById("m-slider").value);
   document.getElementById("print-m").innerHTML = m.toFixed(1);
-  a = parseFloat(document.getElementById("a-slider").value);
-  document.getElementById("print-a").innerHTML = a.toFixed(1);
+  a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g
+  document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
   h = parseFloat(document.getElementById("h-slider").value);
   document.getElementById("print-h").innerHTML = h.toFixed(1);
   if (showAnswer1) { // checks if the answer is being shown before updating it
