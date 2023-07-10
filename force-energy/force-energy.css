@@ -52,7 +52,6 @@ button:hover {
 }
 
 .slider::-moz-range-thumb {
-    /* what does this do */
     width: 15px;
     height: 15px;
     background: #04AA6D;
@@ -60,7 +59,6 @@ button:hover {
 }
 
 .button-spacing {
-    /* doesn't appear in html ? */
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -75,7 +73,6 @@ button:hover {
 }
 
 #applet{
-    /* trajectory3 */
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
@@ -84,7 +81,6 @@ button:hover {
 }
 
 #applet2{
-    /* trajectory3 */
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
@@ -100,9 +96,7 @@ button:hover {
     padding: 10px;
 }
 
-
 #middle-panel {
-    /* trajectory3 */
     /* background-color: green; */
     position: absolute;
     height: 320px;
@@ -150,12 +144,8 @@ button:hover {
 }
 
 .checkboxes{
-    /* trajectory3 */
     padding-left: 10px;
 }
-
-/* Clear floats after the columns: 
-IDK what that means*/
 
 .row:after {
     content: "";
@@ -204,24 +194,9 @@ IDK what that means*/
 }
 
 #checkbox-grid li {
-    /* trajectory3 */
     display: block;
     float: left;
     width: 50%;
-}
-
-#energy-graph{
-    /* trajectory3 */
-    /* background-color: green; */
-    height: 300px;
-    width: 260px;
-}
-
-#integral-graph{
-    /* trajectory3 */
-    /* background-color: green; */
-    height: 300px;
-    width: 260px;
 }
 
 #previous-button{
