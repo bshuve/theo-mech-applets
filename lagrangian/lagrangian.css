@@ -4,7 +4,7 @@ body {
     position: relative;
     top: 70px;
     background-color:#edcdca;
-    max-width: 1300px;
+    max-width: 1000px;
     margin: auto;
 }
 
@@ -35,14 +35,13 @@ button:hover {
 }
 
 .button-spacing {
-    /* doesn't appear in html ? */
     width: 100%;
     height: 100%;
     padding: 10px;
 }
 
 .buttons {
-    max-width: 1300px;
+    max-width: 950px;
 }
 
 #text {
@@ -50,39 +49,26 @@ button:hover {
 }
 
 #applet{
-    /* trajectory3 */
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
-    margin: auto;
     height: 980px;
-    width: 1300px;
-}
-
-#applet2{
-    /* trajectory3 */
-    background-color:#b5cef5;
-    border-radius: 10px;
-    position: relative;
-    height: 1300px;
-    width: 1300px;
+    width: 950px;
 }
 
 #top-panel{
     /* background-color: green; */
     position: absolute;
     height: 320px;
-    width: 1300px;
+    width: 950px;
     padding: 10px;
 }
 
-
 #middle-panel {
-    /* trajectory3 */
     /* background-color: green; */
     position: absolute;
     height: 320px;
-    width: 1300px;
+    width: 950px;
     top: 320px;
     padding: 10px;
 }
@@ -90,24 +76,9 @@ button:hover {
 #bottom-panel {
     position: absolute;
     height: 320px;
-    width: 1300px;
+    width: 950px;
     top: 640px;
     padding: 10px;
-}
-
-#bottom2-panel {
-    position: absolute;
-    height: 320px;
-    width: 1300px;
-    top: 960px;
-    padding: 10px;
-}
-
-#slope-txt {
-    position: absolute;
-    bottom: 230px;
-    padding: 40px;
-    right: 0;
 }
 
 .column {
@@ -115,48 +86,6 @@ button:hover {
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
-}
-
-.column-right {
-    float: right;
-    height: 100%;
-    padding: 10px;
-    margin-right: 20px;
-    box-sizing: border-box;
-}
-
-.checkboxes{
-    /* trajectory3 */
-    padding-left: 10px;
-}
-
-/* Clear floats after the columns: 
-IDK what that means*/
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
- }
-
-#controls {
-    background-color:#c2f0c8;
-    box-sizing: border-box;
-    width: 272px;
-    height: 100%;
-    padding: 10px;
-    border: solid;
-    border-radius: 10px;
-}
-
-#controls-pg3 {
-    background-color:#c2f0c8;
-    box-sizing: border-box;
-    width: 242px;
-    height: 100%;
-    padding: 10px;
-    border: solid;
-    border-radius: 10px;
 }
 
 #controls2 {
@@ -167,37 +96,6 @@ IDK what that means*/
     padding: 20px;
     border: solid;
     border-radius: 10px;
-}
-
-#controls2-pg3 {
-    background-color:#c2f0c8;
-    box-sizing: border-box;
-    width: 242px;
-    height: 100%;
-    padding: 20px;
-    border: solid;
-    border-radius: 10px;
-}
-
-#checkbox-grid li {
-    /* trajectory3 */
-    display: block;
-    float: left;
-    width: 50%;
-}
-
-#energy-graph{
-    /* trajectory3 */
-    /* background-color: green; */
-    height: 300px;
-    width: 260px;
-}
-
-#integral-graph{
-    /* trajectory3 */
-    /* background-color: green; */
-    height: 300px;
-    width: 260px;
 }
 
 #previous-button{
