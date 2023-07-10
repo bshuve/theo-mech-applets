@@ -126,7 +126,7 @@ function energyAndDerivativeData() {
   var dashed_kinetic_energy_neg_data = [];
   var t = 0;
 
-  while (t <= 2) {
+  while (t <= end_time) {
     //parametrize graphs
     let KE = 1 / 2 * (m * (a * t) ** 2); // kinetic energy T
     let KEdp = 1 / 2 * (m * (15 * t) ** 2); // dashed plot for kinetic energy T

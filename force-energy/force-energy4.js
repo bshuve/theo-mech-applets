@@ -7,6 +7,7 @@ const CANVAS_HEIGHT = 294;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const dt = 0.005;
+const end_time = 20;
 const FRAME_RATE = 1;   // ms
 const TRANSITION_TIME = 10; // ms
 var A = parseFloat(document.getElementById("A-slider").value); // 0.05
@@ -183,7 +184,7 @@ function energyAndDerivativeData() {
   var t = 0;
 
   // update data for t = 0-20 s
-  while (t <= 20) {
+  while (t <= end_time) {
     //parametrize graphs
     var w = Math.sqrt(k/m);
     let x = A*Math.cos(w * t);

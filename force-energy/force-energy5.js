@@ -7,6 +7,7 @@ const CANVAS_HEIGHT = 294;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const dt = 0.005;
+const end_time = 6*Math.PI;
 const FRAME_RATE = 1;   // ms
 const TRANSITION_TIME = 10; // ms
 const A = 0.1;
@@ -188,7 +189,7 @@ function energyAndDerivativeData() {
   S = 0;
 
   // update data for 3 periods (3*2pi)
-  while (t <= 6*Math.PI) {
+  while (t <= end_time) {
     //parametrize graphs
     let x = A * Math.cos(w * t) + B * Math.sin(2 * w * t); // x(t)
     let v = -w * A * Math.sin(w * t) + 2 * B * w * Math.cos(2 * w * t); // derivative of x(t)
