@@ -8,13 +8,13 @@ const dt = 0.002;
 const end_time = 11;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
-var h = parseFloat(document.getElementById("h-slider").value); // 50
-var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
-var m = parseFloat(document.getElementById("m-slider").value); // 10.0
+const m = 1;
+const g = 2;
+var p = parseFloat(document.getElementById("p-slider").value); // 0.0
 
 /* Canvas Animation */
-function startAnimation(y, m, a) {
-  projectile = new component(3, 3, "purple", x_initial, y, m, a);
+function startAnimation(p) {
+  projectile = new component(3, 3, "purple", x_initial, p);
   animArea.start();
 }
 
@@ -61,14 +61,13 @@ var animArea = {
 }
 
 /* Define component Objects */
-function component(width, height, color, x, y, m, a) {
+function component(width, height, color, x, y, p) {
   this.width = width;
   this.height = height;
   this.color = color;
   this.x = x;
   this.y = y;
-  this.m = m;
-  this.a = a;
+  this.p = p;
 
   /* This is the function that draws the projectiles using
   the built-in fillRect() function. */
@@ -84,7 +83,7 @@ function component(width, height, color, x, y, m, a) {
 
   this.newPos = function (t) {
     this.x = transformXCoord(t);
-    this.y = transformYCoord(0.5 * a * t ** 2) - y;
+    this.y = transformYCoord(1-t**this.p);
   }
 }
 
@@ -105,7 +104,7 @@ function updateFrame() {
 }
 
 // run animation on load
-startAnimation(h, m, a);
+startAnimation(p);
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -261,7 +260,7 @@ const dL_dy_input = {
   svgID: "svg-for-dL-dy-plot", // what you want the svg element to be named (not super important)
   domain: { lower: 0, upper: 10 }, // domain of the plot
   xLabel: "Time (s)", // x-axis label
-  range: { lower: -100, upper: 100 }, // range of the plot
+  range: { lower: -50, upper: 0 }, // range of the plot
   yLabel: "\u2202L/\u2202y (N)"// y-axis label
 };              
 
@@ -278,7 +277,7 @@ const dt_dL_dydot_input = {
   svgID: "svg-for-dt-dL-dydot-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
-  range: { lower: -100, upper: 100 },
+  range: { lower: -50, upper: 0 },
   yLabel: "d/dt(\u2202L/\u2202\u1E8F) (N)"
 };              
 

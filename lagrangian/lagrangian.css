@@ -140,6 +140,16 @@ button:hover {
     border-radius: 10px;
 }
 
+#controls3 {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 242px;
+    height: 100%;
+    padding: 10px;
+    border: solid;
+    border-radius: 10px;
+}
+
 .row:after {
     content: "";
     display: table;
