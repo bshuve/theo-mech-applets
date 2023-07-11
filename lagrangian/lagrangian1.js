@@ -401,7 +401,7 @@ function slider_update() {
   h = parseFloat(document.getElementById("h-slider").value);
   document.getElementById("print-h").innerHTML = h.toFixed(1);
   if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Answer<br>";
+    document.getElementById("answer1").style.display = "block";
   }
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
@@ -428,12 +428,12 @@ document.getElementById("h-slider").oninput = function () {
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
-    document.getElementById("show-q1").innerHTML = "Hide Answers";
+    document.getElementById("show-q1").innerHTML = "Hide Answer";
     slider_update();
   } else {
     showAnswer1 = false;
-    document.getElementById("show-q1").innerHTML = "Show Answers";
-    document.getElementById("answer1").innerHTML = "";
+    document.getElementById("show-q1").innerHTML = "Show Answer";
+    document.getElementById("answer1").style.display = "none";
   }
 });
 
