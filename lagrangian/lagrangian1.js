@@ -5,7 +5,7 @@ const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const end_time = 2;
+const end_time = 3;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
 const h = 1;
@@ -124,7 +124,7 @@ function ELData() {
 
   var t = -3;
 
-  while (t <= 3) {
+  while (t <= end_time) {
     // parametrize graphs
     // for y param
     let y = 1 / 2 * a * t ** 2 + h;
