@@ -34,6 +34,30 @@ button:hover {
     color: #000000;
 }
 
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
 .button-spacing {
     width: 100%;
     height: 100%;
@@ -88,6 +112,24 @@ button:hover {
     box-sizing: border-box;
 }
 
+.column-right {
+    float: right;
+    height: 100%;
+    padding: 10px;
+    margin-right: 20px;
+    box-sizing: border-box;
+}
+
+#controls {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 272px;
+    height: 100%;
+    padding: 10px;
+    border: solid;
+    border-radius: 10px;
+}
+
 #controls2 {
     background-color:#c2f0c8;
     box-sizing: border-box;
@@ -97,6 +139,12 @@ button:hover {
     border: solid;
     border-radius: 10px;
 }
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+ }
 
 #previous-button{
     float: left;

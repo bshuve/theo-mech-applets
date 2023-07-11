@@ -39,7 +39,19 @@ Consider ... <br>
             width="320px" height="294px" title="Actual Motion">
             </canvas>
         </div>
+    <!-- Second column: sliders -->
+    <div class="column">
+        <div id="controls">
+            <legend>Define Constants:</legend>
+            <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
+            <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
+            <label for="a-slider">\(g\): <span id="print-a">2</span> m/s<sup>2</sup></label>
+            <input id="a-slider" class="slider" type="range" min="-5" max="5" step="0.1" value="2">
+            <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
+            <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
 
+        </div>
+    </div>
     <!-- Third column: question -->
         <div class="column">
             <div id="controls2">

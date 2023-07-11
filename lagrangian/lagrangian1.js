@@ -8,9 +8,9 @@ const dt = 0.002;
 const end_time = 2;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
-const h = 1;
-const a = -2;
-const m = 10.0;
+var h = parseFloat(document.getElementById("h-slider").value); // 50
+var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
+var m = parseFloat(document.getElementById("m-slider").value); // 10.0
 
 /* Canvas Animation */
 function startAnimation(y, m, a) {
@@ -392,12 +392,44 @@ on the HTML page (ex. button click, slider change, etc). */
 var showAnswer1 = false;
 var showAnswer2 = false;
 
+function slider_update() {
+  // updates global values for m, a, h
+  m = parseFloat(document.getElementById("m-slider").value);
+  document.getElementById("print-m").innerHTML = m.toFixed(1);
+  a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g
+  document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
+  h = parseFloat(document.getElementById("h-slider").value);
+  document.getElementById("print-h").innerHTML = h.toFixed(1);
+  if (showAnswer1) { // checks if the answer is being shown before updating it
+    document.getElementById("answer1").innerHTML = "<br><br>Answer<br>";
+  }
+  if (showAnswer2) { // checks if the answer is being shown before updating it
+    document.getElementById("answer2").style.display = "block";
+  }
+  const data = ELData();
+  // update plots
+  plot(data);
+  endAnimation();
+  startAnimation(h, m, a);
+}
+
+// checks if any sliders have been changed
+document.getElementById("m-slider").oninput = function () {
+  slider_update();
+}
+document.getElementById("a-slider").oninput = function () {
+  slider_update();
+}
+document.getElementById("h-slider").oninput = function () {
+  slider_update();
+}
+
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
     document.getElementById("show-q1").innerHTML = "Hide Answers";
-    document.getElementById("answer1").innerHTML = "<br><br>Answer<br>";
+    slider_update();
   } else {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answers";
@@ -410,7 +442,7 @@ document.getElementById("show-q2").addEventListener("click", function () {
   if (!showAnswer2) {
     showAnswer2 = true;
     document.getElementById("show-q2").innerHTML = "Hide Answer";
-    document.getElementById("answer2").style.display = "block";
+    slider_update();
   } else {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
