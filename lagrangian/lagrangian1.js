@@ -261,7 +261,7 @@ const dL_dy_input = {
   svgID: "svg-for-dL-dy-plot", // what you want the svg element to be named (not super important)
   domain: { lower: 0, upper: 10 }, // domain of the plot
   xLabel: "Time (s)", // x-axis label
-  range: { lower: -100, upper: 100 }, // range of the plot
+  range: { lower: -50, upper: 0 }, // range of the plot
   yLabel: "\u2202L/\u2202y (N)"// y-axis label
 };              
 
@@ -278,7 +278,7 @@ const dt_dL_dydot_input = {
   svgID: "svg-for-dt-dL-dydot-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
-  range: { lower: -100, upper: 100 },
+  range: { lower: -50, upper: 0 },
   yLabel: "d/dt(\u2202L/\u2202\u1E8F) (N)"
 };              
 
