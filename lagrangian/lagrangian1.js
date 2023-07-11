@@ -5,7 +5,7 @@ const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const end_time = 3;
+const end_time = 11;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
 var h = parseFloat(document.getElementById("h-slider").value); // 50
@@ -122,7 +122,7 @@ function ELData() {
   var dL_dw_data = [];
   var dt_dL_dwdot_data = [];
 
-  var t = -3;
+  var t = 0;
 
   while (t <= end_time) {
     // parametrize graphs
@@ -259,9 +259,9 @@ function createPlot(input) {
 const dL_dy_input = {
   divID: "#dL-dy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-dL-dy-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: -3, upper: 3 }, // domain of the plot
+  domain: { lower: 0, upper: 10 }, // domain of the plot
   xLabel: "Time (s)", // x-axis label
-  range: { lower: -25, upper: -15 }, // range of the plot
+  range: { lower: -100, upper: 100 }, // range of the plot
   yLabel: "\u2202L/\u2202y (N)"// y-axis label
 };              
 
@@ -276,9 +276,9 @@ var dLdy_line = dL_dy_plot.svg.append("g").attr("id", "dL-dy-line").attr("visibi
 const dt_dL_dydot_input = {
   divID: "#dt-dL-dydot-graph",
   svgID: "svg-for-dt-dL-dydot-plot",
-  domain: { lower: -3, upper: 3 },
+  domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
-  range: { lower: -25, upper: -15 },
+  range: { lower: -100, upper: 100 },
   yLabel: "d/dt(\u2202L/\u2202\u1E8F) (N)"
 };              
 
@@ -292,7 +292,7 @@ var dtdLdydot_line = dt_dL_dydot_plot.svg.append("g").attr("id", "dt-dL-dydot-li
 const dL_dw_input = {
   divID: "#dL-dw-graph", 
   svgID: "svg-for-dL-dw-plot", 
-  domain: { lower: -3, upper: 3 }, 
+  domain: { lower: 0, upper: 10 }, 
   xLabel: "Time (s)", 
   range: { lower: -1000, upper: 0 }, 
   yLabel: "\u2202L/\u2202w (N)"
@@ -307,7 +307,7 @@ var dLdw_line = dL_dw_plot.svg.append("g").attr("id", "dL-dw-line").attr("visibi
 const dt_dL_dwdot_input = {
   divID: "#dt-dL-dwdot-graph",
   svgID: "svg-for-dt-dL-dwdot-plot",
-  domain: { lower: -3, upper: 3 },
+  domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
   range: { lower: -1000, upper: 0 },
   yLabel: "d/dt(\u2202L/\u2202\u1E87) (N)"
