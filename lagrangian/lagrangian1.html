@@ -105,13 +105,17 @@
 <br>
 
 <label for="show-q2" id="text" style="line-height: 2">
-    <b>Question 2: </b>What do you notice about the relationships between the four graphs?
+    <b>Question 2: </b>As you move the sliders to test different values, what do you notice about the relationships between the four graphs?
 </label>
 <br><br>
 <button id="show-q2">Show answer</button>
 <br><br>        
 <span id="answer2" style="display: none; line-height: 1.8">
-    Answer
+    You may have noticed that the parameterization of each side of the Euler-Lagrange equation looks different across different coordinate systems.
+    That is, the graph for \(\frac{\partial L}{\partial y}\) differs from \(\frac{\partial L}{\partial w}\), and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) differs from \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).<br>
+    However, \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) and \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\),
+    showing that no matter the choice of \(y\) or \(w\) as coordinates, the Euler-Lagrange equation still holds. These graphs provide a visual proof for the mathematical explanation above.<br>
+    In fact, you will find that the Euler-Lagrange equation can be generalized to any arbitrary coordinate system!
     <br><br>
 </span>
 <div class="buttons">
