@@ -158,10 +158,8 @@ function ELData() {
     dt_dL_dydot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdydot });
 
     // for w param
-    if (dtdLdwdot > -10000) { // don't graph at the asymptote to avoid errors
-      dL_dw_data.push({ "x": Math.round(t * 10000) / 10000, "y": dLdw });
-      dt_dL_dwdot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdwdot });
-    }
+    dL_dw_data.push({ "x": Math.round(t * 10000) / 10000, "y": dLdw });
+    dt_dL_dwdot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdwdot });
     t += dt;
 
   }
