@@ -136,7 +136,7 @@ function energyAndDerivativeData() {
     let dPE = m * g; // dU/dy
     let dnPE = -dPE; // -dU/dy
     let ddKE = m * a; // d/dt(dT/dv)
-    S += dt * (KE - PE);
+    S += dt * ((1/2 * m * v**2) - (m * g * y));
 
     // push all data into arrays
     kinetic_energy_data.push({ "x": -4*t**(4-1), "y": KE });
