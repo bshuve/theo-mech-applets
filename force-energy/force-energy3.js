@@ -11,9 +11,7 @@ const x_initial = 20;
 const y_initial = 100;
 const m = 1;
 const g = 2;
-const p_initial = parseInt(document.getElementById("p-slider").value); // 0.0
 var p = parseInt(document.getElementById("p-slider").value); // 0.0
-const range_p = parseInt(document.getElementById("p-slider").max); // 4.0
 // create action variable
 var S = 0;
 
@@ -44,7 +42,7 @@ var animArea = {
     this.panel.height = CANVAS_HEIGHT;
     this.context = this.panel.getContext("2d");
 
-    /* Set the initial time to -1 */
+    /* Set the initial time to 0.01 */
     this.time = 0.01;
 
     this.interval = setInterval(updateFrame, FRAME_RATE);
@@ -105,7 +103,7 @@ function updateFrame() {
 }
 
 // run animation on load
-startAnimation(p_initial);
+startAnimation(p);
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
