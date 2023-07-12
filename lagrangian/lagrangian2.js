@@ -5,16 +5,17 @@ const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const end_time = 11;
+const end_time = 1;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
+const y_initial = 100;
 const m = 1;
 const g = 2;
 var p = parseFloat(document.getElementById("p-slider").value); // 0.0
 
 /* Canvas Animation */
 function startAnimation(p) {
-  projectile = new component(3, 3, "purple", x_initial, p);
+  projectile = new component(3, 3, "purple", x_initial, y_initial, p);
   animArea.start();
 }
 
@@ -47,11 +48,7 @@ var animArea = {
     // add text and ground to panel
     this.context.font = "18px Verdana";
     this.context.fillStyle = "black";
-    this.context.fillText("Projectile Motion", 10, 30);
-    this.context = this.panel.getContext("2d");
-    this.context.fillStyle = "gray";
-    this.context.fillRect(0, transformYCoord(0) - h, 25, 3);
-    this.context.fillRect(25, transformYCoord(0) - h, -25, 300);
+    this.context.fillText("Height vs Time", 10, 30);
   },
   stop: function () {
     this.time = 0;
@@ -392,13 +389,9 @@ var showAnswer1 = false;
 var showAnswer2 = false;
 
 function slider_update() {
-  // updates global values for m, a, h
-  m = parseFloat(document.getElementById("m-slider").value);
-  document.getElementById("print-m").innerHTML = m.toFixed(1);
-  a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g
-  document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
-  h = parseFloat(document.getElementById("h-slider").value);
-  document.getElementById("print-h").innerHTML = h.toFixed(1);
+  // updates global value for p
+  p = parseFloat(document.getElementById("p-slider").value);
+  document.getElementById("print-p").innerHTML = p.toFixed(1);
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").style.display = "block";
   }
@@ -409,20 +402,13 @@ function slider_update() {
   // update plots
   plot(data);
   endAnimation();
-  startAnimation(h, m, a);
+  startAnimation(p);
 }
 
 // checks if any sliders have been changed
-document.getElementById("m-slider").oninput = function () {
+document.getElementById("p-slider").oninput = function () {
   slider_update();
 }
-document.getElementById("a-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("h-slider").oninput = function () {
-  slider_update();
-}
-
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
