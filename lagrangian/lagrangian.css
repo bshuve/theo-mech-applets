@@ -88,6 +88,14 @@ button:hover {
     width: 950px;
 }
 
+#applet3{
+    background-color:#b5cef5;
+    border-radius: 10px;
+    position: relative;
+    height: 1300px;
+    width: 950px;
+}
+
 #top-panel{
     /* background-color: green; */
     position: absolute;
@@ -110,6 +118,14 @@ button:hover {
     height: 320px;
     width: 950px;
     top: 640px;
+    padding: 10px;
+}
+
+#bottom2-panel {
+    position: absolute;
+    height: 320px;
+    width: 950px;
+    top: 960px;
     padding: 10px;
 }
 
