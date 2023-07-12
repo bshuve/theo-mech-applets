@@ -26,11 +26,11 @@ function endAnimation() {
 
 /* Coordinate transformations */
 function transformXCoord(x) {
-  return (CANVAS_WIDTH * x) + 20;
+  return x_initial + x * (CANVAS_WIDTH / 1.2);
 }
 
 function transformYCoord(y) {
-  return -h - (CANVAS_HEIGHT / 2 * y) + 280;
+  return (y_initial * 2.3) - y * (CANVAS_HEIGHT / 1.8);
 }
 
 var animArea = {
@@ -40,8 +40,8 @@ var animArea = {
     this.panel.height = CANVAS_HEIGHT;
     this.context = this.panel.getContext("2d");
 
-    /* Set the initial time to 0 */
-    this.time = 0;
+    /* Set the initial time to 0.01 */
+    this.time = 0.01;
 
     this.interval = setInterval(updateFrame, FRAME_RATE);
 
@@ -51,7 +51,7 @@ var animArea = {
     this.context.fillText("Height vs Time", 10, 30);
   },
   stop: function () {
-    this.time = 0;
+    this.time = 0.01;
     // Terminate setInterval
     clearInterval(this.interval);
   },
@@ -118,17 +118,18 @@ function ELData() {
   var dL_dw_data = [];
   var dt_dL_dwdot_data = [];
 
-  var t = 0;
+  var t = 0.0001;
 
   while (t <= end_time) {
     // parametrize graphs
     // for y param
-    let y = 1 / 2 * a * t ** 2 + h;
-    let v = a * t;
+    let y = 1-t**p;
+    let v = -p*t**(p-1);
+    let a = -p*(p-1)*t**(p-2);
     let KE = 1 / 2 * (m * (v) ** 2); // kinetic energy T
-    let PE = -m * a * y; // potential energy U
+    let PE = m * g * y; // potential energy U
     let dKEdy = 0; // dT/dy = 0 because no y dependence
-    let dPEdy = -m * a; // dU/dy
+    let dPEdy = m * g; // dU/dy
     let dKEdydot = m * v; // dT/dydot
     let dtKEy = m * a; // d/dt(dT/dydot)
     let dPEdydot = 0; // dU/dydot = 0 because no ydot dependence
@@ -141,9 +142,9 @@ function ELData() {
     let wdot = 2 * y * v;
     let wdotdot = 2 * (v * v + y * a)
     let KEw = 1 / 2 * (m * (wdot ** 2)/(4 * w)); // kinetic energy T
-    let PEw = -m * a * Math.sqrt(w); // potential energy U
+    let PEw = m * g * Math.sqrt(w); // potential energy U
     let dKEdw = - 1 / 2 * m * ((wdot ** 2)/(4 * w ** 2)); // dT/dw
-    let dPEdw = - 1 / 2 * m * a * (1 / Math.sqrt(w)); // dU/dw
+    let dPEdw =  1 / 2 * m * g * (1 / Math.sqrt(w)); // dU/dw
     let dKEdwdot = (m * wdot)/(4 * w); // dT/dwdot
     let dtKEw = 1 / 4 * m * ((wdotdot * w - wdot ** 2) / w ** 2); // d/dt(dT/dwdot)
     let dPEdwdot = 0; // dU/dwdot = 0 because no wdot dependence
@@ -252,77 +253,53 @@ function createPlot(input) {
 // y param
 // dL/dy GRAPH
 // this input format will be followed by each plot after this
-const dL_dy_input = {
-  divID: "#dL-dy-graph", // the id of the <div> element in your HTML file where the plot will go
-  svgID: "svg-for-dL-dy-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: 0, upper: 10 }, // domain of the plot
+const y_input = {
+  divID: "#y-graph", // the id of the <div> element in your HTML file where the plot will go
+  svgID: "svg-for-y-plot", // what you want the svg element to be named (not super important)
+  domain: { lower: 0, upper: 1 }, // domain of the plot
   xLabel: "Time (s)", // x-axis label
-  range: { lower: -50, upper: 0 }, // range of the plot
-  yLabel: "\u2202L/\u2202y (N)"// y-axis label
+  range: { lower: -15, upper: 15 }, // range of the plot
+  yLabel: "y parameterization (N)"// y-axis label
 };              
 
 // the svg element is essentially saved as this const variable
-const dL_dy_plot = createPlot(dL_dy_input);
+const y_plot = createPlot(y_input);
 
 // graph each line on the plot
 // dL/dy
-var dLdy_line = dL_dy_plot.svg.append("g").attr("id", "dL-dy-line").attr("visibility", "visible");
-
-// d/dt(dL/dydot) GRAPH
-const dt_dL_dydot_input = {
-  divID: "#dt-dL-dydot-graph",
-  svgID: "svg-for-dt-dL-dydot-plot",
-  domain: { lower: 0, upper: 10 },
-  xLabel: "Time (s)",
-  range: { lower: -50, upper: 0 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E8F) (N)"
-};              
-
-const dt_dL_dydot_plot = createPlot(dt_dL_dydot_input);
+var dLdy_line = y_plot.svg.append("g").attr("id", "dL-dy-line").attr("visibility", "visible");
 
 // d/dt(dL/dydot)
-var dtdLdydot_line = dt_dL_dydot_plot.svg.append("g").attr("id", "dt-dL-dydot-line").attr("visibility", "visible");
+var dtdLdydot_line = y_plot.svg.append("g").attr("id", "dt-dL-dydot-line").attr("visibility", "visible");
 
 // w param
 // dL/dw GRAPH
-const dL_dw_input = {
-  divID: "#dL-dw-graph", 
-  svgID: "svg-for-dL-dw-plot", 
-  domain: { lower: 0, upper: 10 }, 
+const w_input = {
+  divID: "#w-graph", 
+  svgID: "svg-for-w-plot", 
+  domain: { lower: 0, upper: 1 }, 
   xLabel: "Time (s)", 
-  range: { lower: -1000, upper: 0 }, 
-  yLabel: "\u2202L/\u2202w (N)"
+  range: { lower: -100, upper: 100 }, 
+  yLabel: "w parameterization (N)"
 };              
 
-const dL_dw_plot = createPlot(dL_dw_input);
+const w_plot = createPlot(w_input);
 
 // dL/dw
-var dLdw_line = dL_dw_plot.svg.append("g").attr("id", "dL-dw-line").attr("visibility", "visible");
-
-// d/dt(dL/dwdot) GRAPH
-const dt_dL_dwdot_input = {
-  divID: "#dt-dL-dwdot-graph",
-  svgID: "svg-for-dt-dL-dwdot-plot",
-  domain: { lower: 0, upper: 10 },
-  xLabel: "Time (s)",
-  range: { lower: -1000, upper: 0 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E87) (N)"
-};              
-
-const dt_dL_dwdot_plot = createPlot(dt_dL_dwdot_input);
+var dLdw_line = w_plot.svg.append("g").attr("id", "dL-dw-line").attr("visibility", "visible");
 
 // d/dt(dL/dwdot)
-var dtdLdwdot_line = dt_dL_dwdot_plot.svg.append("g").attr("id", "dt-dL-dwdot-line").attr("visibility", "visible");
+var dtdLdwdot_line = w_plot.svg.append("g").attr("id", "dt-dL-dwdot-line").attr("visibility", "visible");
 
 // update plots
 function plot(data) {
   // dL/dy
   var input = {
     data: data.y,
-    svg: dL_dy_plot.svg,
+    svg: y_plot.svg,
     line: dLdy_line,
-    xScale: dL_dy_plot.xScale,
-    yScale: dL_dy_plot.yScale,
+    xScale: y_plot.xScale,
+    yScale: y_plot.yScale,
     color: "red"
   };
 
@@ -332,11 +309,11 @@ function plot(data) {
   // d/dt(dL/dydot)
   var input = {
     data: data.ydot,
-    svg: dt_dL_dydot_plot.svg,
+    svg: y_plot.svg,
     line: dtdLdydot_line,
-    xScale: dt_dL_dydot_plot.xScale,
-    yScale: dt_dL_dydot_plot.yScale,
-    color: "red"
+    xScale: y_plot.xScale,
+    yScale: y_plot.yScale,
+    color: "green"
   };
 
   // plot the data
@@ -345,11 +322,11 @@ function plot(data) {
   // dL/dw
   input = {
     data: data.w,
-    svg: dL_dw_plot.svg,
+    svg: w_plot.svg,
     line: dLdw_line,
-    xScale: dL_dw_plot.xScale,
-    yScale: dL_dw_plot.yScale,
-    color: "green"
+    xScale: w_plot.xScale,
+    yScale: w_plot.yScale,
+    color: "red"
   };
 
   // plot the data
@@ -358,10 +335,10 @@ function plot(data) {
   // d/dt(dL/dwdot)
   input = {
     data: data.wdot,
-    svg: dt_dL_dwdot_plot.svg,
+    svg: w_plot.svg,
     line: dtdLdwdot_line,
-    xScale: dt_dL_dwdot_plot.xScale,
-    yScale: dt_dL_dwdot_plot.yScale,
+    xScale: w_plot.xScale,
+    yScale: w_plot.yScale,
     color: "green"
   };
 
