@@ -37,7 +37,7 @@
 
 <br><br> 
 
-<div id="applet">
+<div id="applet2">
     <div id="top-panel" class="row">
 	<!-- First column: trajectory animation -->
         <div class="column">
@@ -55,32 +55,22 @@
     </div>
     <!-- Third column: question -->
         <div class="column">
-            <div id="controls3">
-                <p>The graphs below correspond to the following coordinate systems:</p>
-                <span id="red">....</span> \(y\) parameterization
+            <div id="controls2">
+                <p>The graphs below correspond to the following, assuming \(q\) is a general coordinate system:</p>
+                <span id="red">....</span> \(\partial L/\partial q\) parameterization
                 <br><br>
-                <span id="green">....</span> \(w\) parameterization
+                <span id="green">....</span> \(d/dt(\partial L/\partial \dot{q})\) parameterization
                 <br><br>
             </div>
         </div>
     </div>
     <div id="middle-panel" class="row">
         <div class="column">
-            <div id="dL-dy-graph"></div>
+            <div id="y-graph"></div>
         </div>
 
         <div class="column">
-            <div id="dt-dL-dydot-graph"></div>
-        </div>
-    </div>
-    
-    <div id="bottom-panel" class="row">
-        <div class="column">
-            <div id="dL-dw-graph"></div>
-        </div>
-
-        <div class="column">
-            <div id="dt-dL-dwdot-graph"></div>
+            <div id="w-graph"></div>
         </div>
     </div>
 </div> 

@@ -80,6 +80,14 @@ button:hover {
     width: 950px;
 }
 
+#applet2{
+    background-color:#b5cef5;
+    border-radius: 10px;
+    position: relative;
+    height: 660px;
+    width: 950px;
+}
+
 #top-panel{
     /* background-color: green; */
     position: absolute;
@@ -133,19 +141,9 @@ button:hover {
 #controls2 {
     background-color:#c2f0c8;
     box-sizing: border-box;
-    width: 272px;
+    width: 275px;
     height: 100%;
     padding: 20px;
-    border: solid;
-    border-radius: 10px;
-}
-
-#controls3 {
-    background-color:#c2f0c8;
-    box-sizing: border-box;
-    width: 242px;
-    height: 100%;
-    padding: 10px;
     border: solid;
     border-radius: 10px;
 }
