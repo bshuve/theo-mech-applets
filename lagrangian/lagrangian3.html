@@ -17,7 +17,7 @@
 <body id="body">
 
 <h1 id="title">Lagrangian: Page 3</h1>
-<h2 id="subtitle">How Lagrange's equations are the same in each coordinate system</h2>
+<h2 id="subtitle">Graphing the Lagrangian with respect to different quantities</h2>
 <p id="text">
     (Chrome Recommended.)
     <br><br>
@@ -28,24 +28,11 @@
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b> Verify that the Euler-Lagrange equation is true for the \(w\) parameterization, using the solution \(y(t) = 1 - t^2\) where \(h = 1\) and \(g = 2\). As a reminder, the Euler-Lagrange equation follows that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).
+    <b>Question 1: </b> As we saw in the previous pages, although the Euler-Lagrange equation holds true across coordinate systems, the graphs for their respective coordinate systems look different. What unit could we place along the x-axis so that we see the same relationship between Energy and the x-axis label across coordinate systems?
     <br><br>
 <button id="show-q1">Show answers</button><br>    
-<span id="answer1" style="line-height: 2; display: none"><br>
-    We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L = T - U\).<br>
-    So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}} - \frac{\partial U}{\partial \dot{w}})\).<br>
-    \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U = 2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-    Knowing this, we get:<br>
-    \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) = \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial \dot{w}}(2m \sqrt{w}))\)<br>
-    Which simplifies into:<br>
-    \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
-    <br>Recall that for the \(w\) parameterizations, the following apply: <br>
-    \(w = y^2 = 1 - 2t^2 + t^4\)<br>
-    \(\dot{w} = 2y\dot{y} = -4t + 4t^3\)<br>
-    \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = -4 + 12t^2\)<br>
-    <br>When we plug these into the equation above, we get<br>
-    \(-\frac{1}{2}(-4t + 4t^3)^2 - 4(1-2t^2 + t^4)^{3/2} = (-4 + 12t^2)(1 - 2t^2 + t^4) - (-4t + 4t^3)^2\) <br>
-    Where both sides of the equation are equivalent through simplification.<br>
+<span id="answer1" style= "display: none"><br>
+    We can set the x-axis unit to Time (s). This is because despite different parameterizations through coordinate systems, the path will be the same. So, the energy along that path vs. time will be equal no matter what coordinate system we are working in.
 </span>
 </label>
 
