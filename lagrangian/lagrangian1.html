@@ -28,10 +28,22 @@
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b> Verify that the Euler-Lagrange equation is true for the \(w\) parameterization, using the solution \(y(t) = 1 - t^2\) where \(h = 1\) and \(g = 2\). As a reminder, the Euler-Lagrange equation follows that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).
+    <b>Question 1: </b> What are the limitations of our \(w\) coordinate choice?
     <br><br>
-<button id="show-q1">Show answers</button><br>    
-<span id="answer1" style="line-height: 2; display: none"><br>
+</label>
+<button id="show-q1">Show answer</button>
+<br>   
+<span id="answer1" style="display: none"><br>
+    As we transform from the \(y\) to the \(w\) coordinate, only when \(y\geq0\) do we preserve the sign of \(y\). When \(y<0\), we are unable to preserve the negative sign of \(y\), therefore \(w\) will always be positive and only when \(y\geq0\) will \(y\) and \(w\) both describe the same path.
+</span>
+<br><br>
+
+<label for="show-q2" id="text">
+    <b>Question 2: </b> Verify that the Euler-Lagrange equation is true for the \(w\) parameterization, using the solution \(y(t) = 1 - t^2\) where \(h = 1\) and \(g = 2\). As a reminder, the Euler-Lagrange equation follows that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).
+    <br><br>
+</label>
+<button id="show-q2">Show answers</button><br>    
+<span id="answer2" style="line-height: 1.8; display: none"><br>
     We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L = T - U\).<br>
     So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}} - \frac{\partial U}{\partial \dot{w}})\).<br>
     \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U = 2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
@@ -47,7 +59,6 @@
     The right-hand side is \((-4 + 12t^2)(1 - 2t^2 + t^4) - (-4t + 4t^3)^2\) and simplifies to \(-4t^6 + 4t^4 + 4t^2 -4\).<br>
     Thus, we have proven that both sides are equivalent, and that the Euler-Lagrange equation applies for a classical path in two different coordinate parameterizations!<br>
 </span>
-</label>
 
 <br><br> 
 
@@ -104,13 +115,13 @@
 </div> 
 <br>
 
-<label for="show-q2" id="text" style="line-height: 2">
-    <b>Question 2: </b>As you move the sliders to test different values, what do you notice about the relationships between the four graphs?
+<label for="show-q3" id="text">
+    <b>Question 3: </b>As you move the sliders to test different values, what do you notice about the relationships between the four graphs?
+    <br><br>
 </label>
-<br><br>
-<button id="show-q2">Show answer</button>
+<button id="show-q3">Show answer</button>
 <br><br>        
-<span id="answer2" style="display: none; line-height: 1.8">
+<span id="answer3" style="display: none; line-height: 1.8">
     You may have noticed that the parameterization of each side of the Euler-Lagrange equation looks different across different coordinate systems.
     That is, the graph for \(\frac{\partial L}{\partial y}\) differs from \(\frac{\partial L}{\partial w}\), and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) differs from \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).<br>
     However, \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) and \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\),
@@ -118,6 +129,7 @@
     In fact, you will find that the Euler-Lagrange equation can be generalized to any arbitrary coordinate system!
     <br><br>
 </span>
+
 <div class="buttons">
     <column id="next-button">
         <button onclick = "window.location.href = 'lagrangian2.html'">NEXT PAGE</button>
