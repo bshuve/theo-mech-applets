@@ -5,7 +5,7 @@ const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const end_time = 11;
+const end_time = 10;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
 var h = parseFloat(document.getElementById("h-slider").value); // 50
@@ -154,7 +154,9 @@ function EnergyData() {
 
     // for w param
     PE_w_data.push({ "x": w, "y": PEw });
-    KE_wdot_data.push({ "x": wdot, "y": KEw });
+    if (wdot <= 0) {
+      KE_wdot_data.push({ "x": wdot, "y": KEw });
+    }
     PE_wt_data.push({ "x": Math.round(t * 10000) / 10000, "y": PEw });
     KE_wt_data.push({ "x": Math.round(t * 10000) / 10000, "y": KEw });
     t += dt;
@@ -301,7 +303,7 @@ var KE_ydot_line = KE_ydot_plot.svg.append("g").attr("id", "KE-ydot-line").attr(
 const KE_wdot_input = {
   divID: "#KE-wdot-graph",
   svgID: "svg-for-KE-wdot-plot",
-  domain: { lower: -1000, upper: 0 },
+  domain: { lower: -1600, upper: 0 },
   xLabel: "\u1E87 Velocity (m/s)",
   range: { lower: 0, upper: 1000 },
   yLabel: "Kinetic Energy (J)"
@@ -318,7 +320,7 @@ const y_input = {
   svgID: "svg-for-yt-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
-  range: { lower: 0, upper: 1500 },
+  range: { lower: 0, upper: 2000 },
   yLabel: "Absolute Value of Energy (J)"
 };              
 
