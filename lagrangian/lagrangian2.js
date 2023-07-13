@@ -361,7 +361,6 @@ on the HTML page (ex. button click, slider change, etc). */
 // these booleans store whether answers are being shown
 // by default, all answers are hidden
 var showAnswer1 = false;
-var showAnswer2 = false;
 
 function slider_update() {
   // updates global value for p
@@ -369,9 +368,6 @@ function slider_update() {
   document.getElementById("print-p").innerHTML = p.toFixed(1);
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").style.display = "block";
-  }
-  if (showAnswer2) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").style.display = "block";
   }
   const data = ELData();
   // update plots
@@ -394,18 +390,5 @@ document.getElementById("show-q1").addEventListener("click", function () {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answer";
     document.getElementById("answer1").style.display = "none";
-  }
-});
-
-// shows the answer if the q2 button is clicked
-document.getElementById("show-q2").addEventListener("click", function () {
-  if (!showAnswer2) {
-    showAnswer2 = true;
-    document.getElementById("show-q2").innerHTML = "Hide Answer";
-    slider_update();
-  } else {
-    showAnswer2 = false;
-    document.getElementById("show-q2").innerHTML = "Show Answer";
-    document.getElementById("answer2").style.display = "none";
   }
 });

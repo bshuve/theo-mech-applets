@@ -135,6 +135,7 @@ function EnergyData() {
     let v = a * t;
     let KE = 1 / 2 * (m * (v) ** 2); // kinetic energy T
     let PE = -m * a * y; // potential energy U
+    let absPE = Math.abs(PE);
 
     // for w param, where w = y^2;
     let w = y**2;
@@ -146,7 +147,7 @@ function EnergyData() {
     // for y param
     PE_y_data.push({ "x": y, "y": PE });
     KE_ydot_data.push({ "x": v, "y": KE });
-    PE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": PE });
+    PE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": absPE });
     KE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": KE });
 
     // for w param
@@ -316,7 +317,7 @@ const y_input = {
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
   range: { lower: 0, upper: 1000 },
-  yLabel: "Energy (J)"
+  yLabel: "Absolute Value of Energy (J)"
 };              
 
 const y_plot = createPlot(y_input);

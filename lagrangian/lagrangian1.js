@@ -391,6 +391,7 @@ on the HTML page (ex. button click, slider change, etc). */
 // by default, all answers are hidden
 var showAnswer1 = false;
 var showAnswer2 = false;
+var showAnswer3 = false;
 
 function slider_update() {
   // updates global values for m, a, h
@@ -405,6 +406,9 @@ function slider_update() {
   }
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
+  }
+  if (showAnswer3) { // checks if the answer is being shown before updating it
+    document.getElementById("answer3").style.display = "block";
   }
   const data = ELData();
   // update plots
@@ -447,5 +451,18 @@ document.getElementById("show-q2").addEventListener("click", function () {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
     document.getElementById("answer2").style.display = "none";
+  }
+});
+
+// shows the answer if the q3 button is clicked
+document.getElementById("show-q3").addEventListener("click", function () {
+  if (!showAnswer3) {
+    showAnswer3 = true;
+    document.getElementById("show-q3").innerHTML = "Hide Answer";
+    slider_update();
+  } else {
+    showAnswer3 = false;
+    document.getElementById("show-q3").innerHTML = "Show Answer";
+    document.getElementById("answer3").style.display = "none";
   }
 });
