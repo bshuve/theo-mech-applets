@@ -145,7 +145,9 @@ function EnergyData() {
 
     // push all data into arrays
     // for y param
-    PE_y_data.push({ "x": y, "y": PE });
+    if (PE >= 0) {
+      PE_y_data.push({ "x": y, "y": PE });
+    }
     KE_ydot_data.push({ "x": v, "y": KE });
     PE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": absPE });
     KE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": KE });
@@ -316,7 +318,7 @@ const y_input = {
   svgID: "svg-for-yt-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
-  range: { lower: 0, upper: 1000 },
+  range: { lower: 0, upper: 1500 },
   yLabel: "Absolute Value of Energy (J)"
 };              
 
@@ -334,7 +336,7 @@ const w_input = {
   svgID: "svg-for-wt-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
-  range: { lower: 0, upper: 1000 },
+  range: { lower: 0, upper: 2000 },
   yLabel: "Energy (J)"
 };              
 
