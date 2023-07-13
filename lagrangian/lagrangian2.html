@@ -27,11 +27,25 @@
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b> Verify the Euler-Lagrange equation for the y and w parameterization. At what p-value, does the Euler-Lagrange equation hold for?
+    <b>Question 1: </b> Verify the Euler-Lagrange equation for the \(y\) and \(w\) parameterization with \(g = 2\). At which p-value does the Euler-Lagrange equation hold?
     <br><br>
 <button id="show-q1">Show answers</button><br>    
-<span id="answer1" style="line-height: 2; display: none"><br>
-    ...
+<span id="answer1" style="display: none; line-height: 2"><br>
+    We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L = T - U\).<br>
+    So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}} - \frac{\partial U}{\partial \dot{w}})\).<br>
+    \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U = 2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
+    Knowing this, we get:<br>
+    \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) = \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial \dot{w}}(2m \sqrt{w}))\)<br>
+    Which simplifies into:<br>
+    \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
+    <br>Recall that for the \(w\) parameterizations, the following apply: <br>
+    \(w = (1-t^p)^2\)<br>
+    \(\dot{w} = 2y\dot{y} = 2(1-t^p)(-pt^{p-1})\)<br>
+    \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = 2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))\)<br>
+    <br>When we plug these into the equation above, we get the left-hand side of the equation as \(-\frac{1}{2}(2(1-t^p)(-pt^{p-1}))^2 - 4((1-t^p)^2)^{3/2}\), which expands to \(-2p^2t^{2p-2} + 4p^2t^{3p-2} - 2p^2t^{4p-2} - 4 + 12t^p - 12t^{2p} + 4t^{3p}\).<br>
+    The right-hand side is \(2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))(1-t^p)^2 - (2(1-t^p)(-pt^{p-1}))^2\) and expands to \(-2p^2t^{2p-2} - 2p^2t^{3p-2} - 2p^2t^{p-2} + 2pt^{p-2} + 6p^2t^{2p-2} - 6pt^{2p-2} + 6pt^{3p-2} - 2pt^{4p-2}\).<br>
+    The correct p value satisfies this equation for all t values between 0 and 1. Here, the two sides are only equal when \(p=2\). You can check this by graphing each side in Desmos and using a slider for \(p\)!<br>
+
 </span>
 </label>
 
