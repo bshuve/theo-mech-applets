@@ -298,9 +298,9 @@ var KE_ydot_line = KE_ydot_plot.svg.append("g").attr("id", "KE-ydot-line").attr(
 const KE_wdot_input = {
   divID: "#KE-wdot-graph",
   svgID: "svg-for-KE-wdot-plot",
-  domain: { lower: -20, upper: 0 },
+  domain: { lower: -1000, upper: 0 },
   xLabel: "\u1E87 Velocity (m/s)",
-  range: { lower: 0, upper: 200 },
+  range: { lower: 0, upper: 1000 },
   yLabel: "Kinetic Energy (J)"
 };              
 
