@@ -130,13 +130,21 @@
     <br><br>
 </span>
 <label for="show-q4" id="text">
-    <b>Question 4: </b>Recall the Euler-Lagrange equation as \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). Why couldn't we just graph and compare \(-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\)?
+    <b>Question 4: </b>Recall the Euler-Lagrange equation in the \(w\) coordinate system as \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). Why couldn't we just graph and compare \(-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\)?
     <br><br>
 </label>
 <button id="show-q4">Show answer</button>
 <br><br>
-<span id="answer4" style="display: block; line-height: 1.8">
+<span id="answer4" style="display: none; line-height: 1.8">
     It's important to consider that because \(L=T-U\), \(\frac{\partial L}{\partial q} = \frac{\partial T}{\partial q} - \frac{\partial U}{\partial q}\) and \(\frac{\partial L}{\partial \dot{q}} = \frac{\partial T}{\partial \dot{q}} - \frac{\partial U}{\partial \dot{q}}\).
+    Also note that \(\dot{q}\) is not dependent on \(q\).<br>
+    In the \(y\) parameterization, \(T\) is only dependent on \(\dot{y}\) and not \(y\).
+    Thus, \(\frac{\partial T}{\partial y} = 0\), so \(\frac{\partial L}{\partial y} = - \frac{\partial U}{\partial y}\).
+    In the same way, \(U\) is only dependent on \(y\), not \(\dot{y} \implies 
+    \frac{\partial U}{\partial \dot{y}} = 0\), so \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}}\). If we wanted to, we could just graph \(-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\),
+    and we would see the same graphs.<br><br>
+    In the \(w\) parameterization, \(U\) is still only dependent on \(w\), so \(\frac{\partial L}{\partial \dot{w}} = \frac{\partial T}{\partial \dot{w}}\). However, \(T\) now has dependence on both \(w\) and \(\dot{w}\), so \(\frac{\partial L}{\partial w}\) has a kinetic energy term and a potential energy term.
+    We graph \(\frac{\partial L}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) to encompass the full Euler-Lagrange equation.
     <br><br>
 </span>
 
