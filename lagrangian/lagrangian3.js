@@ -244,7 +244,7 @@ function createPlot(input) {
   svg.append("text")
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
-    .attr("y", -margin.left + 20)
+    .attr("y", -margin.left + 15)
     .attr("x", -margin.top)
     .text(input.yLabel)
 
