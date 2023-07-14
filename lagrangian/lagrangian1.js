@@ -392,6 +392,7 @@ on the HTML page (ex. button click, slider change, etc). */
 var showAnswer1 = false;
 var showAnswer2 = false;
 var showAnswer3 = false;
+var showAnswer4 = false;
 
 function slider_update() {
   // updates global values for m, a, h
@@ -401,15 +402,6 @@ function slider_update() {
   document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
   h = parseFloat(document.getElementById("h-slider").value);
   document.getElementById("print-h").innerHTML = h.toFixed(1);
-  if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").style.display = "block";
-  }
-  if (showAnswer2) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").style.display = "block";
-  }
-  if (showAnswer3) { // checks if the answer is being shown before updating it
-    document.getElementById("answer3").style.display = "block";
-  }
   const data = ELData();
   // update plots
   plot(data);
@@ -433,7 +425,7 @@ document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
     document.getElementById("show-q1").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer1").style.display = "block";
   } else {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answer";
@@ -446,7 +438,7 @@ document.getElementById("show-q2").addEventListener("click", function () {
   if (!showAnswer2) {
     showAnswer2 = true;
     document.getElementById("show-q2").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer2").style.display = "block";
   } else {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
@@ -459,10 +451,23 @@ document.getElementById("show-q3").addEventListener("click", function () {
   if (!showAnswer3) {
     showAnswer3 = true;
     document.getElementById("show-q3").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer3").style.display = "block";
   } else {
     showAnswer3 = false;
     document.getElementById("show-q3").innerHTML = "Show Answer";
     document.getElementById("answer3").style.display = "none";
+  }
+});
+
+// shows the answer if the q1 button is clicked
+document.getElementById("show-q4").addEventListener("click", function () {
+  if (!showAnswer4) {
+    showAnswer4 = true;
+    document.getElementById("show-q4").innerHTML = "Hide Answer";
+    document.getElementById("answer4").style.display = "block";
+  } else {
+    showAnswer4 = false;
+    document.getElementById("show-q4").innerHTML = "Show Answer";
+    document.getElementById("answer4").style.display = "none";
   }
 });

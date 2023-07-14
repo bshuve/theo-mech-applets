@@ -482,12 +482,6 @@ function slider_update() {
   document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
   h = parseFloat(document.getElementById("h-slider").value);
   document.getElementById("print-h").innerHTML = h.toFixed(1);
-  if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").style.display = "block";
-  }
-  if (showAnswer2) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").style.display = "block";
-  }
   const data = EnergyData();
   // update plots
   plot(data);
@@ -511,7 +505,7 @@ document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
     document.getElementById("show-q1").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer1").style.display = "block";
   } else {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answer";
@@ -524,7 +518,7 @@ document.getElementById("show-q2").addEventListener("click", function () {
   if (!showAnswer2) {
     showAnswer2 = true;
     document.getElementById("show-q2").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer2").style.display = "block";
   } else {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";

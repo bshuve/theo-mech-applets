@@ -366,9 +366,6 @@ function slider_update() {
   // updates global value for p
   p = parseFloat(document.getElementById("p-slider").value);
   document.getElementById("print-p").innerHTML = p.toFixed(1);
-  if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").style.display = "block";
-  }
   const data = ELData();
   // update plots
   plot(data);
@@ -385,7 +382,7 @@ document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
     document.getElementById("show-q1").innerHTML = "Hide Answer";
-    slider_update();
+    document.getElementById("answer1").style.display = "block";
   } else {
     showAnswer1 = false;
     document.getElementById("show-q1").innerHTML = "Show Answer";
