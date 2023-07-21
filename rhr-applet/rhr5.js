@@ -21,27 +21,33 @@ class Vector {
         this.start_x = start_x;
         this.start_y = start_y;
         this.x = x;
+        // on a canvas, y increases downwards, so transform y to match our coordinate system
         this.y = -1 * y;
         this.z = z;
     }
     
+    // returns magnitude of a vector
     mag() {
         return Math.sqrt(this.x**2 + this.y**2 + this.z**2);
     }
 
+    // scales a vector by 1/2
     scale() {
         this.x = this.x/2;
         this.y = this.y/2;
     }
 
+    // returns the x coordinate of a vector's endpoint
     getEndX() {
         return this.start_x + this.x;
     }
 
+    // returns the y coordinate of a vector's endpoint
     getEndY() {
         return this.start_y - this.y;
     }
 
+    // returns the cross product vector of two vectors
     cross(v) { 
         var product = [Math.round(this.y * v.z - this.z * v.y),
             -1 * Math.round(this.z * v.x - this.x * v.z),
@@ -58,6 +64,7 @@ class Vector {
         return cross;
     }
 
+    // returns the direction of a vector, simply as +/- x, y, z, or 0
     direction() {
         if (this.z == 0) {
             if (this.y == 0) {
@@ -80,6 +87,7 @@ class Vector {
         }
     }
 
+    // draws a vector
     drawVec(color, context) {
         context.strokeStyle = color;
         context.fillStyle = color;
@@ -148,14 +156,13 @@ class Vector {
    }
 }
 
-/* Unit Vectors x,y */
+/* Unit Vectors */
 const x_unit_vec = new Vector(40, 80, 50, 0, 0);
 x_unit_vec.drawVec('black', ctx);
 
 const y_unit_vec = new Vector(40, 80, 0, -50, 0);
 y_unit_vec.drawVec('black', ctx);
 
-/* Unit Vector z */
 const z_unit_vec = new Vector(40, 80, 0, 0, 1);
 z_unit_vec.drawVec('black', ctx);
 
@@ -191,6 +198,7 @@ r.drawVec('purple', ctx);
 
 // Update directions so that r and p cannot be the same vector
 if (r.z != 0) {
+    // remove [0, 0, 1] and [0, 0, -1]
     var i1 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === 1);
     directions.splice(i1, 1);
     var i2 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === -1);
@@ -242,6 +250,7 @@ ctx2.font = "16px Verdana";
 ctx2.fillStyle = "black";
 function check(guess) {
     ctx2.clearRect(0, 0, feedback.width, feedback.height);
+    // take the cross of r and p
     var rxp = r.cross(p);
     if (guess == rxp.direction()) {
         ctx2.fillText("Correct! The direction is " + rxp.direction() + ".", feedback.width/6, feedback.height/3);
