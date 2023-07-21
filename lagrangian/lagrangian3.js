@@ -135,7 +135,7 @@ function EnergyData() {
     let v = a * t;
     let KE = 1 / 2 * (m * (v) ** 2); // kinetic energy T
     let PE = -m * a * y; // potential energy U
-    let absPE = Math.abs(PE);
+    let absPE = Math.abs(PE); // absolute value of U for the bottom left graph since w is limited to positive values of y
 
     // for w param, where w = y^2;
     let w = y**2;
@@ -326,10 +326,10 @@ const y_input = {
 
 const y_plot = createPlot(y_input);
 
-// PE yt param line
+// PEy vs. t param line
 var PE_yt_line = y_plot.svg.append("g").attr("id", "PE-yt-line").attr("visibility", "visible");
 
-// KE yt param line
+// KEy vs. t param line
 var KE_yt_line = y_plot.svg.append("g").attr("id", "KE-yt-line").attr("visibility", "visible");
 
 // PE and KE w vs. time GRAPH
@@ -344,10 +344,10 @@ const w_input = {
 
 const w_plot = createPlot(w_input);
 
-// PE wt param line
+// PEw vs. t param line
 var PE_wt_line = w_plot.svg.append("g").attr("id", "PE-wt-line").attr("visibility", "visible");
 
-// KE wt param line
+// KEw vs. t param line
 var KE_wt_line = w_plot.svg.append("g").attr("id", "KE-wt-line").attr("visibility", "visible");
 
 // update plots
