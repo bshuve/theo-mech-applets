@@ -287,6 +287,7 @@ const dt_dL_dydot_plot = createPlot(dt_dL_dydot_input);
 // d/dt(dL/dydot)
 var dtdLdydot_line = dt_dL_dydot_plot.svg.append("g").attr("id", "dt-dL-dydot-line").attr("visibility", "visible");
 
+
 // w param
 // dL/dw GRAPH
 const dL_dw_input = {
@@ -459,7 +460,7 @@ document.getElementById("show-q3").addEventListener("click", function () {
   }
 });
 
-// shows the answer if the q1 button is clicked
+// shows the answer if the q4 button is clicked
 document.getElementById("show-q4").addEventListener("click", function () {
   if (!showAnswer4) {
     showAnswer4 = true;
