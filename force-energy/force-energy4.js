@@ -469,7 +469,7 @@ function slider_update() {
   document.getElementById("print-A").innerHTML = A.toFixed(2);
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").innerHTML = "<br><br>Force = " + (-k * A).toFixed(2) + " N"
-      + "<br><br>Yes, this is a conservative force because the displacement force results in the spring having potential/stored energy, which is independent on the path taken.<br>";
+      + "<br><br>Yes, this is a conservative force because the work done by the spring force is independent of the path taken.<br>";
   }
   if (showAnswer3) { // checks if the answer is being shown before updating it
     document.getElementById("answer3").style.display = "block";
@@ -519,7 +519,7 @@ document.getElementById("show-q1").addEventListener("click", function () {
 document.getElementById("show-more").addEventListener("click", function () {
   if (!showAnswer3) {
     showAnswer3 = true;
-    document.getElementById("show-more").innerHTML = "Hide Proof";
+    document.getElementById("show-more").innerHTML = "Hide Answer";
     slider_update();
   } else {
     showAnswer3 = false;

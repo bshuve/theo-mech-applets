@@ -16,14 +16,14 @@
 
 <body id="body">
 
-<h1 id="title">Lagrangian: Page 1</h1>
-<h2 id="subtitle">Are Lagrange's equations the same across coordinate systems?</h2>
+<h1 id="title">Generalized Coordinate Lagrangians: Page 1</h1>
+<h2 id="subtitle">Are the Euler-Lagrange equations the same across coordinate systems?</h2>
 <p id="text">
     (Chrome Recommended.)
     <br><br>
-    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(\dot{y}\) velocity. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
+    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(y\) velocity. The kinetic energy of the object (ignoring the constant from motion in the \(x\) direction) is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
     <br><br>
-    The path is defined by a \(y\) parameterization of \(y(t) = \frac{1}{2}at^2 + h\). We can also parameterize this path using a different coordinate system \(w\), where \(w(y) = y^2\).
+    The classical path in Cartesian coordinates is \(y(t) = -\frac{1}{2}gt^2 + h\). However, the action is invariant under coordinate transformations and one of the benefits of the Lagrangian approach is that we can readily change coordinates.  We therefore consider an alternate non-Cartesian coordinate \(w\), where \(w(y) = y^2\).
     <br><br>
 </p>
 
@@ -34,12 +34,12 @@
 <button id="show-q1">Show answer</button>
 <br>   
 <span id="answer1" style="display: none"><br>
-    As we transform from the \(y\) to the \(w\) coordinate, only when \(y\geq0\) do we preserve the sign of \(y\). When \(y \lt 0\), we are unable to preserve the negative sign of \(y\), therefore \(w\) will always be positive and only when \(y\geq0\) will \(y\) and \(w\) both describe the same path.
+    \(y\) can take on any real value, whereas \(w\ge0\). Therefore \(w\) unambiguously gives the same path as \(y\) for \(y\ge0\). 
 </span>
 <br><br>
 
 <label for="show-q2" id="text">
-    <b>Question 2: </b> Verify that the Euler-Lagrange equation is true for the \(w\) parameterization, using the solution \(y(t) = 1 - t^2\) where \(h = 1\) and \(g = 2\). As a reminder, the Euler-Lagrange equation follows that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).
+    <b>Question 2: </b> Transform the kinetic and potential energies to the \(w\) coordinate, and derive the Euler-Lagrange equation for \(w\). Then, consider the particular classical solution \(y(t) = 1 - t^2\) (with \(h = 1\) and \(g = 2\)). Find \(w(t)\) for this path, and then by explicit substitution, verify that it satisfies the Euler-Lagrange equation, \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). 
     <br><br>
 </label>
 <button id="show-q2">Show answers</button><br>    
@@ -47,7 +47,7 @@
     We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L = T - U\).<br>
     So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}} - \frac{\partial U}{\partial \dot{w}})\).<br>
     \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U = 2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-    Knowing this, we get:<br>
+    Substituting in, we get:<br>
     \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) = \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial \dot{w}}(2m \sqrt{w}))\)<br>
     Which simplifies into:<br>
     \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
@@ -125,27 +125,27 @@
     You may have noticed that the parameterization of each side of the Euler-Lagrange equation looks different across different coordinate systems.
     That is, the graph for \(\frac{\partial L}{\partial y}\) differs from \(\frac{\partial L}{\partial w}\), and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) differs from \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).<br>
     However, \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) and \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\),
-    showing that no matter the choice of \(y\) or \(w\) as coordinates, the Euler-Lagrange equation still holds. These graphs provide a visual proof for the mathematical explanation above.<br>
+    showing that no matter the choice of \(y\) or \(w\) as coordinates, the Euler-Lagrange equation still holds. These graphs provide a graphical demonstration for the mathematical explanation above.<br>
     In fact, you will find that the Euler-Lagrange equation can be generalized to any arbitrary coordinate system!
     <br><br>
 </span>
 <label for="show-q4" id="text">
-    <b>Question 4: </b>Recall the Euler-Lagrange equation in the \(w\) coordinate system as \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). Why couldn't we just graph and compare \(-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\)?
+    <b>Question 4: </b>Recall the Euler-Lagrange equation in the \(w\) coordinate system as \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). Why couldn't we just graph and compare \(F_w\equiv-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\)?
     <br><br>
 </label>
 <button id="show-q4">Show answer</button>
 <br><br>
 <span id="answer4" style="display: none; line-height: 1.8">
-    It's important to consider that because \(L=T-U\), \(\frac{\partial L}{\partial q} = \frac{\partial T}{\partial q} - \frac{\partial U}{\partial q}\) and \(\frac{\partial L}{\partial \dot{q}} = \frac{\partial T}{\partial \dot{q}} - \frac{\partial U}{\partial \dot{q}}\).
-    Also note that \(\dot{q}\) is not dependent on \(q\).<br>
-    In the \(y\) parameterization, \(T\) is only dependent on \(\dot{y}\) and not \(y\).
-    Thus, \(\frac{\partial T}{\partial y} = 0\), so \(\frac{\partial L}{\partial y} = - \frac{\partial U}{\partial y}\).
-    In the same way, \(U\) is only dependent on \(y\), not \(\dot{y} \implies 
+    It's important to consider that because \(L=T-U\), \(\frac{\partial L}{\partial q} = \frac{\partial T}{\partial q} - \frac{\partial U}{\partial q}\) and \(\frac{\partial L}{\partial \dot{q}} = \frac{\partial T}{\partial \dot{q}} - \frac{\partial U}{\partial \dot{q}}\) for a generalized coordinate \(q\).
+    Also recall that, when taking partial derivatives, \(\dot{q}\) is considered independent of \(q\).<br>
+    In the \(y\) parameterization, \(T\) depends on \(\dot{y}\) but not \(y\).
+    Thus, \(\frac{\partial T}{\partial y} = 0\), so \(\frac{\partial L}{\partial y} = - \frac{\partial U}{\partial y} = -F_y\).
+    In the same way, \(U\) depends on \(y\) but not \(\dot{y} \implies 
     \frac{\partial U}{\partial \dot{y}} = 0\), so \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}}\). If we wanted to, we could just graph \(-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\),
-    and we would see the same graphs.<br><br>
-    In the \(w\) parameterization, \(U\) is still only dependent on \(w\), so \(\frac{\partial L}{\partial \dot{w}} = \frac{\partial T}{\partial \dot{w}}\). However, \(T\) now has dependence on both \(w\) and \(\dot{w}\), so \(\frac{\partial L}{\partial w}\) has a kinetic energy term and a potential energy term.
-    We must graph \(\frac{\partial L}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) to balance the Euler-Lagrange equation.<br>
-    All in all, it's important to pay attention to the dependencies of each term in the Euler-Lagrange equation on the differentiation variable.
+    and the graphs should be equal according to the Euler-Lagrange equation.<br><br>
+    In the \(w\) parameterization, \(U\) is independent of \(\dot w\), so we still have \(\frac{\partial L}{\partial \dot{w}} = \frac{\partial T}{\partial \dot{w}}\). However, \(T\) now has dependence on both \(w\) and \(\dot{w}\), so \(\frac{\partial L}{\partial w}\) has a kinetic energy term and a potential energy term.
+    We must graph \(\frac{\partial L}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) to get equal quantities according to the Euler-Lagrange equation.<br><br>
+    In general, kinetic terms for non-Cartesian coordinates can depend on both coordinates and velocities, and so it's important to pay attention to the dependencies of each term in the Euler-Lagrange equation on each generalized coordinate and velocity.
     <br><br>
 </span>
 

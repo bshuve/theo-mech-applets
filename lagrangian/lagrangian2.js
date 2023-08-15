@@ -79,8 +79,8 @@ function component(width, height, color, x, y, p) {
   Notice the use of the transform() functions. */
 
   this.newPos = function (t) {
-    this.x = transformXCoord(t);
-    this.y = transformYCoord(1-t**this.p);
+    this.x = transformXCoord(t-0.02);
+    this.y = transformYCoord(1-(t-0.02)**this.p);
   }
 }
 
@@ -257,7 +257,7 @@ const y_input = {
   domain: { lower: 0, upper: 1 }, // domain of the plot
   xLabel: "Time (s)", // x-axis label
   range: { lower: -15, upper: 15 }, // range of the plot
-  yLabel: "y parameterization (N)"// y-axis label
+  yLabel: "y parametrization (N)"// y-axis label
 };              
 
 // the svg element is essentially saved as this const variable
@@ -278,7 +278,7 @@ const w_input = {
   domain: { lower: 0, upper: 1 }, 
   xLabel: "Time (s)", 
   range: { lower: -100, upper: 100 }, 
-  yLabel: "w parameterization (N)"
+  yLabel: "w parametrization (N/m)"
 };              
 
 const w_plot = createPlot(w_input);
