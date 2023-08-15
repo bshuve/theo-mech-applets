@@ -21,16 +21,7 @@
 <p id="text">
     (Chrome Recommended.)
     <br><br>
-    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(\dot{y}\) velocity. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
-</p>
-
-<p id="text">
-    Try dragging the values of the sliders in this applet to see how the animation and graphs change.
-</p>
-
-<br>
-<p id="text">
-    After dragging the sliders around, try answering the following question.
+    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(y\) velocity. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
 </p>
 
 <label for="show-q1" id="text">
@@ -39,6 +30,13 @@
 <button id="show-q1">Show answers</button>        
 <span id="answer1"></span>
 </label>
+
+<br><br>
+
+<p id="text">
+    Try dragging the values of the sliders in this applet to see how the animation and graphs change.
+    After dragging the sliders around, try answering the questions at the bottom of the page.
+</p>
 
 <br><br> 
 
@@ -94,6 +92,18 @@
             <div id="KE-derivative-graph"></div>
         </div>
     </div>
+    <div id="legend-txt1"> 
+        <p>Upper (green): \( U \)</p>
+    </div>
+    <div id="legend-txt2">
+        <p>Lower (grey): \( -U \)</p>
+    </div>
+    <div id="legend-txt3"> 
+        <p>Upper (green): \( \partial U/ \partial y \)</p>
+    </div>
+    <div id="legend-txt4">
+        <p>Lower (grey): \( -\partial U / \partial y \)</p>
+    </div>
     <div id="slope-txt">
         <p>Slope: \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) \) = <span id="slope">dPE</span> N</p>
     </div>
@@ -123,13 +133,13 @@
 <span id="answer3" style="display: none; line-height: 1.8">
     We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{y}^2\), \(U = mgy\) for this situation.
     <br><br>
-    \(\frac{\partial L}{\partial y} = -\frac{\partial U}{\partial y} = F_y\) by definition.
+    \(\frac{\partial L}{\partial y} = -\frac{\partial U}{\partial y} = -mg = F_y\) by definition for a conservative force.
     <br><br>
     \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}} = m\dot{y} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) = m\ddot{y} = F_y\) by definition.
     <br><br>
     Note that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) as seen in the graphs.
     <br><br>
-    So, using the Euler-Lagrange equation, we can prove Newton's 2nd Law, \(F=ma\).
+    So, using the Euler-Lagrange equation, we can prove Newton's 2nd Law, \(F_y=ma_y\).
     <br><br>
 </span>
 

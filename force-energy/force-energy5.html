@@ -21,12 +21,12 @@
 <p id="text">
     (Chrome Recommended.)
     <br><br>
-    Consider an object of mass \(m = 5\) kg attached to a spring and streched in the x-direction under the condition \(x(t) = Acos(\omega t)+Bsin(2\omega t)\), where the constants are defined below. The initial force applied to displace the mass is conservative, given by \(F = kA\).<br>
-    The action of the object is given by \(S = \int_{0}^{6 \pi} (KE-PE) \ dt \).
+    Consider an object of mass \(m = 5\) kg attached to a spring and streched in the x-direction under the condition \(x(t) = A\cos(\omega t)+B\sin(2\omega t)\), where the constants are defined below. Force applied to displace the mass is conservative, with initial value \(F_0 = kA\).<br>
+    The action of the object is given by \(S = \int_{0}^{6 \pi/\omega} (T-U) \ dt \).
 </p>
 
 <p id="text">
-    Try dragging the value of the B-slider in this applet to see how the animation and graphs change. Notice how the action \(S\) reaches a minimum when the path is classical.
+    Try dragging the value of the \(B\)-slider in this applet to see how the animation and graphs change. Notice how the action \(S\) reaches a minimum when the path is classical.
 </p>
 <br>
 
@@ -80,19 +80,32 @@
             <div id="dKE-derivative-graph"></div>
         </div>
     </div>
+    <div id="legend-txt1">
+        <p>Upper (green): \( U \)</p>
+    </div>
+    <div id="legend-txt2">
+        <p>Lower (grey): \( -U \)</p>
+    </div>
+    <div id="legend-txt3">
+        <p>Green: \( \partial U/ \partial y \)</p>
+    </div>
+    <div id="legend-txt4">
+        <p>Grey: \( -\partial U / \partial y \)</p>
+    </div>
+
 </div> 
 <br>
 
 <label for="show-q1" id="text" style="line-height: 2">
-    <b>Question 1: </b>As you manipulated the B-slider, how did the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? What value of \(B\) satisfies Lagrange equation?
+    <b>Question 8: </b>As you manipulated the B-slider, how did the values of \(\frac{\partial U}{\partial x}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{x}})\) change? What value of \(B\) satisfies Lagrange equation?
 </label>
 <br><br>
 <button id="show-q1">Show answer</button>
 <br><br>        
 <span id="answer1" style="display: none; line-height: 1.8">
-    The Potential Derivative vs. Time graphs show the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial y} = F\) where \(F\) is the displacement force. <br><br>
-    When we compare the d/dt Kinetic Derivative \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph to the Negative Potential Derivative \(-\frac{\partial U}{\partial y}\) graph, we can see that the only \(B\) value
-    that makes the two graphs the same and thus satisfies \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) is \(B=0\).<br><br>
+    The Potential Derivative vs. Time graphs show the values of \(\frac{\partial U}{\partial x}\) and \(-\frac{\partial U}{\partial x}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial x} = F_x\) where \(F\) is the spring force. <br><br>
+    When we compare the \(\frac{d}{dt}\) Kinetic Derivative \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{x}})\) vs. Time (s) graph to the Negative Potential Derivative \(-\frac{\partial U}{\partial x}\) graph, we can see that the only \(B\) value
+    that makes the two graphs the same and thus satisfies \(-\frac{\partial U}{\partial x} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}})\) is \(B=0\).<br><br>
     As before, \(F=ma\) and the Lagrangian are only true for the classical path where \(B=0\).
     <br><br>
 </span>

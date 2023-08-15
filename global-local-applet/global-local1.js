@@ -331,7 +331,7 @@ const integral_input = {
   domain: {lower: min_y, upper: max_y},
   xLabel: "y coord",
   range: {lower: -2500, upper: 10000},
-  yLabel: "Integral of Energy (dt)"};
+  yLabel: "Global Action"};
 
 const integral_plot = createPlot(integral_input);
 const colors = ["red", "orange", "green", "blue", "purple"];

@@ -257,7 +257,7 @@ const PE_y_input = {
   divID: "#PE-y-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-y-plot", // what you want the svg element to be named (not super important)
   domain: { lower: 0, upper: 10 }, // domain of the plot
-  xLabel: "y Position (m)", // x-axis label
+  xLabel: "y (m)", // x-axis label
   range: { lower: 0, upper: 100 }, // range of the plot
   yLabel: "Potential Energy (J)"// y-axis label
 };              
@@ -274,7 +274,7 @@ const PE_w_input = {
   divID: "#PE-w-graph",
   svgID: "svg-for-PE-w-plot",
   domain: { lower: 0, upper: 10 },
-  xLabel: "w Position (m)",
+  xLabel: "w (m^2)",
   range: { lower: 0, upper: 100 },
   yLabel: "Potential Energy (J)"
 };              
@@ -289,7 +289,7 @@ const KE_ydot_input = {
   divID: "#KE-ydot-graph", 
   svgID: "svg-for-KE-ydot-plot", 
   domain: { lower: -20, upper: 0 }, 
-  xLabel: "\u1E8F Velocity (m/s)", 
+  xLabel: "\u1E8F (m/s)", 
   range: { lower: 0, upper: 200 }, 
   yLabel: "Kinetic Energy (J)"
 };              
@@ -304,7 +304,7 @@ const KE_wdot_input = {
   divID: "#KE-wdot-graph",
   svgID: "svg-for-KE-wdot-plot",
   domain: { lower: -1600, upper: 0 },
-  xLabel: "\u1E87 Velocity (m/s)",
+  xLabel: "\u1E87 (m^2/s)",
   range: { lower: 0, upper: 1000 },
   yLabel: "Kinetic Energy (J)"
 };              
@@ -475,6 +475,7 @@ on the HTML page (ex. button click, slider change, etc). */
 // by default, all answers are hidden
 var showAnswer1 = false;
 var showAnswer2 = false;
+var showAnswer3 = false;
 
 function slider_update() {
   // updates global values for m, a, h
@@ -525,5 +526,18 @@ document.getElementById("show-q2").addEventListener("click", function () {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
     document.getElementById("answer2").style.display = "none";
+  }
+});
+
+// shows the answer if the q3 button is clicked
+document.getElementById("show-q3").addEventListener("click", function () {
+  if (!showAnswer3) {
+    showAnswer3 = true;
+    document.getElementById("show-q3").innerHTML = "Hide Answer";
+    document.getElementById("answer3").style.display = "block";
+  } else {
+    showAnswer3 = false;
+    document.getElementById("show-q3").innerHTML = "Show Answer";
+    document.getElementById("answer3").style.display = "none";
   }
 });

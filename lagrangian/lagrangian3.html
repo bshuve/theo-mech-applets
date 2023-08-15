@@ -16,27 +16,47 @@
 
 <body id="body">
 
-<h1 id="title">Lagrangian: Page 3</h1>
+<h1 id="title">Generalized Coordinate Lagrangians: Page 3</h1>
 <h2 id="subtitle">Graphing the Lagrangian with respect to different quantities</h2>
 <p id="text">
     (Chrome Recommended.)
     <br><br>
-    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(\dot{y}\) velocity. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
+    We return to the case of projectile motion starting from a height \(h\) above the ground as in Page 1. We only consider classical trajectories. We wish to explore how various quantities such as energies change between the two parametrizations of the path, one in terms of \(y\) and the other in terms of \(w = y^2\).
     <br><br>
-    The path is defined by a \(y\) parameterization of \(y(t) = \frac{1}{2}at^2 + h\). We can also parameterize this path using a different coordinate system \(w\), where \(w(y) = y^2\).
+    The height is parametrized in Cartesian coordinates by \(y(t) = -\frac{1}{2}gt^2 + h\). We can also parameterize this path using the \(w\) generalized coordinate system.
     <br><br>
 </p>
 
 <label for="show-q1" id="text">
-    <b>Question 1: </b> As we saw in the previous pages, although the Euler-Lagrange equation holds true across coordinate systems, the graphs for their respective coordinate systems look different. What unit could we place along the x-axis so that we see the same relationship between Energy and the x-axis label across coordinate systems?
+    <b>Question 6: </b> Consider the position of the object at time \(t\). Is the <i>physical</i> position of the object the same in both coordinate system? Is the value of the coordinate at time \(t\) the same in both coordinate systems?
     <br><br>
 </label>
 <button id="show-q1">Show answers</button><br>    
 <span id="answer1" style= "display: none"><br>
-    We can set the x-axis unit to Time (s). This is because despite different parameterizations through coordinate systems, the path will be the same. So, the energy along that path vs. time will be equal no matter what coordinate system we are working in.
+Where the particle is in space should not depend on how we parametrize the curve, so the physical position is the same in both cases. However, the value of the coordinate can be different at time \(t\): at time \(t\), \(y(t)=-\frac{1}{2}gt^2+h\) whereas \(w(t)=\left(-\frac{1}{2}gt^2+h\right)^2\). These are not equal unless \(w=y=0\). We can see this because they have different units (\(y\) is in \(\mathrm{m}\) and \(w\) is in \(\mathrm{m}^2\)) and so cannot be equal unless both are zero. 
 </span>
 
 <br><br>
+
+<label for="show-q2" id="text">
+    <b>Question 7: </b> Consider first the  potential and kinetic energies written in terms of the coordinates \(y\) and \(w\), respectively. Do these energies have the same form when written in different coordinate systems? Now, consider potential and kinetic energies as functions of time along the classical trajectory. Are \(U(t)\) and \(T(t)\) the same in both coordinate systems?
+    <br><br>
+</label>
+<button id="show-q2">Show answers</button><br>
+<span id="answer2" style= "display: none"><br>
+
+    In Cartesian coordinates, the kinetic energy is \(T=\frac{1}{2}m\dot y^2\) and the potential energy is \(U=mgy\). In the generalized coordinate, we have instead \(T=\frac{1}{2}m\left(\frac{\dot w}{2\sqrt w}\right)^2\) and \(U=mg\sqrt w\). It is evident that the functional forms of the energies are different in different coordinate systems. <br><br>
+
+    However, at a time \(t\) the point on the classical path is the same regardless of coordinate system, and consequently the energies are the same as well (since energies are scalars). Therefore, if we plot the kinetic and potential energies as functions of <i>time</i>, we should get the same answer regardless of which coordinate system we use for the intermediate steps.
+</span>
+
+
+<br>
+<p id="text">
+Below, we have plotted potential energy and kinetic energy in two ways. On the left, we have used Cartesian coordinates; on the right, we have used the generalized coordinate \(w=y^2\). Because the coordinate \(y\) can take on either sign while \(w\) is always positive, we have taken the absolute value of the energies in Cartesian coordinates to facilitate a direct comparison. For energies that depend simultaneously on both position and velocity (for example, \(T\) depends on both \(w\) and \(\dot w\) in the generalized coordinate), we have evaluated the quantities along the classical trajectory to allow us to plot the energy as a function of only one variable at a time.
+</p>
+
+<br>
 
 <div id="applet3">
     <div id="top-panel" class="row">
@@ -99,23 +119,23 @@
         </div>
     </div>
 </div> 
-<br>
+<br><br>
 
-<label for="show-q2" id="text">
-    <b>Question 2: </b> Why do we absolute value the \(y\) parameterization Energy (J) vs. Time (s) graph? (Hint: think about the \(w\) parameterizations limitations from Page 1.)
+<label for="show-q3" id="text">
+    <b>Question 8: </b> In your own words, answer the following questions: Is the physical classical path the same in all coordinate systems? Is the function describing the classical
+path the same in all coordinate systems? Is the action for the classical path the same in all coordinate systems? Is the Lagrangian function the same in all coordinate systems? Are the kinetic and potential energies the same in all coordinate systems? Are the Euler-Lagrange equations the same in all coordinate systems? Briefly explain your answer for each, as well
+ as how they fit together.
     <br><br>
 </label>
-<button id="show-q2">Show answers</button><br>    
-<span id="answer2" style= "display: none"><br>
-    We absolute value the \(y\) parameterization graph because \(w\) is limited to \(w\geq0\) since it is the square of \(y\). Therefore, for negative values of \(y\), \(w\) will be positive and will not preserve the sign value. For the potential energy graphs, we use the equation \(U = mgy\) and \(U = mg\sqrt{w}\). If we don't graph the absolute value of the Potential Energy graph of \(y\), then we are not describing the same path between \(w\) and \(y\).
-</span>
 
 <br><br>
+
 <div class="buttons">
     <column id="prev-button">
         <button onclick = "window.location.href = 'lagrangian2.html'">PREVIOUS PAGE</button>
     </column>
 </div> 
+
 
 <br><br>
 

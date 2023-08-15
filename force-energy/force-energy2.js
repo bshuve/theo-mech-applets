@@ -410,10 +410,12 @@ function slider_update() {
   // updates global value for p
   p = parseFloat(document.getElementById("p-slider").value);
   document.getElementById("print-p").innerHTML = p.toFixed(1);
+/*
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").innerHTML = "<br><br>Force = " + (-m * g).toFixed(2) + " N"
       + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
   }
+*/
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
   }
@@ -435,6 +437,7 @@ document.getElementById("p-slider").oninput = function () {
 }
 
 // shows the answer if the q1 button is clicked
+/*
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
@@ -446,6 +449,7 @@ document.getElementById("show-q1").addEventListener("click", function () {
     document.getElementById("answer1").innerHTML = "";
   }
 });
+*/
 
 // shows the answer if the q2 button is clicked
 document.getElementById("show-q2").addEventListener("click", function () {

@@ -296,7 +296,7 @@ const dL_dw_input = {
   domain: { lower: 0, upper: 10 }, 
   xLabel: "Time (s)", 
   range: { lower: -1000, upper: 0 }, 
-  yLabel: "\u2202L/\u2202w (N)"
+  yLabel: "\u2202L/\u2202w (N/m)"
 };              
 
 const dL_dw_plot = createPlot(dL_dw_input);
@@ -311,7 +311,7 @@ const dt_dL_dwdot_input = {
   domain: { lower: 0, upper: 10 },
   xLabel: "Time (s)",
   range: { lower: -1000, upper: 0 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E87) (N)"
+  yLabel: "d/dt(\u2202L/\u2202\u1E87) (N/m)"
 };              
 
 const dt_dL_dwdot_plot = createPlot(dt_dL_dwdot_input);

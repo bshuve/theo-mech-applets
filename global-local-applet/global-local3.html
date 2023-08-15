@@ -20,17 +20,13 @@
 <p id="text">
     (Chrome Recommended.)
     <br><br>
-    In this second page, y1 and y5 have been set to 0. Try moving the sliders for y2, y3, and y4. The gray line represents the local classical path 
-    between points y1 and y5. <br><br>
-    You can see that the the values for y2, y3, and y4 that minimize the action is not the global classical trajectory from the boundary endpoints, 
-    but it is the local classical trajectory between points y1 and y5. Changing y2, y3, and y4 allow us to locally minimize the action to find 
-    the classical path subject to a set of boundary conditions that differ from the original ones provided. This action is still larger than 
-    the global classical path (the black line global classical trajectory has an action of -1334), but it is the minimum for the local set conditions.
+    In this page, you can set multiple points on the trajectory by varying the respective sliders. However, we have fixed  \(y_1\) and \(y_5\) to 0 to reduce the number of parameters you control and allow you to explore them more thoroughly. There are now three curves on the animation: the black curve is the classical path, the white curve is the path between the specified paths, and the grey curve is the classical path <b>subject to the constraint</b> that \(y_1=y_5=0\). <br> <br>
+
+    Try moving the sliders for \(y_2\), \(y_3\), and \(y_4\) and see how these changes affect the action. The graphs show the action over the entire trajectory; by clicking on the checkboxes, you can add or remove graphs for each \(y_i\) showing how the action varies with that parameter <i>assuming all other points are held fixed</i>. Investigate how these curves as you change each slider. <br><br>
+
+ If you hit the "Randomize" button, can you recover the local minimum of the action by varying \(y_2\), \(y_3\), and \(y_4\)? Note that you will not be able to find the absolute minimum action because \(y_1\) and \(y_5\) cannot be set to the classical values.
+
     <br><br>
-</p>
-<p id="text">
-    The Integral of Energy graph to the right also shows the action as a function of the given y, assuming that all other points are fixed. 
-    As you play around with the sliders, pay attention to how these graphs change, including that the points on the graph all indicate the current global action. <br><br>
 </p>
 
 <div id="applet">
