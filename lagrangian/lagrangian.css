@@ -84,8 +84,8 @@ button:hover {
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
-    height: 340px;
-    width: 1070px;
+    height: 660px;
+    width: 950px;
 }
 
 #applet3{
@@ -94,6 +94,14 @@ button:hover {
     position: relative;
     height: 1300px;
     width: 950px;
+}
+
+#applet5{
+    background-color:#b5cef5;
+    border-radius: 10px;
+    position: relative;
+    height: 340px;
+    width: 1070px;
 }
 
 #top-panel{
