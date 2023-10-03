@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>lagrangian multipliers</title>
+    <link rel = "stylesheet" href = "mult.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "mult.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+
+<body id="body">
+
+<h1 id="title">Lagrangian Multipliers</h1>
+<h2 id="subtitle">Newtonian vs. Lagrangian Framework</h2>
+<p id="text" style="line-height: 1.8">
+    (Chrome Recommended.)
+</p>
+
+<p id="text">
+   Solving for Fn in the Pig on Dome question using a Newtonian vs. Lagrangian Framework
+</p>
+
+<br>
+
+<div id="applet">
+    <div id="top-panel" class="row">
+	<!-- Second column: sliders -->
+        <div class="column">
+            <div id="controls-pg3">
+                <legend>Define Constants:</legend>
+                <p>\(m\): <span id="print-R">1.0</span> kg</p>
+                <p>\(R\): <span id="print-R">1.0</span> m</p>
+                <p>\(g\): <span id="print-a">9.8</span> m/s<sup>2</sup></p>
+            </div>
+        </div>
+    <!-- Third column: legend -->
+        <div class="column">
+            <div id="controls2-pg3">
+                <span id="green">....</span> Lagrangian
+                <br><br>
+                <span id="red">....</span> Newtonian
+                <br><br>
+            </div>
+        </div>
+    </div>
+    <div id="middle-panel" class="row">
+        <div class="column left">
+            <div id="newtonian-theta-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="lambda-theta-graph"></div>
+        </div>
+    </div>
+    <!-- need to figure out how to graph against t
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="newtonian-t-graph"></div>
+        </div>
+        <div class="column-right">
+            <div id="lambda-t-graph"></div>
+        </div>
+    </div>
+    -->
+</div> 
+<br><br>
+
+<div class="buttons">
+    <column id="prev-button">
+        <button onclick = "window.location.href = 'force-energy1.html'">PREVIOUS PAGE</button>
+    </column>
+    <column id="next-button">
+        <button onclick = "window.location.href = 'force-energy3.html'">NEXT PAGE</button>
+    </column>
+</div> 
+
+<br><br>
+
+</body>
+</html>
+
