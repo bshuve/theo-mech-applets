@@ -17,12 +17,14 @@ const g = 9.8;
 // generate energy data
 function energyAndDerivativeData() {
   // create arrays of data for each plot
-  var lambda_data = [];
-  var newtonian_data = [];
+  var lambda_data_theta = [];
+  var newtonian_data_theta = [];
+  var lambda_data_time = [];
+  var newtonian_data_time = [];
   var t = 0;
   var theta = 0;
 
-  while (theta <= end_theta) {
+  while (theta <= end_theta || t <= end_time) {
     //parametrize graphs
     // let Ei = m * g * R * Math.cos(0); // initial energy for system
     // let Ef = 1/2 * m * (v)**2 + m * g * R * Math.cos(theta); // final energy for system
@@ -30,16 +32,19 @@ function energyAndDerivativeData() {
     let thetadot = v / R; // by definition v = R * omega = R(thetadot)
     let newtonianFn = -m * (v)** 2 / R + m * g * Math.cos(theta);
     let lagrangianFn = -m * R * (thetadot)** 2 + m * g * Math.cos(theta)
-
     // push all data into arrays
-    lambda_data.push({ "x": Math.round(theta * 10000) / 10000, "y": lagrangianFn });
-    newtonian_data.push({ "x": Math.round(theta * 10000) / 10000, "y": newtonianFn });
+    lambda_data_theta.push({ "x": Math.round(theta * 10000) / 10000, "y": lagrangianFn });
+    newtonian_data_theta.push({ "x": Math.round(theta * 10000) / 10000, "y": newtonianFn });
+    lambda_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": lagrangianFn });
+    newtonian_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": newtonianFn });
     theta += dtheta;
+    t += dt;
     // still need Fn's vs. t, but unsure how
   }
 
   return {
-    l: lambda_data, n: newtonian_data
+    l: lambda_data_theta, n: newtonian_data_theta,
+    lt: lambda_data_time, nt: newtonian_data_time
   };
 }
 
@@ -133,7 +138,7 @@ const newtonian_theta_plot = createPlot(newtonian_theta_input);
 // Fn using Newtonian calculation vs. theta line
 var ntheta_line = newtonian_theta_plot.svg.append("g").attr("id", "newtonian-theta-line").attr("visibility", "visible");
 
-// PE DERIVATIVE OF ENERGY
+// Lagrangian Fn vs. Theta
 const lambda_theta_input = {
   divID: "#lambda-theta-graph",
   svgID: "svg-for-lambdatheta-plot",
@@ -148,6 +153,39 @@ const lambda_theta_plot = createPlot(lambda_theta_input);
 // Fn using Lagrangian calculation vs. theta line
 var ltheta_line = lambda_theta_plot.svg.append("g").attr("id", "lambda-theta-line").attr("visibility", "visible");
 
+// Newtonian Fn vs. Time
+// this input format will be followed by each plot after this
+const newtonian_time_input = {
+    divID: "#newtonian-time-graph", // the id of the <div> element in your HTML file where the plot will go
+    svgID: "svg-for-newtoniantime-plot", // what you want the svg element to be named (not super important)
+    domain: { lower: 0, upper: 3 }, // domain of the plot
+    xLabel: "Time (s)", // x-axis label
+    range: { lower: 0, upper: 10 }, // range of the plot
+    yLabel: "Normal Force (N)"// y-axis label
+  };
+  
+  // the svg element is essentially saved as this const variable
+  const newtonian_time_plot = createPlot(newtonian_time_input);
+  
+  // graph each line on the plot
+  // Fn using Newtonian calculation vs. theta line
+  var ntime_line = newtonian_time_plot.svg.append("g").attr("id", "newtonian-time-line").attr("visibility", "visible");
+
+// Lagrangian Fn vs. Time
+const lambda_time_input = {
+    divID: "#lambda-time-graph",
+    svgID: "svg-for-lambdatime-plot",
+    domain: { lower: 0, upper: 3 },
+    xLabel: "Time (s)",
+    range: { lower: 0, upper: 10 },
+    yLabel: "Normal Force (N)"
+  };
+  
+  const lambda_time_plot = createPlot(lambda_time_input);
+  
+  // Fn using Lagrangian calculation vs. theta line
+  var ltime_line = lambda_time_plot.svg.append("g").attr("id", "lambda-time-line").attr("visibility", "visible");
+  
 // update energy plots
 function plotEnergy(data) {
   // newtonian theta
@@ -170,6 +208,32 @@ function plotEnergy(data) {
     line: ltheta_line,
     xScale: lambda_theta_plot.xScale,
     yScale: lambda_theta_plot.yScale,
+    color: "green"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // newtonian time
+  var input = {
+    data: data.nt,
+    svg: newtonian_time_plot.svg,
+    line: ntime_line,
+    xScale: newtonian_time_plot.xScale,
+    yScale: newtonian_time_plot.yScale,
+    color: "red"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // lagrangian time
+  input = {
+    data: data.lt,
+    svg: lambda_time_plot.svg,
+    line: ltime_line,
+    xScale: lambda_time_plot.xScale,
+    yScale: lambda_time_plot.yScale,
     color: "green"
   };
 
