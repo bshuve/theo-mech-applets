@@ -1,0 +1,184 @@
+/* Parameters */
+const SVG_WIDTH = 445;
+const SVG_HEIGHT = 300;
+const TRANSITION_TIME = 10; // ms
+const dt = 0.002;
+const dtheta = Math.PI*(1/1600);
+const end_time = 5;
+const end_theta = Math.PI;
+const m = 1;
+const R = 1;
+const g = 9.8;
+
+/////////////////////////////////////////////////
+/* FUNCTIONS TO GENERATE PLOTTING DATA */
+/////////////////////////////////////////////////
+
+// generate energy data
+function energyAndDerivativeData() {
+  // create arrays of data for each plot
+  var lambda_data = [];
+  var newtonian_data = [];
+  var t = 0;
+  var theta = 0;
+
+  while (theta <= end_theta) {
+    //parametrize graphs
+    // let Ei = m * g * R * Math.cos(0); // initial energy for system
+    // let Ef = 1/2 * m * (v)**2 + m * g * R * Math.cos(theta); // final energy for system
+    let v = Math.sqrt(2 * g * R * (1 - Math.cos(theta))); // found using Ei = Ef
+    let thetadot = v / R; // by definition v = R * omega = R(thetadot)
+    let newtonianFn = -m * (v)** 2 / R + m * g * Math.cos(theta);
+    let lagrangianFn = -m * R * (thetadot)** 2 + m * g * Math.cos(theta)
+
+    // push all data into arrays
+    lambda_data.push({ "x": Math.round(theta * 10000) / 10000, "y": lagrangianFn });
+    newtonian_data.push({ "x": Math.round(theta * 10000) / 10000, "y": newtonianFn });
+    theta += dtheta;
+    // still need Fn's vs. t, but unsure how
+  }
+
+  return {
+    l: lambda_data, n: newtonian_data
+  };
+}
+
+// set the dimensions and margins of the graph
+var margin = { top: 20, right: 20, bottom: 50, left: 50 },
+  width = SVG_WIDTH - margin.left - margin.right,
+  height = SVG_HEIGHT - margin.top - margin.bottom;
+
+function plotData(input) {
+  // update the line
+  var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
+
+  u.enter()
+    .append("path")
+    .attr("class", "line")
+    .merge(u)
+    .transition()
+    .duration(TRANSITION_TIME)
+    .attr("d", d3.line()
+      .x((d) => input.xScale(d.x))
+      .y((d) => input.yScale(d.y))
+    )
+    .attr("fill", "none")
+    .attr("stroke", input.color)
+    .attr("stroke-width", 1.5);
+}
+
+// initialize the svg element for a graph
+function createPlot(input) {
+  // append the svg object to the body of the page
+  var svg = d3
+    .select(input.divID)
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("id", input.divID)
+    .attr("class", "plot")
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // initialize an x-axis scaling function
+  var xScale = d3.scaleLinear().domain([input.domain.lower, input.domain.upper]).range([0, width]);
+
+  // add x-axis
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .attr("class", "myXaxis")
+    .call(d3.axisBottom(xScale));
+
+  // add x-axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height + margin.top + 20)
+    .text(input.xLabel);
+
+  // initialize a y-axis scaling function
+  var yScale = d3.scaleLinear().domain([input.range.lower, input.range.upper]).range([height, 0]);
+
+  // add y-axis
+  svg.append("g")
+    .attr("class", "myYaxis")
+    .call(d3.axisLeft(yScale));
+
+  // add y-axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top)
+    .text(input.yLabel)
+
+  return { svg: svg, xScale: xScale, yScale: yScale };
+}
+
+// Newtonian Fn vs. Theta
+// this input format will be followed by each plot after this
+const newtonian_theta_input = {
+  divID: "#newtonian-theta-graph", // the id of the <div> element in your HTML file where the plot will go
+  svgID: "svg-for-newtoniantheta-plot", // what you want the svg element to be named (not super important)
+  domain: { lower: 0, upper: 3.14 }, // domain of the plot
+  xLabel: "Theta (radians)", // x-axis label
+  range: { lower: 0, upper: 10 }, // range of the plot
+  yLabel: "Normal Force (N)"// y-axis label
+};
+
+// the svg element is essentially saved as this const variable
+const newtonian_theta_plot = createPlot(newtonian_theta_input);
+
+// graph each line on the plot
+// Fn using Newtonian calculation vs. theta line
+var ntheta_line = newtonian_theta_plot.svg.append("g").attr("id", "newtonian-theta-line").attr("visibility", "visible");
+
+// PE DERIVATIVE OF ENERGY
+const lambda_theta_input = {
+  divID: "#lambda-theta-graph",
+  svgID: "svg-for-lambdatheta-plot",
+  domain: { lower: 0, upper: 3.14 },
+  xLabel: "Theta (radians)",
+  range: { lower: 0, upper: 10 },
+  yLabel: "Normal Force (N)"
+};
+
+const lambda_theta_plot = createPlot(lambda_theta_input);
+
+// Fn using Lagrangian calculation vs. theta line
+var ltheta_line = lambda_theta_plot.svg.append("g").attr("id", "lambda-theta-line").attr("visibility", "visible");
+
+// update energy plots
+function plotEnergy(data) {
+  // newtonian theta
+  var input = {
+    data: data.n,
+    svg: newtonian_theta_plot.svg,
+    line: ntheta_line,
+    xScale: newtonian_theta_plot.xScale,
+    yScale: newtonian_theta_plot.yScale,
+    color: "red"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // lagrangian theta
+  input = {
+    data: data.l,
+    svg: lambda_theta_plot.svg,
+    line: ltheta_line,
+    xScale: lambda_theta_plot.xScale,
+    yScale: lambda_theta_plot.yScale,
+    color: "green"
+  };
+
+  // plot the data
+  plotData(input);
+}
+
+// create some initial data when page loads
+const initial_data = energyAndDerivativeData();
+
+// initialize energy lines
+plotEnergy(initial_data);
