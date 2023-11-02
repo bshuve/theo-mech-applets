@@ -23,23 +23,30 @@
 </p>
 
 <p id="text">
-   Solving for Fn in the Pig on Dome question using a Newtonian vs. Lagrangian Framework
+    Using the Pig on the Dome problem as a framework, the graphs demonstrate \(F_N\) vs. theta (\(\theta\)) and time (\(t\)). The left-hand-side graphs use the Newtonian method to solve for \(F_N\), and
+    the right-hand-side graphs use the Lagrangian method to solve for \(F_N\). Mass (\(m\)), radius of the dome (\(R\)), and the gravitational constant (\(g\)) are set to 1.0 \(kg\), 1.0 \(m\), and 9.8 \(\frac{m}{s^2}\) respectively.
+    There are 2 provided sliders for these graphs, \(\theta_i\) for the initial theta value and \(E_i\) for the initial energy in the system. Here, the lowest initial energy possible is \(mgRcos(0)\) = \(mgR\), where theta inital \(\theta_i\)
+    starts at 0, so the pig does not slide down the dome in that case.
 </p>
 
 <br>
 
 <div id="applet">
     <div id="top-panel" class="row">
-	<!-- Second column: sliders -->
+	<!-- First column: constants and sliders -->
         <div class="column">
             <div id="controls-pg3">
                 <legend>Define Constants:</legend>
                 <p>\(m\): <span id="print-R">1.0</span> kg</p>
                 <p>\(R\): <span id="print-R">1.0</span> m</p>
                 <p>\(g\): <span id="print-a">9.8</span> m/s<sup>2</sup></p>
+                <label for="theta-slider">\(\theta_i\): <span id="print-theta">0.01</span> rad</label>
+                <input id="theta-slider" class="slider" type="range" min="0.00" max="0.50" step="0.01" value="0.01">
+                <label for="energy-slider">\(E_i\): <span id="print-energy">9.8</span> J</label>
+                <input id="energy-slider" class="slider" type="range" min="9.80" max="14.59" step="0.01" value="9.8">
             </div>
         </div>
-    <!-- Third column: legend -->
+    <!-- Second column: legend -->
         <div class="column">
             <div id="controls2-pg3">
                 <span id="green">....</span> Lagrangian
