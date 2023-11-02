@@ -3,12 +3,14 @@ const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const dtheta = Math.PI*(1/1600);
+const dtheta = Math.PI/2500;
 const end_time = 5;
 const end_theta = Math.PI;
 const m = 1;
 const R = 1;
 const g = 9.8;
+var theta_i = parseFloat(document.getElementById("theta-slider").value); // 0.01
+var energy_i = parseFloat(document.getElementById("energy-slider").value); // m*g*R = 9.8
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -22,25 +24,53 @@ function energyAndDerivativeData() {
   var lambda_data_time = [];
   var newtonian_data_time = [];
   var t = 0;
-  var theta = 0;
+  var theta = theta_i;
+  var w = dtheta/dt;
 
-  while (theta <= end_theta || t <= end_time) {
+  while (theta <= end_theta) {
     //parametrize graphs
-    // let Ei = m * g * R * Math.cos(0); // initial energy for system
+    // let Ei = energy_i // initial energy for system
     // let Ef = 1/2 * m * (v)**2 + m * g * R * Math.cos(theta); // final energy for system
-    let v = Math.sqrt(2 * g * R * (1 - Math.cos(theta))); // found using Ei = Ef
+    let v = Math.sqrt(2 / m * (energy_i - m * g * R * Math.cos(theta))); // found using Ei = Ef
     let thetadot = v / R; // by definition v = R * omega = R(thetadot)
     let newtonianFn = -m * (v)** 2 / R + m * g * Math.cos(theta);
     let lagrangianFn = -m * R * (thetadot)** 2 + m * g * Math.cos(theta)
-    // push all data into arrays
-    lambda_data_theta.push({ "x": Math.round(theta * 10000) / 10000, "y": lagrangianFn });
-    newtonian_data_theta.push({ "x": Math.round(theta * 10000) / 10000, "y": newtonianFn });
-    lambda_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": lagrangianFn });
-    newtonian_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": newtonianFn });
+
+     // push all data into arrays
+    // only graph values in (+) force (used -0.1 to get line to touch y=0)
+    if (newtonianFn >= -0.1) { // since newtonianFn = lagrangianFn can just test this condition
+      lambda_data_theta.push({ "x": Math.round(theta * 10000) / 10000, "y": lagrangianFn });
+      newtonian_data_theta.push({ "x": Math.round(theta * 10000) / 10000, "y": newtonianFn });
+    }
+
     theta += dtheta;
-    t += dt;
-    // still need Fn's vs. t, but unsure how
   }
+
+  // reinitialize theta
+  theta = theta_i;
+  while (t <= end_time) {
+    w = Math.sqrt((2 * (energy_i - m * g * R * Math.cos(theta))) / (m * (R) ** 2)); // reinitialize w to new w
+    // let dtheta_forTimeLoop = w*dt;
+    // let w = Math.sqrt(2 * g * (1 - Math.cos(theta) / R));
+    let dtheta_forTimeLoop = w*dt;
+
+    // v = R * w
+    let newtonianFn = -m * R * (w)** 2 + m * g * Math.cos(theta);
+    let lagrangianFn = -m * R * (w)** 2 + m * g * Math.cos(theta);
+    
+    // push all data into arrays
+    // only graph values in (+) force (used -0.1 to get line to touch y=0)
+    if (newtonianFn >= -0.1) { // since newtonianFn = lagrangianFn can just test this condition
+      lambda_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": lagrangianFn });
+      newtonian_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": newtonianFn });
+    } else {
+      break // leave while loop so the other parts of the graph after force goes negative do not graph
+    }
+
+    theta += dtheta_forTimeLoop;
+    t += dt;
+  }
+
 
   return {
     l: lambda_data_theta, n: newtonian_data_theta,
@@ -125,7 +155,7 @@ function createPlot(input) {
 const newtonian_theta_input = {
   divID: "#newtonian-theta-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-newtoniantheta-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: 0, upper: 3.14 }, // domain of the plot
+  domain: { lower: 0, upper: 1 }, // domain of the plot
   xLabel: "Theta (radians)", // x-axis label
   range: { lower: 0, upper: 10 }, // range of the plot
   yLabel: "Normal Force (N)"// y-axis label
@@ -142,7 +172,7 @@ var ntheta_line = newtonian_theta_plot.svg.append("g").attr("id", "newtonian-the
 const lambda_theta_input = {
   divID: "#lambda-theta-graph",
   svgID: "svg-for-lambdatheta-plot",
-  domain: { lower: 0, upper: 3.14 },
+  domain: { lower: 0, upper: 1 },
   xLabel: "Theta (radians)",
   range: { lower: 0, upper: 10 },
   yLabel: "Normal Force (N)"
@@ -158,7 +188,7 @@ var ltheta_line = lambda_theta_plot.svg.append("g").attr("id", "lambda-theta-lin
 const newtonian_time_input = {
     divID: "#newtonian-time-graph", // the id of the <div> element in your HTML file where the plot will go
     svgID: "svg-for-newtoniantime-plot", // what you want the svg element to be named (not super important)
-    domain: { lower: 0, upper: 3 }, // domain of the plot
+    domain: { lower: 0, upper: 1.5 }, // domain of the plot
     xLabel: "Time (s)", // x-axis label
     range: { lower: 0, upper: 10 }, // range of the plot
     yLabel: "Normal Force (N)"// y-axis label
@@ -175,7 +205,7 @@ const newtonian_time_input = {
 const lambda_time_input = {
     divID: "#lambda-time-graph",
     svgID: "svg-for-lambdatime-plot",
-    domain: { lower: 0, upper: 3 },
+    domain: { lower: 0, upper: 1.5 },
     xLabel: "Time (s)",
     range: { lower: 0, upper: 10 },
     yLabel: "Normal Force (N)"
@@ -246,3 +276,23 @@ const initial_data = energyAndDerivativeData();
 
 // initialize energy lines
 plotEnergy(initial_data);
+
+
+function slider_update() {
+  // updates global values for m, a, h
+  theta_i = parseFloat(document.getElementById("theta-slider").value);
+  document.getElementById("print-theta").innerHTML = theta_i.toFixed(2);
+  energy_i= parseFloat(document.getElementById("energy-slider").value);
+  document.getElementById("print-energy").innerHTML = energy_i.toFixed(2);
+  const data = energyAndDerivativeData();
+  // update plot
+  plotEnergy(data);
+}
+
+// checks if any sliders have been changed
+document.getElementById("theta-slider").oninput = function () {
+  slider_update();
+}
+document.getElementById("energy-slider").oninput = function () {
+  slider_update();
+}
