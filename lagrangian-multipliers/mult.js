@@ -45,8 +45,8 @@ function energyAndDerivativeData() {
     theta += dtheta;
   }
 
-  // reinitialize theta
-  theta = theta_i;
+  // reinitialize theta to theta_i + dtheta so that w doesn't and dtheta_forTimeLoop don't stay at 0
+  theta = theta_i + dtheta;
   while (t <= end_time) {
     w = Math.sqrt(2 * g * (Math.cos(theta_i) - Math.cos(theta)) / R); // reinitialize w to new w
 
@@ -58,12 +58,12 @@ function energyAndDerivativeData() {
     
     // push all data into arrays
     // only graph values in (+) force (used -0.1 to get line to touch y=0)
-    //if (newtonianFn >= -0.1) { // since newtonianFn = lagrangianFn can just test this condition
+    if (newtonianFn >= -0.1) { // since newtonianFn = lagrangianFn can just test this condition
       lambda_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": lagrangianFn });
       newtonian_data_time.push({ "x": Math.round(t * 10000) / 10000, "y": newtonianFn });
-    //} else {
-    //  break // leave while loop so the other parts of the graph after force goes negative do not graph
-    //}
+    } else {
+      break // leave while loop so the other parts of the graph after force goes negative do not graph
+    }
 
     theta += dtheta_forTimeLoop;
     t += dt;
@@ -172,7 +172,7 @@ const lambda_theta_input = {
   svgID: "svg-for-lambdatheta-plot",
   domain: { lower: 0, upper: 1 },
   xLabel: "Theta (radians)",
-  range: { lower: 0, upper: 20 },
+  range: { lower: 0, upper: 10 },
   yLabel: "Normal Force (N)"
 };
 
@@ -186,7 +186,7 @@ var ltheta_line = lambda_theta_plot.svg.append("g").attr("id", "lambda-theta-lin
 const newtonian_time_input = {
     divID: "#newtonian-time-graph", // the id of the <div> element in your HTML file where the plot will go
     svgID: "svg-for-newtoniantime-plot", // what you want the svg element to be named (not super important)
-    domain: { lower: 0, upper: 15 }, // domain of the plot
+    domain: { lower: 0, upper: 2.5 }, // domain of the plot
     xLabel: "Time (s)", // x-axis label
     range: { lower: 0, upper: 10 }, // range of the plot
     yLabel: "Normal Force (N)"// y-axis label
@@ -203,7 +203,7 @@ const newtonian_time_input = {
 const lambda_time_input = {
     divID: "#lambda-time-graph",
     svgID: "svg-for-lambdatime-plot",
-    domain: { lower: 0, upper: 1.5 },
+    domain: { lower: 0, upper: 2.5 },
     xLabel: "Time (s)",
     range: { lower: 0, upper: 10 },
     yLabel: "Normal Force (N)"
