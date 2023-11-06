@@ -36,11 +36,13 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 270;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.01;
+const m = 1;
+const dt = 0.005;
 const FRAME_RATE = 10; // ms
 const x_initial = 20;
 const y_initial = 100;
-const g = 2;
+const g = 9.8;
+const end_time = Math.sqrt(2/(m*g));
 const p_initial = parseInt(document.getElementById("p-slider").value);
 const range_pmin = parseInt(document.getElementById("p-slider").min);
 const range_pmax = parseInt(document.getElementById("p-slider").max);
@@ -86,7 +88,7 @@ Remember that the canvas x coordinate increases from left to right (which is nor
 but the y coordinates increase from top to bottom (which is the opposite 
 of cartesian coordinates) */
 function transformXCoord(x) {
-    return x_initial + (x+1) * (CANVAS_WIDTH_2 - 3 * x_initial) / 2;
+    return (x_initial + 168) + (CANVAS_WIDTH_2 * (x)) / 1.2;
 }
 
 // parameterized coord -> canvas coord
@@ -114,9 +116,9 @@ var animArea = {
         this.panel2.height = CANVAS_HEIGHT;
         this.context2 = this.panel2.getContext("2d");
 
-        /* In this example, time is parameterized from -1 
-        to 1, so we will set the initial time to -1 */
-        this.time = -1;   
+        /* In this example, time is parameterized from -sqrt(2/mg)
+        to sqrt(2/mg), so we will set the initial time to -sqrt(2/mg) */
+        this.time = -end_time;   
 
         /* The built-in setInterval() function takes in a function f (updateFrame) 
         and a number n (FRAME_RATE) and runs runs f every n milliseconds. This is how we 
@@ -142,7 +144,7 @@ var animArea = {
         }, 
 
     stop : function() {
-        this.time = -1;
+        this.time = -end_time;
 
         /* The built-in clearInterval() function basically terminates the setInterva() function */
         clearInterval(this.interval); 
@@ -176,10 +178,10 @@ function component(width, height, color, x, y, type, p) {
     plot things correctly on the canvas */
     this.newPos = function(t) {
         if (type == 1) {   // 1D parameterized path
-            this.y = transformYCoord((1 + this.p) * (1 - t**2));
+            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t**2));
         } else if (this.type == 2) {   // 2D parameterized path
             this.x = transformXCoord(t);
-            this.y = transformYCoord((1 + this.p) * (1 - t**2));
+            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t**2));
         } 
     }
 }
@@ -213,8 +215,8 @@ function updateFrame() {
     animArea.context1.fillStyle = "black";
     animArea.context1.fillText("Projectile Motion", 10, 30);
 
-    // end animation when t = 1
-    if (animArea.time >= 1) {endAnimation();}
+    // end animation when t = end_time
+    if (animArea.time >= end_time) {endAnimation();}
 }
 
 // run animation on load
@@ -253,16 +255,16 @@ function energyAndDerivativeData(p){
     var potential_derivative_data = [];
     var t = -1;
     while (t <= 1) {
-        let KE = 2 * ((1 + p) * t) ** 2;
-        let PE = g * (1 + p) * (1 - t**2)
+        let KE = (1/2) * m * ((1 + p) * (g * t)) ** 2;
+        let PE = m * g * (1 + p) * (1 - (1/2) * g * t**2)
 	let nKE = -KE
         let nPE = -PE
         let KEmPE = KE - PE
         let KEpPE = KE + PE
         let KE2mPE2 = KE**2 - PE**2
         let KE2pPE2 = KE**2 + PE**2
-        let dKE = 4 * t * (1 + p) ** 2;
-        let dPE = 2 * g * t * (1 + p);
+        let dKE = m * ((1 + p) * (g * t));
+        let dPE = m * g * (1 + p) * (-g * t);
         kinetic_energy_data.push({"x": Math.round(t * 10000) / 10000, "y": KE});
         potential_energy_data.push({"x": Math.round(t * 10000) / 10000, "y": PE});
 	minus_kinetic_energy_data.push({"x": Math.round(t * 10000) / 10000, "y": nKE});
@@ -299,7 +301,7 @@ function integralData(){
         let integral_KE = 4 * (1 + pv)**2 / 3;
         let integral_PE = 8 * (1 + pv) / 3;
         let integral_KE2 = 8 * (1 + pv)**4 / 5;
-        let integral_PE2 = 64 * (1+pv)**2 / 15;
+        let integral_PE2 = 64 * (1 + pv)**2 / 15;
 
         ke.push({"x": pv, "y": integral_KE});
         pe.push({"x": pv, "y": integral_PE});
@@ -422,7 +424,7 @@ const energy_input = {
   svgID: "svg-for-energy-plots",  // what you want the svg element to be named (not super important)
   domain: {lower: -1, upper: 1},  // domain of the plot
   xLabel: "Time",                 // x-axis label
-  range: {lower: -4, upper: 8},   // range of the plot
+  range: {lower: -50, upper: 100},   // range of the plot
   yLabel: "Energy"};              // y-axis label
 
 // the svg element is essentially saved as this const variable
