@@ -35,12 +35,13 @@ const CANVAS_WIDTH_1 = 170;
 const CANVAS_WIDTH_2 = 380;
 const CANVAS_HEIGHT = 280;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.01;
-const end_time = 1.;
+const m = 1;
+const dt = 0.005;
 const FRAME_RATE = 10; // ms
 const x_initial = 20;
 const y_initial = 100;
-const g = 2;
+const g = 9.8;
+const end_time = Math.sqrt(2/(m*g));
 const p_initial = parseInt(document.getElementById("p-slider").value);
 const range_p = parseInt(document.getElementById("p-slider").max);
 
@@ -101,7 +102,7 @@ but the y coordinates increase from top to bottom (which is the opposite
 of cartesian coordinates) */
 
 function transformXCoord(x) {
-    return x_initial + (x+1) * (CANVAS_WIDTH_2 - 3 * x_initial) / 2;
+    return (x_initial + 168) + (CANVAS_WIDTH_2 * (x)) / 1.2;
 }
 
 // parameterized coord -> canvas coord
@@ -129,9 +130,9 @@ var animArea = {
         this.panel2.height = CANVAS_HEIGHT;
         this.context2 = this.panel2.getContext("2d");
 
-        /* In this example, time is parameterized from -1
-        to 1, so we will set the initial time to -1 */
-        this.time = -1;
+        /* In this example, time is parameterized from -sqrt(2/mg)
+        to sqrt(2/mg), so we will set the initial time to -sqrt(2/mg) */
+        this.time = -end_time;
 
 
         /* The built-in setInterval() function takes in a function f (updateFrame)
@@ -166,7 +167,7 @@ var animArea = {
         this.context1.clearRect(0, 0, this.panel1.width, this.panel1.height);
         }, 
     stop : function() {
-        this.time = -1;
+        this.time = -end_time;
 
 	/* The built-in clearInterval() function basically terminates the setInterva() function */
 
@@ -205,10 +206,10 @@ function component(width, height, color, x, y, type, p) {
 
     this.newPos = function(t) {
         if (type == 1) {
-            this.y = transformYCoord((1 + this.p) * (1 - t**2));
+            this.y = transformYCoord((1 + this.p) * (1 - (1/2)*g*t**2));
         } else if (this.type == 2) {
             this.x = transformXCoord(t);
-            this.y = transformYCoord((1 + this.p) * (1 - t**2));
+            this.y = transformYCoord((1 + this.p) * (1 - (1/2)*g*t**2));
 	}
 
     }

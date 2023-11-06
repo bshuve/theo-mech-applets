@@ -8,11 +8,13 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 270;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.01;
+const m = 1;
+const dt = 0.005;
 const FRAME_RATE = 10; // ms
 const x_initial = 20;
 const y_initial = 100;
-const g = 2;
+const g = 9.8;
+const end_time = Math.sqrt(2/(m*g));
 const p_initial = parseInt(document.getElementById("p-slider").value);
 const range_p = parseInt(document.getElementById("p-slider").max);
 
@@ -53,7 +55,7 @@ function endAnimation() {
 
 // parameterized coord -> canvas coord
 function transformXCoord(x) {
-    return x_initial + (x+1) * (CANVAS_WIDTH_2 - 3 * x_initial) / 2;
+    return (x_initial + 168) + (CANVAS_WIDTH_2 * (x)) / 1.2;
 }
 
 // parameterized coord -> canvas coord
@@ -74,7 +76,7 @@ var animArea = {
         this.panel2.height = CANVAS_HEIGHT;
         this.context2 = this.panel2.getContext("2d");
 
-        this.time = -1;   
+        this.time = -end_time;   
         this.interval = setInterval(updateFrame, FRAME_RATE);
 
         // add text and ground to panel 2
@@ -88,7 +90,7 @@ var animArea = {
         // this.context2.clearRect(0, 0, this.panel2.width, this.panel2.height);
         }, 
     stop : function() {
-        this.time = -1;
+        this.time = -end_time;
         clearInterval(this.interval); 
     },
 }
@@ -113,18 +115,17 @@ function component(width, height, color, x, y, type, p) {
 
     this.newPos = function(t) {
         if (type == 1) {
-            this.y = transformYCoord((1 + this.p) * (1 - t**2));
+            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t ** 2));
         } else if (this.type == 2) {
-            t += 1
-            this.y = transformYCoord(2 * (1 + this.p) * t - 0.5 * g * t ** 2);
+            t += end_time
+            this.y = transformYCoord(4.43 * (1 + this.p) * t - (1/2) * g * t ** 2);
         } else if (this.type == 3) {
             this.x = transformXCoord(t);
-            this.y = transformYCoord((1 + this.p) * (1 - t**2));
+            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t ** 2));
 	} else if (this.type == 4) {
-
             this.x = transformXCoord(t);
-            t += 1
-            this.y = transformYCoord(2 * (1 + this.p ) * t - 0.5 * g * t ** 2);
+            t += end_time
+            this.y = transformYCoord(4.43 * (1 + this.p ) * t - (1/2) * g * t ** 2);
 
 	} 
 	
@@ -158,8 +159,8 @@ function updateFrame() {
     animArea.context1.fillStyle = "black";
     animArea.context1.fillText("Projectile Motion", 10, 30);
 
-    // end animation when t = 1
-    if (animArea.time >= 1) {endAnimation();}
+    // end animation when t = end_time
+    if (animArea.time >= end_time) {endAnimation();}
 }
 
 // run animation on load
