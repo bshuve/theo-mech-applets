@@ -3,7 +3,7 @@ const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const dtheta = Math.PI/2500;
+const dtheta = 0.001;
 const end_time = 20;
 const end_theta = Math.PI;
 const m = 1;
@@ -279,7 +279,7 @@ plotEnergy(initial_data);
 function slider_update() {
   // updates global values for theta_i
   theta_i = parseFloat(document.getElementById("theta-slider").value);
-  document.getElementById("print-theta").innerHTML = theta_i.toFixed(2);
+  document.getElementById("print-theta").innerHTML = theta_i.toFixed(3);
   const data = energyAndDerivativeData();
   // update plot
   plotEnergy(data);

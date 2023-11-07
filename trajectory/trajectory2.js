@@ -13,8 +13,9 @@ const dt = 0.005;
 const FRAME_RATE = 10; // ms
 const x_initial = 20;
 const y_initial = 100;
+const h_i = 1;
 const g = 9.8;
-const end_time = Math.sqrt(2/(m*g));
+const end_time = Math.sqrt(2*h_i/g);
 const p_initial = parseInt(document.getElementById("p-slider").value);
 const range_p = parseInt(document.getElementById("p-slider").max);
 
@@ -115,17 +116,17 @@ function component(width, height, color, x, y, type, p) {
 
     this.newPos = function(t) {
         if (type == 1) {
-            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t ** 2));
+            this.y = transformYCoord((1 + this.p) * (h_i - (1/2) * g * t ** 2));
         } else if (this.type == 2) {
             t += end_time
-            this.y = transformYCoord(4.43 * (1 + this.p) * t - (1/2) * g * t ** 2);
+            this.y = transformYCoord(Math.sqrt(2*g*h_i) * (h_i + this.p) * t - (1/2) * g * t ** 2); // Math.sqrt(2*g*ho) is the factor to make ho and vo equal for classical and alternate path
         } else if (this.type == 3) {
             this.x = transformXCoord(t);
-            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t ** 2));
+            this.y = transformYCoord((1 + this.p) * (h_i - (1/2) * g * t ** 2));
 	} else if (this.type == 4) {
             this.x = transformXCoord(t);
             t += end_time
-            this.y = transformYCoord(4.43 * (1 + this.p ) * t - (1/2) * g * t ** 2);
+            this.y = transformYCoord(Math.sqrt(2*g*h_i) * (h_i + this.p ) * t - (1/2) * g * t ** 2);
 
 	} 
 	

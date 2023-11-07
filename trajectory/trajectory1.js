@@ -40,8 +40,9 @@ const dt = 0.005;
 const FRAME_RATE = 10; // ms
 const x_initial = 20;
 const y_initial = 100;
+const h_i = 1; // height_i when t=0
 const g = 9.8;
-const end_time = Math.sqrt(2/(m*g));
+const end_time = Math.sqrt(2*h_i/g);
 const p_initial = parseInt(document.getElementById("p-slider").value);
 const range_p = parseInt(document.getElementById("p-slider").max);
 
@@ -130,8 +131,8 @@ var animArea = {
         this.panel2.height = CANVAS_HEIGHT;
         this.context2 = this.panel2.getContext("2d");
 
-        /* In this example, time is parameterized from -sqrt(2/mg)
-        to sqrt(2/mg), so we will set the initial time to -sqrt(2/mg) */
+        /* In this example, time is parameterized from -sqrt(2*h_i/g)
+        to sqrt(2*h_i/g), so we will set the initial time to -sqrt(2*h_i/g) */
         this.time = -end_time;
 
 
@@ -206,10 +207,10 @@ function component(width, height, color, x, y, type, p) {
 
     this.newPos = function(t) {
         if (type == 1) {
-            this.y = transformYCoord((1 + this.p) * (1 - (1/2)*g*t**2));
+            this.y = transformYCoord((1 + this.p) * (h_i - (1/2)*g*t**2));
         } else if (this.type == 2) {
             this.x = transformXCoord(t);
-            this.y = transformYCoord((1 + this.p) * (1 - (1/2)*g*t**2));
+            this.y = transformYCoord((1 + this.p) * (h_i - (1/2)*g*t**2));
 	}
 
     }
