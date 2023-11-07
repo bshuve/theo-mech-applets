@@ -41,8 +41,9 @@ const dt = 0.005;
 const FRAME_RATE = 10; // ms
 const x_initial = 20;
 const y_initial = 100;
+const h_i = 1;
 const g = 9.8;
-const end_time = Math.sqrt(2/(m*g));
+const end_time = Math.sqrt(2*h_i/g);
 const p_initial = parseInt(document.getElementById("p-slider").value);
 const range_pmin = parseInt(document.getElementById("p-slider").min);
 const range_pmax = parseInt(document.getElementById("p-slider").max);
@@ -178,10 +179,10 @@ function component(width, height, color, x, y, type, p) {
     plot things correctly on the canvas */
     this.newPos = function(t) {
         if (type == 1) {   // 1D parameterized path
-            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t**2));
+            this.y = transformYCoord((1 + this.p) * (h_i - (1/2) * g * t**2));
         } else if (this.type == 2) {   // 2D parameterized path
             this.x = transformXCoord(t);
-            this.y = transformYCoord((1 + this.p) * (1 - (1/2) * g * t**2));
+            this.y = transformYCoord((1 + this.p) * (h_i - (1/2) * g * t**2));
         } 
     }
 }
@@ -253,10 +254,10 @@ function energyAndDerivativeData(p){
     var kinetic2_plus_potential2_energy_data = [];
     var kinetic_derivative_data = [];
     var potential_derivative_data = [];
-    var t = -1;
-    while (t <= 1) {
+    var t = -end_time;
+    while (t <= end_time) {
         let KE = (1/2) * m * ((1 + p) * (g * t)) ** 2;
-        let PE = m * g * (1 + p) * (1 - (1/2) * g * t**2)
+        let PE = m * g * (1 + p) * (h_i - (1/2) * g * t**2)
 	let nKE = -KE
         let nPE = -PE
         let KEmPE = KE - PE
@@ -422,10 +423,10 @@ function createPlot(input) {
 const energy_input = {
   divID: "#energy-graph",         // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-energy-plots",  // what you want the svg element to be named (not super important)
-  domain: {lower: -1, upper: 1},  // domain of the plot
+  domain: {lower: -0.4517, upper: 0.4517},  // domain of the plot
   xLabel: "Time",                 // x-axis label
-  range: {lower: -50, upper: 100},   // range of the plot
-  yLabel: "Energy"};              // y-axis label
+  range: {lower: -20, upper: 40},   // range of the plot
+  yLabel: "Energy (J)"};              // y-axis label
 
 // the svg element is essentially saved as this const variable
 const energy_plot = createPlot(energy_input);
@@ -447,7 +448,7 @@ const derivative_input = {
     domain: {lower: -1, upper: 1},
     xLabel: "Time",
     range: {lower: -8, upper: 8},
-    yLabel: "Derivative of Energy (dt)"};
+    yLabel: "Derivative of Energy (J/s)"};
 const derivative_plot = createPlot(derivative_input);
 var kd_line = derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line");
 var pd_line = derivative_plot.svg.append("g").attr("id", "potential-derivative-line");
