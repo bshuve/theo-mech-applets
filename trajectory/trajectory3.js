@@ -299,10 +299,10 @@ function integralData(){
     for (let p = range_pmin; p < range_pmax + 1; p++) {
         let pv = p / 100;
 
-        let integral_KE = 4 * (1 + pv)**2 / 3;
-        let integral_PE = 8 * (1 + pv) / 3;
-        let integral_KE2 = 8 * (1 + pv)**4 / 5;
-        let integral_PE2 = 64 * (1 + pv)**2 / 15;
+        let integral_KE = (1/6 * m * g**2 * (1 + pv)**2) * ((end_time)**3 - (-end_time)**3);
+        let integral_PE = m * g * (1 + pv) * [h_i * (end_time - (-end_time)) - 1/6 * g * (end_time**3 - (-end_time)**3)];
+        let integral_KE2 = 1/20 * m**2 * (1 + pv)**4 * g**4 * (end_time - (-end_time))**5;
+        let integral_PE2 = m**2 * g**2 * (1 + pv)**2 * (h_i**2 - h_i * g * (end_time - (-end_time))**3/3 + 1/4 * g**2 * (end_time - (-end_time))**5/5);
 
         ke.push({"x": pv, "y": integral_KE});
         pe.push({"x": pv, "y": integral_PE});
@@ -425,7 +425,7 @@ const energy_input = {
   svgID: "svg-for-energy-plots",  // what you want the svg element to be named (not super important)
   domain: {lower: -0.4517, upper: 0.4517},  // domain of the plot
   xLabel: "Time",                 // x-axis label
-  range: {lower: -20, upper: 40},   // range of the plot
+  range: {lower: -40, upper: 40},   // range of the plot
   yLabel: "Energy (J)"};              // y-axis label
 
 // the svg element is essentially saved as this const variable
@@ -448,7 +448,7 @@ const derivative_input = {
     domain: {lower: -1, upper: 1},
     xLabel: "Time",
     range: {lower: -8, upper: 8},
-    yLabel: "Derivative of Energy (J/s)"};
+    yLabel: "Derivative of Energy"};
 const derivative_plot = createPlot(derivative_input);
 var kd_line = derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line");
 var pd_line = derivative_plot.svg.append("g").attr("id", "potential-derivative-line");
@@ -459,8 +459,8 @@ const integral_input = {
     svgID: "svg-for-integral-plots",
     domain: {lower: -2.5, upper: 1},
     xLabel: "p",
-    range: {lower: -6, upper: 12},
-    yLabel: "Integral of Energy (dt)"};
+    range: {lower: -20, upper: 20},
+    yLabel: "Integral of Energy (J/s)"};
 const integral_plot = createPlot(integral_input);
 var ki_line = integral_plot.svg.append("g").attr("id", "kinetic-integral-line").attr("visibility", "visible");
 var pi_line = integral_plot.svg.append("g").attr("id", "potential-integral-line").attr("visibility", "hidden");
