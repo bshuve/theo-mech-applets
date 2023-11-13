@@ -9,7 +9,8 @@ const end_theta = Math.PI;
 const m = 1;
 const R = 1;
 const g = 9.8;
-var theta_i = parseFloat(document.getElementById("theta-slider").value); // 0.01
+const theta_i = 0;
+var omega_i = parseFloat(document.getElementById("omega-slider").value); // 0.011
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -26,14 +27,15 @@ function energyAndDerivativeData() {
   var theta = theta_i;
   var w = dtheta/dt;
 
+  w = omega_i; // initialize w to omega_i
+  let v = w/R;
   while (theta <= end_theta) {
     //parametrize graphs
     // let Ei = m * g * R * Math.cos(theta_i) // initial energy for system
     // let Ef = 1/2 * m * (v)**2 + m * g * R * Math.cos(theta); // final energy for system
-    let v = Math.sqrt(2 * g * R * (Math.cos(theta_i) - Math.cos(theta))); // found using Ei = Ef
-    let thetadot = v / R; // by definition v = R * omega = R(thetadot)
+
     let newtonianFn = -m * (v)** 2 / R + m * g * Math.cos(theta);
-    let lagrangianFn = -m * R * (thetadot)** 2 + m * g * Math.cos(theta)
+    let lagrangianFn = -m * R * (w)** 2 + m * g * Math.cos(theta)
 
      // push all data into arrays
     // only graph values in (+) force (used -0.1 to get line to touch y=0)
@@ -43,12 +45,16 @@ function energyAndDerivativeData() {
     }
 
     theta += dtheta;
+
+    v = Math.sqrt(2 * g * R * (Math.cos(theta_i) - Math.cos(theta))); // found using Ei = Ef
+    w = v / R; // by definition v = R * omega = R(w)
   }
 
   // reinitialize theta to theta_i + dtheta so that w doesn't and dtheta_forTimeLoop don't stay at 0
-  theta = theta_i + dtheta;
+  theta = theta_i;
+  w = omega_i;  //initialize initial w to omega_i slider
+
   while (t <= end_time) {
-    w = Math.sqrt(2 * g * (Math.cos(theta_i) - Math.cos(theta)) / R); // reinitialize w to new w
 
     let dtheta_forTimeLoop = w*dt;
 
@@ -67,6 +73,8 @@ function energyAndDerivativeData() {
 
     theta += dtheta_forTimeLoop;
     t += dt;
+
+    w = Math.sqrt(2 * g * (Math.cos(theta_i) - Math.cos(theta)) / R); // reinitialize w to new w
   }
 
 
@@ -186,7 +194,7 @@ var ltheta_line = lambda_theta_plot.svg.append("g").attr("id", "lambda-theta-lin
 const newtonian_time_input = {
     divID: "#newtonian-time-graph", // the id of the <div> element in your HTML file where the plot will go
     svgID: "svg-for-newtoniantime-plot", // what you want the svg element to be named (not super important)
-    domain: { lower: 0, upper: 2.5 }, // domain of the plot
+    domain: { lower: 0, upper: 3.5 }, // domain of the plot
     xLabel: "Time (s)", // x-axis label
     range: { lower: 0, upper: 10 }, // range of the plot
     yLabel: "Normal Force (N)"// y-axis label
@@ -203,7 +211,7 @@ const newtonian_time_input = {
 const lambda_time_input = {
     divID: "#lambda-time-graph",
     svgID: "svg-for-lambdatime-plot",
-    domain: { lower: 0, upper: 2.5 },
+    domain: { lower: 0, upper: 3.5 },
     xLabel: "Time (s)",
     range: { lower: 0, upper: 10 },
     yLabel: "Normal Force (N)"
@@ -277,15 +285,15 @@ plotEnergy(initial_data);
 
 
 function slider_update() {
-  // updates global values for theta_i
-  theta_i = parseFloat(document.getElementById("theta-slider").value);
-  document.getElementById("print-theta").innerHTML = theta_i.toFixed(3);
+  // updates global values for omega_i
+  omega_i = parseFloat(document.getElementById("omega-slider").value);
+  document.getElementById("print-omega").innerHTML = omega_i.toFixed(2);
   const data = energyAndDerivativeData();
   // update plot
   plotEnergy(data);
 }
 
 // checks if any sliders have been changed
-document.getElementById("theta-slider").oninput = function () {
+document.getElementById("omega-slider").oninput = function () {
   slider_update();
 }

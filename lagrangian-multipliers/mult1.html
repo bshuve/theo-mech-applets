@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>lagrangian multipliers</title>
+    <link rel = "stylesheet" href = "mult.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "mult1.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+
+<body id="body">
+
+<h1 id="title">Lagrangian Multipliers: Page 1</h1>
+<h2 id="subtitle">Newtonian vs. Lagrangian Framework</h2>
+<p id="text" style="line-height: 1.8">
+    (Chrome Recommended.)
+</p>
+
+<p id="text">
+    Using the Pig on the Dome problem as a framework, the graphs demonstrate \(F_N\) vs. theta (\(\theta\)) and time (\(t\)). The left-hand-side graphs use the Newtonian method to solve for \(F_N\), and
+    the right-hand-side graphs use the Lagrangian method to solve for \(F_N\). Mass (\(m\)), radius of the dome (\(R\)), and the gravitational constant (\(g\)) are set to 1.0 \(kg\), 1.0 \(m\), and 9.8 \(\frac{m}{s^2}\) respectively.
+    There is a provided slider for the graphs, \(\theta_i\) for the initial theta value in the system. Here, the lowest initial energy possible is \(mgRcos(0.001)\), where theta inital \(\theta_i\)
+    starts at 0.001, so that the pig is able to slide down the dome still.
+</p>
+
+<br>
+
+<div id="applet">
+    <div id="top-panel" class="row">
+	<!-- First column: constants and sliders -->
+        <div class="column">
+            <div id="controls-pg3">
+                <legend>Define Constants:</legend>
+                <p>\(m\): <span id="print-m">1.0</span> kg</p>
+                <p>\(R\): <span id="print-R">1.0</span> m</p>
+                <p>\(g\): <span id="print-a">9.8</span> m/s<sup>2</sup></p>
+                <label for="theta-slider">\(\theta_i\): <span id="print-theta">0.011</span> rad</label>
+                <input id="theta-slider" class="slider" type="range" min="0.001" max="0.501" step="0.010" value="0.010"> <!-- actual theta_i value we are using is 0.010, but with dtheta added we print as 0.011-->
+            </div>
+        </div>
+    <!-- Second column: legend -->
+        <div class="column">
+            <div id="controls2-pg3">
+                <span id="green">....</span> Lagrangian
+                <br><br>
+                <span id="red">....</span> Newtonian
+                <br><br>
+            </div>
+        </div>
+    </div>
+    <div id="middle-panel" class="row">
+        <div class="column left">
+            <div id="newtonian-theta-graph"></div>
+        </div>
+
+        <div class="column-right">
+            <div id="lambda-theta-graph"></div>
+        </div>
+    </div>
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="newtonian-time-graph"></div>
+        </div>
+        <div class="column-right">
+            <div id="lambda-time-graph"></div>
+        </div>
+    </div>
+</div> 
+<br><br>
+
+<div class="buttons">
+    <column id="next-button">
+        <button onclick = "window.location.href = 'mult2.html'">NEXT PAGE</button>
+    </column>
+</div> 
+
+<br><br><br><br>
+
+</body>
+</html>
+
