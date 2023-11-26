@@ -27,9 +27,11 @@ function energyAndDerivativeData() {
   var theta = theta_i;
   var w = dtheta/dt;
 
-  w = omega_i; // initialize w to omega_i
-  let v = w/R;
   while (theta <= end_theta) {
+
+    w = Math.sqrt((2 * g * (Math.cos(theta_i) - Math.cos(theta)) / R) + omega_i**2);
+    let v = w * R;
+
     //parametrize graphs
     // let Ei = m * g * R * Math.cos(theta_i) // initial energy for system
     // let Ef = 1/2 * m * (v)**2 + m * g * R * Math.cos(theta); // final energy for system
@@ -45,16 +47,14 @@ function energyAndDerivativeData() {
     }
 
     theta += dtheta;
-
-    v = Math.sqrt(2 * g * R * (Math.cos(theta_i) - Math.cos(theta))); // found using Ei = Ef
-    w = v / R; // by definition v = R * omega = R(w)
   }
 
   // reinitialize theta to theta_i + dtheta so that w doesn't and dtheta_forTimeLoop don't stay at 0
   theta = theta_i;
-  w = omega_i;  //initialize initial w to omega_i slider
 
   while (t <= end_time) {
+
+    w = Math.sqrt((2 * g * (Math.cos(theta_i) - Math.cos(theta)) / R) + omega_i**2); // reinitialize w to new w
 
     let dtheta_forTimeLoop = w*dt;
 
@@ -73,8 +73,6 @@ function energyAndDerivativeData() {
 
     theta += dtheta_forTimeLoop;
     t += dt;
-
-    w = Math.sqrt(2 * g * (Math.cos(theta_i) - Math.cos(theta)) / R); // reinitialize w to new w
   }
 
 
