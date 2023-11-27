@@ -302,8 +302,7 @@ function integralData(){
         let integral_KE = (1/6 * m * g**2 * (1 + pv)**2) * ((end_time)**3 - (-end_time)**3);
         let integral_PE = m * g * (1 + pv) * [h_i * (end_time - (-end_time)) - 1/6 * g * (end_time**3 - (-end_time)**3)];
         let integral_KE2 = 1/20 * m**2 * (1 + pv)**4 * g**4 * ((end_time)**5 - (-end_time)**5);
-        let integral_PE2 = m**2 * g**2 * (1 + pv)**2 * (- h_i * g * (1/3 * ((end_time)**3 - (-end_time)**3)) + 1/4 * g**2 * (1/5 * ((end_time)**5 - (-end_time)**5)));
-
+        let integral_PE2 = m**2 * g**2 * (1 + pv)**2 * (h_i ** 2 * ((end_time) - (-end_time)) - h_i * g * (1/3 * ((end_time)**3 - (-end_time)**3)) + 1/4 * g**2 * (1/5 * ((end_time)**5 - (-end_time)**5)));
         ke.push({"x": pv, "y": integral_KE});
         pe.push({"x": pv, "y": integral_PE});
         nke.push({"x": pv, "y": -integral_KE});
@@ -459,7 +458,7 @@ const integral_input = {
     svgID: "svg-for-integral-plots",
     domain: {lower: -2.5, upper: 1},
     xLabel: "p",
-    range: {lower: -20, upper: 20},
+    range: {lower: -31, upper: 30},
     yLabel: "Integral of Energy (J/s)"};
 const integral_plot = createPlot(integral_input);
 var ki_line = integral_plot.svg.append("g").attr("id", "kinetic-integral-line").attr("visibility", "visible");
