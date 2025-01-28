@@ -190,7 +190,6 @@ ctx.closePath();
 
 /* Creating the circle object/particle */
 ctx.beginPath();
-ctx.arc(center_x, center_y, 40, 0, 2*Math.PI);
 ctx.stroke()
 ctx.closePath();
 

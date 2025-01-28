@@ -15,6 +15,13 @@ const center_y = canvas.height/2;
 const ctx = canvas.getContext('2d');
 const ctx2 = feedback.getContext('2d');
 
+//store angles 
+const angles = [0, Math.PI/6, Math.PI/4, Math.PI/3, Math.PI/2, 3*Math.PI/4, 5*Math.PI/6, Math.PI,
+    7*Math.PI/6, 5*Math.PI/4, 4*Math.PI/3, 3*Math.PI/2, 7*Math.PI/4, 11*Math.PI/6];
+
+//r and p
+let r, p;
+
 /* The Vector class */
 class Vector {
     constructor(start_x, start_y, x, y, z){
@@ -155,56 +162,60 @@ class Vector {
        }
    }
 }
+function regenerateVectors(){
+    // unit vectors 
+    const x_unit_vec = new Vector(40, 80, 50, 0, 0);
+    const y_unit_vec = new Vector(40, 80, 0, -50, 0);
+    const z_unit_vec = new Vector(40, 80, 0, 0, 1);
+    // Clear canvases
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, feedback.width, feedback.height);
 
-/* Unit Vectors */
-const x_unit_vec = new Vector(40, 80, 50, 0, 0);
-x_unit_vec.drawVec('black', ctx);
+    /* Unit Vectors */
+    x_unit_vec.drawVec('black', ctx);
+    y_unit_vec.drawVec('black', ctx);
+    z_unit_vec.drawVec('black', ctx);
 
-const y_unit_vec = new Vector(40, 80, 0, -50, 0);
-y_unit_vec.drawVec('black', ctx);
+    /* Labeling Unit Vectors */
+    ctx.font = "14px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText("y", 25, 40);
+    ctx.fillText("x", 80, 95);
+    ctx.fillText("z", 25, 95);
 
-const z_unit_vec = new Vector(40, 80, 0, 0, 1);
-z_unit_vec.drawVec('black', ctx);
+    /* Creating Legend */
+    ctx.beginPath();
+    ctx.rect(540, 20, 20, 20);
+    ctx.fillStyle = "purple";
+    ctx.fill();
+    ctx.fillText("r Vector", 565, 35);
+    ctx.closePath();
 
-/* Labeling Unit Vectors */
-ctx.font = "14px Verdana";
-ctx.fillStyle = "black";
-ctx.fillText("y", 25, 40);
-ctx.fillText("x", 80, 95);
-ctx.fillText("z", 25, 95);
+    ctx.beginPath();
+    ctx.rect(540, 50, 20, 20);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.fillText("p Vector", 565, 65);
+    ctx.closePath();
 
-/* Creating Legend */
-ctx.beginPath();
-ctx.rect(540, 20, 20, 20);
-ctx.fillStyle = "purple";
-ctx.fill();
-ctx.fillText("r Vector", 565, 35);
-ctx.closePath();
+    /* Creating random r vector*/
+    // Choose a random angle
 
-ctx.beginPath();
-ctx.rect(540, 50, 20, 20);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.fillText("p Vector", 565, 65);
-ctx.closePath();
+    let randAngle = angles[Math.floor(Math.random()*angles.length)];
+     r = new Vector(center_x, center_y, 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
+    r.drawVec('purple', ctx);
 
-/* Creating random r vector*/
-// Choose a random angle
-angles = [0, Math.PI/6, Math.PI/4, Math.PI/3, Math.PI/2, 3*Math.PI/4, 5*Math.PI/6, Math.PI,
-        7*Math.PI/6, 5*Math.PI/4, 4*Math.PI/3, 3*Math.PI/2, 7*Math.PI/4, 11*Math.PI/6];
-var randAngle = angles[Math.floor(Math.random()*angles.length)];
-var r = new Vector(center_x, center_y, 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
-r.drawVec('purple', ctx);
-
-/* Creating random p vector */
-// Choose a random angle
-randAngle = angles[Math.floor(Math.random()*angles.length)];
-var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
-p.drawVec('green', ctx);
+    /* Creating random p vector */
+    // Choose a random angle
+    randAngle = angles[Math.floor(Math.random()*angles.length)];
+     p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
+    p.drawVec('green', ctx);
+}
+//initalize
+regenerateVectors();
 
 /* Event Listeners */
 // Get the user's input
-var guess;
 document.getElementById('into-button').addEventListener('click', function () {
     check("-z");
     });
@@ -214,8 +225,10 @@ document.getElementById('out-button').addEventListener('click', function () {
  document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
     });
+    document.getElementById('reload-button').addEventListener('click', regenerateVectors);
 
 // Display whether it's correct or not
+var guess;
 ctx2.font = "16px Verdana";
 ctx2.fillStyle = "black";
 function check(guess) {

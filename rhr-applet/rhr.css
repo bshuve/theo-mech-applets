@@ -1,3 +1,4 @@
+/* Original desktop styles */
 body {
     position: relative;
     top: 70px;
@@ -25,6 +26,10 @@ button:hover {
     color: #000000;
 }
 
+#canvas {
+    max-width: 100%;
+    height: auto;
+}
 #text {
     max-width: 1000px;
 }
@@ -90,7 +95,6 @@ button:hover {
 
 #next-button{
     float: right;
-    margin-right: 100px;
 }
 
 .button-spacing {
@@ -101,4 +105,66 @@ button:hover {
 
 .buttons {
     text-align: center;
+    width: auto;
+    clear: both;
 }
+
+/* Mobile adjustments (only applies below 768px) 
+@media screen and (max-width: 768px) {
+    body {
+        top: 20px;
+        padding: 0 15px;
+        max-width: 100%;
+    }
+
+    #canvas, #feedback {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        float: none;
+        margin: 10px 0;
+    }
+
+    #canvas {
+        width: 100%;
+            
+        aspect-ratio: 4/3;
+    }
+
+    #feedback {
+        width: 80%;
+        height: auto;
+        aspect-ratio: 16/6;
+        margin-left: 0;
+    }
+
+    #rightbox {
+        width: 100%;
+        padding-left: 0;
+        display: block;
+        margin-top: 20px;
+    }
+
+    .buttons button {
+        width: 90%;
+        margin: 5px auto;
+        padding: 12px 0;
+    }
+
+    #text {
+        padding: 0 10px;
+    }
+
+    #next-button {
+        float: none;
+        margin-right: 0;
+        text-align: center;
+    }
+
+    /* Maintain canvas aspect ratio 
+    canvas {
+        max-width: 100%;
+        height: auto !important;
+    }
+}
+    */
