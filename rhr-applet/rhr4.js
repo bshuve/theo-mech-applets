@@ -15,6 +15,11 @@ const center_y = canvas.height/2;
 const ctx = canvas.getContext('2d');
 const ctx2 = feedback.getContext('2d');
 
+let angles = [0, 0, Math.PI/4, Math.PI/2, Math.PI/2, 3*Math.PI/4, Math.PI, Math.PI/2,
+    5*Math.PI/4, 3*Math.PI/2, 3*Math.PI/2, 7*Math.PI/4, "+z", "-z"];
+
+let r,p;
+
 /* The Vector class */
 class Vector {
     constructor(start_x, start_y, x, y, z){
@@ -156,83 +161,88 @@ class Vector {
    }
 }
 
-/* Unit Vectors */
-const x_unit_vec = new Vector(40, 80, 50, 0, 0);
-x_unit_vec.drawVec('black', ctx);
+function regenerateVectors(){
+    //clear canvas 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, feedback.width, feedback.height);
+    /* Unit Vectors */
+    const x_unit_vec = new Vector(40, 80, 50, 0, 0);
+    x_unit_vec.drawVec('black', ctx);
 
-const y_unit_vec = new Vector(40, 80, 0, -50, 0);
-y_unit_vec.drawVec('black', ctx);
+    const y_unit_vec = new Vector(40, 80, 0, -50, 0);
+    y_unit_vec.drawVec('black', ctx);
 
-const z_unit_vec = new Vector(40, 80, 0, 0, 1);
-z_unit_vec.drawVec('black', ctx);
+    const z_unit_vec = new Vector(40, 80, 0, 0, 1);
+    z_unit_vec.drawVec('black', ctx);
 
-/* Labeling Unit Vectors */
-ctx.font = "14px Verdana";
-ctx.fillStyle = "black";
-ctx.fillText("y", 25, 40);
-ctx.fillText("x", 80, 95);
-ctx.fillText("z", 25, 95);
+    /* Labeling Unit Vectors */
+    ctx.font = "14px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText("y", 25, 40);
+    ctx.fillText("x", 80, 95);
+    ctx.fillText("z", 25, 95);
 
-/* Creating Legend */
-ctx.beginPath();
-ctx.rect(505, 20, 20, 20);
-ctx.fillStyle = "purple";
-ctx.fill();
-ctx.fillText("r Vector", 530, 35);
-ctx.closePath();
+    /* Creating Legend */
+    ctx.beginPath();
+    ctx.rect(505, 20, 20, 20);
+    ctx.fillStyle = "purple";
+    ctx.fill();
+    ctx.fillText("r Vector", 530, 35);
+    ctx.closePath();
 
-ctx.beginPath();
-ctx.rect(505, 50, 20, 20);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.fillText("p Vector", 530, 65);
-ctx.closePath();
+    ctx.beginPath();
+    ctx.rect(505, 50, 20, 20);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.fillText("p Vector", 530, 65);
+    ctx.closePath();
 
-/* Creating random r vector*/
-// Choose a random direction
-var angles = [0, 0, Math.PI/4, Math.PI/2, Math.PI/2, 3*Math.PI/4, Math.PI, Math.PI/2,
-            5*Math.PI/4, 3*Math.PI/2, 3*Math.PI/2, 7*Math.PI/4, "+z", "-z"];
-var rDir = angles[Math.floor(Math.random()*angles.length)];
-if (rDir == "+z") {
-    var r = new Vector(center_x, center_y, 0, 0, 1);
-} else if (rDir == "-z") {
-    var r = new Vector(center_x, center_y, 0, 0, -1);
-} else {
-    var r = new Vector(center_x, center_y, 100*Math.cos(rDir), 100*Math.sin(rDir), 0);
-}
-r.drawVec('purple', ctx);
-
-/* Creating random p vector */
-// The following constraints are imposed for clarity/visibility
-if ((r.x == 0 || r.y == 0) && (r.z == 0)) {
-    // If r is a unit vector in the xy plane, p can be in any direction
-    /* Note the inflated probability of p being in the z direction so students become
-       more comfortable with this new skill */
-    angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
-            5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4,
-            "+z", "+z", "+z", "+z", "+z", "+z", "+z", "-z", "-z", "-z", "-z", "-z", "-z", "-z"];
-    var pDir = angles[Math.floor(Math.random()*angles.length)];
-    if (pDir == "+z") {
-        var p = new Vector(r.getEndX(), r.getEndY(), 0, 0, 1);
-    } else if (pDir == "-z") {
-        var p = new Vector(r.getEndX(), r.getEndY(), 0, 0, -1);
+    /* Creating random r vector*/
+    // Choose a random direction
+    var rDir = angles[Math.floor(Math.random()*angles.length)];
+    if (rDir == "+z") {
+        r = new Vector(center_x, center_y, 0, 0, 1);
+    } else if (rDir == "-z") {
+        r = new Vector(center_x, center_y, 0, 0, -1);
     } else {
-        var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+        r = new Vector(center_x, center_y, 100*Math.cos(rDir), 100*Math.sin(rDir), 0);
     }
-} else if (r.z == 0) {
-    // If r is not a unit vector, but is in the xy plane, p cannot be in the z direction
-    angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
-            5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
-    var pDir = angles[Math.floor(Math.random()*angles.length)];
-    var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
-} else {
-    // If r is in the z direction, then p cannot be in the z direction
-    angles = [0, Math.PI/2, Math.PI, 3*Math.PI/2];
-    var pDir = angles[Math.floor(Math.random()*angles.length)];
-    var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+    r.drawVec('purple', ctx);
+
+    /* Creating random p vector */
+    // The following constraints are imposed for clarity/visibility
+    if ((r.x == 0 || r.y == 0) && (r.z == 0)) {
+        // If r is a unit vector in the xy plane, p can be in any direction
+        /* Note the inflated probability of p being in the z direction so students become
+        more comfortable with this new skill */
+        angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
+                5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4,
+                "+z", "+z", "+z", "+z", "+z", "+z", "+z", "-z", "-z", "-z", "-z", "-z", "-z", "-z"];
+        var pDir = angles[Math.floor(Math.random()*angles.length)];
+        if (pDir == "+z") {
+            p = new Vector(r.getEndX(), r.getEndY(), 0, 0, 1);
+        } else if (pDir == "-z") {
+             p = new Vector(r.getEndX(), r.getEndY(), 0, 0, -1);
+        } else {
+             p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+        }
+    } else if (r.z == 0) {
+        // If r is not a unit vector, but is in the xy plane, p cannot be in the z direction
+        angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
+                5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
+        var pDir = angles[Math.floor(Math.random()*angles.length)];
+        p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+    } else {
+        // If r is in the z direction, then p cannot be in the z direction
+        angles = [0, Math.PI/2, Math.PI, 3*Math.PI/2];
+        var pDir = angles[Math.floor(Math.random()*angles.length)];
+        p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(pDir), 100*Math.sin(pDir), 0);
+    }
+
+    p.drawVec('green', ctx);
 }
 
-p.drawVec('green', ctx);
+regenerateVectors(); 
 
 /* Event Listeners */
 // Get the user's input
@@ -258,6 +268,7 @@ document.getElementById('-z-button').addEventListener('click', function () {
 document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
 });
+document.getElementById('reload-button').addEventListener('click', regenerateVectors);
 
 // Display whether it's correct or not
 ctx2.font = "16px Verdana";

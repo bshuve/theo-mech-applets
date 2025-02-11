@@ -28,7 +28,8 @@ button:hover {
 
 #canvas {
     max-width: 100%;
-    height: auto;
+    width: 640px; /* Set desired width */
+    height: 480px; /* Set desired height */
 }
 #text {
     max-width: 1000px;
@@ -61,6 +62,10 @@ button:hover {
     border: solid;
     float: left;
     margin-left: 32px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width: 320px;
+    height: 120px;
 }
 
 #out-button {
@@ -91,10 +96,16 @@ button:hover {
 
 #previous-button{
     float: left;
+    margin-top: 15px;
 }
 
 #next-button{
     float: right;
+    margin-top: 15px;
+}
+
+#feedback-container{
+    margin-top: 5px
 }
 
 .button-spacing {
@@ -104,67 +115,26 @@ button:hover {
 }
 
 .buttons {
+    clear: both;
     text-align: center;
     width: auto;
-    clear: both;
+    margin-top: 5px;
 }
 
-/* Mobile adjustments (only applies below 768px) 
-@media screen and (max-width: 768px) {
-    body {
-        top: 20px;
-        padding: 0 15px;
-        max-width: 100%;
-    }
 
-    #canvas, #feedback {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        float: none;
-        margin: 10px 0;
-    }
-
-    #canvas {
-        width: 100%;
-            
-        aspect-ratio: 4/3;
-    }
-
+/* Mobile adjustments (only applies below 768px) */
+@media (max-width:768px) {
     #feedback {
-        width: 80%;
-        height: auto;
-        aspect-ratio: 16/6;
-        margin-left: 0;
+        width: 320px; /* Set desired width */
+        height: 120px; /* Set desired height */
+    }
+    #text-middle {
+        font-size: 13px;
+    }
+    #canvas{
+        width: 640px; /* Set desired width */
+        height: 300px; /* Set desired height */
+    }
     }
 
-    #rightbox {
-        width: 100%;
-        padding-left: 0;
-        display: block;
-        margin-top: 20px;
-    }
-
-    .buttons button {
-        width: 90%;
-        margin: 5px auto;
-        padding: 12px 0;
-    }
-
-    #text {
-        padding: 0 10px;
-    }
-
-    #next-button {
-        float: none;
-        margin-right: 0;
-        text-align: center;
-    }
-
-    /* Maintain canvas aspect ratio 
-    canvas {
-        max-width: 100%;
-        height: auto !important;
-    }
-}
-    */
+    

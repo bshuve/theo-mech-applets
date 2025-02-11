@@ -11,7 +11,7 @@
          <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </head>
 <body id="body">
-    <h1 id="title">Right Hand Rule Practice: Page 5/5</h1>
+    <!--<h1 id="title">Right Hand Rule Practice: Page 5/5</h1>
     <p id="text">
         (Desktop recommended. If you're having formatting issues, we recommended using Google Chrome.)
         <br><br>
@@ -19,7 +19,7 @@
         the given unit vectors. Note that the unit vectors both start at the origin, 
         so make sure to check the legend to see which one is the "first" vector!
     </p>
-    <br>
+    <br>-->
     <div>
         <canvas id="canvas" width="640" height="480"></canvas>
     </div>
@@ -32,26 +32,21 @@
             <button id = "+y-button">+y</button>
             <button id = "+z-button">+z</button>
         </div> 
-        <br>
         <div class="buttons">
             <button id = "-x-button">-x</button>
             <button id = "-y-button">-y</button>
             <button id = "-z-button">-z</button>
         </div>
-        <br>
         <div class="buttons">
             <button id = "zero-button">Zero</button>
         </div>
-        <br><br>
     </div>
-    <div>
+    <div id="feedback-container">
         <canvas id="feedback" width="320" height="120"></canvas>
     </div>
-    <br><br><br><br><br><br><br><br><br>
     <div class="buttons" id="rightbox">
-        <button id = "reload-button" onclick = "window.location.href = 'rhr5.html'">Generate New Vectors</button>
+        <button id = "reload-button">Generate New Vectors</button>
     </div>
-    <br><br><br><br>
     <div class="buttons">
         <column id="previous-button">
             <button onclick = "window.location.href = 'rhr4.html'">PREVIOUS PAGE</button>

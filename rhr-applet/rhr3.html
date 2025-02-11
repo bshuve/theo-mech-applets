@@ -11,14 +11,14 @@
          <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </head>
 <body id="body">
-    <h1 id="title">Right Hand Rule Practice: Page 3/5</h1>
+    <!--<h1 id="title">Right Hand Rule Practice: Page 3/5</h1>
     <p id="text">
         (Desktop recommended. If you're having formatting issues, we recommended using Google Chrome.)
         <br><br>
         Using the right hand rule, practice identifying the direction of torque
         \(\vec \tau\) based on the direction and location of force \(\vec F\).
     </p>
-    <br>
+    <br>-->
     <div>
         <canvas id="canvas" width="640" height="480"></canvas>
     </div>
@@ -31,16 +31,13 @@
             <button id = "out-button">+z</button>
             <button id = "zero-button">Zero</button>
         </div> 
-        <br><br>
     </div>
-    <div>
+    <div id="feedback-container">
         <canvas id="feedback" width="320" height="120"></canvas>
     </div>
-    <br><br><br><br><br><br><br><br><br>
     <div class="buttons" id="rightbox">
-        <button id = "reload-button" onclick = "window.location.href = 'rhr3.html'">Generate New Vectors</button>
+        <button id = "reload-button">Generate New Vectors</button>
     </div>
-    <br><br><br><br><br><br><br>
     <div class="buttons">
         <column id="previous-button">
             <button onclick = "window.location.href = 'rhr2.html'">PREVIOUS PAGE</button>
