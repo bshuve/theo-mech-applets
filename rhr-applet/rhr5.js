@@ -15,6 +15,9 @@ const center_y = canvas.height/2;
 const ctx = canvas.getContext('2d');
 const ctx2 = feedback.getContext('2d');
 
+//initalize variables
+let r,p, i, rDir, pDir;
+
 /* The Vector class */
 class Vector {
     constructor(start_x, start_y, x, y, z){
@@ -155,70 +158,76 @@ class Vector {
        }
    }
 }
+function regenerateVectors(){
+    //clear canvas 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, feedback.width, feedback.height);
 
-/* Unit Vectors */
-const x_unit_vec = new Vector(40, 80, 50, 0, 0);
-x_unit_vec.drawVec('black', ctx);
+    /* Unit Vectors */
+    const x_unit_vec = new Vector(40, 80, 50, 0, 0);
+    x_unit_vec.drawVec('black', ctx);
 
-const y_unit_vec = new Vector(40, 80, 0, -50, 0);
-y_unit_vec.drawVec('black', ctx);
+    const y_unit_vec = new Vector(40, 80, 0, -50, 0);
+    y_unit_vec.drawVec('black', ctx);
 
-const z_unit_vec = new Vector(40, 80, 0, 0, 1);
-z_unit_vec.drawVec('black', ctx);
+    const z_unit_vec = new Vector(40, 80, 0, 0, 1);
+    z_unit_vec.drawVec('black', ctx);
 
-/* Labeling Unit Vectors */
-ctx.font = "14px Verdana";
-ctx.fillStyle = "black";
-ctx.fillText("y", 25, 40);
-ctx.fillText("x", 80, 95);
-ctx.fillText("z", 25, 95);
+    /* Labeling Unit Vectors */
+    ctx.font = "14px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText("y", 25, 40);
+    ctx.fillText("x", 80, 95);
+    ctx.fillText("z", 25, 95);
 
-/* Creating Legend */
-ctx.beginPath();
-ctx.rect(505, 20, 20, 20);
-ctx.fillStyle = "purple";
-ctx.fill();
-ctx.fillText("First Vector", 530, 35);
-ctx.closePath();
+    /* Creating Legend */
+    ctx.beginPath();
+    ctx.rect(505, 20, 20, 20);
+    ctx.fillStyle = "purple";
+    ctx.fill();
+    ctx.fillText("First Vector", 530, 35);
+    ctx.closePath();
 
-ctx.beginPath();
-ctx.rect(505, 50, 20, 20);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.fillText("Second Vector", 530, 65);
-ctx.closePath();
+    ctx.beginPath();
+    ctx.rect(505, 50, 20, 20);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.fillText("Second Vector", 530, 65);
+    ctx.closePath();
 
-/* Creating random r vector*/
-// Choose a random direction
-var directions = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
-var i = Math.floor(Math.random()*directions.length);
-var rDir = directions[i];
-var r = new Vector(center_x, center_y, 100*rDir[0], 100*rDir[1], rDir[2]);
-r.drawVec('purple', ctx);
+    /* Creating random r vector*/
+    // Choose a random direction
+    var directions = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
+    i = Math.floor(Math.random()*directions.length);
+    rDir = directions[i];
+    r = new Vector(center_x, center_y, 100*rDir[0], 100*rDir[1], rDir[2]);
+    r.drawVec('purple', ctx);
 
-// Update directions so that r and p cannot be the same vector
-if (r.z != 0) {
-    // remove [0, 0, 1] and [0, 0, -1]
-    var i1 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === 1);
-    directions.splice(i1, 1);
-    var i2 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === -1);
-    directions.splice(i2, 1);
-} else {
-    directions.splice(i, 1);
+    // Update directions so that r and p cannot be the same vector
+    if (r.z != 0) {
+        // remove [0, 0, 1] and [0, 0, -1]
+        var i1 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === 1);
+        directions.splice(i1, 1);
+        var i2 = directions.findIndex(x => x[0] === 0 && x[1] === 0 && x[2] === -1);
+        directions.splice(i2, 1);
+    } else {
+        directions.splice(i, 1);
+    }
+
+    /* Creating random p vector */
+    pDir = directions[Math.floor(Math.random()*directions.length)];
+    p = new Vector(center_x, center_y, 100*pDir[0], 100*pDir[1], pDir[2]);
+    p.drawVec('green', ctx);
+
+    // Creating title
+    ctx.beginPath();
+    ctx.fillStyle = "black";
+    var rTitle = r.direction();
+    var pTitle = p.direction();
+    ctx.fillText(rTitle + " cross " + pTitle, center_x-50, 50);
+    ctx.closePath();
 }
-
-/* Creating random p vector */
-var pDir = directions[Math.floor(Math.random()*directions.length)];
-var p = new Vector(center_x, center_y, 100*pDir[0], 100*pDir[1], pDir[2]);
-p.drawVec('green', ctx);
-
-// Creating title
-ctx.beginPath();
-ctx.fillStyle = "black";
-var rTitle = r.direction();
-var pTitle = p.direction();
-ctx.fillText(rTitle + " cross " + pTitle, center_x-50, 50);
-ctx.closePath();
+regenerateVectors();
 
 /* Event Listeners */
 // Get the user's input
@@ -244,6 +253,7 @@ document.getElementById('-z-button').addEventListener('click', function () {
 document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
 });
+document.getElementById('reload-button').addEventListener('click', regenerateVectors);
 
 // Display whether it's correct or not
 ctx2.font = "16px Verdana";

@@ -15,6 +15,13 @@ const center_y = canvas.height/2;
 const ctx = canvas.getContext('2d');
 const ctx2 = feedback.getContext('2d');
 
+//initalize angles 
+let angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
+    5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
+
+//initalize r and p
+let r, p;
+
 /* The Vector class */
 class Vector {
     constructor(start_x, start_y, x, y, z){
@@ -155,82 +162,86 @@ class Vector {
        }
    }
 }
+function regenerateVectors(){
+    //clear canvas 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, feedback.width, feedback.height);
+    /* Unit Vectors */
+    const x_unit_vec = new Vector(40, 80, 50, 0, 0);
+    x_unit_vec.drawVec('black', ctx);
 
-/* Unit Vectors */
-const x_unit_vec = new Vector(40, 80, 50, 0, 0);
-x_unit_vec.drawVec('black', ctx);
+    const y_unit_vec = new Vector(40, 80, 0, -50, 0);
+    y_unit_vec.drawVec('black', ctx);
 
-const y_unit_vec = new Vector(40, 80, 0, -50, 0);
-y_unit_vec.drawVec('black', ctx);
+    const z_unit_vec = new Vector(40, 80, 0, 0, 1);
+    z_unit_vec.drawVec('black', ctx);
 
-const z_unit_vec = new Vector(40, 80, 0, 0, 1);
-z_unit_vec.drawVec('black', ctx);
+    /* Labeling Unit Vectors */
+    ctx.font = "14px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText("y", 25, 40);
+    ctx.fillText("x", 80, 95);
+    ctx.fillText("z", 25, 95);
 
-/* Labeling Unit Vectors */
-ctx.font = "14px Verdana";
-ctx.fillStyle = "black";
-ctx.fillText("y", 25, 40);
-ctx.fillText("x", 80, 95);
-ctx.fillText("z", 25, 95);
+    /* Creating Legend */
+    ctx.strokeStyle = "purple";
+    ctx.beginPath();
+    ctx.moveTo(495, 25);
+    ctx.lineTo(507, 37);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.moveTo(507, 25);
+    ctx.lineTo(495, 37);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.fillStyle = "Purple";
+    ctx.fill();
+    ctx.fillText("Reference Axis", 515, 35);
+    ctx.closePath();
 
-/* Creating Legend */
-ctx.strokeStyle = "purple";
-ctx.beginPath();
-ctx.moveTo(495, 25);
-ctx.lineTo(507, 37);
-ctx.stroke();
-ctx.closePath();
-ctx.beginPath();
-ctx.moveTo(507, 25);
-ctx.lineTo(495, 37);
-ctx.stroke();
-ctx.closePath();
-ctx.fillStyle = "Purple";
-ctx.fill();
-ctx.fillText("Reference Axis", 515, 35);
-ctx.closePath();
+    ctx.beginPath();
+    ctx.rect(490, 50, 20, 20);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.fillText("Force Vector", 515, 65);
+    ctx.closePath();
 
-ctx.beginPath();
-ctx.rect(490, 50, 20, 20);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.fillText("Force Vector", 515, 65);
-ctx.closePath();
+    /* Drawing disk */
+    ctx.beginPath();
+    ctx.arc(center_x, center_y, 100, 0, 2*Math.PI);
+    ctx.strokeStyle = "black";
+    ctx.stroke()
+    ctx.closePath();
 
-/* Drawing disk */
-ctx.beginPath();
-ctx.arc(center_x, center_y, 100, 0, 2*Math.PI);
-ctx.strokeStyle = "black";
-ctx.stroke()
-ctx.closePath();
+    // Drawing reference axis
+    ctx.strokeStyle = "purple";
+    ctx.beginPath();
+    ctx.moveTo(center_x-6, center_y-6);
+    ctx.lineTo(center_x+6, center_y+6);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.moveTo(center_x+6, center_y-6);
+    ctx.lineTo(center_x-6, center_y+6);
+    ctx.stroke();
+    ctx.closePath();
 
-// Drawing reference axis
-ctx.strokeStyle = "purple";
-ctx.beginPath();
-ctx.moveTo(center_x-6, center_y-6);
-ctx.lineTo(center_x+6, center_y+6);
-ctx.stroke();
-ctx.closePath();
-ctx.beginPath();
-ctx.moveTo(center_x+6, center_y-6);
-ctx.lineTo(center_x-6, center_y+6);
-ctx.stroke();
-ctx.closePath();
+    /* Creating random r vector*/
+    // Choose a random angle
 
-/* Creating random r vector*/
-// Choose a random angle
-angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
-            5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
-var randAngle = angles[Math.floor(Math.random()*angles.length)];
-// Choose a random r with min 20 and max 100
-var rand = Math.round(20 + 80*Math.random());
-var r = new Vector(center_x, center_y, rand*Math.cos(randAngle), rand*Math.sin(randAngle), 0);
+    var randAngle = angles[Math.floor(Math.random()*angles.length)];
+    // Choose a random r with min 20 and max 100
+    var rand = Math.round(20 + 80*Math.random());
+    r = new Vector(center_x, center_y, rand*Math.cos(randAngle), rand*Math.sin(randAngle), 0);
 
-/* Creating random p vector */
-// Choose a random angle
-randAngle = angles[Math.floor(Math.random()*angles.length)];
-var p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
-p.drawVec('green', ctx);
+    /* Creating random p vector */
+    // Choose a random angle
+    randAngle = angles[Math.floor(Math.random()*angles.length)];
+    p = new Vector(r.getEndX(), r.getEndY(), 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
+    p.drawVec('green', ctx);
+}
+regenerateVectors();
 
 /* Event Listeners */
 // Get the user's input
@@ -244,6 +255,7 @@ document.getElementById('out-button').addEventListener('click', function () {
  document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
     });
+document.getElementById('reload-button').addEventListener('click', regenerateVectors);
 
 // Display whether it's correct or not
 ctx2.font = "16px Verdana";

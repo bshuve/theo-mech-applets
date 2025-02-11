@@ -19,7 +19,7 @@ const ctx2 = feedback.getContext('2d');
 const angles = [0, Math.PI/6, Math.PI/4, Math.PI/3, Math.PI/2, 3*Math.PI/4, 5*Math.PI/6, Math.PI,
     7*Math.PI/6, 5*Math.PI/4, 4*Math.PI/3, 3*Math.PI/2, 7*Math.PI/4, 11*Math.PI/6];
 
-//r and p
+//init r and p
 let r, p;
 
 /* The Vector class */
@@ -162,6 +162,8 @@ class Vector {
        }
    }
 }
+
+//refresh vectors
 function regenerateVectors(){
     // unit vectors 
     const x_unit_vec = new Vector(40, 80, 50, 0, 0);
@@ -225,7 +227,7 @@ document.getElementById('out-button').addEventListener('click', function () {
  document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
     });
-    document.getElementById('reload-button').addEventListener('click', regenerateVectors);
+document.getElementById('reload-button').addEventListener('click', regenerateVectors);
 
 // Display whether it's correct or not
 var guess;

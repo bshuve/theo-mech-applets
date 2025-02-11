@@ -15,6 +15,12 @@ const center_y = canvas.height/2;
 const ctx = canvas.getContext('2d');
 const ctx2 = feedback.getContext('2d');
 
+const angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
+    5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
+
+//init r and p
+let p, randX, randY, ref;
+
 /* The Vector class */
 class Vector {
     constructor(start_x, start_y, x, y, z){
@@ -156,67 +162,74 @@ class Vector {
    }
 }
 
-/* Unit Vectors */
-const x_unit_vec = new Vector(40, 80, 50, 0, 0);
-x_unit_vec.drawVec('black', ctx);
+function regenerateVectors(){
 
-const y_unit_vec = new Vector(40, 80, 0, -50, 0);
-y_unit_vec.drawVec('black', ctx);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, feedback.width, feedback.height);
 
-const z_unit_vec = new Vector(40, 80, 0, 0, 1);
-z_unit_vec.drawVec('black', ctx);
+    /* Unit Vectors */
+    const x_unit_vec = new Vector(40, 80, 50, 0, 0);
+    x_unit_vec.drawVec('black', ctx);
 
-/* Labeling Unit Vectors */
-ctx.font = "14px Verdana";
-ctx.fillStyle = "black";
-ctx.fillText("y", 25, 40);
-ctx.fillText("x", 80, 95);
-ctx.fillText("z", 25, 95);
+    const y_unit_vec = new Vector(40, 80, 0, -50, 0);
+    y_unit_vec.drawVec('black', ctx);
 
-/* Creating Legend */
-ctx.beginPath();
-ctx.rect(490, 20, 20, 20);
-ctx.fillStyle = "purple";
-ctx.fill();
-ctx.fillText("Reference Point", 515, 35);
-ctx.closePath();
+    const z_unit_vec = new Vector(40, 80, 0, 0, 1);
+    z_unit_vec.drawVec('black', ctx);
 
-ctx.beginPath();
-ctx.rect(490, 50, 20, 20);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.fillText("p Vector", 515, 65);
-ctx.closePath();
+    /* Labeling Unit Vectors */
+    ctx.font = "14px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText("y", 25, 40);
+    ctx.fillText("x", 80, 95);
+    ctx.fillText("z", 25, 95);
 
-/* Creating the circle object/particle */
-ctx.beginPath();
-ctx.stroke()
-ctx.closePath();
+    /* Creating Legend */
+    ctx.beginPath();
+    ctx.rect(490, 20, 20, 20);
+    ctx.fillStyle = "purple";
+    ctx.fill();
+    ctx.fillText("Reference Point", 515, 35);
+    ctx.closePath();
 
-/* Creating random p vector*/
-// Choose a random angle
-angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI,
-            5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
-var randAngle = angles[Math.floor(Math.random()*angles.length)];
-var p = new Vector(center_x, center_y, 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
-p.drawVec('green', ctx);
+    ctx.beginPath();
+    ctx.rect(490, 50, 20, 20);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.fillText("p Vector", 515, 65);
+    ctx.closePath();
 
-/* Creating random reference point */
-// Choose a random X and Y between general empty area of canvas
-var magnitude = (Math.random()*(center_y - 20)+10);
-randAngle = angles[Math.floor(Math.random()*angles.length)];
-var randX = center_x + magnitude * Math.cos(randAngle);
-var randY = center_y + magnitude * Math.sin(randAngle);
+    /* Creating the circle object/particle */
+    ctx.beginPath();
+    ctx.arc(center_x, center_y, 40, 0, 2*Math.PI);
+    ctx.stroke()
+    ctx.closePath();
 
-/* Drawing the random reference point */
-ctx.beginPath();
-ctx.arc(randX, randY, 5, 0, 2*Math.PI);
-ctx.fillStyle = "purple";
-ctx.fill();
-ctx.closePath();
+    /* Creating random p vector*/
+    // Choose a random angle
+    var randAngle = angles[Math.floor(Math.random()*angles.length)];
+    p = new Vector(center_x, center_y, 100*Math.cos(randAngle), 100*Math.sin(randAngle), 0);
+    p.drawVec('green', ctx);
 
-/* Creating an invisible vector from the random reference point to the origin where p vector starts*/
-var ref = new Vector(randX, randY, p.start_x-randX, p.start_y-randY, 0);
+    /* Creating random reference point */
+    // Choose a random X and Y between general empty area of canvas
+    var magnitude = (Math.random()*(center_y - 20)+10);
+    randAngle = angles[Math.floor(Math.random()*angles.length)];
+    randX = center_x + magnitude * Math.cos(randAngle);
+    randY = center_y + magnitude * Math.sin(randAngle);
+
+    /* Drawing the random reference point */
+    ctx.beginPath();
+    ctx.arc(randX, randY, 5, 0, 2*Math.PI);
+    ctx.fillStyle = "purple";
+    ctx.fill();
+    ctx.closePath();
+
+    /* Creating an invisible vector from the random reference point to the origin where p vector starts*/
+    ref = new Vector(randX, randY, p.start_x-randX, p.start_y-randY, 0);
+}
+//initalize 
+regenerateVectors(); 
 
 /* Event Listeners */
 // Get the user's input
@@ -230,6 +243,8 @@ document.getElementById('out-button').addEventListener('click', function () {
  document.getElementById('zero-button').addEventListener('click', function () {
     check("0");
     });
+document.getElementById('reload-button').addEventListener('click', regenerateVectors);
+
 
 // Display whether it's correct or not
 ctx2.font = "16px Verdana";
