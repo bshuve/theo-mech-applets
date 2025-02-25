@@ -2,96 +2,96 @@
 <html lang="en">
 
 <head>
-    <title>trajectory</title>
-    <link rel = "stylesheet" href = "trajectory.css">
+    <title>Free-fall Projectile Animation</title>
+    <link rel="stylesheet" href="trajectory.css">
 
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
     
-    <script defer src = "trajectory1.js"></script>
+    <!-- Load external JavaScript -->
+    <script defer src="trajectory1.js"></script>
 
-     <!-- LaTeX support -->
-     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 
 <body id="body">
+    <h1 id="title">Free-fall Projectile in 1D: Page 1/4</h1>
+    
+    <p id="text">
+        Throughout this activity, we consider an object of mass \(m=1\) \(kg\) constrained to move in the \(y\)-direction under uniform gravitational acceleration \(-g\), where \(g=9.8\) \(m/s^2\). The kinetic energy is 
+        $$T=\frac{1}{2}m\dot{y}^2$$
+        , and the potential energy is: 
+        $$U=mgy$$
+        The motion starts and ends at \(y=0\), with \(y_i=1m\) at \(t=0\).            </p>
 
-<h1 id="title">Free-fall projectile in 1D: Page 1/4</h1>
-<p id="text">
-Throughout this activity, we consider an object of mass \(m=1\) \(kg\) constrained to move in the \(y\)-direction under uniform gravitational acceleration \(-g\), where the gravitational constant \(g=9.8\) \(m/s^2\). The kinetic energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the motion of the object from \(t=-\sqrt{\frac{2y_i}{g}}\) s to \(t=\sqrt{\frac{2y_i}{g}}\)) s, with its position beginning and ending at \(y=0\). The position \(y_i=1\) \(m\) occurs when \(t=0\) \(s\)<br>
-</p>
+    <!-- Question 1 with solution button -->
+    <p id="text"><b>Question 1:</b> What is the Principle of Least Action? Why is it significant?</p>
+    <button id="solution-button-1" type="button">Show Solution for Question 1</button>
+    <div id="solution-container-1" class="solution-container" style="display: none;">
+        <p><b>Solution 1:</b> The principle of least action states that out of all possible paths that a system could take between two points, the actual path taken is the one that minimize the action \(S\), which is the integral of the Lagrangian over time.
 
+            $$
+            S=\int^{t_f}_{t_f}(T-U)dt
+            $$
+            The principle is significant because it simplifies multi-dimensional motions, such as a rotating bead, which will be very tedious if we use Newtonian mechanics.             
+        </p>
+    </div>
 
-<p id="text">
-<b>Question 1:</b> In your own words, what is the Principle of Least Action? Why is it significant?
-</p>
+    <!-- Question 2 with solution button -->
+    <p id="text"><b>Question 2:</b> What kinematic properties should a classical path have?</p>
+    <button id="solution-button-2" type="button">Show Solution for Question 2</button>
+    <div id="solution-container-2" class="solution-container" style="display: none;">
+        <p><b>Solution 2:</b> A classical path must follow the following properties: (1) Smooth motion with continuous derivative of positions, and (2) Minimization (or extremizes) the action \(S\) </p>
+    </div>
 
-<p id="text">
-<b>Question 2:</b> The Principle of Least Action requires us to consider paths from the initial configuration to the final configuration that are <i>different from</i> the classical path. Write down a few kinematic properties that the classical path should have. Which of these properties might you expect the non-classical path to have as well?
-</p> 
+    <!-- Question 3 with solution button -->
+    <p id="text"><b>Question 3:</b> Explain why paths with \(p < 0\) or \(p > 0\) deviate from the classical path.</p>
+    <button id="solution-button-3" type="button">Show Solution for Question 3</button>
+    <div id="solution-container-3" class="solution-container" style="display: none;">
+        <p><b>Solution 3:</b> For \(p < 0\), the object moves too fast...</p>
+    </div>
 
-<p id="text">
-Once you've answered questions 1 and 2, play around with the following applet. It allows you to specify alternative paths that obey the boundary conditions specified in the problem and to visualize an object's motion along the alternative path in comparison to the classical path.
-</p>
-
-<p id="text">
-In the applet below, the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\) so that when \(p=0\), we have the classical path \(y(t) = y_i - \frac{1}{2}gt^2\).
-</p>
-
-
-<br>
-<br>    
-<!-- <p id="debug">debug text here</p> -->
+    <!-- Applet and Controls -->
+<!-- Applet and Controls -->
 <div id="appletsingle">
     <div id="top-panel" class="row">
+        <!-- Projectile Motion Plots -->
+        <div class="column"><canvas id="projectile-motion-canvas-1" class="plot"></canvas></div>
+        <div class="column"><canvas id="projectile-motion-canvas-2" class="plot"></canvas></div>
 
-	<!-- First column: linear trajectory animation -->
-        <div class="column">
-            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
-        </div>
+        <!-- Controls -->
+        <div class="column" id="controls">
+            <!-- Legend with Color Lines -->
+              <fieldset>
+                <legend>LEGEND</legend>
+                <ul style="list-style: none; padding: 0;">
+                    <li>
+                        <span style="display: inline-block; width: 20px; height: 3px; background-color: purple; margin-right: 5px;"></span>
+                        Classical path
+                    </li>
+                    <li>
+                        <span style="display: inline-block; width: 20px; height: 3px; background-color: orange; margin-right: 5px;"></span>
+                        Alternative path
+                    </li>
+                </ul>
+            </fieldset>
 
-	<!-- Second column: parabolic trajectory animation (in time) -->
-        <div class="column">
-            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
-        </div>
-
-	<!-- Third column: legend and sliders -->
-        <div class="column">
-            <div id="controls">
-                <fieldset>
-                    <legend>LEGEND</legend>
-                    <label><span id="purple">.....</span> &nbsp;Correct classical path</label><br>
-                    <label><span id="orange">.....</span> &nbsp;Alternative path</label><br>
-                </fieldset>
-
-		<br> <br>
-                <label for="p-slider">p: <span id="print-p">0.00</span></label>
-                <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
-
-
-            </div>
+            <label for="p-slider">p: <span id="print-p">0.00</span></label>
+            <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
         </div>
     </div>
 </div>
 
-<br><br>
-<p id="text">
-<b>Question 3:</b> Consider two alternative paths, one with \(p<0\) and the other with \(p>0\). For each, explain in your own words what's "wrong" with each path (i.e., why it's not the path that a particle experiencing uniform acceleration \(-g\) would follow).
-</p>
 
-<br>
+    <div class="buttons">
+        <button id="next-button" onclick="window.location.href = 'trajectory2.html'">NEXT PAGE</button>
+    </div>
 
-<div class="buttons">
-    <column id="next-button">
-        <button onclick = "window.location.href = 'trajectory2.html'">NEXT PAGE</button>
-    </column>
-</div> 
+    <i>Created by Kanalu Monaco, Brian Shuve, Bryce Tu Chi, 2022.</i>
+</body>
+</html>
 
-<br><br><br><br>
-
-<i>Created by Kanalu Monaco, Brian Shuve, Bryce Tu Chi, 2022.</i>
-
-<br><br>
 
 </body>
 </html>
