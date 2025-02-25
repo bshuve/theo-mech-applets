@@ -43,12 +43,12 @@ Spend some time exploring the applet, and then answer the questions below.
             <div id="controls">
                 <fieldset>
                     <legend>LEGEND</legend>
-                    <label><span id="purple">.....</span> Correct classical motion</label><br>
-                    <label><span id="orange">.....</span> Alternative path</label><br>
+                    <label><span id="purple"> </span> Correct classical motion</label><br>
+                    <label><span id="orange"> </span> Alternative path</label><br>
                 </fieldset>
 		<br> <br>
                 <label for="p-slider">p: <span id="print-p">0.00</span></label>
-                <input id="p-slider" class="slider" type="range" min="-250" max="100" value="0">
+                <input id="p-slider" class="slider" type="range" min="-250" max="250" value="0">
            </div>
         </div>
     </div>
@@ -73,28 +73,28 @@ Spend some time exploring the applet, and then answer the questions below.
 	 	    <br> <br>
                     <ul class = "checkboxes">
                         <li><input type="checkbox" id="show-k" value="on" checked>
-                        </label> <label><span id="red">.....</span></label>
+                        </label> <label><span id="red"> </span></label>
                         <label for="show-k"> KE</label> </li>
                         <li><input type="checkbox" id="show-np" value="on" checked>
-                        </label> <label><span id="green">.....</span></label>
+                        </label> <label><span id="green"> </span></label>
                         <label for="show-np"> -PE</label></li>
                         <li><input type="checkbox" id="show-nk" value="off">
-                        </label> <label><span id="lightsalmon">.....</span></label>
+                        </label> <label><span id="lightsalmon"> </span></label>
                         <label for="show-nk"> -KE</label></li>
                         <li><input type="checkbox" id="show-p" value="off">
-                        </label> <label><span id="grey">.....</span></label>
+                        </label> <label><span id="grey"> </span></label>
                         <label for="show-kp"> PE</label></li>
                         <li><input type="checkbox" id="show-kmp" value="off">
-                        </label> <label><span id="blue">.....</span></label>
+                        </label> <label><span id="blue"></span></label>
                         <label for="show-kmp"> KE-PE</label></li>
                         <li><input type="checkbox" id="show-pmk" value="off">
-                        </label> <label><span id="cyan">.....</span></label>
+                        </label> <label><span id="cyan"> </span></label>
                         <label for="show-pmk"> KE^2-PE^2</label></li>
                         <li><input type="checkbox" id="show-kpp" value="off">
-                        </label> <label><span id="purple">.....</span></label>
+                        </label> <label><span id="purple"> </span></label>
                         <label for="show-kpp"> KE+PE</label></li>
                         <li><input type="checkbox" id="show-nkmp" value="off">
-                        </label> <label><span id="plum">.....</span></label>
+                        </label> <label><span id="plum"> </span></label>
                         <label for="show-nkmp"> KE^2+PE^2</label></li>
                     </ul>
                 </div>
@@ -106,15 +106,63 @@ Spend some time exploring the applet, and then answer the questions below.
 
 <br><br>
 
+
+<!--Solution for question 4-->
 <p id="text">
-<b>Question 4:</b> Return to your answer to Question 2, updating and revising your answers based on what you've found from exploring this applet. As a reminder, Question 2 asked "Write down a few kinematic properties that the classical path should have. Which of these properties might you expect the non-classical path to have as well?"
+    <b>Question 4:</b> Return to your answer to Question 2, updating and revising your answers based on what you've found from exploring this applet. As a reminder, Question 2 asked "Write down a few kinematic properties that the classical path should have. Which of these properties might you expect the non-classical path to have as well?"
 </p>
 
-<p id="text">
-<b>Question 5:</b> As best you can, and in your own words, explain why the classical path minimizes the action defined as the time integral of the kinetic minus potential energies over the path. Choosing two paths, one with \(p<0\) and another with \(p>0\), explain for each why the action is larger than the minimal value. Explain why some other candidates for the "action" (such as the integral of the <b>sum</b> of the kinetic and potential energies) are unsuitable for determining the classical path.
-</p>
+<button id="solution-button-4" type="button">Show Solution</button>
+<div id="solution-container-4" class ='solution-container' style="display: none;">
+    <p>
+        Classical paths
+        <ul>
+            <li>
+                Follows the equation of motion
+            </li>
+            <li>
+                Kinetic and potential energies are balanced: Changes in kinetic energy and potential energy are smooth
+            </li>
+            <li>
+                Action is minimized: The classical path minimizes the integral of L=T-U
+            </li>
+        </ul>
+        <!--nonclassical path-->
+        Nonclassical paths
+        <ul>
+            <li>
+                Different curvature: Energy variations: Kinetic and potential energies are not smooth, leading to larger or smaller action values.
+            </li>
+        </ul>
+    </p>
+</div>
 
+
+
+
+
+<p id="text">
+    <b>Question 5:</b> As best you can, and in your own words, explain why the classical path minimizes the action defined as the time integral of the kinetic minus potential energies over the path. Choosing two paths, one with \(p<0\) and another with \(p>0\), explain for each why the action is larger than the minimal value. Explain why some other candidates for the "action" (such as the integral of the <b>sum</b> of the kinetic and potential energies) are unsuitable for determining the classical path.
+</p>
+<button id="solution-button-5" type="button">Show Solution</button>
+<div id="solution-container-5" class="solution-container" style="display: none;">
+    <p><b>Solution:</b></p>
+    The integral balances kinetic and potential energy over the path, ensuring minimal deviation from equilibrium conditions.
+    <ul>
+        <li>
+            For paths with \( p < 0 \): The particle remains closer to the ground, causing the potential energy \( U \) to decrease, but the kinetic energy is not optimized. The action increases due to this imbalance.
+        </li>
+        <li>
+            For paths with \( p > 0 \): The particle travels higher than the classical path, increasing both potential and kinetic energy, which, again, leads to higher action values.
+        </li>
+        <li>
+            The classical path (when \( p = 0 \)) is the most “efficient” path where energy trade-offs between \( T \) and \( U \) are balanced, leading to the smallest value of the action.
+            While “action” might still seem abstract, the simulation provides some intuitions. The action is analogous to a “best score.” Think of the classical path as achieving the most optimal motion based on physics, where energy is neither wasted nor underutilized.
+        </li>
+    </ul>
+</div>
 <br>
+
 
 <div class="buttons">
     <column id="previous-button">
@@ -128,4 +176,6 @@ Spend some time exploring the applet, and then answer the questions below.
 
 </body>
 </html>
+
+
 
