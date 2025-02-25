@@ -273,4 +273,32 @@ document.getElementById("p-slider").oninput = function() {
 
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Add event listeners for each solution button
+    document.getElementById("solution-button-1").addEventListener("click", function() {
+        toggleSolution("solution-container-1", this, "Show Solution for Question 1", "Hide Solution for Question 1");
+    });
+
+    document.getElementById("solution-button-2").addEventListener("click", function() {
+        toggleSolution("solution-container-2", this, "Show Solution for Question 2", "Hide Solution for Question 2");
+    });
+
+    document.getElementById("solution-button-3").addEventListener("click", function() {
+        toggleSolution("solution-container-3", this, "Show Solution for Question 3", "Hide Solution for Question 3");
+    });
+
+    // Function to toggle solution visibility
+    function toggleSolution(containerId, button, showText, hideText) {
+        const solutionContainer = document.getElementById(containerId);
+        if (solutionContainer.style.display === "none") {
+            solutionContainer.style.display = "block";
+            button.innerHTML = hideText;  // Change button text
+        } else {
+            solutionContainer.style.display = "none";
+            button.innerHTML = showText;  // Change button text
+        }
+    }
+});
+
+
 
