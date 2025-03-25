@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Understanding the Cycloid</title>
+
+    <link rel="stylesheet" href="cycloid.css" />
+
+    <!-- External Libraries -->
+    <script src="p5.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Latin Modern Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .sketch-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        figcaption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .question-card {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-left: 4px solid #999;
+        }
+        .buttons {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .buttons button {
+            padding: 8px 16px;
+            margin: 5px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Understanding the Cycloid</h1>
+
+    <h2>🔁 Recap from the Previous Page</h2>
+    <p>
+        On the previous page, you explored different Bézier curves connecting two points under gravity and discovered that one curve gave the shortest travel time.
+        You also learned that the optimal solution is not a straight line — it’s a special curve called the <strong>cycloid</strong>. But what exactly is a cycloid? Let's dive in.
+    </p>
+
+    <h2>🌀 What is the Brachistochrone Curve?</h2>
+    <p>
+        The <strong>Brachistochrone Problem</strong> asks:
+    </p>
+    <blockquote>
+        What is the shape of the curve down which a particle will slide from one point to another (under gravity and without friction) in the least time?
+    </blockquote>
+    <p>
+        The answer, surprisingly, is a <strong>cycloid</strong> — the path traced by a point on the rim of a wheel as it rolls along a straight line. This solution was first proposed by Johann Bernoulli in 1696 and led to the development of the calculus of variations.
+    </p>
+
+    <h2>🔄 Visualizing a Cycloid</h2>
+    <p>
+        Let’s see what a cycloid looks like. The animation below shows a circle rolling along a flat surface with a point on its rim tracing the curve.
+    </p>
+
+    <div class="sketch-container">
+        <div id="sketch0-cycloid-only"></div>
+        <figcaption>Figure 1: Cycloid wheel with a rotating radius line.</figcaption>
+    </div>
+
+    <p>
+        As the wheel rotates, the point moves up and down while also moving forward — this creates the familiar arch-like cycloid shape.
+    </p>
+
+    <div class="sketch-container">
+        <div id="sketch0-cycloid-on-circle"></div>
+        <figcaption>Figure 2: Cycloid wheel rolling along a straight line.</figcaption>
+    </div>
+
+    <div class="sketch-container">
+        <div id="sketch1-cycloid-moving"></div>
+        <figcaption>Figure 3: The wheel in motion — tracing a cycloid.</figcaption>
+    </div>
+
+    <div class="sketch-container">
+        <div id="sketch2-cycloid-path"></div>
+        <figcaption>Figure 4: The cycloid path traced by the point on the rim.</figcaption>
+    </div>
+
+    <h2>📐 Mathematical Representation</h2>
+    <p>The parametric equations of a cycloid are:</p>
+    <div class="equation" style="font-size: 1.1em; margin-bottom: 10px;">
+        \[
+        x(t) = r(t - \sin t), \quad y(t) = r(1 - \cos t)
+        \]
+    </div>
+    <p>
+        Here, \( r \) is the radius of the rolling circle, and \( t \) is the angle of rotation (in radians).
+        As \( t \) increases, the point traces out the cycloid horizontally along the x-axis.
+    </p>
+
+    <h2>🧠 Questions for Deeper Thinking</h2>
+
+    <div class="question-card">
+        <strong>Question 1:</strong> Why does the cycloid produce the fastest descent time, even though it may look longer than the straight line?
+    </div>
+
+    <div class="question-card">
+        <strong>Question 2:</strong> If the initial segment of the cycloid is very steep, doesn't that make the total path longer? Why doesn't that matter?
+    </div>
+
+    <div class="question-card">
+        <strong>Question 3:</strong> How does the particle’s speed vary along the cycloid? Where is it fastest and why?
+    </div>
+
+    <div class="question-card">
+        <strong>Challenge:</strong> Can you derive the time it takes for a particle to slide down the cycloid using energy conservation and calculus?
+    </div>
+
+    <h2>📎 Optional Extension</h2>
+    <p>
+        The cycloid is not only the solution to the brachistochrone problem — it's also the solution to the <strong>tautochrone problem</strong>, where all particles, regardless of starting point on the curve, reach the bottom at the same time.
+    </p>
+
+    <!-- JavaScript Animation Sources -->
+    <script src="cycloid_1.js"></script>
+    <script src="sketch0-cycloid-only.js"></script>
+    <script src="sketch0-cycloid-on-circle.js"></script>
+    <script src="sketch1-cycloid-moving.js"></script>
+    <script src="sketch2-cycloid-path.js"></script>
+    <script src="custom-curve-challenge.js"></script>
+
+    <!-- Navigation Buttons -->
+    <div class="buttons">
+        <button onclick="window.location.href='cycloid1.html'">⟵ Back to Interactive Curve</button>
+        <button onclick="window.location.href='index.html'">Next: Your Turn to Build ➤</button>
+    </div>
+
+</body>
+
+</html>

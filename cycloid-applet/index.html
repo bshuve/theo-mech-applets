@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel = "stylesheet" href = "index.css">
+        <title>The Fermet Principle and The Branhistochrone Problem </title>
+        <style>
+            body {
+                font-family: 'Latin Modern Roman', serif;
+                line-height: 1.6;
+                color: #333;
+                padding: 20px;
+                max-width: 900px;
+                margin: 0 auto;
+            }
+        </style>
+       
+</head>
+    
+<body>
+
+    <h1>Refraction Path Debugging</h1>
+
+    <!-- Question 1 -->
+    <div class="question-card">
+        <p><strong>Question 1:</strong> In your own words, please explain Fermat's Principle.</p>
+        <button class="button" onclick="toggleSolution('solution1')">Show Solution for Question 1</button>
+        <div id="solution1" class="solution-card" style="display: none;">
+            <strong>Solution 1:</strong> Fermat’s principle states that light follows the path that requires the least time when traveling between two points. 
+            This principle explains the refraction of light at interfaces of different media, as described by Snell’s Law.
+        </div>
+    </div>
+
+    <!-- Refraction Simulation Section -->
+    <div id="applet">
+        <p>Use the slider to change the number of materials:</p>
+        <label for="materialSlider">Number of Materials:</label>
+        <input type="range" id="materialSlider" class="slider" min="2" max="20" value="2">
+        <span id="materialCount">2</span>
+
+        <canvas id="refractionCanvas" width="800" height="400"></canvas>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-card">
+        <p><strong>Question 2:</strong> How is Fermat's principle analogous to the Brachistochrone problem?</p>
+        <button class="button" onclick="toggleSolution('solution2')">Show Solution for Question 2</button>
+        <div id="solution2" class="solution-card" style="display: none;">
+            <strong>Solution 2:</strong> The Brachistochrone problem, like Fermat’s principle, involves finding an optimal path—the one that takes the least time. 
+            Fermat’s principle applies this concept to light, while the Brachistochrone problem applies it to a particle under gravity.
+        </div>
+    </div>
+
+    <script>
+        function toggleSolution(solutionId) {
+            const solutionDiv = document.getElementById(solutionId);
+            solutionDiv.style.display = (solutionDiv.style.display === "none") ? "block" : "none";
+        }
+
+        const canvas = document.getElementById('refractionCanvas');
+        const ctx = canvas.getContext('2d');
+        const slider = document.getElementById('materialSlider');
+        const materialCountText = document.getElementById('materialCount');
+
+        function drawRefraction(materials) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Generate refractive indices: from 1.00 to 1.00 + 0.1*(materials-1)
+            const refractiveIndices = Array.from({ length: materials }, (_, i) => 
+            1 + i * (1 / (materials - 1))
+        );
+
+            // Generate colors using HSL
+            const materialColors = Array.from({ length: materials }, (_, i) =>
+                `hsl(${(i * 360) / materials}, 70%, 80%)`
+            );
+
+            // Interface positions
+            const interfaces = [];
+            for (let i = 1; i < materials; i++) {
+                interfaces.push((i * canvas.height) / materials);
+            }
+
+            // Draw material layers
+            for (let i = 0; i < materials; i++) {
+                ctx.fillStyle = materialColors[i];
+                const top = i === 0 ? 0 : interfaces[i - 1];
+                const height = canvas.height / materials;
+                ctx.fillRect(0, top, canvas.width, height);
+
+                // Draw material label
+                ctx.font = '16px Arial';
+                ctx.fillStyle = '#333';
+                ctx.fillText(`Material ${i + 1} (n = ${refractiveIndices[i].toFixed(2)})`, 20, top + 25);
+            }
+
+            // Draw refraction path
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            let prevX = 100;
+            let prevY = 50;
+            let currentAngle = Math.PI / 4; // 45 degrees
+
+            for (let i = 0; i < materials - 1; i++) {
+                const interfaceY = interfaces[i];
+                const intersectionX = prevX + (interfaceY - prevY) / Math.tan(currentAngle);
+
+                // Draw segment
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(intersectionX, interfaceY);
+                ctx.stroke();
+
+                // Apply Snell's Law
+                const sinTheta2 = (refractiveIndices[i] / refractiveIndices[i + 1]) * Math.sin(currentAngle);
+                if (Math.abs(sinTheta2) > 1) break; // total internal reflection
+                const refractionAngle = Math.asin(sinTheta2);
+
+                prevX = intersectionX;
+                prevY = interfaceY;
+                currentAngle = refractionAngle;
+            }
+
+            // Final segment
+            const lastX = prevX + 300 * Math.cos(currentAngle);
+            const lastY = prevY + 300 * Math.sin(currentAngle);
+            ctx.beginPath();
+            ctx.moveTo(prevX, prevY);
+            ctx.lineTo(lastX, lastY);
+            ctx.stroke();
+        }
+
+        // Initial draw
+        drawRefraction(2);
+
+        slider.addEventListener('input', () => {
+            const materialCount = parseInt(slider.value);
+            materialCountText.textContent = materialCount;
+            drawRefraction(materialCount);
+        });
+    </script>
+
+    <div class="buttons">
+        <button class="button" onclick="window.location.href = 'cycloid2.html'">Previous PAGE</button>
+        <button class="button" onclick="window.location.href = 'cycloid3.html'">NEXT PAGE</button>
+    </div>
+
+</body>
+</html>
