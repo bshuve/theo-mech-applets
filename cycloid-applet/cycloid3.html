@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel = "stylesheet" href = "cycloid.css">
+    <title>Introduction to Cycloids</title>
+
+    <!-- External Libraries -->
+    <script src="p5.min.js"></script>
+    <style>
+        body {
+            font-family: 'Latin Modern Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Why Circles and Cycloids</h1>
+    <p>
+        We have explained the concepts of cycloids and the Brachistochrone problem. However, it may still feel unintuitive why this particular path minimizes travel time, aside from relying on mathematics and the principle of least action. Fortunately, the theory can be better understood through Fermat's principle of least time, Snell’s law, and energy conservation.
+
+Imagine a glass with multiple layers, each having a different refractive index, which affects the velocity of light in that layer. Let the speed of light in the first layer be \(v_1\), in the second layer be \(v_2\), and in the nth later is \(v_n\).
+
+If the number of layers approaches infinity, the speed of light changes continuously across the layers. According to Snell’s law, the relationship between angles and refractive indices is expressed as:
+$$
+n_1\sin\theta_1=n_2\sin\theta
+$$
+Here, the refractive index is proportional to the inverse of the instantaneous speed of light at each point.
+Now, consider a particle sliding along a curved path under gravity. By conservation of energy, the instantaneous speed of the particle is proportional to the square root of the vertical distance \(y\) is from the horizontal axis.
+$$
+v \propto\sqrt{y}
+$$
+Using Snell’s law, we get
+$$
+\sin\theta_1/n_2=\text{constant} quad \sin\theta_1/\sqrt{y}=\text{constant}
+$$
+Continue to simplify the equation, we get.
+$$
+Constant=\frac{\sin\theta}{\sqrt{y}}
+$$
+Next, let’s examine the geometry of the cycloid. The radius \(r\) of the path at any point is given by:
+$$
+r=D\sin\theta
+$$
+The vertical distance \(y\) can be expressed as:
+$$
+y=r\sin\theta=D\sin^2\theta
+$$
+Taking the square root of both side
+$$
+\sqrt{y}=\sqrt{D}\sin\theta
+$$
+Because diameter D is a constant, we get:
+$$
+Constant=1/\sqrt{y}=\sin\theta/\sqrt{y}
+$$
+The result aligns with Fermat’s principle of least time, reinforcing the idea that the cycloidal path is optimal because it allows a particle to minimize travel time, just as light follows the path that minimizes its travel time through media with varying speeds.
+</p>
+<div class="buttons">
+    <button id="next-button" onclick="window.location.href = 'index.html'">Previous PAGE</button>
+</div>
+</body>
+</html>

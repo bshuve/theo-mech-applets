@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Brachistochrone Problem</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="cycloid.css">
+
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script defer src="cycloid.js"></script>
+
+    <!-- LaTeX rendering with MathJax -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .question-card, .solution-card {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #ccc;
+            padding: 10px 15px;
+        }
+        .button {
+            margin-top: 8px;
+            padding: 5px 12px;
+        }
+        body {
+            font-family: 'Latin Modern Roman';
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+
+    <script>
+        function toggleSolution(id) {
+            const elem = document.getElementById(id);
+            elem.style.display = (elem.style.display === "none") ? "block" : "none";
+        }
+    </script>
+</head>
+
+<body id="body">
+
+    <h1 id="title">The Brachistochrone Problem</h1>
+
+    <p>
+        How can we find the fastest path for an object sliding under gravity, from one point to another? This is known as the <strong>Brachistochrone Problem</strong>—a famous challenge in physics and mathematics.
+    </p>
+
+    <h2>⏱ Time Integral</h2>
+    <p>
+        The time it takes for a particle to travel from point \( a \) to point \( b \) along a curve is given by:
+    </p>
+
+    \[
+    t = \int_{a}^{b}\frac{ds}{v}
+    \]
+
+    <p>
+        To compute this numerically, we parameterize the curve by a variable \( t \). Substituting
+        \[
+        ds = \sqrt{\left(\frac{dx}{dt}\right)^2+\left(\frac{dy}{dt}\right)^2} \, dt, \quad v = \sqrt{2gy},
+        \]
+        the time becomes:
+    </p>
+
+    \[
+    t = \frac{1}{\sqrt{2g}} \int_{a}^{b} \frac{\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}}{\sqrt{y}} dt
+    \]
+
+    <h2>🧮 Modeling the Path</h2>
+    <p>
+        We approximate the path using a 
+        <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Quadratic_B%C3%A9zier_curves" target="_blank">
+        quadratic Bézier curve</a> that starts at \((0, 0)\) and ends at \((250, 160)\). The shape of the curve is controlled by a point \((c_x, c_y)\), called the control point.
+    </p>
+
+    \[
+    x(t) = c_x + (1 - t)^2(0 - c_x) + t^2(250 - c_x)
+    \]
+    \[
+    y(t) = c_y + (1 - t)^2(0 - c_y) + t^2(160 - c_y)
+    \]
+
+    <h2>🎯 Explore the Fastest Path</h2>
+
+    <p>
+        Use the sliders below to adjust the control point \((c_x, c_y)\) and watch how the red curve changes. This red curve is the Bézier path. You can also compare it to the blue curve—the <strong>cycloid</strong>—which is the true optimal path derived from calculus of variations.
+    </p>
+
+    <ul>
+        <li><strong>c<sub>x</sub></strong> shifts the control point horizontally — affects the “bow” of the curve.</li>
+        <li><strong>c<sub>y</sub></strong> shifts the control point vertically — affects how much the curve dips.</li>
+        <li>As you adjust, the travel time is re-calculated and displayed.</li>
+        <li>Click “Show Cycloid” to toggle the theoretical optimal curve.</li>
+    </ul>
+
+    <div id="applet">
+        <div id="top-panel">
+            <svg id="svg-cycloid" width="400" height="320" viewBox="-20 0 300 200">
+                <defs>
+                    <clipPath id="clip-right-half">
+                        <rect x="0" y="0" width="250" height="300"/>
+                    </clipPath>
+                </defs>
+
+                <path id="curve" d="M 0 0 Q 125 80 250 160" fill="none" stroke="red" stroke-width="2"/>
+                <path id="cycloid" d="" fill="none" stroke="blue" stroke-width="2" clip-path="url(#clip-right-half)"/>
+                <path id="x-axis" d="M 0 0 H 260" stroke="black" stroke-width="1"/>
+                <path id="y-axis" d="M 0 0 V 200" stroke="black" stroke-width="1"/>
+                <path id="start-to-control" d="M 0 0 L 125 80" fill="none" stroke="green" stroke-width="1" opacity="0.5"/>
+                <path id="end-to-control" d="M 250 160 L 125 80" fill="none" stroke="green" stroke-width="1" opacity="0.5"/>
+                <circle id="start-point" cx="0" cy="0" r="3"/>
+                <circle id="end-point" cx="250" cy="160" r="3"/>
+                <circle id="control-point" cx="125" cy="80" r="3"/>
+                <text x="0" y="-5" style="font: italic 10px sans-serif;">(0, 0)</text>
+                <text x="230" y="180" style="font: italic 10px sans-serif;">(250, 160)</text>
+            </svg>
+            <div id="integral-graphs"></div>
+        </div>
+
+        <div id="bottom-panel">
+            <p id="time-text">\(\text{Time} =\) <span id="print-time">10.4828</span> s</p>
+
+            <div id="x-slider">
+                <label for="slide-x-coord">\(c_x\): <span id="print-x-coord">125</span></label>
+                <input id="slide-x-coord" class="slider" type="range" min="0" max="300" value="125">
+            </div>
+
+            <div id="y-slider">
+                <label for="slide-y-coord">\(c_y\): <span id="print-y-coord">80</span></label>
+                <input id="slide-y-coord" class="slider" type="range" min="0" max="300" value="80">
+            </div>
+
+            <button type="button" class="button" id="show-cycloid" value="hide">Show Cycloid</button>
+        </div>
+    </div>
+
+    <p>
+        Notice how changing the control point changes the path shape—and the time. Try to find the control point that gives the <strong>shortest time</strong>. Then compare it to the cycloid. Are they close?
+    </p>
+
+    <h2>📘 Reflection</h2>
+    <div class="question-card">
+        <p><strong>Question 1:</strong> After playing around with the curve, what do you notice? Explain the brachistochrone problem?</p>
+        <button class="button" onclick="toggleSolution('solution1')">Show Solution for Question 1</button>
+        <div id="solution1" class="solution-card" style="display: none;">
+            <strong>Solution 1: </strong> The travel time changes significantly depending on the shape of the curve. The shortest time does not occur along the straight-line path, which might seem counterintuitive at first.
+                Instead, curves that dip more steeply at the beginning tend to give a faster result, because the particle gains speed quickly due to gravity.
+                This leads to the brachistochrone porblem, which states that a cycloid, the curve traced by a point on the rim of a rolling circle, provides the optimal solution. 
+                The cycloid balances the trade-off between quickly gaining speed (through a steep descent) and not traveling too far horizontally. It is the true optimal solution to the brachistochrone problem.
+        </div>
+    </div>
+    <p>
+        The cycloid is a curve traced by a point on the rim of a rolling circle. It turns out that this curve is the solution to the brachistochrone problem—discovered by Johann Bernoulli in 1696.
+    </p>
+    <p>
+        What happens if we constrain the path to follow a circular arc instead? You'll explore this question next.
+    </p>
+
+    
+
+    
+
+    <div class="buttons">
+        <button id="next-button" onclick="window.location.href = 'cycloid2.html'">Next Page</button>
+    </div>
+</body>
+</html>
