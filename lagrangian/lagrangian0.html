@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>lagrangian</title>
+    <link rel = "stylesheet" href = "lagrangian.css">
+
+    <!--Load jQuery.js-->
+    <script src="jQuery.js"></script>
+    
+    <script defer src = "lagrangian0.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="body">
+
+<h1 id="title">Generalized Coordinate Lagrangians: Page 1</h1>
+<h2 id="subtitle">Are the Euler-Lagrange equations the same across coordinate systems?</h2>
+<p id="text">
+    (Chrome Recommended.)
+    <br><br>
+    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(y\) velocity. The kinetic energy of the object (ignoring the constant from motion in the \(x\) direction) is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
+    <br><br>
+    The classical path in Cartesian coordinates is \(y(t) = -\frac{1}{2}gt^2 + h\). However, the action is invariant under coordinate transformations and one of the benefits of the Lagrangian approach is that we can readily change coordinates.  We therefore consider an alternate non-Cartesian coordinate \(w\), where \(w(y) = y^2\).
+    <br><br>
+</p>
+
+
+
+
+<label for="show-q1" id="text">
+    <b>Question 1: </b> What are the limitations of our \(w\) coordinate choice?
+    <br><br>
+</label>
+<button id="show-q1">Show answer</button>
+<br>   
+<span id="answer1" style="display: none"><br>
+    \(y\) can take on any real value, whereas \(w\ge0\). Therefore \(w\) unambiguously gives the same path as \(y\) for \(y\ge0\). 
+</span>
+<br><br>
+
+<div id="applet0">
+    <div id="top-panel" class="row">
+        <div class="column"> <canvas id="ball-launch-1" class="plot"
+            width="435px" height="294px" title="Actual Motion">
+            </canvas>
+        </div>
+        <div class="column"> <canvas id="ball-launch-2" class="plot"
+            width="435px" height="294px" title="Actual Motion">
+            </canvas>
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+<div class="buttons">
+    <column id="prev-button">
+        <button onclick = "window.location.href = 'lagrangian.html'">PREVIOUS PAGE</button>
+    </column>
+    <column id="next-button">
+        <button onclick = "window.location.href = 'lagrangian1.html'">NEXT PAGE</button>
+    </column>
+</div>
+
+<br><br><br><br>
+
+<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</i>
+<br><br><br>
+</body>
+</html>

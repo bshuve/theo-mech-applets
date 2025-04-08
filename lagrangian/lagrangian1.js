@@ -4,7 +4,7 @@ const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribu
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.002;
+const dt = 0.005;
 const end_time = 11;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
@@ -12,7 +12,74 @@ var h = parseFloat(document.getElementById("h-slider").value); // 50
 var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
 var m = parseFloat(document.getElementById("m-slider").value); // 10.0
 
-/* Canvas Animation */
+/////////////////////////////////////////////////
+/* Changing Panel Size Dynamically */
+/////////////////////////////////////////////////
+
+// Initialize panel visibility states
+let show_middle_panel = true; 
+let show_bottom_panel = true; 
+const middlepanel = document.getElementById("middle-panel");
+const bottompanel = document.getElementById("bottom-panel");
+
+// Initialize the panels with empty content
+function updatePanels() {
+  middlepanel.style.display = show_middle_panel ? "block" : "none";
+  bottompanel.style.display = show_bottom_panel ? "block" : "none";
+  if(show_middle_panel && show_bottom_panel){
+    $("#applet").css({
+      "height": "980px"
+    });
+    $("#middle-panel").css({
+      "height": "320px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top":"640px"
+    });
+  }
+  else if(show_middle_panel){
+    $("#applet").css({
+      "height": "660px"
+    });
+    $("#middle-panel").css({
+      "height": "320px"
+    });
+    $("#bottom-panel").css({
+      "height": "0px"
+    });
+  }
+  else if(show_bottom_panel){
+    $("#applet").css({
+      "height": "660px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top":"320px"
+    });
+  }
+  else{
+    $("#applet").css({
+      "height": "340px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "0px"
+    });
+  }
+}
+
+// Initial panel setup
+updatePanels();
+
+/////////////////////////////////////////////////
+/* Panel Animation */
+/////////////////////////////////////////////////
 function startAnimation(y, m, a) {
   projectile = new component(3, 3, "purple", x_initial, y, m, a);
   animArea.start();
@@ -29,7 +96,8 @@ function transformXCoord(x) {
 }
 
 function transformYCoord(y) {
-  return -h - (CANVAS_HEIGHT / 2 * y) + 280;
+  // Fixed scale: y=0 at bottom, y=100 at top
+  return CANVAS_HEIGHT - (y * (CANVAS_HEIGHT / 100));
 }
 
 var animArea = {
@@ -47,11 +115,29 @@ var animArea = {
     // add text and ground to panel
     this.context.font = "18px Verdana";
     this.context.fillStyle = "black";
-    this.context.fillText("Projectile Motion", 10, 30);
+    this.context.fillText("Projectile Motion", 85, 30);
     this.context = this.panel.getContext("2d");
     this.context.fillStyle = "gray";
-    this.context.fillRect(0, transformYCoord(0) - h, 25, 3);
-    this.context.fillRect(25, transformYCoord(0) - h, -25, 300);
+    this.context.fillRect(0, transformYCoord(h), 25, 3);
+    this.context.fillRect(0, transformYCoord(h), 25, 300);
+    
+    this.context.font = "12px Arial";
+    // Draw y markers (left side)
+    this.context.fillStyle = "red";
+    for (let y = 10; y <= 90; y += 10) {
+      const canvasY = transformYCoord(y);
+      this.context.fillRect(0, canvasY , 20, 1); // Line
+      this.context.fillText(`y=${y}`, 5, canvasY - 5);
+    }
+
+    // Draw w markers (right side)
+    this.context.fillStyle = "green";
+    for (let y = 10; y <= 90; y += 10) {
+      const canvasY = transformYCoord(y);
+      const w = y ** 2;
+      this.context.fillRect(CANVAS_WIDTH - 20, canvasY, 20, 1); // Line
+      this.context.fillText(`w=${w}`, CANVAS_WIDTH - 45, canvasY - 5);
+    }
   },
   stop: function () {
     this.time = 0;
@@ -84,7 +170,8 @@ function component(width, height, color, x, y, m, a) {
 
   this.newPos = function (t) {
     this.x = transformXCoord(t);
-    this.y = transformYCoord(0.5 * a * t ** 2) - y;
+    const yPosition = h + 0.5 * a * (t*5) ** 2; // Physics equation
+    this.y = transformYCoord(yPosition);
   }
 }
 
@@ -187,6 +274,7 @@ var margin = { top: 20, right: 20, bottom: 50, left: 50 },
   height = SVG_HEIGHT - margin.top - margin.bottom;
 
 function plotData(input) {
+
   // update the line
   var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
 
@@ -252,6 +340,8 @@ function createPlot(input) {
 
   return { svg: svg, xScale: xScale, yScale: yScale };
 }
+
+
 
 // y param
 // dL/dy GRAPH
@@ -390,7 +480,7 @@ on the HTML page (ex. button click, slider change, etc). */
 
 // these booleans store whether answers are being shown
 // by default, all answers are hidden
-var showAnswer1 = false;
+
 var showAnswer2 = false;
 var showAnswer3 = false;
 var showAnswer4 = false;
@@ -421,18 +511,23 @@ document.getElementById("h-slider").oninput = function () {
   slider_update();
 }
 
-// shows the answer if the q1 button is clicked
-document.getElementById("show-q1").addEventListener("click", function () {
-  if (!showAnswer1) {
-    showAnswer1 = true;
-    document.getElementById("show-q1").innerHTML = "Hide Answer";
-    document.getElementById("answer1").style.display = "block";
-  } else {
-    showAnswer1 = false;
-    document.getElementById("show-q1").innerHTML = "Show Answer";
-    document.getElementById("answer1").style.display = "none";
-  }
+// Button event listeners for showing/hiding graphs
+document.getElementById("graph-button-1").addEventListener("click", function () {
+  show_middle_panel = !show_middle_panel;
+  this.innerHTML = show_middle_panel ? "Hide Y Graphs" : "Show Y Graphs";
+  updatePanels();
+  
 });
+
+document.getElementById("graph-button-2").addEventListener("click", function () {
+  show_bottom_panel = !show_bottom_panel;
+  this.innerHTML = show_bottom_panel ? "Hide W Graphs" : "Show W Graphs";
+  updatePanels();
+  
+});
+
+// shows the answer if the q1 button is clicked
+
 
 // shows the answer if the q2 button is clicked
 document.getElementById("show-q2").addEventListener("click", function () {
@@ -466,9 +561,16 @@ document.getElementById("show-q4").addEventListener("click", function () {
     showAnswer4 = true;
     document.getElementById("show-q4").innerHTML = "Hide Answer";
     document.getElementById("answer4").style.display = "block";
+    
   } else {
     showAnswer4 = false;
     document.getElementById("show-q4").innerHTML = "Show Answer";
     document.getElementById("answer4").style.display = "none";
   }
 });
+
+
+
+
+
+
