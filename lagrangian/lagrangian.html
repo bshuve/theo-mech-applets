@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>lagrangian</title>
+    <link rel = "stylesheet" href = "lagrangian.css">
+
+    <!--Load jQuery.js-->
+    <script src="jQuery.js"></script>
+    
+    <script defer src = "lagrangian.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="body">
+
+<h1 id="title">Generalized Coordinate Lagrangians: </h1>
+<h2 id="subtitle">Warmup</h2>
+Let's take a path that goes from \(r_i = (x_1,y_1)\) to \(r_f = (x_2,y_2)\). There are an infinite ways of parametrize this path. However, let's take two example parametrizations: \(r_i + t(r_f-r_i), t= [0,1]\) and \(r_i + (1-e^{-s})(r_f-r_i),   s= [0,\infty)\)
+
+<div id="applet5">
+    <div id="top-panel" class="row">
+        <div class="column"> <canvas id="test" class="plot"
+            width="500px" height="500px" title="Actual Motion">
+            </canvas>
+        </div>
+        <div class="column"> <canvas id="test2" class="plot"
+            width="500px" height="500px" title="Actual Motion">
+            </canvas>
+        </div>
+    </div>
+</div>
+Let's prove that the Principle of Least Action is the same for both parametrizations of the path!
+
+Suppose a constant force \( \vec{F}_0 \) acts along a path from an initial point \( \vec{r}_i = (x_1, y_1) \) to a final point \( \vec{r}_f = (x_2, y_2) \). Define the displacement vector:
+    \[
+        \vec{R} = \vec{r}_f - \vec{r}_i
+    \]
+
+
+
+<label for="show-q0" id="text">
+    Try to find the lagrangian of the two paths. 
+    <br><br>
+</label>
+<button id="show-q0">Show answer</button>
+<br>   
+<span id="answer0" style="display: none"><br>
+    We consider two different parameterizations of the same path:
+    <br><br> 
+    
+    <strong>Parametrization A:</strong> A linear interpolation between \( \vec{r}_i \) and \( \vec{r}_f \):
+    \[
+        \vec{r}(t) = \vec{r}_i + t\vec{R}, \quad t \in [0, 1]
+    \]
+    The velocity is:
+    \[
+        \frac{d\vec{r}}{dt} = \vec{R}
+    \]
+    The work done by the force is:
+    \[
+        W_A = \int_0^1 \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \, dt = \vec{F}_0 \cdot \vec{R} \int_0^1 dt = \vec{F}_0 \cdot \vec{R}
+    \]
+
+    <strong>Parametrization B:</strong> An exponential approach to \( \vec{r}_f \):
+    \[
+        \vec{r}(s) = \vec{r}_i + \left(1 - e^{-s} \right)\vec{R}, \quad s \in [0, \infty)
+    \]
+    The velocity is:
+    \[
+        \frac{d\vec{r}}{ds} = e^{-s} \vec{R}
+    \]
+    The work done by the force is:
+    \[
+        W_B = \int_0^\infty \vec{F}_0 \cdot \frac{d\vec{r}}{ds} \, ds = \vec{F}_0 \cdot \vec{R} \int_0^\infty e^{-s} ds = \vec{F}_0 \cdot \vec{R}
+    \]
+
+    Thus, In both parameterizations, the work done is:
+    \[
+        W = \vec{F}_0 \cdot (\vec{r}_f - \vec{r}_i)
+    \]
+    This confirms that the work done by a constant force is independent of the parameterization of the path—it depends only on the endpoints. This is consistent with the <em>principle of least action</em>, which assures us that for conservative systems, physical paths minimize (or extremize) the action, and different parametrizations of the same path yield the same result.
+
+</span>
+    
+
+<br><br>
+
+<div class="buttons">
+    <column id="next-button">
+        <button onclick = "window.location.href = 'lagrangian0.html'">NEXT PAGE</button>
+    </column>
+</div> 
+<br><br>
+<br><br>
+<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, Nathan Nguyen, 2025.</i>
+<br><br><br>
+</body>
+</html>

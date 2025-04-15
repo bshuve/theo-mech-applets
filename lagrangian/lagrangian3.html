@@ -7,6 +7,9 @@
 
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
+
+    <!--Load jQuery.js-->
+    <script src="jQuery.js"></script>
     
     <script defer src = "lagrangian3.js"></script>
 
@@ -15,8 +18,7 @@
     </head>
 
 <body id="body">
-
-<h1 id="title">Generalized Coordinate Lagrangians: Page 3</h1>
+<h1 id="title">Generalized Coordinate Lagrangians: Page 4</h1>
 <h2 id="subtitle">Graphing the Lagrangian with respect to different quantities</h2>
 <p id="text">
     (Chrome Recommended.)
@@ -76,6 +78,9 @@ Below, we have plotted potential energy and kinetic energy in two ways. On the l
             <input id="a-slider" class="slider" type="range" min="2" max="5" step="0.1" value="2">
             <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
             <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
+            <br><br>
+            <legend>Show Graphs:</legend>
+            <button class="graph-button3" id="graph-button-1"> Hide U <br>Graphs </button><button class="graph-button3" id ="graph-button-2"> Hide T <br>Graphs </button> <button class="graph-button3" id="graph-button-3"> Hide Energy <br>Graphs </button>
         </div>
     </div>
     <!-- Third column: question -->

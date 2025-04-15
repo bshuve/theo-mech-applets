@@ -819,6 +819,30 @@ document.getElementById("p-slider").onchange = function() {
     startAnimation(p);
 }
 
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Add event listeners for each solution button
+    document.getElementById("solution-button-4").addEventListener("click", function() {
+        toggleSolution("solution-container-4", this, "Show Solution", "Hide Solution");
+    });
+
+    document.getElementById("solution-button-5").addEventListener("click", function() {
+        toggleSolution("solution-container-5", this, "Show Solution", "Hide Solution");
+    });
+
+    // Function to toggle solution visibility
+    function toggleSolution(containerId, button, showText, hideText) {
+        const solutionContainer = document.getElementById(containerId);
+        if (solutionContainer.style.display === "none") {
+            solutionContainer.style.display = "block";
+            button.innerHTML = hideText;  // Change button text
+        } else {
+            solutionContainer.style.display = "none";
+            button.innerHTML = showText;  // Change button text
+        }
+    }
+});
+
 // show/hide integral lines when a checkmark is clicked
 document.getElementById("show-k").onchange = function() {
     hide("show-k", ki_point, ki_line,ke_line);

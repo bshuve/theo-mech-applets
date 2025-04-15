@@ -12,6 +12,154 @@ var h = parseFloat(document.getElementById("h-slider").value); // 50
 var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
 var m = parseFloat(document.getElementById("m-slider").value); // 10.0
 
+
+
+/////////////////////////////////////////////////
+/* Changing Panel Size Dynamically */
+/////////////////////////////////////////////////
+
+// Initialize panel visibility states
+let show_middle_panel = true; 
+let show_bottom_panel = true; 
+let show_bottom2_panel = true; 
+const middlepanel = document.getElementById("middle-panel");
+const bottompanel = document.getElementById("bottom-panel");
+const bottom2panel = document.getElementById("bottom2-panel");
+
+// Initialize the panels with empty content
+function updatePanels() {
+  middlepanel.style.display = show_middle_panel ? "block" : "none";
+  bottompanel.style.display = show_bottom_panel ? "block" : "none";
+  bottom2panel.style.display = show_bottom2_panel ? "block" : "none";
+  if(show_middle_panel && show_bottom_panel && show_bottom2_panel){
+    $("#applet3").css({
+      "height": "1300px"
+    });
+    $("#middle-panel").css({
+      "height": "320px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top":"640px"
+    });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top":"960px"
+    });
+  }
+  else if(show_middle_panel && show_bottom_panel){
+    $("#applet3").css({
+      "height": "980px"
+    });
+    $("#middle-panel").css({
+      "height": "320px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top":"640px"
+    });
+    $("#bottom2-panel").css({
+      "height": "0px",
+      "top":"960px"
+    });
+  }
+  else if(show_middle_panel && show_bottom2_panel){
+    $("#applet3").css({
+      "height": "980px"
+    });
+    $("#middle-panel").css({
+      "height": "320px",
+      "top":"320px"
+    });
+    $("#bottom-panel").css({
+      "height":"0px"
+    });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top":"640px"
+    });
+  }
+  else if(show_bottom_panel && show_bottom2_panel){
+    $("#applet3").css({
+      "height": "980px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top":"320px"
+    });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top":"640px"
+    });
+  }
+  else if(show_middle_panel){
+    $("#applet3").css({
+      "height": "640px"
+    });
+    $("#middle-panel").css({
+      "height": "0px",
+      "top":"320px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      
+    });
+    $("#bottom2-panel").css({
+      "height": "0px"
+    });
+  }
+  else if(show_bottom_panel){
+    $("#applet3").css({
+      "height": "640px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top":"320px"
+    });
+    $("#bottom2-panel").css({
+      "height": "0px",
+    });
+  }
+  else if(show_bottom2_panel){
+    $("#applet3").css({
+      "height": "640px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "0px",
+    });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top":"320px"
+    });
+  }
+  else{
+    $("#applet3").css({
+      "height": "340px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "0px"
+    });
+    $("#bottom2-panel").css({
+      "height": "0px",
+    });
+  }
+}
+
+// Initial panel setup
+updatePanels();
+
 /* Canvas Animation */
 function startAnimation(y, m, a) {
   projectile = new component(3, 3, "purple", x_initial, y, m, a);
@@ -30,6 +178,7 @@ function transformXCoord(x) {
 
 function transformYCoord(y) {
   return -h - (CANVAS_HEIGHT / 2 * y) + 280;
+ 
 }
 
 var animArea = {
@@ -502,6 +651,26 @@ document.getElementById("a-slider").oninput = function () {
 document.getElementById("h-slider").oninput = function () {
   slider_update();
 }
+
+// Button event listeners for showing/hiding graphs
+document.getElementById("graph-button-1").addEventListener("click", function () {
+  show_middle_panel = !show_middle_panel;
+  this.innerHTML = show_middle_panel ? "Hide U<br>Graphs" : "Show U<br>Graphs";
+  updatePanels();
+  
+});
+
+document.getElementById("graph-button-2").addEventListener("click", function () {
+  show_bottom_panel = !show_bottom_panel;
+  this.innerHTML = show_bottom_panel ? "Hide T<br>Graphs" : "Show T<br>Graphs";
+  updatePanels();
+});
+
+document.getElementById("graph-button-3").addEventListener("click", function () {
+  show_bottom2_panel = !show_bottom2_panel;
+  this.innerHTML = show_bottom2_panel ? "Hide Energy<br>Graphs" : "Show Energy<br>Graphs";
+  updatePanels();
+});
 
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {

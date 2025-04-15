@@ -19,7 +19,7 @@
 
 <h1 id="title">Free-fall projectile in 1D: Page 3/4</h1>
 <p id="text">
-Along with a visualization of the particle's motion along a specified path, we now show various quantities (such as the kinetic and potential energies, and their derivatives) as a function of time. We also show the <b>integral</b> of several of these quantities over the entire path, plotted as a function of \(p\), the parameter used to specify the path. The checkboxes allow you to choose which of these integrated quantities to plot. Recall that the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\).
+Along with a visualization of the particle's motion along a specified path, we now show various quantities (such as the kinetic and potential energies, and their derivatives) as functions of time. We also show the <b>integral</b> of several of these quantities over the entire path, plotted as a function of \(p\), the parameter used to specify the path. The checkboxes allow you to choose which of these integrated quantities to plot. Recall that the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\).
 
 
 <p id="text">
@@ -66,27 +66,32 @@ Spend some time exploring the applet, and then answer the questions below.
             <div id="controls2">
                 <div id="checkbox-grid">
 		    <b>Left plot:</b> energy as a function of time for current value of p.
-		    <br> <br>
+		    <br> 
 		    <b>Right plot:</b> energy integrated over all time as a function of p. Dot shows selected value of p.
-		    <br> <br>
+		    <br> 
 		    <b>Checkboxes</b> control which energies are being plotted 
-	 	    <br> <br>
+	 	    <br> 
                     <ul class = "checkboxes">
                         <li><input type="checkbox" id="show-k" value="on" checked>
                         </label> <label><span id="red"> </span></label>
                         <label for="show-k"> KE</label> </li>
+
                         <li><input type="checkbox" id="show-np" value="on" checked>
                         </label> <label><span id="green"> </span></label>
                         <label for="show-np"> -PE</label></li>
+
                         <li><input type="checkbox" id="show-nk" value="off">
                         </label> <label><span id="lightsalmon"> </span></label>
                         <label for="show-nk"> -KE</label></li>
+
                         <li><input type="checkbox" id="show-p" value="off">
                         </label> <label><span id="grey"> </span></label>
                         <label for="show-kp"> PE</label></li>
+
                         <li><input type="checkbox" id="show-kmp" value="off">
                         </label> <label><span id="blue"></span></label>
                         <label for="show-kmp"> KE-PE</label></li>
+                        
                         <li><input type="checkbox" id="show-pmk" value="off">
                         </label> <label><span id="cyan"> </span></label>
                         <label for="show-pmk"> KE^2-PE^2</label></li>

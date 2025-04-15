@@ -34,6 +34,20 @@ button:hover {
     color: #000000;
 }
 
+.graph-button{
+
+    height: 100px;
+    width: 48%; 
+}
+.graph-button3{
+    font-size: 13px;
+    height: 100px;
+    width: 31%; 
+    white-space: nowrap;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .slider {
     -webkit-appearance: none;
     width: 100%;
@@ -72,6 +86,13 @@ button:hover {
     width: 950px;
 }
 
+#applet0{
+    background-color:#b5cef5;
+    border-radius: 10px;
+    position: relative;
+    height: 340px;
+    width: 950px;
+}
 #applet{
     background-color:#b5cef5;
     border-radius: 10px;
@@ -100,15 +121,16 @@ button:hover {
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
-    height: 340px;
+    height: 550px;
     width: 1070px;
+    margin: auto;
 }
 
 #top-panel{
     /* background-color: green; */
     position: absolute;
     height: 320px;
-    width: 950px;
+    width: 1200px;
     padding: 10px;
 }
 
