@@ -1,9 +1,10 @@
-#red, #green, #lightsalmon, #grey, #blue, #cyan, #purple, #plum {
+#red, #green, #lightsalmon, #grey, #blue, #cyan, #purple, #orange, #plum, #periwinkle {
     display: inline-block;
     width: 20px;
-    height: 5px;
+    height: 15px; /* Increased height */
     margin-right: 10px;
-    border-radius: 2px;
+    border-radius: 3px;
+    vertical-align: middle; /* Aligns color block with text */
 }
 
 /* Assign colors */
@@ -14,7 +15,9 @@
 #blue { background-color: blue; }
 #cyan { background-color: cyan; }
 #purple { background-color: purple; }
+#orange { background-color: orange; }
 #plum { background-color: plum; }
+#periwinkle {background-color: #CCCCFF;}
 
 
 body {
@@ -97,15 +100,33 @@ button:active {
 .row {
     display: flex;
     justify-content: space-around;
-    margin: 20px 0;
+    margin: 0px 0;
 }
 
 .column {
     flex: 1;
-    margin: 10px;
-    padding: 15px;
+    margin: 5px;
+    padding: 5px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.checkboxes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.checkboxes li {
+    margin: 0;
+    padding: 0;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.1);
+    vertical-align: middle;
+}
