@@ -1,178 +1,188 @@
-const CANVAS_WIDTH1 = parseInt(document.getElementById("ball-launch-1").getAttribute("width"));
-const CANVAS_HEIGHT1 = parseInt(document.getElementById("ball-launch-1").getAttribute("height"));
+const originalPanel1 = document.getElementById("test");
+const CANVAS_WIDTH = parseInt(originalPanel1.getAttribute("width"));
+const CANVAS_HEIGHT = parseInt(originalPanel1.getAttribute("height"));
 
-const CANVAS_WIDTH2 = parseInt(document.getElementById("ball-launch-2").getAttribute("width"));
-const CANVAS_HEIGHT2 = parseInt(document.getElementById("ball-launch-2").getAttribute("height"));
+const hiPPICanvas1 = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+originalPanel1.replaceWith(hiPPICanvas1);
+hiPPICanvas1.id = "test";
 
-var h = 50;
-var h2 = 2500; // h squared for w initial value
-var a = -2;
-var m = 10;
-const x_initial = 20;
-const FRAME_RATE = 1; // ms
-const dt = 0.005;
-const end_time = 11;
+const FRAME_RATE = 1000 / 60; // 60 FPS
+const HORIZONTAL_LEG = 200;
+const VERTICAL_LEG = 200;
 
-// Define separate projectile variables for each canvas
-var projectile1, projectile2;
+// Projectile object to track animation state
+var projectile1 = {
+    t: 0,          // Animation progress (0-1)
+    speed: 0.01,    // Animation speed per frame
+    startX: 0 + 200,
+    startY: CANVAS_HEIGHT - VERTICAL_LEG - 200,
+    endX: HORIZONTAL_LEG + 200,
+    endY: CANVAS_HEIGHT - 200
+};
 
-// Transformation functions for Canvas 1
-function transformXCoord1(x) {
-  return (CANVAS_WIDTH1 * x) + 20;
-}
+// Animation controller
+var animArea = {
+    panel: hiPPICanvas1,
+    context: null,
+    interval: null,
 
-function transformYCoord1(y) {
-    return CANVAS_HEIGHT1 - (y * (CANVAS_HEIGHT1 / 100));
-}
-
-// Transformation functions for Canvas 2 (w = y²)
-function transformXCoord2(x) {
-    return (CANVAS_WIDTH2 * x) + 20;
-}
-
-function transformYCoord2(w) {
-  return CANVAS_HEIGHT2 - (w * (CANVAS_HEIGHT2 / 10000));
-
-}
-
-function startAnimation1() {
-    projectile1 = new component(animArea1, 3, 3, "purple", x_initial, h, m, a, false);
-    animArea1.start();
-}
-
-function startAnimation2() {
-    projectile2 = new component(animArea2, 3, 3, "purple", x_initial, h2, m, a, true);
-    animArea2.start();
-}
-
-// Modified component constructor to accept animArea and isWCoordinate flag
-function component(animArea, width, height, color, x, y, m, a, isWCoordinate) {
-    this.animArea = animArea;
-    this.width = width;
-    this.height = height;
-    this.color = color;
-    this.x = x;
-    this.y = y;
-    this.m = m;
-    this.a = a;
-    this.isWCoordinate = isWCoordinate;
-
-    this.update = function () {
-        var ctx = this.animArea.context;
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-    }
-
-    this.newPos = function (t) {
-        const yPosition = h + 0.5 * a * (t * 5) ** 2;
-
-        if (this.isWCoordinate) {
-            const wPosition = yPosition ** 2;
-            this.x = transformXCoord2(t);
-            this.y = transformYCoord2(wPosition);
-        } else {
-            this.x = transformXCoord1(t);
-            this.y = transformYCoord1(yPosition);
-        }
-    }
-}
-
-// Animation objects for each canvas
-var animArea1 = {
-    panel: document.getElementById("ball-launch-1"),
     start: function () {
-        this.panel.width = CANVAS_WIDTH1;
-        this.panel.height = CANVAS_HEIGHT1;
         this.context = this.panel.getContext("2d");
-        this.time = 0;
         this.interval = setInterval(() => updateFrame(this, projectile1), FRAME_RATE);
-        ctx = this.context; 
-
-        ctx.font = "18px Verdana";
-    ctx.fillStyle = "black";
-    ctx.fillText("Projectile Motion (y)", 200, 30);
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, transformYCoord1(h), 25, 3);
-    ctx.fillRect(0, transformYCoord1(h), 25, 300);
-    // Markers for y and w
-    ctx.font = "12px Arial";
-    for (let y = 10; y <= 90; y += 10) {
-        const canvasY = transformYCoord1(y);
-        ctx.fillStyle = "red";
-        ctx.fillRect(0, canvasY, 20, 1);
-        ctx.fillText(`y=${y}`, 5, canvasY - 5);
-        ctx.fillStyle = "green";
-        const w = y ** 2;
-        ctx.fillRect(CANVAS_WIDTH1 - 20, canvasY, 20, 1);
-        ctx.fillText(`w=${w}`, CANVAS_WIDTH1 - 45, canvasY - 5);
-    }
     },
+
     stop: function () {
         clearInterval(this.interval);
     }
 };
-
-var animArea2 = {
-    panel: document.getElementById("ball-launch-2"),
-    start: function () {
-        this.panel.width = CANVAS_WIDTH2;
-        this.panel.height = CANVAS_HEIGHT2;
-        this.context = this.panel.getContext("2d");
-        this.time = 0;
-        this.interval = setInterval(() => updateFrame(this, projectile2), FRAME_RATE);
-        ctx = this.context; 
-        ctx.font = "18px Verdana";
-    ctx.fillStyle = "black";
-    ctx.fillText("Projectile Motion (w)", 200, 30);
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, transformYCoord2(h2), 25, 3);
-    ctx.fillRect(0, transformYCoord2(h2), 25, 300);
-
-    // Markers for w and corresponding y
-    ctx.font = "12px Arial";
-    for (let w = 1000; w <= 10000; w += 1000) {
-        const canvasY = transformYCoord2(w);
-        ctx.fillStyle = "green";
-        ctx.fillRect(0, canvasY, 20, 1);
-        ctx.fillText(`w=${w}`, 5, canvasY - 5);
-        ctx.fillStyle = "red";
-        const yVal = Math.sqrt(w).toFixed(1);
-        ctx.fillRect(CANVAS_WIDTH2 - 20, canvasY, 20, 1);
-        ctx.fillText(`y=${yVal}`, CANVAS_WIDTH2 - 45, canvasY - 5);
-    }
-    },
-    stop: function () {
-        clearInterval(this.interval);
-    }
-};
-
-
-
-
 
 function updateFrame(animArea, projectile) {
-    animArea.time += dt;
-    projectile.newPos(animArea.time);
-    
-    
-    projectile.update();
-    if (animArea.time >= end_time) animArea.stop();
+    const ctx = animArea.context;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.font = "15px Arial";
+    ctx.fillText(`t = ${projectile.t.toFixed(2)}`, 325, 75);
+    ctx.beginPath()
+    ctx.moveTo(0, CANVAS_WIDTH / 2)
+    ctx.lineTo(CANVAS_HEIGHT, CANVAS_WIDTH / 2)
+    ctx.moveTo(CANVAS_HEIGHT / 2, 0)
+    ctx.lineTo(CANVAS_HEIGHT / 2, CANVAS_WIDTH)
+    // Draw right triangle
+    ctx.moveTo(200, CANVAS_HEIGHT - 200);                   // Starting point (bottom-left)
+    ctx.lineTo(200, CANVAS_HEIGHT - VERTICAL_LEG - 200);    // Vertical leg
+    ctx.lineTo(HORIZONTAL_LEG + 200, CANVAS_HEIGHT - 200);      // Horizontal leg
+    ctx.closePath();                                // Hypotenuse
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+
+
+
+    // Update ball position
+    if (projectile.t <= 1) {
+        projectile.currentX = projectile.startX + (projectile.endX - projectile.startX) * projectile.t;
+        projectile.currentY = projectile.startY + (projectile.endY - projectile.startY) * projectile.t;
+        projectile.t += projectile.speed;
+    } else {
+        projectile.t = 0; // Reset animation
+    }
+
+    // Draw ball
+    ctx.beginPath();
+    ctx.arc(projectile.currentX, projectile.currentY, 10, 0, Math.PI * 2);
+    ctx.fillStyle = "red";
+    ctx.fill();
 }
 
-// Start both animations
-startAnimation1();
-startAnimation2();
+// Start animation
+animArea.start();
 
 
-var showAnswer1 = false;
-document.getElementById("show-q1").addEventListener("click", function () {
-    if (!showAnswer1) {
-      showAnswer1 = true;
-      document.getElementById("show-q1").innerHTML = "Hide Answer";
-      document.getElementById("answer1").style.display = "block";
-    } else {
-      showAnswer1 = false;
-      document.getElementById("show-q1").innerHTML = "Show Answer";
-      document.getElementById("answer1").style.display = "none";
+const originalPanel2 = document.getElementById("test2");
+const CANVAS_WIDTH2 = parseInt(originalPanel2.getAttribute("width"));
+const CANVAS_HEIGHT2 = parseInt(originalPanel2.getAttribute("height"));
+
+const hiPPICanvas2 = createHiPPICanvas(CANVAS_WIDTH2, CANVAS_HEIGHT2);
+originalPanel2.replaceWith(hiPPICanvas2);
+
+hiPPICanvas2.id = "test";
+
+// Projectile object to track animation state
+var projectile2 = {
+    t: 10,          // Animation progress (0-1)
+    speed: 0.01,    // Animation speed per frame
+    startX: 0 + 200,
+    startY: CANVAS_HEIGHT2 - VERTICAL_LEG - 200,
+    endX: HORIZONTAL_LEG + 200,
+    endY: CANVAS_HEIGHT2 - 200
+};
+
+// Animation controller
+var animArea2 = {
+    panel: hiPPICanvas2,
+    context: null,
+    interval: null,
+
+    start: function () {
+        this.context = this.panel.getContext("2d");
+        this.interval = setInterval(() => updateFrame2(this, projectile2), FRAME_RATE);
+    },
+
+    stop: function () {
+        clearInterval(this.interval);
     }
-  });
+};
+
+function updateFrame2(animArea2, projectile) {
+    const ctx = animArea2.context;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, CANVAS_WIDTH2, CANVAS_HEIGHT2);
+
+    ctx.beginPath()
+    ctx.font = "15px Arial";
+    ctx.fillText(`s = ${projectile.t.toFixed(2)}`, 325, 75);
+    ctx.moveTo(0, CANVAS_WIDTH2 / 2)
+    ctx.lineTo(CANVAS_HEIGHT2, CANVAS_WIDTH2 / 2)
+    ctx.moveTo(CANVAS_HEIGHT2 / 2, 0)
+    ctx.lineTo(CANVAS_HEIGHT2 / 2, CANVAS_WIDTH2)
+    // Draw right triangle
+    ctx.moveTo(200, CANVAS_HEIGHT2 - 200);                   // Starting point (bottom-left)
+    ctx.lineTo(200, CANVAS_HEIGHT2 - VERTICAL_LEG - 200);    // Vertical leg
+    ctx.lineTo(HORIZONTAL_LEG + 200, CANVAS_HEIGHT2 - 200);      // Horizontal leg
+    ctx.closePath();                                // Hypotenuse
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+
+
+
+    // Update ball position
+    if (projectile.t <= 5) {
+        projectile.currentX = projectile.startX + (projectile.endX - projectile.startX) * (1 - 2.71828 ** -projectile.t);
+        projectile.currentY = projectile.startY + (projectile.endY - projectile.startY) * (1 - 2.71828 ** -projectile.t);
+        projectile.t += projectile.speed;
+    } else {
+        projectile.t = 0; // Reset animation
+    }
+
+    // Draw ball
+    ctx.beginPath();
+    ctx.arc(projectile.currentX, projectile.currentY, 10, 0, Math.PI * 2);
+    ctx.fillStyle = "red";
+    ctx.fill();
+}
+
+// Start animation
+animArea2.start();
+
+
+var showAnswer0 = false;
+document.getElementById("show-q0").addEventListener("click", function () {
+    if (!showAnswer0) {
+        showAnswer0 = true;
+        document.getElementById("show-q0").innerHTML = "Hide Answer";
+        document.getElementById("answer0").style.display = "block";
+
+    } else {
+        showAnswer0 = false;
+        document.getElementById("show-q0").innerHTML = "Show Answer";
+        document.getElementById("answer0").style.display = "none";
+    }
+});
+
+
+
+//https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
+function createHiPPICanvas(width, height) {
+    const ratio = window.devicePixelRatio;
+    const canvas = document.createElement("canvas");
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.getContext("2d").scale(ratio, ratio);
+
+    return canvas;
+}
+

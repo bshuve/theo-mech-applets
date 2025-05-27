@@ -10,13 +10,15 @@ hiPPICanvas.id = "ball-launch";
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.005;
-const end_time = 11;
+const dt = 0.002;
+const end_time = 10;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
 var h = parseFloat(document.getElementById("h-slider").value); // 50
 var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
 var m = parseFloat(document.getElementById("m-slider").value); // 10.0
+
+
 
 /////////////////////////////////////////////////
 /* Changing Panel Size Dynamically */
@@ -25,15 +27,34 @@ var m = parseFloat(document.getElementById("m-slider").value); // 10.0
 // Initialize panel visibility states
 let show_middle_panel = true;
 let show_bottom_panel = true;
+let show_bottom2_panel = true;
 const middlepanel = document.getElementById("middle-panel");
 const bottompanel = document.getElementById("bottom-panel");
+const bottom2panel = document.getElementById("bottom2-panel");
 
 // Initialize the panels with empty content
 function updatePanels() {
   middlepanel.style.display = show_middle_panel ? "block" : "none";
   bottompanel.style.display = show_bottom_panel ? "block" : "none";
-  if (show_middle_panel && show_bottom_panel) {
-    $("#applet2").css({
+  bottom2panel.style.display = show_bottom2_panel ? "block" : "none";
+  if (show_middle_panel && show_bottom_panel && show_bottom2_panel) {
+    $("#applet4").css({
+      "height": "1300px"
+    });
+    $("#middle-panel").css({
+      "height": "320px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top": "640px"
+    });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top": "960px"
+    });
+  }
+  else if (show_middle_panel && show_bottom_panel) {
+    $("#applet4").css({
       "height": "980px"
     });
     $("#middle-panel").css({
@@ -43,21 +64,30 @@ function updatePanels() {
       "height": "320px",
       "top": "640px"
     });
+    $("#bottom2-panel").css({
+      "height": "0px",
+      "top": "960px"
+    });
   }
-  else if (show_middle_panel) {
-    $("#applet2").css({
-      "height": "660px"
+  else if (show_middle_panel && show_bottom2_panel) {
+    $("#applet4").css({
+      "height": "980px"
     });
     $("#middle-panel").css({
-      "height": "320px"
+      "height": "320px",
+      "top": "320px"
     });
     $("#bottom-panel").css({
       "height": "0px"
     });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top": "640px"
+    });
   }
-  else if (show_bottom_panel) {
-    $("#applet2").css({
-      "height": "660px"
+  else if (show_bottom_panel && show_bottom2_panel) {
+    $("#applet4").css({
+      "height": "980px"
     });
     $("#middle-panel").css({
       "height": "0px"
@@ -66,9 +96,59 @@ function updatePanels() {
       "height": "320px",
       "top": "320px"
     });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top": "640px"
+    });
+  }
+  else if (show_middle_panel) {
+    $("#applet4").css({
+      "height": "640px"
+    });
+    $("#middle-panel").css({
+      "height": "0px",
+      "top": "320px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+
+    });
+    $("#bottom2-panel").css({
+      "height": "0px"
+    });
+  }
+  else if (show_bottom_panel) {
+    $("#applet4").css({
+      "height": "640px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "320px",
+      "top": "320px"
+    });
+    $("#bottom2-panel").css({
+      "height": "0px",
+    });
+  }
+  else if (show_bottom2_panel) {
+    $("#applet4").css({
+      "height": "640px"
+    });
+    $("#middle-panel").css({
+      "height": "0px"
+    });
+    $("#bottom-panel").css({
+      "height": "0px",
+    });
+    $("#bottom2-panel").css({
+      "height": "320px",
+      "top": "320px"
+    });
   }
   else {
-    $("#applet2").css({
+    $("#applet4").css({
       "height": "340px"
     });
     $("#middle-panel").css({
@@ -77,15 +157,16 @@ function updatePanels() {
     $("#bottom-panel").css({
       "height": "0px"
     });
+    $("#bottom2-panel").css({
+      "height": "0px",
+    });
   }
 }
 
 // Initial panel setup
 updatePanels();
 
-/////////////////////////////////////////////////
-/* Panel Animation */
-/////////////////////////////////////////////////
+/* Canvas Animation */
 function startAnimation(y, m, a) {
   projectile = new component(3, 3, "purple", x_initial, y, m, a);
   animArea.start();
@@ -102,8 +183,8 @@ function transformXCoord(x) {
 }
 
 function transformYCoord(y) {
-  // Fixed scale: y=0 at bottom, y=100 at top
-  return CANVAS_HEIGHT - (y * (CANVAS_HEIGHT / 100));
+  return -h - (CANVAS_HEIGHT / 2 * y) + 280;
+
 }
 
 var animArea = {
@@ -119,29 +200,11 @@ var animArea = {
     // add text and ground to panel
     this.context.font = "18px Verdana";
     this.context.fillStyle = "black";
-    this.context.fillText("Projectile Motion", 85, 30);
+    this.context.fillText("Projectile Motion", 10, 30);
     this.context = this.panel.getContext("2d");
     this.context.fillStyle = "gray";
-    this.context.fillRect(0, transformYCoord(h), 25, 3);
-    this.context.fillRect(0, transformYCoord(h), 25, 300);
-
-    this.context.font = "12px Arial";
-    // Draw y markers (left side)
-    this.context.fillStyle = "red";
-    for (let y = 10; y <= 90; y += 10) {
-      const canvasY = transformYCoord(y);
-      this.context.fillRect(0, canvasY, 20, 1); // Line
-      this.context.fillText(`y=${y}`, 5, canvasY - 5);
-    }
-
-    // Draw w markers (right side)
-    this.context.fillStyle = "green";
-    for (let y = 10; y <= 90; y += 10) {
-      const canvasY = transformYCoord(y);
-      const w = y ** 2;
-      this.context.fillRect(CANVAS_WIDTH - 20, canvasY, 20, 1); // Line
-      this.context.fillText(`w=${w}`, CANVAS_WIDTH - 45, canvasY - 5);
-    }
+    this.context.fillRect(0, transformYCoord(0) - h, 25, 3);
+    this.context.fillRect(25, transformYCoord(0) - h, -25, 300);
   },
   stop: function () {
     this.time = 0;
@@ -174,8 +237,7 @@ function component(width, height, color, x, y, m, a) {
 
   this.newPos = function (t) {
     this.x = transformXCoord(t);
-    const yPosition = h + 0.5 * a * (t * 5) ** 2; // Physics equation
-    this.y = transformYCoord(yPosition);
+    this.y = transformYCoord(0.5 * a * t ** 2) - y;
   }
 }
 
@@ -198,12 +260,11 @@ function updateFrame() {
 // run animation on load
 startAnimation(h, m, a);
 
-
 //https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 function createHiPPICanvas(width, height) {
     const ratio = window.devicePixelRatio;
     const canvas = document.createElement("canvas");
-
+    
     canvas.width = width * ratio;
     canvas.height = height * ratio;
     canvas.style.width = width + "px";
@@ -214,19 +275,23 @@ function createHiPPICanvas(width, height) {
 }
 
 /////////////////////////////////////////////////
-/* FUNCTIONS TO GENERATE PLOTTING DATA */
+/* FUNCTIONS TO GENERATE PLOTTING ENERGY DATA */
 /////////////////////////////////////////////////
 
-// generate Euler-Lagrange data
-function ELData() {
+// generate energy data
+function EnergyData() {
   // create arrays of data for each plot
   // for y param
-  var dL_dy_data = [];
-  var dt_dL_dydot_data = [];
+  var PE_y_data = [];
+  var KE_ydot_data = [];
+  var PE_yt_data = [];
+  var KE_yt_data = [];
 
   // for w param, where w = y^2
-  var dL_dw_data = [];
-  var dt_dL_dwdot_data = [];
+  var PE_w_data = [];
+  var KE_wdot_data = [];
+  var PE_wt_data = [];
+  var KE_wt_data = [];
 
   var t = 0;
 
@@ -237,52 +302,46 @@ function ELData() {
     let v = a * t;
     let KE = 1 / 2 * (m * (v) ** 2); // kinetic energy T
     let PE = -m * a * y; // potential energy U
-    let dKEdy = 0; // dT/dy = 0 because no y dependence
-    let dPEdy = -m * a; // dU/dy
-    let dKEdydot = m * v; // dT/dydot
-    let dtKEy = m * a; // d/dt(dT/dydot)
-    let dPEdydot = 0; // dU/dydot = 0 because no ydot dependence
-    let dtPEy = 0; // d/dt(dU/dydot) = 0
-    let dLdy = dKEdy - dPEdy; // dL/dy = dT/dy - dU/dy
-    let dtdLdydot = dtKEy - dtPEy; // d/dt(dL/dydot) = d/dt(dT/dydot - dU/dydot)
+    let absPE = Math.abs(PE); // absolute value of U for the bottom left graph since w is limited to positive values of y
 
     // for w param, where w = y^2;
     let w = y ** 2;
     let wdot = 2 * y * v;
-    let wdotdot = 2 * (v * v + y * a)
     let KEw = 1 / 2 * (m * (wdot ** 2) / (4 * w)); // kinetic energy T
     let PEw = -m * a * Math.sqrt(w); // potential energy U
-    let dKEdw = - 1 / 2 * m * ((wdot ** 2) / (4 * w ** 2)); // dT/dw
-    let dPEdw = - 1 / 2 * m * a * (1 / Math.sqrt(w)); // dU/dw
-    let dKEdwdot = (m * wdot) / (4 * w); // dT/dwdot
-    let dtKEw = 1 / 4 * m * ((wdotdot * w - wdot ** 2) / w ** 2); // d/dt(dT/dwdot)
-    let dPEdwdot = 0; // dU/dwdot = 0 because no wdot dependence
-    let dtPEw = 0; // d/dt(dU/dwdot) = 0
-    let dLdw = dKEdw - dPEdw; // dL/dw = dT/dw - dU/dw
-    let dtdLdwdot = dtKEw - dtPEw; // d/dt(dL/dwdot) = d/dt(dT/dwdot - dU/dwdot)
 
     // push all data into arrays
     // for y param
-    dL_dy_data.push({ "x": Math.round(t * 10000) / 10000, "y": dLdy });
-    dt_dL_dydot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdydot });
+    if (PE >= 0) {
+      PE_y_data.push({ "x": y, "y": PE });
+    }
+    KE_ydot_data.push({ "x": v, "y": KE });
+    PE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": absPE });
+    KE_yt_data.push({ "x": Math.round(t * 10000) / 10000, "y": KE });
 
     // for w param
-    if (dtdLdwdot > -10000) { // don't graph at the asymptote to avoid errors
-      dL_dw_data.push({ "x": Math.round(t * 10000) / 10000, "y": dLdw });
-      dt_dL_dwdot_data.push({ "x": Math.round(t * 10000) / 10000, "y": dtdLdwdot });
+    PE_w_data.push({ "x": w, "y": PEw });
+    if (wdot <= 0) {
+      KE_wdot_data.push({ "x": wdot, "y": KEw });
     }
+    PE_wt_data.push({ "x": Math.round(t * 10000) / 10000, "y": PEw });
+    KE_wt_data.push({ "x": Math.round(t * 10000) / 10000, "y": KEw });
     t += dt;
 
   }
 
   return {
     // for y param
-    y: dL_dy_data,
-    ydot: dt_dL_dydot_data,
+    PEy: PE_y_data,
+    KEy: KE_ydot_data,
+    PEyt: PE_yt_data,
+    KEyt: KE_yt_data,
 
     // for w param
-    w: dL_dw_data,
-    wdot: dt_dL_dwdot_data
+    PEw: PE_w_data,
+    KEw: KE_wdot_data,
+    PEwt: PE_wt_data,
+    KEwt: KE_wt_data
 
   };
 }
@@ -293,7 +352,6 @@ var margin = { top: 20, right: 20, bottom: 50, left: 50 },
   height = SVG_HEIGHT - margin.top - margin.bottom;
 
 function plotData(input) {
-
   // update the line
   var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
 
@@ -353,129 +411,212 @@ function createPlot(input) {
   svg.append("text")
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
-    .attr("y", -margin.left + 20)
+    .attr("y", -margin.left + 15)
     .attr("x", -margin.top)
     .text(input.yLabel)
 
   return { svg: svg, xScale: xScale, yScale: yScale };
 }
 
-
-
-// y param
-// dL/dy GRAPH
+// PE vs. y GRAPH
 // this input format will be followed by each plot after this
-const dL_dy_input = {
-  divID: "#dL-dy-graph", // the id of the <div> element in your HTML file where the plot will go
-  svgID: "svg-for-dL-dy-plot", // what you want the svg element to be named (not super important)
+const PE_y_input = {
+  divID: "#PE-y-graph", // the id of the <div> element in your HTML file where the plot will go
+  svgID: "svg-for-PE-y-plot", // what you want the svg element to be named (not super important)
   domain: { lower: 0, upper: 10 }, // domain of the plot
-  xLabel: "Time (s)", // x-axis label
-  range: { lower: -100, upper: 100 }, // range of the plot
-  yLabel: "\u2202L/\u2202y (N)"// y-axis label
+  xLabel: "y (m)", // x-axis label
+  range: { lower: 0, upper: 100 }, // range of the plot
+  yLabel: "Potential Energy (J)"// y-axis label
 };
 
 // the svg element is essentially saved as this const variable
-const dL_dy_plot = createPlot(dL_dy_input);
+const PE_y_plot = createPlot(PE_y_input);
 
 // graph each line on the plot
-// dL/dy
-var dLdy_line = dL_dy_plot.svg.append("g").attr("id", "dL-dy-line").attr("visibility", "visible");
+// PE y param line
+var PE_y_line = PE_y_plot.svg.append("g").attr("id", "PE-y-line").attr("visibility", "visible");
 
-// d/dt(dL/dydot) GRAPH
-const dt_dL_dydot_input = {
-  divID: "#dt-dL-dydot-graph",
-  svgID: "svg-for-dt-dL-dydot-plot",
+// PE vs. w GRAPH
+const PE_w_input = {
+  divID: "#PE-w-graph",
+  svgID: "svg-for-PE-w-plot",
   domain: { lower: 0, upper: 10 },
-  xLabel: "Time (s)",
-  range: { lower: -100, upper: 100 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E8F) (N)"
+  xLabel: "w (m^2)",
+  range: { lower: 0, upper: 100 },
+  yLabel: "Potential Energy (J)"
 };
 
-const dt_dL_dydot_plot = createPlot(dt_dL_dydot_input);
+const PE_w_plot = createPlot(PE_w_input);
 
-// d/dt(dL/dydot)
-var dtdLdydot_line = dt_dL_dydot_plot.svg.append("g").attr("id", "dt-dL-dydot-line").attr("visibility", "visible");
+// PE w param line
+var PE_w_line = PE_w_plot.svg.append("g").attr("id", "PE-w-line").attr("visibility", "visible");
 
-
-// w param
-// dL/dw GRAPH
-const dL_dw_input = {
-  divID: "#dL-dw-graph",
-  svgID: "svg-for-dL-dw-plot",
-  domain: { lower: 0, upper: 10 },
-  xLabel: "Time (s)",
-  range: { lower: -1000, upper: 0 },
-  yLabel: "\u2202L/\u2202w (N/m)"
+// KE vs. ydot GRAPH
+const KE_ydot_input = {
+  divID: "#KE-ydot-graph",
+  svgID: "svg-for-KE-ydot-plot",
+  domain: { lower: -20, upper: 0 },
+  xLabel: "\u1E8F (m/s)",
+  range: { lower: 0, upper: 200 },
+  yLabel: "Kinetic Energy (J)"
 };
 
-const dL_dw_plot = createPlot(dL_dw_input);
+const KE_ydot_plot = createPlot(KE_ydot_input);
 
-// dL/dw
-var dLdw_line = dL_dw_plot.svg.append("g").attr("id", "dL-dw-line").attr("visibility", "visible");
+// KE y param line
+var KE_ydot_line = KE_ydot_plot.svg.append("g").attr("id", "KE-ydot-line").attr("visibility", "visible");
 
-// d/dt(dL/dwdot) GRAPH
-const dt_dL_dwdot_input = {
-  divID: "#dt-dL-dwdot-graph",
-  svgID: "svg-for-dt-dL-dwdot-plot",
-  domain: { lower: 0, upper: 10 },
-  xLabel: "Time (s)",
-  range: { lower: -1000, upper: 0 },
-  yLabel: "d/dt(\u2202L/\u2202\u1E87) (N/m)"
+// KE vs. wdot GRAPH
+const KE_wdot_input = {
+  divID: "#KE-wdot-graph",
+  svgID: "svg-for-KE-wdot-plot",
+  domain: { lower: -1600, upper: 0 },
+  xLabel: "\u1E87 (m^2/s)",
+  range: { lower: 0, upper: 1000 },
+  yLabel: "Kinetic Energy (J)"
 };
 
-const dt_dL_dwdot_plot = createPlot(dt_dL_dwdot_input);
+const KE_wdot_plot = createPlot(KE_wdot_input);
 
-// d/dt(dL/dwdot)
-var dtdLdwdot_line = dt_dL_dwdot_plot.svg.append("g").attr("id", "dt-dL-dwdot-line").attr("visibility", "visible");
+// KE w param line
+var KE_wdot_line = KE_wdot_plot.svg.append("g").attr("id", "KE-wdot-line").attr("visibility", "visible");
+
+// PE and KE y vs. time GRAPH
+const y_input = {
+  divID: "#yt-graph",
+  svgID: "svg-for-yt-plot",
+  domain: { lower: 0, upper: 10 },
+  xLabel: "Time (s)",
+  range: { lower: 0, upper: 2000 },
+  yLabel: "Absolute Value of Energy (J)"
+};
+
+const y_plot = createPlot(y_input);
+
+// PEy vs. t param line
+var PE_yt_line = y_plot.svg.append("g").attr("id", "PE-yt-line").attr("visibility", "visible");
+
+// KEy vs. t param line
+var KE_yt_line = y_plot.svg.append("g").attr("id", "KE-yt-line").attr("visibility", "visible");
+
+// PE and KE w vs. time GRAPH
+const w_input = {
+  divID: "#wt-graph",
+  svgID: "svg-for-wt-plot",
+  domain: { lower: 0, upper: 10 },
+  xLabel: "Time (s)",
+  range: { lower: 0, upper: 2000 },
+  yLabel: "Energy (J)"
+};
+
+const w_plot = createPlot(w_input);
+
+// PEw vs. t param line
+var PE_wt_line = w_plot.svg.append("g").attr("id", "PE-wt-line").attr("visibility", "visible");
+
+// KEw vs. t param line
+var KE_wt_line = w_plot.svg.append("g").attr("id", "KE-wt-line").attr("visibility", "visible");
 
 // update plots
 function plot(data) {
-  // dL/dy
+  // PE vs. y
   var input = {
-    data: data.y,
-    svg: dL_dy_plot.svg,
-    line: dLdy_line,
-    xScale: dL_dy_plot.xScale,
-    yScale: dL_dy_plot.yScale,
+    data: data.PEy,
+    svg: PE_y_plot.svg,
+    line: PE_y_line,
+    xScale: PE_y_plot.xScale,
+    yScale: PE_y_plot.yScale,
     color: "red"
   };
 
   // plot the data
   plotData(input);
 
-  // d/dt(dL/dydot)
+  // PE vs. w
   var input = {
-    data: data.ydot,
-    svg: dt_dL_dydot_plot.svg,
-    line: dtdLdydot_line,
-    xScale: dt_dL_dydot_plot.xScale,
-    yScale: dt_dL_dydot_plot.yScale,
+    data: data.PEw,
+    svg: PE_w_plot.svg,
+    line: PE_w_line,
+    xScale: PE_w_plot.xScale,
+    yScale: PE_w_plot.yScale,
     color: "red"
   };
 
   // plot the data
   plotData(input);
 
-  // dL/dw
+  // KE vs. ydot
   input = {
-    data: data.w,
-    svg: dL_dw_plot.svg,
-    line: dLdw_line,
-    xScale: dL_dw_plot.xScale,
-    yScale: dL_dw_plot.yScale,
+    data: data.KEy,
+    svg: KE_ydot_plot.svg,
+    line: KE_ydot_line,
+    xScale: KE_ydot_plot.xScale,
+    yScale: KE_ydot_plot.yScale,
     color: "green"
   };
 
   // plot the data
   plotData(input);
 
-  // d/dt(dL/dwdot)
+  // KE vs. wdot
   input = {
-    data: data.wdot,
-    svg: dt_dL_dwdot_plot.svg,
-    line: dtdLdwdot_line,
-    xScale: dt_dL_dwdot_plot.xScale,
-    yScale: dt_dL_dwdot_plot.yScale,
+    data: data.KEw,
+    svg: KE_wdot_plot.svg,
+    line: KE_wdot_line,
+    xScale: KE_wdot_plot.xScale,
+    yScale: KE_wdot_plot.yScale,
+    color: "green"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // PEy vs. time
+  input = {
+    data: data.PEyt,
+    svg: y_plot.svg,
+    line: PE_yt_line,
+    xScale: y_plot.xScale,
+    yScale: y_plot.yScale,
+    color: "red"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // KEy vs. time
+  input = {
+    data: data.KEyt,
+    svg: y_plot.svg,
+    line: KE_yt_line,
+    xScale: y_plot.xScale,
+    yScale: y_plot.yScale,
+    color: "green"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // PEw vs. time
+  input = {
+    data: data.PEwt,
+    svg: w_plot.svg,
+    line: PE_wt_line,
+    xScale: w_plot.xScale,
+    yScale: w_plot.yScale,
+    color: "red"
+  };
+
+  // plot the data
+  plotData(input);
+
+  // KEw vs. time
+  input = {
+    data: data.KEwt,
+    svg: w_plot.svg,
+    line: KE_wt_line,
+    xScale: w_plot.xScale,
+    yScale: w_plot.yScale,
     color: "green"
   };
 
@@ -485,9 +626,9 @@ function plot(data) {
 }
 
 // create some initial data when page loads
-const initial_data = ELData();
+const initial_data = EnergyData();
 
-// initialize Euler-Lagrange lines
+// initialize energy lines
 plot(initial_data);
 
 /////////////////////////////////////////////////
@@ -499,10 +640,9 @@ on the HTML page (ex. button click, slider change, etc). */
 
 // these booleans store whether answers are being shown
 // by default, all answers are hidden
-
+var showAnswer1 = false;
 var showAnswer2 = false;
 var showAnswer3 = false;
-var showAnswer4 = false;
 
 function slider_update() {
   // updates global values for m, a, h
@@ -512,7 +652,7 @@ function slider_update() {
   document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
   h = parseFloat(document.getElementById("h-slider").value);
   document.getElementById("print-h").innerHTML = h.toFixed(1);
-  const data = ELData();
+  const data = EnergyData();
   // update plots
   plot(data);
   endAnimation();
@@ -533,20 +673,35 @@ document.getElementById("h-slider").oninput = function () {
 // Button event listeners for showing/hiding graphs
 document.getElementById("graph-button-1").addEventListener("click", function () {
   show_middle_panel = !show_middle_panel;
-  this.innerHTML = show_middle_panel ? "Hide Y Graphs" : "Show Y Graphs";
+  this.innerHTML = show_middle_panel ? "Hide U<br>Graphs" : "Show U<br>Graphs";
   updatePanels();
 
 });
 
 document.getElementById("graph-button-2").addEventListener("click", function () {
   show_bottom_panel = !show_bottom_panel;
-  this.innerHTML = show_bottom_panel ? "Hide W Graphs" : "Show W Graphs";
+  this.innerHTML = show_bottom_panel ? "Hide T<br>Graphs" : "Show T<br>Graphs";
   updatePanels();
+});
 
+document.getElementById("graph-button-3").addEventListener("click", function () {
+  show_bottom2_panel = !show_bottom2_panel;
+  this.innerHTML = show_bottom2_panel ? "Hide Energy<br>Graphs" : "Show Energy<br>Graphs";
+  updatePanels();
 });
 
 // shows the answer if the q1 button is clicked
-
+document.getElementById("show-q1").addEventListener("click", function () {
+  if (!showAnswer1) {
+    showAnswer1 = true;
+    document.getElementById("show-q1").innerHTML = "Hide Answer";
+    document.getElementById("answer1").style.display = "block";
+  } else {
+    showAnswer1 = false;
+    document.getElementById("show-q1").innerHTML = "Show Answer";
+    document.getElementById("answer1").style.display = "none";
+  }
+});
 
 // shows the answer if the q2 button is clicked
 document.getElementById("show-q2").addEventListener("click", function () {
@@ -573,23 +728,3 @@ document.getElementById("show-q3").addEventListener("click", function () {
     document.getElementById("answer3").style.display = "none";
   }
 });
-
-// shows the answer if the q4 button is clicked
-document.getElementById("show-q4").addEventListener("click", function () {
-  if (!showAnswer4) {
-    showAnswer4 = true;
-    document.getElementById("show-q4").innerHTML = "Hide Answer";
-    document.getElementById("answer4").style.display = "block";
-
-  } else {
-    showAnswer4 = false;
-    document.getElementById("show-q4").innerHTML = "Show Answer";
-    document.getElementById("answer4").style.display = "none";
-  }
-});
-
-
-
-
-
-
