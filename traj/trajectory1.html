@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>trajectory</title>
+    <!-- link css styling -->
+    <link rel = "stylesheet" href = "trajectory1.css">
+    <!-- link js for interactive webpage -->
+    <script defer src="trajectory1.js"></script>
+    <!-- link LaTeX support -->
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+
+<body id="body">
+    <h1 class="title">Free-fall projectile in 1D: Page 1/4</h1>
+    <p class="text">
+        Throughout this activity, we consider an  object of mass \(m=1\) \(kg\) constrained to move in the \(y\)-direction
+        under uniform gravitational acceleration \(-g\), where the gravitational constant \(g=9.8\) \(m/s^2\). The kinetic
+        energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the motion 
+        of the object from \(t=-\sqrt{\frac{2y_i}{g}}\) s to \(t=\sqrt{\frac{2y_i}{g}}\) s, with its position beginning 
+        and ending at \(y=0\). The position \(y_i=1\) \(m\) occurs when \(t=0\) \(s\) </br>
+    </p>
+
+    <p class="text">
+        <b>Question 1:</b> 
+        In your own words, what is the Principle of Least Action? Why is it significant?
+    </p>
+
+    <p class="text">
+        <b>Question 2:</b>
+        The Principle of Least Action requires us to consider paths from the initial configuration to the final configuration 
+        that are <i>different from</i> the classical path. Write down a few kinematic properties that the classical path should 
+        have. Which of these properties might you expect the non-classical path to have as well?
+    </p>
+
+    <p class="text">
+        Once you've answered questions 1 and 2, play around with the following applet. It allows you to specify alternative paths
+        that obey the boundary conditions specified in the problem and to visualize an object's motion along the alternative path
+        in compariosn to the classical path.
+    </p>
+
+    <p class="text">
+        In the applet below, the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\) so that 
+        when \(p=0\), we have the classical path \(y(t) = y_i - \frac{1}{2}gt^2\).
+    </p>
+<br>
+<br>
+<div id="appletsingle">
+    <div id="top-panel" class="row">
+        <div class="column">
+            <canvas id="projectile-motion-canvas-1" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+        <div class="column">
+            <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+        <div class="column">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="purple"></span>Correct classical path</label><br>
+                    <label><span id="orange"></span>Alternative path</label><br>
+                </fieldset>
+
+                <br>
+                <br>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<p id="text">
+    <b>Question 3:</b>
+    Consider two alternative paths, one with \(p<0\) and the other with \(p>0\). For each, explain
+    in your own words what's "wrong" with each path (i.e., why it's not the path that a particle
+    experiencing \(-g\) would follow).
+</p>
+
+<br>
+<div class="buttons">
+    <column id="next-button">
+        <button onclick="window.location.href = 'trajectory2.html'">NEXT PAGE</button>
+    </column>
+</div>
+
+<p id="authors">Created by Kanalu Monaco, Brian Shuve, Bryce Tu Chi, Jiani Fu, Nathan Nguyen, 2025.</p>
+
+</body>
+</html>
