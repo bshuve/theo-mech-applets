@@ -4,6 +4,7 @@
     <title>trajectory</title>
     <!-- link css styling -->
     <link rel = "stylesheet" href = "trajectory1.css">
+    <script src="d3.v4.js"></script>
     <!-- link js for interactive webpage -->
     <script defer src="trajectory1.js"></script>
     <!-- link LaTeX support -->
@@ -55,6 +56,13 @@
             <canvas id="projectile-motion-canvas-2" class="plot" title="Height vs Time"></canvas>
         </div>
 
+    </div>
+
+    <div id="bottom-panel" class="row">
+        <div class="column">
+            <div id="integral-graph"></div>
+        </div>
+
         <div class="column">
             <div id="controls">
                 <fieldset>
@@ -70,6 +78,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <br>
