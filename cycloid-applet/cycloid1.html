@@ -4,36 +4,99 @@
     <meta charset="UTF-8">
     <title>The Brachistochrone Problem</title>
 
-    <!-- External CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="cycloid.css">
 
     <!-- D3.js Library -->
     <script src="https://d3js.org/d3.v4.js"></script>
 
     <!-- Custom JavaScript -->
-    <script defer src="cycloid.js"></script>
+    <script defer src="c1.js"></script>
 
     <!-- LaTeX rendering with MathJax -->
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
+        body {
+            font-family: 'Latin Modern Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    
         .question-card, .solution-card {
             margin-top: 20px;
             background-color: #f9f9f9;
             border-left: 4px solid #ccc;
             padding: 10px 15px;
         }
-        .button {
-            margin-top: 8px;
-            padding: 5px 12px;
+    
+        .sketch-container {
+            margin: 20px 0;
+            text-align: center;
         }
-        body {
-            font-family: 'Latin Modern Roman';
-            line-height: 1.6;
-            color: #333;
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
+    
+        figcaption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+    
+        .buttons {
+            margin-top: 40px;
+            text-align: center;
+        }
+    
+        .buttons button {
+            padding: 8px 16px;
+            margin: 5px;
+            font-size: 1em;
+        }
+        .graph-container {
+            background: white;
+            width: 600px;
+            height: 400px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .axis line, .axis path {
+            stroke: #ccc;
+            shape-rendering: crispEdges;
+        }
+        .axis text {
+            fill: #666;
+            font-size: 12px;
+        }
+        .function-curve {
+            fill: none;
+            stroke: #4285F4;
+            stroke-width: 2;
+        }
+        .secant-line {
+            stroke: #EA4335;
+            stroke-width: 1.5;
+            stroke-dasharray: 4,2;
+        }
+        .dt-line {
+            stroke: #34A853;
+            stroke-width: 1.5;
+        }
+        .dx-line {
+            stroke: #FBBC05;
+            stroke-width: 1.5;
+        }
+        .point {
+            fill: #EA4335;
+            stroke: white;
+            stroke-width: 1;
+        }
+        .label {
+            font-size: 12px;
+            fill: #333;
         }
     </style>
 
@@ -48,57 +111,240 @@
 <body id="body">
 
     <h1 id="title">The Brachistochrone Problem</h1>
+    <p>The diagram below shows the path of a particle sliding along a curve under gravity, from point \(a\) to \(b\). At each point along the curve, the velocity depends on the vertical height \(y\).
+        How can we find the path that minimizes time $\(t\)? this
+        is known as the Branistrchrone problem </p>
 
+        <!-- creating the graah -->
+        <div class="graph-container" id="graph"></div>
+    
+        <script>
+            // Function definition (now x as a function of t)
+            function x(t) {
+                return 10 / (t + 1);
+            }
+    
+            // Points to visualize
+            const t1 = 1;
+            const t2 = 1.5;
+            const x1 = x(t1);
+            const x2 = x(t2);
+            const dt = t2 - t1;
+            const dx = x2 - x1;
+    
+            // Set up SVG
+            const margin = {top: 20, right: 20, bottom: 40, left: 50};
+            const width = 600 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+    
+            const svg = d3.select("#graph")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+            // Set up scales (now t on x-axis, x on y-axis)
+            const tScale = d3.scaleLinear()
+                .domain([0, 3])
+                .range([0, width]);
+    
+            const xScale = d3.scaleLinear()
+                .domain([0, 10])
+                .range([height, 0]);
+    
+            // Add axes
+            svg.append("g")
+                .attr("class", "axis axis--t")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(tScale));
+    
+            svg.append("g")
+                .attr("class", "axis axis--x")
+                .call(d3.axisLeft(xScale));
+    
+            // Add axis labels
+            svg.append("text")
+                .attr("transform", `translate(${width/2},${height + margin.bottom - 5})`)
+                .style("text-anchor", "middle")
+                .text("t");
+    
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("x");
+    
+            // Generate function curve
+            const line = d3.line()
+                .x(d => tScale(d.t))
+                .y(d => xScale(x(d.t)))
+                .curve(d3.curveNatural);
+    
+            const curveData = d3.range(0, 3.01, 0.01).map(t => ({t}));
+    
+            svg.append("path")
+                .datum(curveData)
+                .attr("class", "function-curve")
+                .attr("d", line);
+    
+            // Draw secant line between points
+            svg.append("line")
+                .attr("class", "secant-line")
+                .attr("x1", tScale(t1))
+                .attr("y1", xScale(x1))
+                .attr("x2", tScale(t2))
+                .attr("y2", xScale(x2));
+    
+            // Draw dt segment (horizontal)
+            svg.append("line")
+                .attr("class", "dt-line")
+                .attr("x1", tScale(t1))
+                .attr("y1", xScale(x1))
+                .attr("x2", tScale(t2))
+                .attr("y2", xScale(x1));
+    
+            // Draw dx segment (vertical)
+            svg.append("line")
+                .attr("class", "dx-line")
+                .attr("x1", tScale(t2))
+                .attr("y1", xScale(x1))
+                .attr("x2", tScale(t2))
+                .attr("y2", xScale(x2));
+    
+            // Add points
+            svg.append("circle")
+                .attr("class", "point")
+                .attr("cx", tScale(t1))
+                .attr("cy", xScale(x1))
+                .attr("r", 4);
+    
+            svg.append("circle")
+                .attr("class", "point")
+                .attr("cx", tScale(t2))
+                .attr("cy", xScale(x2))
+                .attr("r", 4);
+    
+            // Add labels
+            svg.append("text")
+                .attr("class", "label")
+                .attr("x", tScale(t1) - 10)
+                .attr("y", xScale(x1) - 10)
+                .text("A");
+    
+            svg.append("text")
+                .attr("class", "label")
+                .attr("x", tScale(t2) + 10)
+                .attr("y", xScale(x2) - 10)
+                .text("B");
+    
+            svg.append("text")
+                .attr("class", "label")
+                .attr("x", (tScale(t1) + tScale(t2)) / 2)
+                .attr("y", xScale(x1) + 20)
+                .text(`dt = ${dt.toFixed(2)}`);
+    
+            svg.append("text")
+                .attr("class", "label")
+                .attr("x", tScale(t2) + 20)
+                .attr("y", (xScale(x1) + xScale(x2)) / 2)
+                .text(`dx = ${dx.toFixed(2)}`);
+    
+    
+            
+            // Add title for the secant line
+            // svg.append("text")
+               // .attr("class", "label")
+                //.attr("x", (tScale(t1) + tScale(t2)) / 2 + 20)
+                //.attr("y", (xScale(x1) + xScale(x2)) / 2 - 10)
+                // .text("Δx/Δt");  
+               
+        </script>
+
+
+    <h2>Time Integral</h2>
     <p>
-        How can we find the fastest path for an object sliding under gravity, from one point to another? This is known as the <strong>Brachistochrone Problem</strong>—a famous challenge in physics and mathematics.
+        To find the path that minimizes travel time from point \( a \) to point \( b \), we begin by expressing the total time as an integral. First, we define the key quantities involved:
     </p>
-
-    <h2>⏱ Time Integral</h2>
+    <ul>
+        <li>\( x \): horizontal position</li>
+        <li>\( y \): vertical position (measured downward from the starting point)</li>
+        <li>\( ds = \sqrt{dx^2 + dy^2} \): an infinitesimal arc length along the path</li>
+        <li>\( v = \sqrt{2gy} \): the speed of the particle at height \( y \), derived from conservation of energy</li>
+    </ul>
+    
     <p>
-        The time it takes for a particle to travel from point \( a \) to point \( b \) along a curve is given by:
+        The time it takes for a particle to slide along a curve under gravity is given by:
     </p>
-
-    \[
-    t = \int_{a}^{b}\frac{ds}{v}
+    \[ t = \int_{a}^{b} \frac{ds}{v}
     \]
 
     <p>
-        To compute this numerically, we parameterize the curve by a variable \( t \). Substituting
+        To compute this numerically, we parameterize the curve using a variable \( t \in [0, 1] \), which traces the path from start to end. Using the chain rule:
+    </p>
         \[
-        ds = \sqrt{\left(\frac{dx}{dt}\right)^2+\left(\frac{dy}{dt}\right)^2} \, dt, \quad v = \sqrt{2gy},
+        ds = \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2} \, dt, \quad v = \sqrt{2gy}
         \]
-        the time becomes:
-    </p>
 
+    <p>
+        Substituting into the time integral gives:
+    </p>
     \[
-    t = \frac{1}{\sqrt{2g}} \int_{a}^{b} \frac{\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}}{\sqrt{y}} dt
+    t = \frac{1}{\sqrt{2g}} \int_0^1 \frac{\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}}{\sqrt{y(t)}} \, dt
     \]
 
-    <h2>🧮 Modeling the Path</h2>
+    <p>
+        This is the expression we evaluate to compare different paths and determine which shape leads to the fastest descent.
+    </p>
+
+    <!-- Parameterization of the curve -->
+    <h2> Modeling the Path</h2>
     <p>
         We approximate the path using a 
         <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Quadratic_B%C3%A9zier_curves" target="_blank">
-        quadratic Bézier curve</a> that starts at \((0, 0)\) and ends at \((250, 160)\). The shape of the curve is controlled by a point \((c_x, c_y)\), called the control point.
+        quadratic Bézier curve</a> that starts at \(a=(0, 0)\) and ends at \(b=(250, 160)\). The curve is defined by 
+        three points: the start point \(a\), the end point \(b\), and a single <strong>control point</strong> \((c_x, c_y)\) 
+        that determines the shape of the curve.
     </p>
-
-    \[
-    x(t) = c_x + (1 - t)^2(0 - c_x) + t^2(250 - c_x)
-    \]
-    \[
-    y(t) = c_y + (1 - t)^2(0 - c_y) + t^2(160 - c_y)
-    \]
-
-    <h2>🎯 Explore the Fastest Path</h2>
+    <p>
+        The Bézier curve is a interpolation between the start and end points, "pulled" toward the control point. The more 
+        the control point is offset from the straight line connecting \( a \) and \( b \), the more curved the path becomes.  
+        If the control point lies exactly on the straight line between \( a \) and \( b \), the Bézier curve becomes a straight 
+        line. This allows us to compare with straight line motion under gravity, showing that striaght-line notion <em>is not fastest</em> .
+    </p>
+    <p>
+        The equations for the quadratic Bézier curve are:
+        \[
+        x(t) = c_x + (1 - t)^2(0 - c_x) + t^2(250 - c_x)
+        \]
+        \[
+        y(t) = c_y + (1 - t)^2(0 - c_y) + t^2(160 - c_y)
+        \]
+    
+    </p>
+   
+    <h2> Explore the Fastest Path</h2>
 
     <p>
-        Use the sliders below to adjust the control point \((c_x, c_y)\) and watch how the red curve changes. This red curve is the Bézier path. You can also compare it to the blue curve—the <strong>cycloid</strong>—which is the true optimal path derived from calculus of variations.
+        Use the sliders below to adjust the control point \((c_x, c_y)\) and watch how the red curve changes. 
+        This red curve is the Bézier path. 
+        <ul>
+            <li> It is the test path you can adjust using two sliders </li> 
+            <li>  It always starts at (0,0) and ends at (250,160)  </li>
+            <li> Its shape is controlled by a single movable point (the green point controlled by the slider) </li>
+        </ul>
+        The blue curve—the <strong>cycloid</strong>- is the true optimal path derived from calculus of variations.
+            <li> The curve shows the fastest possible path </li>
     </p>
 
     <ul>
-        <li><strong>c<sub>x</sub></strong> shifts the control point horizontally — affects the “bow” of the curve.</li>
+        <li><strong>c<sub>x</sub></strong> moves the control point(green circle) control point horizontally.</li>
         <li><strong>c<sub>y</sub></strong> shifts the control point vertically — affects how much the curve dips.</li>
-        <li>As you adjust, the travel time is re-calculated and displayed.</li>
+        <li>As you adjust, the simulation calculates how long a ball would take to roll down your path.</li>
         <li>Click “Show Cycloid” to toggle the theoretical optimal curve.</li>
+        <li> "Optimize \(c_y\) find he best up/down position for your current \(c_x\) setting </li>
     </ul>
 
     <div id="applet">
@@ -116,9 +362,9 @@
                 <path id="y-axis" d="M 0 0 V 200" stroke="black" stroke-width="1"/>
                 <path id="start-to-control" d="M 0 0 L 125 80" fill="none" stroke="green" stroke-width="1" opacity="0.5"/>
                 <path id="end-to-control" d="M 250 160 L 125 80" fill="none" stroke="green" stroke-width="1" opacity="0.5"/>
-                <circle id="start-point" cx="0" cy="0" r="3"/>
-                <circle id="end-point" cx="250" cy="160" r="3"/>
-                <circle id="control-point" cx="125" cy="80" r="3"/>
+                <circle id="start-point" cx="0" cy="0" r="3" fill="black"/>
+                <circle id="end-point" cx="250" cy="160" r="3" fill="black"/>
+                <circle id="control-point" cx="125" cy="80" r="5" fill="#4CAF50"/>
                 <text x="0" y="-5" style="font: italic 10px sans-serif;">(0, 0)</text>
                 <text x="230" y="180" style="font: italic 10px sans-serif;">(250, 160)</text>
             </svg>
@@ -130,7 +376,7 @@
 
             <div id="x-slider">
                 <label for="slide-x-coord">\(c_x\): <span id="print-x-coord">125</span></label>
-                <input id="slide-x-coord" class="slider" type="range" min="0" max="300" value="125">
+                <input id="slide-x-coord" class="slider" type="range" min="0" max="200" value="125">
             </div>
 
             <div id="y-slider">
@@ -142,13 +388,18 @@
         </div>
     </div>
 
+    <button id="optimize-cy" class="button">
+        Optimize \(c_y\) 
+        <span id="optimize-spinner" class="spinner"></span>
+    </button>
+
     <p>
         Notice how changing the control point changes the path shape—and the time. Try to find the control point that gives the <strong>shortest time</strong>. Then compare it to the cycloid. Are they close?
     </p>
 
-    <h2>📘 Reflection</h2>
+    <h2> Question to think about</h2>
     <div class="question-card">
-        <p><strong>Question 1:</strong> After playing around with the curve, what do you notice? Explain the brachistochrone problem?</p>
+        <p><strong>Question 1:</strong> Try adjusting the control point to make the curve faster. What kinds of shapes lead to shorter travel times? Compare a steep dip, a shallow curve, and a straight line.</p>
         <button class="button" onclick="toggleSolution('solution1')">Show Solution for Question 1</button>
         <div id="solution1" class="solution-card" style="display: none;">
             <strong>Solution 1: </strong> The travel time changes significantly depending on the shape of the curve. The shortest time does not occur along the straight-line path, which might seem counterintuitive at first.
@@ -158,16 +409,13 @@
         </div>
     </div>
     <p>
-        The cycloid is a curve traced by a point on the rim of a rolling circle. It turns out that this curve is the solution to the brachistochrone problem—discovered by Johann Bernoulli in 1696.
+        In previous chapters, we have learned about the Fermet's principle, where lights travel with the path that minimizes time. 
+        Is the Brachistochrone problem, which also minimizes time, connected to the Fermet's question? We will  this question next.
     </p>
-    <p>
-        What happens if we constrain the path to follow a circular arc instead? You'll explore this question next.
-    </p>
-
-
+    
 
     <div class="buttons">
-        <button id="next-button" onclick="window.location.href = 'cycloid2.html'">Next Page</button>
+        <button id="next-button" onclick="window.location.href = 'cycloid2.html'">Next: Next Page </button>
     </div>
 </body>
 </html>
