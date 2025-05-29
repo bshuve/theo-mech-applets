@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory</title>
+    <link rel = "stylesheet" href = "trajectory.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "trajectory supplement.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id="title">Title TBD.</h1>
+<p id="text">
+<b>context for Brian/whoever is reviwing this:</b> I am assume this is an addendum to the trajectory applet and will not ask questions like "what is the principle of least action" or any other questions that would be on the first page of the applet. 
+
+<br> <br> 
+    Consider an object of mass \(m=1\) \(kg\) constrained to move in the \(y\)-direction under uniform gravitational acceleration \(-g\), where the gravitational constant \(g=9.8\) \(m/s^2\). The kinetic energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the motion of the object from \(t=-\sqrt{\frac{2y_i}{g}}\) s to \(t=\sqrt{\frac{2y_i}{g}}\) s, with its position beginning and ending at \(y=0\). The position \(y_i=1\) \(m\) occurs when \(t=0\) \(s\).<br>
+</p>
+
+<p id="text">
+In the applet below, the  path is parametrized by the function \(y(t) = (y_i-\frac{1}{2}gt^2) + py_i\cos(\frac{\pi}{2}\frac{t}{t_0}) \) so that when \(p=0\), we have the classical path \(y(t) = y_i - \frac{1}{2}gt^2\). 
+</p>
+
+<p id="text">
+Play around with the applet. It allows you to specify alternative paths that obey the boundary conditions specified in the problem and to visualize the object's motion over time. The red arrows represent the acceleration derived from the first derivative. The blue arrows represent the acceleration derived from using F/m. 
+</p>
+<p id="text">
+Check out how the action and acceleration changes with p. Notice how the acceleration is different from F/m, even though they should be the same. When are these two values the same? When is action least? What does this suggest about the Principle of Least Action?
+</p>
+
+<br>    
+<!-- <p id="debug">debug text here</p> -->
+<div id="appletsingle">
+    <div id="top-panel" class="row">
+	<!-- First column: parabolic trajectory animation (in time) -->
+        <div class="column">
+            <canvas id="projectile-motion-canvas" class="plot" title="Height vs Time"></canvas>
+        </div>
+
+	<!-- Second column: legend and sliders -->
+        <div class="column">
+            <div id="controls">
+                <fieldset>
+                    <legend>LEGEND</legend>
+                    <label><span id="orange"></span>Path</label><br>
+                </fieldset>
+		<br> <br>
+                <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
+
+        <br> <br> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2> Potential Questions:</h2>
+<p id="text">
+    When do the arrows overlap?
+</p>
+ <p id="text">
+    (TBD: think about more questions.)
+</p>
+<p id="text">
+</p>
+
+
+<i>Created by Brian Shuve, Nathan Nguyen, 2025.</i>
+
+<br><br>
+
+</body>
+</html>
+
