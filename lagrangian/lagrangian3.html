@@ -3,148 +3,117 @@
 
 <head>
     <title>lagrangian</title>
-    <link rel = "stylesheet" href = "lagrangian.css">
+    <link rel="stylesheet" href="lagrangian.css">
 
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
 
-    <!--Load jQuery.js-->
-    <script src="jQuery.js"></script>
-    
-    <script defer src = "lagrangian3.js"></script>
+    <script defer src="lagrangian3.js"></script>
 
-     <!-- LaTeX support -->
-     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    </head>
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
 <body id="body">
-<h1 id="title">Generalized Coordinate Lagrangians: Page 4</h1>
-<h2 id="subtitle">Graphing the Lagrangian with respect to different quantities</h2>
-<p id="text">
-    (Chrome Recommended.)
+
+    <h1 id="title">Generalized Coordinate Lagrangians: Page 3</h1>
+    <h2 id="subtitle">Non-classical Path</h2>
+    <p id="text">
+        Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under gravitational
+        acceleration \(-g\). The kinetic energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is
+        \(U=mgy\).
+        <br><br>
+        We now consider deviations from the classical path. We consider a family of paths defined by \(y(t) = 1-t^p\)
+        for some parameter \(p\) (taking \(g\) to be 2 for simplicity). We can also study this family path using a
+        different coordinate system \(w\), where \(w(y) = y^2\) so \(w(t) = (1-t^p)^2\). Try moving the sliders and
+        observing how the motion and graphs change.
+    </p>
+    <br>
+    <label for="show-q1" id="text">
+        <b>Question 5: </b> Substitute the path \(w(t)\), which depends on the constant \(p\), into the Euler-Lagrange
+        equation for \(w\), and find the value(s) of \(p\) for which the equation is satisfied.
+        <br><br>
+    </label>
+    <button id="show-q1">Show answers</button><br>
+    <span id="answer1" style="display: none; line-height: 1.8"><br>
+        We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L
+        = T - U\).<br>
+        So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial
+        w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}}
+        - \frac{\partial U}{\partial \dot{w}})\).<br>
+        \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U =
+        2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
+        Knowing this, we get:<br>
+        \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) =
+        \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial
+        \dot{w}}(2m \sqrt{w}))\)<br>
+        Which simplifies into:<br>
+        \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
+        <br>Recall that for the \(w\) parameterizations, the following apply: <br>
+        \(w = (1-t^p)^2\)<br>
+        \(\dot{w} = 2y\dot{y} = 2(1-t^p)(-pt^{p-1})\)<br>
+        \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = 2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))\)<br>
+        <br>When we plug these into the equation above, we get the left-hand side of the equation as
+        \(-\frac{1}{2}(2(1-t^p)(-pt^{p-1}))^2 - 4((1-t^p)^2)^{3/2}\), which expands to \(-2p^2t^{2p-2} + 4p^2t^{3p-2} -
+        2p^2t^{4p-2} - 4 + 12t^p - 12t^{2p} + 4t^{3p}\).<br>
+        The right-hand side is \(2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))(1-t^p)^2 - (2(1-t^p)(-pt^{p-1}))^2\) and
+        expands to \(-2p^2t^{2p-2} - 2p^2t^{3p-2} - 2p^2t^{p-2} + 2pt^{p-2} + 6p^2t^{2p-2} - 6pt^{2p-2} + 6pt^{3p-2} -
+        2pt^{4p-2}\).<br>
+        The correct p value satisfies this equation for all t values between 0 and 1. Here, the two sides are only equal
+        when \(p=2\). You can check this by graphing each side in Desmos and using a slider for \(p\)!<br>
+    </span>
+
     <br><br>
-    We return to the case of projectile motion starting from a height \(h\) above the ground as in Page 1. We only consider classical trajectories. We wish to explore how various quantities such as energies change between the two parametrizations of the path, one in terms of \(y\) and the other in terms of \(w = y^2\).
-    <br><br>
-    The height is parametrized in Cartesian coordinates by \(y(t) = -\frac{1}{2}gt^2 + h\). We can also parameterize this path using the \(w\) generalized coordinate system.
-    <br><br>
-</p>
 
-<label for="show-q1" id="text">
-    <b>Question 6: </b> Consider the position of the object at time \(t\). Is the <i>physical</i> position of the object the same in both coordinate system? Is the value of the coordinate at time \(t\) the same in both coordinate systems?
-    <br><br>
-</label>
-<button id="show-q1">Show answers</button><br>    
-<span id="answer1" style= "display: none"><br>
-Where the particle is in space should not depend on how we parametrize the curve, so the physical position is the same in both cases. However, the value of the coordinate can be different at time \(t\): at time \(t\), \(y(t)=-\frac{1}{2}gt^2+h\) whereas \(w(t)=\left(-\frac{1}{2}gt^2+h\right)^2\). These are not equal unless \(w=y=0\). We can see this because they have different units (\(y\) is in \(\mathrm{m}\) and \(w\) is in \(\mathrm{m}^2\)) and so cannot be equal unless both are zero. 
-</span>
-
-<br><br>
-
-<label for="show-q2" id="text">
-    <b>Question 7: </b> Consider first the  potential and kinetic energies written in terms of the coordinates \(y\) and \(w\), respectively. Do these energies have the same form when written in different coordinate systems? Now, consider potential and kinetic energies as functions of time along the classical trajectory. Are \(U(t)\) and \(T(t)\) the same in both coordinate systems?
-    <br><br>
-</label>
-<button id="show-q2">Show answers</button><br>
-<span id="answer2" style= "display: none"><br>
-
-    In Cartesian coordinates, the kinetic energy is \(T=\frac{1}{2}m\dot y^2\) and the potential energy is \(U=mgy\). In the generalized coordinate, we have instead \(T=\frac{1}{2}m\left(\frac{\dot w}{2\sqrt w}\right)^2\) and \(U=mg\sqrt w\). It is evident that the functional forms of the energies are different in different coordinate systems. <br><br>
-
-    However, at a time \(t\) the point on the classical path is the same regardless of coordinate system, and consequently the energies are the same as well (since energies are scalars). Therefore, if we plot the kinetic and potential energies as functions of <i>time</i>, we should get the same answer regardless of which coordinate system we use for the intermediate steps.
-</span>
-
-
-<br>
-<p id="text">
-Below, we have plotted potential energy and kinetic energy in two ways. On the left, we have used Cartesian coordinates; on the right, we have used the generalized coordinate \(w=y^2\). Because the coordinate \(y\) can take on either sign while \(w\) is always positive, we have taken the absolute value of the energies in Cartesian coordinates to facilitate a direct comparison. For energies that depend simultaneously on both position and velocity (for example, \(T\) depends on both \(w\) and \(\dot w\) in the generalized coordinate), we have evaluated the quantities along the classical trajectory to allow us to plot the energy as a function of only one variable at a time.
-</p>
-
-<br>
-
-<div id="applet3">
-    <div id="top-panel" class="row">
-	<!-- First column: trajectory animation -->
-        <div class="column">
-            <canvas id="ball-launch" class="plot"
-            width="320px" height="294px" title="Actual Motion">
-            </canvas>
+    <div id="applet3">
+        <div id="top-panel" class="row">
+            <!-- First column: trajectory animation -->
+            <div class="column">
+                <canvas id="ball-launch" class="plot" width="320px" height="294px" title="Actual Motion">
+                </canvas>
+            </div>
+            <!-- Second column: sliders -->
+            <div class="column">
+                <div id="controls">
+                    <legend>Define Constants:</legend>
+                    <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
+                    <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
+                </div>
+            </div>
+            <!-- Third column: question -->
+            <div class="column">
+                <div id="controls2">
+                    <p>The graphs below correspond to the following, assuming \(q\) is a general coordinate system:</p>
+                    <span id="red">....</span> \(\partial L/\partial q\) parameterization
+                    <br><br>
+                    <span id="green">....</span> \(d/dt(\partial L/\partial \dot{q})\) parameterization
+                    <br><br>
+                </div>
+            </div>
         </div>
-    <!-- Second column: sliders -->
-    <div class="column">
-        <div id="controls">
-            <legend>Define Constants:</legend>
-            <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
-            <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
-            <label for="a-slider">\(g\): <span id="print-a">2</span> m/s<sup>2</sup></label>
-            <input id="a-slider" class="slider" type="range" min="2" max="5" step="0.1" value="2">
-            <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
-            <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
-            <br><br>
-            <legend>Show Graphs:</legend>
-            <button class="graph-button3" id="graph-button-1"> Hide U <br>Graphs </button><button class="graph-button3" id ="graph-button-2"> Hide T <br>Graphs </button> <button class="graph-button3" id="graph-button-3"> Hide Energy <br>Graphs </button>
-        </div>
-    </div>
-    <!-- Third column: question -->
-        <div class="column">
-            <div id="controls2">
-                <p>The graphs below correspond to the following:</p>
-                <span id="red">....</span> Potential Energy
-                <br><br>
-                <span id="green">....</span> Kinetic Energy
-                <br><br>
+        <div id="middle-panel" class="row">
+            <div class="column">
+                <div id="y-graph"></div>
+            </div>
+
+            <div class="column">
+                <div id="w-graph"></div>
             </div>
         </div>
     </div>
-    <div id="middle-panel" class="row">
-        <div class="column">
-            <div id="PE-y-graph"></div>
-        </div>
-
-        <div class="column">
-            <div id="PE-w-graph"></div>
-        </div>
-    </div>
-    
-    <div id="bottom-panel" class="row">
-        <div class="column">
-            <div id="KE-ydot-graph"></div>
-        </div>
-
-        <div class="column">
-            <div id="KE-wdot-graph"></div>
-        </div>
-    </div>
-
-    <div id="bottom2-panel" class="row">
-        <div class="column">
-            <div id="yt-graph"></div>
-        </div>
-
-        <div class="column">
-            <div id="wt-graph"></div>
-        </div>
-    </div>
-</div> 
-<br><br>
-
-<label for="show-q3" id="text">
-    <b>Question 8: </b> In your own words, answer the following questions: Is the physical classical path the same in all coordinate systems? Is the function describing the classical
-path the same in all coordinate systems? Is the action for the classical path the same in all coordinate systems? Is the Lagrangian function the same in all coordinate systems? Are the kinetic and potential energies the same in all coordinate systems? Are the Euler-Lagrange equations the same in all coordinate systems? Briefly explain your answer for each, as well
- as how they fit together.
     <br><br>
-</label>
 
-<br><br>
+    <div class="buttons">
+        <column id="prev-button">
+            <button onclick="window.location.href = 'lagrangian2.html'">PREVIOUS PAGE</button>
+        </column>
+        <column id="next-button">
+            <button onclick="window.location.href = 'lagrangian4.html'">NEXT PAGE</button>
+        </column>
+    </div>
 
-<div class="buttons">
-    <column id="prev-button">
-        <button onclick = "window.location.href = 'lagrangian2.html'">PREVIOUS PAGE</button>
-    </column>
-</div> 
-
-
-<br><br>
-
+    <br><br>
 
 </body>
-</html>
 
+</html>
