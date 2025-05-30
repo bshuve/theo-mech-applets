@@ -3,149 +3,81 @@
 
 <head>
     <title>lagrangian</title>
-    <link rel = "stylesheet" href = "lagrangian.css">
-
-    <!-- Load d3.js -->
-    <script src="d3.v4.js"></script>
+    <link rel="stylesheet" href="lagrangian.css">
 
     <!--Load jQuery.js-->
     <script src="jQuery.js"></script>
-    
-    <script defer src = "lagrangian1.js"></script>
 
-     <!-- LaTeX support -->
-     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    </head>
+    <script defer src="lagrangian1.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
 <body id="body">
-<h1 id="title">Generalized Coordinate Lagrangians: Page 2</h1>
-<h2 id="subtitle">[INSERT TITLE]</h2>
-<label for="show-q2" id="text">
-    <b>Question 2: </b> Transform the kinetic and potential energies to the \(w\) coordinate, and derive the Euler-Lagrange equation for \(w\). Then, consider the particular classical solution \(y(t) = 1 - t^2\) (with \(h = 1\) and \(g = 2\)). Find \(w(t)\) for this path, and then by explicit substitution, verify that it satisfies the Euler-Lagrange equation, \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). 
+
+    <h1 id="title">Generalized Coordinate Lagrangians: Page 1</h1>
+    <h2 id="subtitle">Coordinate transformations for a simple system</h2>
+    <p id="text">
+        We start by considering two different coordinate choices for a familiar system: projectile motion under constant acceleration due to gravity. 
+        While Cartesian coordinates work well for this system, we can gain insight into 
+        coordinate transformations by considering the motion using an alternative coordinate choice that's easy to understand.
+    </p>
+
+    <p id="text">
+        Consider an object of mass \(m\) experiencing constant acceleration \(-g\) in the vertical direction. The object
+        is launched from height \(h\) with horizontal motion but no initial vertical velocity. In Cartesian coordinates
+        (\(y\)), we know the trajectory follows:
+        \[
+        y(t) = -\frac{1}{2}gt^2 + h
+        \]
+        To explore coordinate transformations, we'll analyze the same physical system using a non-Cartesian coordinate,
+        \(w = y^2\). While this coordinate choice isn't physically motivated, it provides a mathematically
+        straightforward example of how coordinate transformations affect our description of motion.
+    </p>
+
+    <p id="text">
+        We can think of the change from y to w as a transformation of the vertical axis. As a result, the trajectory w(t) looks different from y(t). To see this, we animate a particular trajectory, showing both y(t) and w(t).
+    </p>
+
+
+    <label for="show-q1" id="text">
+        <b>Question 1: </b> What are the limitations of our \(w\) coordinate choice?
+        <br><br>
+    </label>
+    <button id="show-q1">Show answer</button>
+    <br>
+    <span id="answer1" style="display: none"><br>
+        \(y\) can take on any real value, whereas \(w\ge0\). Therefore \(w\) unambiguously gives the same path as \(y\)
+        for \(y\ge0\).
+    </span>
     <br><br>
-</label>
-<button id="show-q2">Show answers</button><br>    
-<span id="answer2" style="line-height: 1.8; display: none"><br>
-    We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L = T - U\).<br>
-    So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}} - \frac{\partial U}{\partial \dot{w}})\).<br>
-    \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U = 2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-    Substituting in, we get:<br>
-    \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) = \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial \dot{w}}(2m \sqrt{w}))\)<br>
-    Which simplifies into:<br>
-    \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
-    <br>Recall that for the \(w\) parameterizations, the following apply: <br>
-    \(w = y^2 = 1 - 2t^2 + t^4\)<br>
-    \(\dot{w} = 2y\dot{y} = -4t + 4t^3\)<br>
-    \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = -4 + 12t^2\)<br>
-    <br>When we plug these into the equation above, we get the left-hand side of the equation as \(-\frac{1}{2}(-4t + 4t^3)^2 - 4(1-2t^2 + t^4)^{3/2}\), which simplifies to \(-4t^6 + 4t^4 + 4t^2 -4\).<br>
-    The right-hand side is \((-4 + 12t^2)(1 - 2t^2 + t^4) - (-4t + 4t^3)^2\) and simplifies to \(-4t^6 + 4t^4 + 4t^2 -4\).<br>
-    Thus, we have proven that both sides are equivalent, and that the Euler-Lagrange equation applies for a classical path in two different coordinate parameterizations!<br>
-</span>
 
-<br><br> 
-
-<div id="applet">
-    <div id="top-panel" class="row">
-	<!-- First column: trajectory animation -->
-        <div class="column">
-            <canvas id="ball-launch" class="plot"
-            width="320px" height="294px" title="Actual Motion">
-            </canvas>
-        </div>
-    <!-- Second column: sliders -->
-    <div class="column">
-        <div id="controls">
-            <legend>Define Constants:</legend>
-            <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
-            <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
-            <label for="a-slider">\(g\): <span id="print-a">2</span> m/s<sup>2</sup></label>
-            <input id="a-slider" class="slider" type="range" min="2" max="5" step="0.1" value="2">
-            <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
-            <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
-            <br><br>
-            <legend>Show Graphs:</legend>
-            <button class="graph-button" id="graph-button-1"> Hide Y Graphs </button><button class="graph-button" id ="graph-button-2"> Hide W Graphs </button>
-        </div>
-    </div>
-    <!-- Third column: question -->
-        <div class="column">
-            <div id="controls2">
-                <p>The graphs below correspond to the following coordinate systems:</p>
-                <span id="red">....</span> \(y\) parameterization
-                <br><br>
-                <span id="green">....</span> \(w\) parameterization
-                <br><br>
+    <div id="applet1">
+        <div id="top-panel" class="row">
+            <div class="column"> <canvas id="ball-launch-1" class="plot" width="435px" height="294px"
+                    title="Actual Motion">
+                </canvas>
+            </div>
+            <div class="column"> <canvas id="ball-launch-2" class="plot" width="435px" height="294px"
+                    title="Actual Motion">
+                </canvas>
             </div>
         </div>
     </div>
-    <div id="middle-panel" class="row">
-        <div class="column">
-            <div id="dL-dy-graph"></div>
-        </div>
+    <button onclick="restartAnimations()">Restart Animation</button>
+    <br><br>
 
-        <div class="column">
-            <div id="dt-dL-dydot-graph"></div>
-        </div> 
+    <div class="buttons">
+        <column id="prev-button">
+            <button onclick="window.location.href = 'lagrangian0.html'">PREVIOUS PAGE</button>
+        </column>
+        <column id="next-button">
+            <button onclick="window.location.href = 'lagrangian2.html'">NEXT PAGE</button>
+        </column>
     </div>
-    
-    <div id="bottom-panel" class="row">
-        <div class="column">
-            <div id="dL-dw-graph"></div>
-        </div>
 
-        <div class="column">
-            <div id="dt-dL-dwdot-graph"></div>
-        </div>
-    </div>
-</div> 
-<br>
-
-(The asymptotes in the W graphs are a coordinate singularity caused by the choice of coordinate).
-
-<br><br>  
-<label for="show-q3" id="text">
-    <b>Question 3: </b>As you move the sliders to test different values, what do you notice about the relationships between the four graphs?
-    <br><br>
-</label>
-<button id="show-q3">Show answer</button>
-<br><br>        
-<span id="answer3" style="display: none; line-height: 1.8">
-    You may have noticed that the parameterization of each side of the Euler-Lagrange equation looks different across different coordinate systems.
-    That is, the graph for \(\frac{\partial L}{\partial y}\) differs from \(\frac{\partial L}{\partial w}\), and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) differs from \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\).<br>
-    However, \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) and \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\),
-    showing that no matter the choice of \(y\) or \(w\) as coordinates, the Euler-Lagrange equation still holds. These graphs provide a graphical demonstration for the mathematical explanation above.<br>
-    In fact, you will find that the Euler-Lagrange equation can be generalized to any arbitrary coordinate system!
-    <br><br>
-</span>
-<label for="show-q4" id="text">
-    <b>Question 4: </b>Recall the Euler-Lagrange equation in the \(w\) coordinate system as \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). Why couldn't we just graph and compare \(F_w\equiv-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\)?
-    <br><br>
-</label>
-<button id="show-q4">Show answer</button>
-<br><br>
-<span id="answer4" style="display: none; line-height: 1.8">
-    It's important to consider that because \(L=T-U\), \(\frac{\partial L}{\partial q} = \frac{\partial T}{\partial q} - \frac{\partial U}{\partial q}\) and \(\frac{\partial L}{\partial \dot{q}} = \frac{\partial T}{\partial \dot{q}} - \frac{\partial U}{\partial \dot{q}}\) for a generalized coordinate \(q\).
-    Also recall that, when taking partial derivatives, \(\dot{q}\) is considered independent of \(q\).<br>
-    In the \(y\) parameterization, \(T\) depends on \(\dot{y}\) but not \(y\).
-    Thus, \(\frac{\partial T}{\partial y} = 0\), so \(\frac{\partial L}{\partial y} = - \frac{\partial U}{\partial y} = -F_y\).
-    In the same way, \(U\) depends on \(y\) but not \(\dot{y} \implies 
-    \frac{\partial U}{\partial \dot{y}} = 0\), so \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial \dot{y}}\). If we wanted to, we could just graph \(-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\),
-    and the graphs should be equal according to the Euler-Lagrange equation.<br><br>
-    In the \(w\) parameterization, \(U\) is independent of \(\dot w\), so we still have \(\frac{\partial L}{\partial \dot{w}} = \frac{\partial T}{\partial \dot{w}}\). However, \(T\) now has dependence on both \(w\) and \(\dot{w}\), so \(\frac{\partial L}{\partial w}\) has a kinetic energy term and a potential energy term.
-    We must graph \(\frac{\partial L}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) to get equal quantities according to the Euler-Lagrange equation.<br><br>
-    In general, kinetic terms for non-Cartesian coordinates can depend on both coordinates and velocities, and so it's important to pay attention to the dependencies of each term in the Euler-Lagrange equation on each generalized coordinate and velocity.
-    <br><br>
-</span>
-
-<div class="buttons">
-    <column id="prev-button">
-        <button onclick = "window.location.href = 'lagrangian0.html'">PREVIOUS PAGE</button>
-    </column>
-    <column id="next-button">
-        <button onclick = "window.location.href = 'lagrangian2.html'">NEXT PAGE</button>
-    </column>
-</div> 
-<br><br><br>
+    <br><br><br>
 </body>
-</html>
 
+</html>
