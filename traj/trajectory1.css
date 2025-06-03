@@ -1,4 +1,5 @@
-#purple, #orange {
+/* colors used to display on legend */
+#red, #green, #lightsalmon, #grey, #blue, #cyan, #plum, #periwinkle, #purple, #orange {
     display: inline-block;
     width: 20px;
     height: 15px;
@@ -9,6 +10,14 @@
 
 #purple { background-color: purple; }
 #orange { background-color: orange; }
+#red {background-color: red;}
+#green {background-color: green;}
+#lightsalmon {background-color: lightsalmon;}
+#grey {background-color: grey;}
+#blue {background-color: blue;}
+#cyan {background-color: cyan;}
+#plum {background-color: plum;}
+#periwinkle {background-color: #CCCCFF;}
 
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

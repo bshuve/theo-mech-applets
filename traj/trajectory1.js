@@ -223,12 +223,12 @@ const integral_input = {
     domain: {lower: -1, upper: 1},
     xLabel: "p",
     range: {lower: -10, upper: 10},
-    yLabel: "Global Action"};
+    yLabel: "Action"};
 
 
 const integral_plot = createPlot(integral_input)
 var action_line = integral_plot.svg.append("g").attr("id", "action-line").attr("visibility", "visible");
-var action_point = integral_plot.svg.append("circle").attr("id", "action-point").attr("r", 3).attr("fill", "red").attr("visibility", "visible");
+var action_point = integral_plot.svg.append("circle").attr("id", "action-point").attr("r", 3).attr("fill", "orange").attr("visibility", "visible");
 
 function plotIntegral() {
     var input = {
@@ -237,7 +237,7 @@ function plotIntegral() {
         line: action_line,
         xScale: integral_plot.xScale,
         yScale: integral_plot.yScale,
-        color: "red"};
+        color: "orange"};
     plotData(input);
 }
 
