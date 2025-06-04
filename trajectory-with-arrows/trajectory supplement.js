@@ -283,4 +283,3 @@ document.getElementById("show-q2").addEventListener("click", function () {
         document.getElementById("answer2").style.display = "none";
     }
 });
-
