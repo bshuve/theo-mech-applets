@@ -18,135 +18,10 @@
     </head>
 
 <body id="body">
-<<<<<<< HEAD
-
-    <h1 id="title">Generalized Coordinate Lagrangians: Page 3</h1>
-    <h2 id="subtitle">Non-classical Path</h2>
-    <p id="text">
-        Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under gravitational
-        acceleration \(-g\). The kinetic energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is
-        \(U=mgy\).
-        <br><br>
-        We now consider deviations from the classical path. We consider a family of paths defined by \(y(t) = 1-t^p\)
-        for some parameter \(p\) (taking \(g\) to be 2 for simplicity). We can also study this family path using a
-        different coordinate system \(w\), where \(w(y) = y^2\) so \(w(t) = (1-t^p)^2\). Try moving the sliders and
-        observing how the motion and graphs change.
-    </p>
-    <br>
-    <label for="show-q1" id="text">
-        <b>Question 5: </b> Substitute the path \(w(t)\), which depends on the constant \(p\), into the Euler-Lagrange
-        equation for \(w\), and find the value(s) of \(p\) for which the equation is satisfied.
-        <br><br>
-    </label>
-    <button id="show-q1">Show answers</button><br>
-    <span id="answer1" style="display: none; line-height: 1.8"><br>
-        We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L
-        = T - U\).<br>
-        So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial
-        w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}}
-        - \frac{\partial U}{\partial \dot{w}})\).<br>
-        \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U =
-        2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-        Knowing this, we get:<br>
-        \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) =
-        \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial
-        \dot{w}}(2m \sqrt{w}))\)<br>
-        Which simplifies into:<br>
-        \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
-        <br>Recall that for the \(w\) parameterizations, the following apply: <br>
-        \(w = (1-t^p)^2\)<br>
-        \(\dot{w} = 2y\dot{y} = 2(1-t^p)(-pt^{p-1})\)<br>
-        \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = 2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))\)<br>
-        <br>When we plug these into the equation above, we get the left-hand side of the equation as
-        \(-\frac{1}{2}(2(1-t^p)(-pt^{p-1}))^2 - 4((1-t^p)^2)^{3/2}\), which expands to \(-2p^2t^{2p-2} + 4p^2t^{3p-2} -
-        2p^2t^{4p-2} - 4 + 12t^p - 12t^{2p} + 4t^{3p}\).<br>
-        The right-hand side is \(2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))(1-t^p)^2 - (2(1-t^p)(-pt^{p-1}))^2\) and
-        expands to \(-2p^2t^{2p-2} - 2p^2t^{3p-2} - 2p^2t^{p-2} + 2pt^{p-2} + 6p^2t^{2p-2} - 6pt^{2p-2} + 6pt^{3p-2} -
-        2pt^{4p-2}\).<br>
-        The correct p value satisfies this equation for all t values between 0 and 1. Here, the two sides are only equal
-        when \(p=2\). You can check this by graphing each side in Desmos and using a slider for \(p\)!<br>
-
-
-
-         <b>Corrected Derivation</b>
-        
-        <b>General Equation of Motion (from Page 2):</b> <br> 
-        From the general derivation in the \(w\) coordinate system, we have:
-        \[
-        2w \ddot{w} - \dot{w}^2 + 4g w^{3/2} = 0
-        \]
-        Substituting \(g = 2 m/s^2\), we get:
-        \[
-        2w \ddot{w} - \dot{w}^2 + 8 w^{3/2} = 0
-        \]
-        Using the definition of w(t), we can derive \(w(t), \dot{w},\) and \(\ddot{w}\) as follows: 
-        \[
-        w(t) = (1 - t^p)^2
-        \]
-        \[
-        \dot{w}(t) = \frac{d}{dt}(1 - t^p)^2 = 2(1 - t^p)(-p t^{p-1}) = -2p t^{p-1} (1 - t^p)
-        \]
-        \[
-        \ddot{w}(t) = \frac{d}{dt}[-2p t^{p-1} (1 - t^p)] = -2p [(p-1)t^{p-2}(1-t^p) - p t^{2p-2}]
-        \]
-        
-        We can thus substitute these values into the LHS as follows:  
-        \[
-        \begin{align*}
-        \text{LHS} &= 2w \ddot{w} - \dot{w}^2 + 8 w^{3/2}\\
-        \\
-        2w \ddot{w} &= 2(1 - t^p)^2 \cdot [-2p ((p-1)t^{p-2}(1-t^p) - p t^{2p-2})] \\
-        &= -4p (1 - t^p)^3 (p-1)t^{p-2} + 4p^2 (1 - t^p)^2 t^{2p-2} \\
-        \\
-        -\dot{w}^2 &= -[-2p t^{p-1} (1 - t^p)]^2 \\
-        &= -4p^2 t^{2p-2} (1 - t^p)^2 \\
-        \\
-        8w^{3/2} &= 8[(1 - t^p)^2]^{3/2} = 8|1 - t^p|^3 = 8(1 - t^p)^3 \\ 
-        \end{align*}
-        \]
-        
-        <b>Combine All Terms:</b>
-        \[
-        \begin{align*}
-        \text{LHS} = & \left[ -4p (p-1) (1 - t^p)^3 t^{p-2}  \right] \\
-        + & \left[ 4p^2 t^{2p-2} (1 - t^p)^2 \right] \\
-        - & \left[ 4p^2 t^{2p-2} (1 - t^p)^2 \right] \\
-        + & \left[ 8 (1 - t^p)^3 \right] \\
-        \end{align*}
-        \]
-        Notice the second and third terms cancel each other. This simplifies to:
-        \[
-        \text{LHS} = (1 - t^p)^3 \left[ -4p(p-1)t^{p-2} + 8 \right]
-        \]
-        <br>
-        
-        <b>Set Equation to Zero:</b>
-        \[
-        (1 - t^p)^3 \left[ 8 - 4p(p-1)t^{p-2} \right] = 0
-        \]
-        Since \((1 - t^p)^3 \neq 0\) for \(t < 1\), we must find the value of p such that:
-        \[
-        8 - 4p(p-1)t^{p-2} = 0 \quad \text{for all } t
-        \]
-        
-        <b>Solve for \(p\):</b>
-        This equation must hold for all \(t\), which is only possible if:
-        \[
-        p = 2
-        \]
-        When \(p = 2\), \(t^{p-2} = t^{0} = 1\), so:
-        \[
-        8 - 4(2)(2-1)(1) = 8 - 8 = 0
-        \]
-        For other values of \(p\), the expression depends on \(t\) and cannot be equal to zero.<br><br>
-    </span>
-
-=======
 <h1 id="title">Generalized Coordinate Lagrangians: Page 4</h1>
 <h2 id="subtitle">Graphing the Lagrangian with respect to different quantities</h2>
 <p id="text">
     (Chrome Recommended.)
->>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
     <br><br>
     We return to the case of projectile motion starting from a height \(h\) above the ground as in Page 1. We only consider classical trajectories. We wish to explore how various quantities such as energies change between the two parametrizations of the path, one in terms of \(y\) and the other in terms of \(w = y^2\).
     <br><br>
@@ -154,35 +29,6 @@
     <br><br>
 </p>
 
-<<<<<<< HEAD
-    <div id="applet3">
-        <div id="top-panel" class="row">
-            <!-- First column: trajectory animation -->
-            <div class="column">
-                <canvas id="ball-launch" class="plot" width="445px" height="294px" title="Actual Motion">
-                </canvas>
-            </div>
-            <!-- Second column: sliders -->
-            <div class="column">
-                <div id="controls3">
-                    <legend>Define Constants:</legend>
-                    <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
-                    <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
-                     <p>The graphs below correspond to the following, assuming \(q\) is a general coordinate system:</p>
-                    <span id="red">....</span> \(\partial L/\partial q\) parameterization
-                    <br><br>
-                    <span id="green">....</span> \(d/dt(\partial L/\partial \dot{q})\) parameterization
-                </div>
-            </div>
-            <!-- Third column: question -->
-        </div>
-        <div id="middle-panel" class="row">
-            <div class="column">
-                <div id="y-graph"></div>
-            </div>
-            <div class="column">
-                <div id="w-graph"></div>
-=======
 <label for="show-q1" id="text">
     <b>Question 6: </b> Consider the position of the object at time \(t\). Is the <i>physical</i> position of the object the same in both coordinate system? Is the value of the coordinate at time \(t\) the same in both coordinate systems?
     <br><br>
@@ -245,7 +91,6 @@ Below, we have plotted potential energy and kinetic energy in two ways. On the l
                 <br><br>
                 <span id="green">....</span> Kinetic Energy
                 <br><br>
->>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
             </div>
         </div>
     </div>

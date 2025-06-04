@@ -1,72 +1,3 @@
-<<<<<<< HEAD
-/* --- Colors --- */
-
-#red { /*Colorblind friendly when used with blue*/
-    color: #DC3220;
-    background-color:#DC3220;
-    width: 30px;
-}
-
-#green {
-    color: green;
-    background-color:green;
-    width: 30px;
-}
-
-#blue { /*Colorblind friendly when used with red*/
-    color: #005AB5;
-    background-color:#005AB5;
-    width: 30px;
-}
-
-#periwinkle {
-    /* rename */
-    color: rgb(127, 127, 255);
-    background-color:rgb(127, 127, 255);
-    width: 30px;
-}
-
-
-#orange {
-    color: orange;
-    background-color:orange;
-    width: 30px;
-}
-
-#purple {
-    color: purple;
-    background-color:purple;
-    width: 30px;
-}
-
-#grey {
-    color: rgb(142, 142, 139);
-    background-color:rgb(142, 142, 139);
-    width: 30px;
-}
-
-#lightsalmon {
-    color: lightsalmon;
-    background-color:lightsalmon;
-    width: 30px;
-}
-
-#cyan {
-    color: cyan;
-    background-color:cyan;
-    width: 30px;
-}
-
-#plum {
-    color: plum;
-    background-color:plum;
-    width: 30px;
-}
-
-
-/* --- Page Styling --- */
-=======
->>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 14px;
@@ -254,7 +185,7 @@ button:hover {
 #controls {
     background-color:#c2f0c8;
     box-sizing: border-box;
-    width: 275px;
+    width: 272px;
     height: 100%;
     padding: 10px;
     border: solid;
@@ -267,16 +198,6 @@ button:hover {
     width: 275px;
     height: 100%;
     padding: 20px;
-    border: solid;
-    border-radius: 10px;
-}
-
-#controls3 {
-    background-color:#c2f0c8;
-    box-sizing: border-box;
-    width: 445px;
-    height: 100%;
-    padding: 10px;
     border: solid;
     border-radius: 10px;
 }
