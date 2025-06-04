@@ -8,10 +8,16 @@ const dt = 0.002;
 const end_time = 1;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
+<<<<<<< HEAD
+var h = 50 // 50
+var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
+var m = parseFloat(document.getElementById("m-slider").value); // 10.0
+=======
 const y_initial = 100;
 const m = 1;
 const g = 2;
 var p = parseFloat(document.getElementById("p-slider").value); // 0.0
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
 
 /* Canvas Animation */
 function startAnimation(p) {
@@ -48,7 +54,33 @@ var animArea = {
     // add text and ground to panel
     this.context.font = "18px Verdana";
     this.context.fillStyle = "black";
+<<<<<<< HEAD
+    this.context.fillText("Projectile Motion", 85, 30);
+    this.context = this.panel.getContext("2d");
+    this.context.fillStyle = "gray";
+    this.context.fillRect(0, transformYCoord(h), 25, 3);
+    this.context.fillRect(0, transformYCoord(h), 25, 300);
+
+    this.context.font = "12px Arial";
+    // Draw y markers (left side)
+    this.context.fillStyle = "white";
+    for (let y = 10; y <= 90; y += 10) {
+      const canvasY = transformYCoord(y);
+      this.context.fillRect(0, canvasY, 20, 1); // Line
+      this.context.fillText(`y=${y}`, 5, canvasY - 5);
+    }
+
+    // Draw w markers (right side)
+    this.context.fillStyle = "black";
+    for (let y = 10; y <= 90; y += 10) {
+      const canvasY = transformYCoord(y);
+      const w = y ** 2;
+      this.context.fillRect(CANVAS_WIDTH - 20, canvasY, 20, 1); // Line
+      this.context.fillText(`w=${w}`, CANVAS_WIDTH - 45, canvasY - 5);
+    }
+=======
     this.context.fillText("Height vs Time", 10, 30);
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
   },
   stop: function () {
     this.time = 0.01;
@@ -296,9 +328,15 @@ function plot(data) {
     data: data.y,
     svg: y_plot.svg,
     line: dLdy_line,
+<<<<<<< HEAD
+    xScale: dL_dy_plot.xScale,
+    yScale: dL_dy_plot.yScale,
+    color: "white"
+=======
     xScale: y_plot.xScale,
     yScale: y_plot.yScale,
     color: "red"
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
   };
 
   // plot the data
@@ -309,9 +347,15 @@ function plot(data) {
     data: data.ydot,
     svg: y_plot.svg,
     line: dtdLdydot_line,
+<<<<<<< HEAD
+    xScale: dt_dL_dydot_plot.xScale,
+    yScale: dt_dL_dydot_plot.yScale,
+    color: "white"
+=======
     xScale: y_plot.xScale,
     yScale: y_plot.yScale,
     color: "green"
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
   };
 
   // plot the data
@@ -322,9 +366,15 @@ function plot(data) {
     data: data.w,
     svg: w_plot.svg,
     line: dLdw_line,
+<<<<<<< HEAD
+    xScale: dL_dw_plot.xScale,
+    yScale: dL_dw_plot.yScale,
+    color: "black"
+=======
     xScale: w_plot.xScale,
     yScale: w_plot.yScale,
     color: "red"
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
   };
 
   // plot the data
@@ -335,9 +385,15 @@ function plot(data) {
     data: data.wdot,
     svg: w_plot.svg,
     line: dtdLdwdot_line,
+<<<<<<< HEAD
+    xScale: dt_dL_dwdot_plot.xScale,
+    yScale: dt_dL_dwdot_plot.yScale,
+    color: "black"
+=======
     xScale: w_plot.xScale,
     yScale: w_plot.yScale,
     color: "green"
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
   };
 
   // plot the data
@@ -363,9 +419,18 @@ on the HTML page (ex. button click, slider change, etc). */
 var showAnswer1 = false;
 
 function slider_update() {
+<<<<<<< HEAD
+  // updates global values for m, a, h
+  m = parseFloat(document.getElementById("m-slider").value);
+  document.getElementById("print-m").innerHTML = m.toFixed(1);
+  a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g
+  document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
+  h = 50;
+=======
   // updates global value for p
   p = parseFloat(document.getElementById("p-slider").value);
   document.getElementById("print-p").innerHTML = p.toFixed(1);
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
   const data = ELData();
   // update plots
   plot(data);
@@ -377,6 +442,28 @@ function slider_update() {
 document.getElementById("p-slider").oninput = function () {
   slider_update();
 }
+<<<<<<< HEAD
+document.getElementById("a-slider").oninput = function () {
+  slider_update();
+}
+
+// Button event listeners for showing/hiding graphs
+document.getElementById("graph-button-1").addEventListener("click", function () {
+  show_middle_panel = !show_middle_panel;
+  this.innerHTML = show_middle_panel ? "Hide Y Graphs" : "Show Y Graphs";
+  updatePanels();
+
+});
+
+document.getElementById("graph-button-2").addEventListener("click", function () {
+  show_bottom_panel = !show_bottom_panel;
+  this.innerHTML = show_bottom_panel ? "Hide W Graphs" : "Show W Graphs";
+  updatePanels();
+
+});
+
+=======
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
 // shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {

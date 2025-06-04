@@ -63,7 +63,12 @@ button {
     border-radius: 12px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+<<<<<<< HEAD:trajectory-with-arrows/trajectory.css
+    transition: background 0.3s, transform 0.1s;
+    
+=======
     margin: 10px 0;
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7:traj/trajectory1.css
 }
 
 button :hover {

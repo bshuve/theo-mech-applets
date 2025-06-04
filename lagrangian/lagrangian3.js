@@ -1,11 +1,23 @@
 /* Parameters */
 const CANVAS_WIDTH = parseInt(document.getElementById("ball-launch").getAttribute("width"));
 const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribute("height"));
+<<<<<<< HEAD
+const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+originalPanel.replaceWith(hiPPICanvas);
+hiPPICanvas.id = "ball-launch";
+
+const SVG_WIDTH = 445;
+const SVG_HEIGHT = 300;
+const TRANSITION_TIME = 10; // ms
+const dt = 0.0015;
+const end_time = 1;
+=======
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
 const end_time = 10;
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
 var h = parseFloat(document.getElementById("h-slider").value); // 50
