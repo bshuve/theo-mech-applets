@@ -1,178 +1,135 @@
-const CANVAS_WIDTH1 = parseInt(document.getElementById("ball-launch-1").getAttribute("width"));
-const CANVAS_HEIGHT1 = parseInt(document.getElementById("ball-launch-1").getAttribute("height"));
+<!DOCTYPE html>
+<html lang="en">
 
-const CANVAS_WIDTH2 = parseInt(document.getElementById("ball-launch-2").getAttribute("width"));
-const CANVAS_HEIGHT2 = parseInt(document.getElementById("ball-launch-2").getAttribute("height"));
+<head>
+    <title>lagrangian</title>
+    <link rel="stylesheet" href="lagrangian.css">
 
-var h = 50;
-var h2 = 2500; // h squared for w initial value
-var a = -2;
-var m = 10;
-const x_initial = 20;
-const FRAME_RATE = 1; // ms
-const dt = 0.005;
-const end_time = 11;
+    <!--Load jQuery.js-->
+    <script src="jQuery.js"></script>
 
-// Define separate projectile variables for each canvas
-var projectile1, projectile2;
+    <script defer src="lagrangian0.js"></script>
 
-// Transformation functions for Canvas 1
-function transformXCoord1(x) {
-  return (CANVAS_WIDTH1 * x) + 20;
-}
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
-function transformYCoord1(y) {
-    return CANVAS_HEIGHT1 - (y * (CANVAS_HEIGHT1 / 100));
-}
+<body id="body">
 
-// Transformation functions for Canvas 2 (w = y²)
-function transformXCoord2(x) {
-    return (CANVAS_WIDTH2 * x) + 20;
-}
+    <h1 id="title">Generalized Coordinate Lagrangians: </h1>
+    <h2 id="subtitle">Warmup</h2>
 
-function transformYCoord2(w) {
-  return CANVAS_HEIGHT2 - (w * (CANVAS_HEIGHT2 / 10000));
+    <p>
+        The Lagrangian formalism of mechanics is powerful because the Euler-Lagrange equation has the same form for any
+        generalized coordinate. The Euler-Lagrange equation is given by:
+        \[
+        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q}} \right) = \frac{\partial L}{\partial q}
+        \]
+        However, the use of generalized coordinates can obscure the physical meaning of the Euler-Lagrange equations,
+        which for Cartesian coordinates reduce simply to Newton’s Second Law. In this activity, we explore what stays
+        the same, and what changes, when we transform coordinates in Lagrangian mechanics. For simplicity, we will
+        consider a 1D system parametrized by a single coordinate.
+    </p>
 
-}
+    <p>
+        The Principle of Least Action allows us to see why it is possible to simply change coordinate systems. The
+        action depends only on the path, not on what coordinates are used to parametrize the path. This is similar to
+        more familiar results in vector calculus, where line integrals over a particular path are independent of the
+        path parametrization.
+    </p>
 
-function startAnimation1() {
-    projectile1 = new component(animArea1, 3, 3, "purple", x_initial, h, m, a, false);
-    animArea1.start();
-}
+    <p>
+        As a refresher of how path parametrization worked in the line integral case, let’s consider a line integral with
+        a constant force, \( \vec{F}_0 \). Let's take a path that goes from \(r_i = (x_1,y_1)\) to \(r_f = (x_2,y_2)\).
+        There are an infinite ways of parametrizing this path. However, let's take two example parametrizations: \(r_i +
+        t(r_f-r_i), t= [0,1]\) and \(r_i + (1-e^{-s})(r_f-r_i), s= [0,\infty)\)
+    </p>
 
-function startAnimation2() {
-    projectile2 = new component(animArea2, 3, 3, "purple", x_initial, h2, m, a, true);
-    animArea2.start();
-}
+    <div id="applet0">
+        <div id="top-panel" class="row">
+            <div class="column"> <canvas id="test" class="plot" width="400px" height="400px" title="Actual Motion">
+                </canvas>
+            </div>
+            <div class="column"> <canvas id="test2" class="plot" width="400px" height="400px" title="Actual Motion">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    Let's prove that the Principle of Least Action is the same for both parametrizations of the path!
 
-// Modified component constructor to accept animArea and isWCoordinate flag
-function component(animArea, width, height, color, x, y, m, a, isWCoordinate) {
-    this.animArea = animArea;
-    this.width = width;
-    this.height = height;
-    this.color = color;
-    this.x = x;
-    this.y = y;
-    this.m = m;
-    this.a = a;
-    this.isWCoordinate = isWCoordinate;
-
-    this.update = function () {
-        var ctx = this.animArea.context;
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-    }
-
-    this.newPos = function (t) {
-        const yPosition = h + 0.5 * a * (t * 5) ** 2;
-
-        if (this.isWCoordinate) {
-            const wPosition = yPosition ** 2;
-            this.x = transformXCoord2(t);
-            this.y = transformYCoord2(wPosition);
-        } else {
-            this.x = transformXCoord1(t);
-            this.y = transformYCoord1(yPosition);
-        }
-    }
-}
-
-// Animation objects for each canvas
-var animArea1 = {
-    panel: document.getElementById("ball-launch-1"),
-    start: function () {
-        this.panel.width = CANVAS_WIDTH1;
-        this.panel.height = CANVAS_HEIGHT1;
-        this.context = this.panel.getContext("2d");
-        this.time = 0;
-        this.interval = setInterval(() => updateFrame(this, projectile1), FRAME_RATE);
-        ctx = this.context; 
-
-        ctx.font = "18px Verdana";
-    ctx.fillStyle = "black";
-    ctx.fillText("Projectile Motion (y)", 200, 30);
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, transformYCoord1(h), 25, 3);
-    ctx.fillRect(0, transformYCoord1(h), 25, 300);
-    // Markers for y and w
-    ctx.font = "12px Arial";
-    for (let y = 10; y <= 90; y += 10) {
-        const canvasY = transformYCoord1(y);
-        ctx.fillStyle = "red";
-        ctx.fillRect(0, canvasY, 20, 1);
-        ctx.fillText(`y=${y}`, 5, canvasY - 5);
-        ctx.fillStyle = "green";
-        const w = y ** 2;
-        ctx.fillRect(CANVAS_WIDTH1 - 20, canvasY, 20, 1);
-        ctx.fillText(`w=${w}`, CANVAS_WIDTH1 - 45, canvasY - 5);
-    }
-    },
-    stop: function () {
-        clearInterval(this.interval);
-    }
-};
-
-var animArea2 = {
-    panel: document.getElementById("ball-launch-2"),
-    start: function () {
-        this.panel.width = CANVAS_WIDTH2;
-        this.panel.height = CANVAS_HEIGHT2;
-        this.context = this.panel.getContext("2d");
-        this.time = 0;
-        this.interval = setInterval(() => updateFrame(this, projectile2), FRAME_RATE);
-        ctx = this.context; 
-        ctx.font = "18px Verdana";
-    ctx.fillStyle = "black";
-    ctx.fillText("Projectile Motion (w)", 200, 30);
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, transformYCoord2(h2), 25, 3);
-    ctx.fillRect(0, transformYCoord2(h2), 25, 300);
-
-    // Markers for w and corresponding y
-    ctx.font = "12px Arial";
-    for (let w = 1000; w <= 10000; w += 1000) {
-        const canvasY = transformYCoord2(w);
-        ctx.fillStyle = "green";
-        ctx.fillRect(0, canvasY, 20, 1);
-        ctx.fillText(`w=${w}`, 5, canvasY - 5);
-        ctx.fillStyle = "red";
-        const yVal = Math.sqrt(w).toFixed(1);
-        ctx.fillRect(CANVAS_WIDTH2 - 20, canvasY, 20, 1);
-        ctx.fillText(`y=${yVal}`, CANVAS_WIDTH2 - 45, canvasY - 5);
-    }
-    },
-    stop: function () {
-        clearInterval(this.interval);
-    }
-};
+    Suppose a constant force \( \vec{F}_0 \) acts along a path from an initial point \( \vec{r}_i = (x_1, y_1) \) to a
+    final point \( \vec{r}_f = (x_2, y_2) \). Define the displacement vector:
+    \[
+    \vec{R} = \vec{r}_f - \vec{r}_i
+    \]
 
 
 
+    <label for="show-q0" id="text">
+        Try to find the lagrangian of the two paths.
+        <br><br>
+    </label>
+    <button id="show-q0">Show answer</button>
+    <br>
+    <span id="answer0" style="display: none"><br>
+        We consider two different parameterizations of the same path:
+        <br><br>
+
+        <strong>Parametrization A:</strong> A linear interpolation between \( \vec{r}_i \) and \( \vec{r}_f \):
+        \[
+        \vec{r}(t) = \vec{r}_i + t\vec{R}, \quad t \in [0, 1]
+        \]
+        The velocity is:
+        \[
+        \frac{d\vec{r}}{dt} = \vec{R}
+        \]
+        The work done by the force is:
+        \[
+        W_A = \int_0^1 \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \, dt = \vec{F}_0 \cdot \vec{R} \int_0^1 dt = \vec{F}_0 \cdot
+        \vec{R}
+        \]
+
+        <strong>Parametrization B:</strong> An exponential approach to \( \vec{r}_f \):
+        \[
+        \vec{r}(s) = \vec{r}_i + \left(1 - e^{-s} \right)\vec{R}, \quad s \in [0, \infty)
+        \]
+        The velocity is:
+        \[
+        \frac{d\vec{r}}{ds} = e^{-s} \vec{R}
+        \]
+        The work done by the force is:
+        \[
+        W_B = \int_0^\infty \vec{F}_0 \cdot \frac{d\vec{r}}{ds} \, ds = \vec{F}_0 \cdot \vec{R} \int_0^\infty e^{-s} ds
+        = \vec{F}_0 \cdot \vec{R}
+        \]
+
+        Thus, In both parameterizations, the work done is:
+        \[
+        W = \vec{F}_0 \cdot (\vec{r}_f - \vec{r}_i)
+        \]
+        This confirms that the work done by a constant force is independent of the parameterization of the path—it
+        depends only on the endpoints. Although the integrand \( \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \) and the limits
+        of integration differ between the two parameterizations, expressing the integral in terms of the differential
+        displacement \( \vec{F}_0 \cdot d\vec{r} \) reveals the path's independence from the parametrization. This is
+        analogous to the action in Lagrangian mechanics, which, despite being expressed in different generalized
+        coordinates, yields the same physical laws through the Euler-Lagrange equations. The principle of least action
+        assures us that for conservative systems, physical paths minimize (or extremize) the action, and different
+        parametrizations of the same path yield the same result.
+
+    </span>
 
 
-function updateFrame(animArea, projectile) {
-    animArea.time += dt;
-    projectile.newPos(animArea.time);
-    
-    
-    projectile.update();
-    if (animArea.time >= end_time) animArea.stop();
-}
+    <br><br>
 
-// Start both animations
-startAnimation1();
-startAnimation2();
+    <div class="buttons">
+        <column id="next-button">
+            <button onclick="window.location.href = 'lagrangian1.html'">NEXT PAGE</button>
+        </column>
+    </div>
+    <br><br>
+    <br><br>
+    <i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, Nathan Nguyen, 2025.</i>
+    <br><br><br>
+</body>
 
-
-var showAnswer1 = false;
-document.getElementById("show-q1").addEventListener("click", function () {
-    if (!showAnswer1) {
-      showAnswer1 = true;
-      document.getElementById("show-q1").innerHTML = "Hide Answer";
-      document.getElementById("answer1").style.display = "block";
-    } else {
-      showAnswer1 = false;
-      document.getElementById("show-q1").innerHTML = "Show Answer";
-      document.getElementById("answer1").style.display = "none";
-    }
-  });
+</html>
