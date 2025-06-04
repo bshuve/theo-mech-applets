@@ -1,135 +1,187 @@
-<!DOCTYPE html>
-<html lang="en">
+const originalPanel1 = document.getElementById("test");
+const CANVAS_WIDTH = parseInt(originalPanel1.getAttribute("width"));
+const CANVAS_HEIGHT = parseInt(originalPanel1.getAttribute("height"));
 
-<head>
-    <title>lagrangian</title>
-    <link rel="stylesheet" href="lagrangian.css">
+const hiPPICanvas1 = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+originalPanel1.replaceWith(hiPPICanvas1);
+hiPPICanvas1.id = "test";
 
-    <!--Load jQuery.js-->
-    <script src="jQuery.js"></script>
+const FRAME_RATE = 1000 / 60; // 60 FPS
+const HORIZONTAL_LEG = 200;
+const VERTICAL_LEG = 200;
 
-    <script defer src="lagrangian0.js"></script>
+// Projectile object to track animation state
+var projectile1 = {
+    t: 0,          // Animation progress (0-1)
+    speed: 0.01,    // Animation speed per frame
+    startX: 0 + 200,
+    startY: CANVAS_HEIGHT - VERTICAL_LEG - 200,
+    endX: HORIZONTAL_LEG + 200,
+    endY: CANVAS_HEIGHT - 200
+};
 
-    <!-- LaTeX support -->
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
+// Animation controller
+var animArea = {
+    panel: hiPPICanvas1,
+    context: null,
+    interval: null,
 
-<body id="body">
+    start: function () {
+        this.context = this.panel.getContext("2d");
+        this.interval = setInterval(() => updateFrame(this, projectile1), FRAME_RATE);
+    },
 
-    <h1 id="title">Generalized Coordinate Lagrangians: </h1>
-    <h2 id="subtitle">Warmup</h2>
+    stop: function () {
+        clearInterval(this.interval);
+    }
+};
 
-    <p>
-        The Lagrangian formalism of mechanics is powerful because the Euler-Lagrange equation has the same form for any
-        generalized coordinate. The Euler-Lagrange equation is given by:
-        \[
-        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q}} \right) = \frac{\partial L}{\partial q}
-        \]
-        However, the use of generalized coordinates can obscure the physical meaning of the Euler-Lagrange equations,
-        which for Cartesian coordinates reduce simply to Newton’s Second Law. In this activity, we explore what stays
-        the same, and what changes, when we transform coordinates in Lagrangian mechanics. For simplicity, we will
-        consider a 1D system parametrized by a single coordinate.
-    </p>
+function updateFrame(animArea, projectile) {
+    const ctx = animArea.context;
 
-    <p>
-        The Principle of Least Action allows us to see why it is possible to simply change coordinate systems. The
-        action depends only on the path, not on what coordinates are used to parametrize the path. This is similar to
-        more familiar results in vector calculus, where line integrals over a particular path are independent of the
-        path parametrization.
-    </p>
-
-    <p>
-        As a refresher of how path parametrization worked in the line integral case, let’s consider a line integral with
-        a constant force, \( \vec{F}_0 \). Let's take a path that goes from \(r_i = (x_1,y_1)\) to \(r_f = (x_2,y_2)\).
-        There are an infinite ways of parametrizing this path. However, let's take two example parametrizations: \(r_i +
-        t(r_f-r_i), t= [0,1]\) and \(r_i + (1-e^{-s})(r_f-r_i), s= [0,\infty)\)
-    </p>
-
-    <div id="applet0">
-        <div id="top-panel" class="row">
-            <div class="column"> <canvas id="test" class="plot" width="400px" height="400px" title="Actual Motion">
-                </canvas>
-            </div>
-            <div class="column"> <canvas id="test2" class="plot" width="400px" height="400px" title="Actual Motion">
-                </canvas>
-            </div>
-        </div>
-    </div>
-    Let's prove that the Principle of Least Action is the same for both parametrizations of the path!
-
-    Suppose a constant force \( \vec{F}_0 \) acts along a path from an initial point \( \vec{r}_i = (x_1, y_1) \) to a
-    final point \( \vec{r}_f = (x_2, y_2) \). Define the displacement vector:
-    \[
-    \vec{R} = \vec{r}_f - \vec{r}_i
-    \]
+    // Clear canvas
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.font = "15px Arial";
+    ctx.fillText(`t = ${projectile.t.toFixed(2)}`, 325, 75);
+    ctx.beginPath()
+    ctx.moveTo(0, CANVAS_WIDTH / 2)
+    ctx.lineTo(CANVAS_HEIGHT, CANVAS_WIDTH / 2)
+    ctx.moveTo(CANVAS_HEIGHT / 2, 0)
+    ctx.lineTo(CANVAS_HEIGHT / 2, CANVAS_WIDTH)
+    // Draw right triangle
+    ctx.moveTo(200, CANVAS_HEIGHT - 200);                   // Starting point (bottom-left)
+    ctx.lineTo(200, CANVAS_HEIGHT - VERTICAL_LEG - 200);    // Vertical leg
+    ctx.lineTo(HORIZONTAL_LEG + 200, CANVAS_HEIGHT - 200);      // Horizontal leg
+    ctx.closePath();                                // Hypotenuse
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
 
 
 
-    <label for="show-q0" id="text">
-        Try to find the lagrangian of the two paths.
-        <br><br>
-    </label>
-    <button id="show-q0">Show answer</button>
-    <br>
-    <span id="answer0" style="display: none"><br>
-        We consider two different parameterizations of the same path:
-        <br><br>
+    // Update ball position
+    if (projectile.t <= 1) {
+        projectile.currentX = projectile.startX + (projectile.endX - projectile.startX) * projectile.t;
+        projectile.currentY = projectile.startY + (projectile.endY - projectile.startY) * projectile.t;
+        projectile.t += projectile.speed;
+    } else {
+        projectile.t = 0; // Reset animation
+    }
 
-        <strong>Parametrization A:</strong> A linear interpolation between \( \vec{r}_i \) and \( \vec{r}_f \):
-        \[
-        \vec{r}(t) = \vec{r}_i + t\vec{R}, \quad t \in [0, 1]
-        \]
-        The velocity is:
-        \[
-        \frac{d\vec{r}}{dt} = \vec{R}
-        \]
-        The work done by the force is:
-        \[
-        W_A = \int_0^1 \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \, dt = \vec{F}_0 \cdot \vec{R} \int_0^1 dt = \vec{F}_0 \cdot
-        \vec{R}
-        \]
+    // Draw ball
+    ctx.beginPath();
+    ctx.arc(projectile.currentX, projectile.currentY, 10, 0, Math.PI * 2);
+    ctx.fillStyle = "red";
+    ctx.fill();
+}
 
-        <strong>Parametrization B:</strong> An exponential approach to \( \vec{r}_f \):
-        \[
-        \vec{r}(s) = \vec{r}_i + \left(1 - e^{-s} \right)\vec{R}, \quad s \in [0, \infty)
-        \]
-        The velocity is:
-        \[
-        \frac{d\vec{r}}{ds} = e^{-s} \vec{R}
-        \]
-        The work done by the force is:
-        \[
-        W_B = \int_0^\infty \vec{F}_0 \cdot \frac{d\vec{r}}{ds} \, ds = \vec{F}_0 \cdot \vec{R} \int_0^\infty e^{-s} ds
-        = \vec{F}_0 \cdot \vec{R}
-        \]
-
-        Thus, In both parameterizations, the work done is:
-        \[
-        W = \vec{F}_0 \cdot (\vec{r}_f - \vec{r}_i)
-        \]
-        This confirms that the work done by a constant force is independent of the parameterization of the path—it
-        depends only on the endpoints. Although the integrand \( \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \) and the limits
-        of integration differ between the two parameterizations, expressing the integral in terms of the differential
-        displacement \( \vec{F}_0 \cdot d\vec{r} \) reveals the path's independence from the parametrization. This is
-        analogous to the action in Lagrangian mechanics, which, despite being expressed in different generalized
-        coordinates, yields the same physical laws through the Euler-Lagrange equations. The principle of least action
-        assures us that for conservative systems, physical paths minimize (or extremize) the action, and different
-        parametrizations of the same path yield the same result.
-
-    </span>
+// Start animation
+animArea.start();
 
 
-    <br><br>
+const originalPanel2 = document.getElementById("test2");
+const CANVAS_WIDTH2 = parseInt(originalPanel2.getAttribute("width"));
+const CANVAS_HEIGHT2 = parseInt(originalPanel2.getAttribute("height"));
 
-    <div class="buttons">
-        <column id="next-button">
-            <button onclick="window.location.href = 'lagrangian1.html'">NEXT PAGE</button>
-        </column>
-    </div>
-    <br><br>
-    <br><br>
-    <i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, Nathan Nguyen, 2025.</i>
-    <br><br><br>
-</body>
+const hiPPICanvas2 = createHiPPICanvas(CANVAS_WIDTH2, CANVAS_HEIGHT2);
+originalPanel2.replaceWith(hiPPICanvas2);
 
-</html>
+hiPPICanvas2.id = "test";
+
+// Projectile object to track animation state
+var projectile2 = {
+    t: 10,          // Animation progress (0-1)
+    speed: 0.01,    // Animation speed per frame
+    startX: 0 + 200,
+    startY: CANVAS_HEIGHT2 - VERTICAL_LEG - 200,
+    endX: HORIZONTAL_LEG + 200,
+    endY: CANVAS_HEIGHT2 - 200
+};
+
+// Animation controller
+var animArea2 = {
+    panel: hiPPICanvas2,
+    context: null,
+    interval: null,
+
+    start: function () {
+        this.context = this.panel.getContext("2d");
+        this.interval = setInterval(() => updateFrame2(this, projectile2), FRAME_RATE);
+    },
+
+    stop: function () {
+        clearInterval(this.interval);
+    }
+};
+
+function updateFrame2(animArea2, projectile) {
+    const ctx = animArea2.context;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, CANVAS_WIDTH2, CANVAS_HEIGHT2);
+
+    ctx.beginPath()
+    ctx.font = "15px Arial";
+    ctx.fillText(`s = ${projectile.t.toFixed(2)}`, 325, 75);
+    ctx.moveTo(0, CANVAS_WIDTH2 / 2)
+    ctx.lineTo(CANVAS_HEIGHT2, CANVAS_WIDTH2 / 2)
+    ctx.moveTo(CANVAS_HEIGHT2 / 2, 0)
+    ctx.lineTo(CANVAS_HEIGHT2 / 2, CANVAS_WIDTH2)
+    // Draw right triangle
+    ctx.moveTo(200, CANVAS_HEIGHT2 - 200);                   // Starting point (bottom-left)
+    ctx.lineTo(200, CANVAS_HEIGHT2 - VERTICAL_LEG - 200);    // Vertical leg
+    ctx.lineTo(HORIZONTAL_LEG + 200, CANVAS_HEIGHT2 - 200);      // Horizontal leg
+    ctx.closePath();                                // Hypotenuse
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+
+
+
+    // Update ball position
+    if (projectile.t <= 5) {
+        projectile.currentX = projectile.startX + (projectile.endX - projectile.startX) * (1 - 2.71828 ** -projectile.t);
+        projectile.currentY = projectile.startY + (projectile.endY - projectile.startY) * (1 - 2.71828 ** -projectile.t);
+        projectile.t += projectile.speed;
+    } else {
+        projectile.t = 0; // Reset animation
+    }
+
+    // Draw ball
+    ctx.beginPath();
+    ctx.arc(projectile.currentX, projectile.currentY, 10, 0, Math.PI * 2);
+    ctx.fillStyle = "red";
+    ctx.fill();
+}
+
+// Start animation
+animArea2.start();
+
+
+var showAnswer0 = false;
+document.getElementById("show-q0").addEventListener("click", function () {
+    if (!showAnswer0) {
+        showAnswer0 = true;
+        document.getElementById("show-q0").innerHTML = "Hide Answer";
+        document.getElementById("answer0").style.display = "block";
+
+    } else {
+        showAnswer0 = false;
+        document.getElementById("show-q0").innerHTML = "Show Answer";
+        document.getElementById("answer0").style.display = "none";
+    }
+});
+
+
+
+//https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
+function createHiPPICanvas(width, height) {
+    const ratio = window.devicePixelRatio;
+    const canvas = document.createElement("canvas");
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.getContext("2d").scale(ratio, ratio);
+
+    return canvas;
+}
