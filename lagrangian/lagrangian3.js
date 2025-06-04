@@ -316,7 +316,7 @@ function plot(data) {
     line: dLdy_line,
     xScale: y_plot.xScale,
     yScale: y_plot.yScale,
-    color: "red"
+    color: "#DC3220"
   };
 
   // plot the data
@@ -329,7 +329,7 @@ function plot(data) {
     line: dtdLdydot_line,
     xScale: y_plot.xScale,
     yScale: y_plot.yScale,
-    color: "green"
+    color: "#005AB5"
   };
 
   // plot the data
@@ -342,7 +342,7 @@ function plot(data) {
     line: dLdw_line,
     xScale: w_plot.xScale,
     yScale: w_plot.yScale,
-    color: "red"
+    color: "#DC3220"
   };
 
   // plot the data
@@ -355,7 +355,7 @@ function plot(data) {
     line: dtdLdwdot_line,
     xScale: w_plot.xScale,
     yScale: w_plot.yScale,
-    color: "green"
+    color: "#005AB5"
   };
 
   // plot the data

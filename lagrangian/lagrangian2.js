@@ -133,15 +133,16 @@ var animArea = {
       this.context.fillRect(0, canvasY, 20, 1); // Line
       this.context.fillText(`y=${y}`, 5, canvasY - 5);
     }
-
+    
     // Draw w markers (right side)
-    this.context.fillStyle = "#005AB5";
+    
     for (let y = 10; y <= 90; y += 10) {
       const canvasY = transformYCoord(y);
       const w = y ** 2;
       this.context.fillRect(CANVAS_WIDTH - 20, canvasY, 20, 1); // Line
       this.context.fillText(`w=${w}`, CANVAS_WIDTH - 45, canvasY - 5);
     }
+    this.context.fillStyle = "black";
   },
   stop: function () {
     this.time = 0;
@@ -167,6 +168,7 @@ function component(width, height, color, x, y, m, a) {
     var ctx = animArea.context;
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
+    
   }
 
   /* This is the function that updates the projectile positions.
@@ -187,10 +189,10 @@ function updateFrame() {
 
   // update projectile position
   projectile.newPos(animArea.time)
-
+  
   // draw projectile with updated position on the canvas
-  projectile.update();
-
+  projectile.update();  
+  
   // end animation when t = end_time
   if (animArea.time >= end_time) { endAnimation(); }
 }
