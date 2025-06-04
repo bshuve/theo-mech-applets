@@ -2,7 +2,6 @@
 const originalPanel = document.getElementById("ball-launch");
 const CANVAS_WIDTH = parseInt(document.getElementById("ball-launch").getAttribute("width"));
 const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribute("height"));
-
 const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 originalPanel.replaceWith(hiPPICanvas);
 hiPPICanvas.id = "ball-launch";
@@ -10,7 +9,7 @@ hiPPICanvas.id = "ball-launch";
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
-const dt = 0.002;
+const dt = 0.0015;
 const end_time = 1;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;

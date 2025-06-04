@@ -1,8 +1,8 @@
 /* --- Colors --- */
 
-#red {
-    color: red;
-    background-color:red;
+#red { /*Colorblind friendly when used with blue*/
+    color: #DC3220;
+    background-color:#DC3220;
     width: 30px;
 }
 
@@ -12,9 +12,9 @@
     width: 30px;
 }
 
-#blue {
-    color: blue;
-    background-color:blue;
+#blue { /*Colorblind friendly when used with red*/
+    color: #005AB5;
+    background-color:#005AB5;
     width: 30px;
 }
 
@@ -293,7 +293,7 @@ button:active {
 #controls {
     background-color:#c2f0c8;
     box-sizing: border-box;
-    width: 272px;
+    width: 275px;
     height: 100%;
     padding: 10px;
     border: solid;
@@ -306,6 +306,16 @@ button:active {
     width: 275px;
     height: 100%;
     padding: 20px;
+    border: solid;
+    border-radius: 10px;
+}
+
+#controls3 {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 445px;
+    height: 100%;
+    padding: 10px;
     border: solid;
     border-radius: 10px;
 }

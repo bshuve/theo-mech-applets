@@ -33,33 +33,89 @@
     </label>
     <button id="show-q2">Show answers</button><br>
     <span id="answer2" style="line-height: 1.8; display: none"><br>
-        We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L
-        = T - U\).<br>
-        So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial
-        w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}}
-        - \frac{\partial U}{\partial \dot{w}})\).<br>
-        \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U =
-        2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-        Substituting in, we get:<br>
-        \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) =
-        \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial
-        \dot{w}}(2m \sqrt{w}))\)<br>
-        Which simplifies into:<br>
-        \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
-        <br>Recall that for the \(w\) parameterizations, the following apply: <br>
-        \(w = y^2 = 1 - 2t^2 + t^4\)<br>
-        \(\dot{w} = 2y\dot{y} = -4t + 4t^3\)<br>
-        \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = -4 + 12t^2\)<br>
-        <br>When we plug these into the equation above, we get the left-hand side of the equation as \(-\frac{1}{2}(-4t
-        + 4t^3)^2 - 4(1-2t^2 + t^4)^{3/2}\), which simplifies to \(-4t^6 + 4t^4 + 4t^2 -4\).<br>
-        The right-hand side is \((-4 + 12t^2)(1 - 2t^2 + t^4) - (-4t + 4t^3)^2\) and simplifies to \(-4t^6 + 4t^4 + 4t^2
-        -4\).<br>
-        Thus, we have proven that both sides are equivalent, and that the Euler-Lagrange equation applies for a
-        classical path in two different coordinate parameterizations!<br>
+    Since \( y = \sqrt{w} \), the vertical velocity is:
+    \[
+    \dot{y} = \frac{\dot{w}}{2\sqrt{w}}
+    \]
+    Substituting these values into the kinetic and potential energy equations, we can calculate the Lagrangian as follows: 
+    \[
+    T = \frac{1}{2} m \dot{y}^2 = \frac{1}{2} m \left( \frac{\dot{w}}{2\sqrt{w}} \right)^2 = \frac{m \dot{w}^2}{8w}
+    \]
+    \[
+    U = m g y = m g \sqrt{w}
+    \]
+    \[
+    L = T - U = \frac{m \dot{w}^2}{8w} - m g \sqrt{w}
+    \]
+    Since we know that the Euler-Lagrange equation is
+    \(
+    \frac{\partial L}{\partial w} = \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{w}} \right)
+    \), we can calculate the LHS and RHS as follows: 
+    \[
+    \text{LHS: }\frac{\partial L}{\partial w} = -\frac{m \dot{w}^2}{8w^2} - \frac{m g}{2} w^{-1/2}
+    \]
+    \[
+    \text{RHS: }\frac{\partial L}{\partial \dot{w}} = \frac{m \dot{w}}{4w}, \quad \frac{d}{dt} \left( \frac{m \dot{w}}{4w} \right) = \frac{m}{4} \left( \frac{\ddot{w} w - \dot{w}^2}{w^2} \right)
+    \]
+    We can now equate and simplify the LHS and RHS as follows:
+    \[
+    -\frac{m \dot{w}^2}{8w^2} - \frac{m g}{2} w^{-1/2} = \frac{m}{4} \left( \frac{\ddot{w} w - \dot{w}^2}{w^2} \right)
+    \]
+    Multiply both sides by \(8w^2\):
+    \[
+    -m \dot{w}^2 - 4m g w^{3/2} = 2m (\ddot{w} w - \dot{w}^2)
+    \]
+    Divide by \(m\) and rearrange:  
+    \[
+    2w \ddot{w} - \dot{w}^2 + 4g w^{3/2} = 0
+    \]
+    Thus, we get derived the <b>Euler-Lagrange equation for \(w\)</b>. <br> <br>
+    
+    <b>Verification with Specific Trajectory</b> <br>
+    Considering the classical solution, we can derive \(w(t), \dot{w},\) and \(\ddot{w}\) from height \(h\) at rest \(g = 2  \text{m/s}^2\)) as follows:
+    \[
+    w = y^2 = (1 - t^2)^2 = 1 - 2t^2 + t^4
+    \]
+    \[
+    \dot{w} = 2y\dot{y} = -4t + 4t^3 
+    \]
+    \[
+    \ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = -4 + 12t^2
+    \]
+    
+    Plug into equation of motion:
+    \[
+    \text{LHS} = 2w \ddot{w} - \dot{w}^2 + 4g w^{3/2}
+    \]
+    \begin{align*}
+    2w \ddot{w} &= 2(1 - 2t^2 + t^4)(-4 + 12t^2) \\
+    &= -8 + 40t^2 - 56t^4 + 24t^6 \\
+    \\
+    -\dot{w}^2 &= -(-4t + 4t^3)^2 = -16t^2 + 32t^4 - 16t^6 \\
+    \\
+    4g w^{3/2} &= 8(1 - t^2)^3 = 8 - 24t^2 + 24t^4 - 8t^6
+    \end{align*}
+    
+    Summing the LHS, we can verify the Euler-Lagrange equation for the given \(w(t)\) as follows: 
+    \[
+    \begin{array}{rcccccc}
+    & & -8 & +40t^2 & -56t^4 & +24t^6 \\
+    & + & 0 & -16t^2 & +32t^4 & -16t^6 \\
+    & + & 8 & -24t^2 & +24t^4 & -8t^6 \\
+    \hline
+    & & 0 & 0 & 0 & 0 \\
+    \end{array}
+    \]
+    Thus, the equation holds (LHS = 0).<br><br>
     </span>
 
-    <br><br>
+    <p text="id"> 
+        The basic formula for the Euler-Lagrange equation is the same for all coordinates, but when the derivatives are evaluated explicitly, each side of the equation looks different depending on whether we use the y or w parametrization.
+    </p>
 
+    <p text="id"> 
+    Using the sliders below, you can change the mass and acceleration due to gravity of an object falling under uniform gravity and see an animation of the classical trajectory. You can display plots of  \(\frac{dL}{dq}\) and \(\frac{d}{dt}\)\(\frac{dL}{d\dot q}\) for each of the coordinates y and w.
+    </p>
     <div id="applet2">
         <div id="top-panel" class="row">
             <!-- First column: trajectory animation -->
@@ -75,8 +131,6 @@
                     <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
                     <label for="a-slider">\(g\): <span id="print-a">2</span> m/s<sup>2</sup></label>
                     <input id="a-slider" class="slider" type="range" min="2" max="5" step="0.1" value="2">
-                    <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
-                    <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
                     <br><br>
                     <legend>Show Graphs:</legend>
                     <button class="graph-button" id="graph-button-1"> Hide Y Graphs </button><button
@@ -87,7 +141,7 @@
             <div class="column">
                 <div id="controls2">
                     <p>The graphs below correspond to the following coordinate systems:</p>
-                    <span id="red">....</span> \(y\) parameterization
+                    <span id="blue">....</span> \(y\) parameterization
                     <br><br>
                     <span id="green">....</span> \(w\) parameterization
                     <br><br>

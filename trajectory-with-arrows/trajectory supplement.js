@@ -40,7 +40,7 @@ function startAnimation(p) {
        the 'param' animations include the effects of p whereas the 'actual' animations
        show the physical trajectory when p = 0
     */
-    param2D = new component(3, 3, "orange", 2, p);
+    param2D = new component(3, 3, "#FE6100", 2, p);
     animArea.start();
     param2D.generateTrajectory();
     for (t = start_time; t <= end_time; t += (end_time - start_time) / 10) {
@@ -160,7 +160,7 @@ function canvas_arrow(context, fromx, fromy, tox, toy) {
     var dy = toy - fromy;
     var angle = Math.atan2(dy, dx);
     context.beginPath();
-    context.strokeStyle = "red";
+    context.strokeStyle = "#DC3220";
     context.moveTo(fromx, fromy);
     context.lineTo(tox, toy);
     context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
@@ -175,7 +175,7 @@ function canvas_arrow2(context, fromx, fromy, tox, toy) {
     var dy = toy - fromy;
     var angle = Math.atan2(dy, dx);
     context.beginPath();
-    context.strokeStyle = "blue";
+    context.strokeStyle = "#005AB5";
     context.moveTo(fromx, fromy);
     context.lineTo(tox, toy);
     context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
@@ -258,30 +258,29 @@ document.getElementById("p-slider").oninput = function () {
 
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Add event listeners for each solution button
-    document.getElementById("solution-button-1").addEventListener("click", function () {
-        toggleSolution("solution-container-1", this, "Show Solution for Question 1", "Hide Solution for Question 1");
-    });
+var showAnswer1 = false;
+document.getElementById("show-q1").addEventListener("click", function () {
+    if (!showAnswer1) {
+        showAnswer1 = true;
+        document.getElementById("show-q1").innerHTML = "Hide Answer";
+        document.getElementById("answer1").style.display = "block";
+    } else {
+        showAnswer1 = false;
+        document.getElementById("show-q1").innerHTML = "Show Answer";
+        document.getElementById("answer1").style.display = "none";
+    }
+});
 
-    document.getElementById("solution-button-2").addEventListener("click", function () {
-        toggleSolution("solution-container-2", this, "Show Solution for Question 2", "Hide Solution for Question 2");
-    });
-
-    document.getElementById("solution-button-3").addEventListener("click", function () {
-        toggleSolution("solution-container-3", this, "Show Solution for Question 3", "Hide Solution for Question 3");
-    });
-
-    // Function to toggle solution visibility
-    function toggleSolution(containerId, button, showText, hideText) {
-        const solutionContainer = document.getElementById(containerId);
-        if (solutionContainer.style.display === "none") {
-            solutionContainer.style.display = "block";
-            button.innerHTML = hideText;  // Change button text
-        } else {
-            solutionContainer.style.display = "none";
-            button.innerHTML = showText;  // Change button text
-        }
+var showAnswer2 = false;
+document.getElementById("show-q2").addEventListener("click", function () {
+    if (!showAnswer2) {
+        showAnswer2 = true;
+        document.getElementById("show-q2").innerHTML = "Hide Answer";
+        document.getElementById("answer2").style.display = "block";
+    } else {
+        showAnswer2 = false;
+        document.getElementById("show-q2").innerHTML = "Show Answer";
+        document.getElementById("answer2").style.display = "none";
     }
 });
 

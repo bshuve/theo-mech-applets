@@ -14,7 +14,7 @@ const dt = 0.005;
 const end_time = 11;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
-var h = parseFloat(document.getElementById("h-slider").value); // 50
+var h = 50 // 50
 var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -2
 var m = parseFloat(document.getElementById("m-slider").value); // 10.0
 
@@ -127,7 +127,7 @@ var animArea = {
 
     this.context.font = "12px Arial";
     // Draw y markers (left side)
-    this.context.fillStyle = "red";
+    this.context.fillStyle = "white";
     for (let y = 10; y <= 90; y += 10) {
       const canvasY = transformYCoord(y);
       this.context.fillRect(0, canvasY, 20, 1); // Line
@@ -135,7 +135,7 @@ var animArea = {
     }
 
     // Draw w markers (right side)
-    this.context.fillStyle = "green";
+    this.context.fillStyle = "black";
     for (let y = 10; y <= 90; y += 10) {
       const canvasY = transformYCoord(y);
       const w = y ** 2;
@@ -437,7 +437,7 @@ function plot(data) {
     line: dLdy_line,
     xScale: dL_dy_plot.xScale,
     yScale: dL_dy_plot.yScale,
-    color: "red"
+    color: "white"
   };
 
   // plot the data
@@ -450,7 +450,7 @@ function plot(data) {
     line: dtdLdydot_line,
     xScale: dt_dL_dydot_plot.xScale,
     yScale: dt_dL_dydot_plot.yScale,
-    color: "red"
+    color: "white"
   };
 
   // plot the data
@@ -463,7 +463,7 @@ function plot(data) {
     line: dLdw_line,
     xScale: dL_dw_plot.xScale,
     yScale: dL_dw_plot.yScale,
-    color: "green"
+    color: "black"
   };
 
   // plot the data
@@ -476,7 +476,7 @@ function plot(data) {
     line: dtdLdwdot_line,
     xScale: dt_dL_dwdot_plot.xScale,
     yScale: dt_dL_dwdot_plot.yScale,
-    color: "green"
+    color: "black"
   };
 
   // plot the data
@@ -510,8 +510,7 @@ function slider_update() {
   document.getElementById("print-m").innerHTML = m.toFixed(1);
   a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g
   document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
-  h = parseFloat(document.getElementById("h-slider").value);
-  document.getElementById("print-h").innerHTML = h.toFixed(1);
+  h = 50;
   const data = ELData();
   // update plots
   plot(data);
@@ -524,9 +523,6 @@ document.getElementById("m-slider").oninput = function () {
   slider_update();
 }
 document.getElementById("a-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("h-slider").oninput = function () {
   slider_update();
 }
 
