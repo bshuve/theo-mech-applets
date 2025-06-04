@@ -1,135 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>lagrangian</title>
-    <link rel="stylesheet" href="lagrangian.css">
+    <link rel = "stylesheet" href = "lagrangian.css">
 
     <!--Load jQuery.js-->
     <script src="jQuery.js"></script>
+    
+    <script defer src = "lagrangian0.js"></script>
 
-    <script defer src="lagrangian0.js"></script>
-
-    <!-- LaTeX support -->
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-
 <body id="body">
 
-    <h1 id="title">Generalized Coordinate Lagrangians: </h1>
-    <h2 id="subtitle">Warmup</h2>
+<h1 id="title">Generalized Coordinate Lagrangians: Page 1</h1>
+<h2 id="subtitle">Are the Euler-Lagrange equations the same across coordinate systems?</h2>
+<p id="text">
+    (Chrome Recommended.)
+    <br><br>
+    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(y\) velocity. The kinetic energy of the object (ignoring the constant from motion in the \(x\) direction) is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
+    <br><br>
+    The classical path in Cartesian coordinates is \(y(t) = -\frac{1}{2}gt^2 + h\). However, the action is invariant under coordinate transformations and one of the benefits of the Lagrangian approach is that we can readily change coordinates.  We therefore consider an alternate non-Cartesian coordinate \(w\), where \(w(y) = y^2\).
+    <br><br>
+</p>
 
-    <p>
-        The Lagrangian formalism of mechanics is powerful because the Euler-Lagrange equation has the same form for any
-        generalized coordinate. The Euler-Lagrange equation is given by:
-        \[
-        \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q}} \right) = \frac{\partial L}{\partial q}
-        \]
-        However, the use of generalized coordinates can obscure the physical meaning of the Euler-Lagrange equations,
-        which for Cartesian coordinates reduce simply to Newton’s Second Law. In this activity, we explore what stays
-        the same, and what changes, when we transform coordinates in Lagrangian mechanics. For simplicity, we will
-        consider a 1D system parametrized by a single coordinate.
-    </p>
 
-    <p>
-        The Principle of Least Action allows us to see why it is possible to simply change coordinate systems. The
-        action depends only on the path, not on what coordinates are used to parametrize the path. This is similar to
-        more familiar results in vector calculus, where line integrals over a particular path are independent of the
-        path parametrization.
-    </p>
 
-    <p>
-        As a refresher of how path parametrization worked in the line integral case, let’s consider a line integral with
-        a constant force, \( \vec{F}_0 \). Let's take a path that goes from \(r_i = (x_1,y_1)\) to \(r_f = (x_2,y_2)\).
-        There are an infinite ways of parametrizing this path. However, let's take two example parametrizations: \(r_i +
-        t(r_f-r_i), t= [0,1]\) and \(r_i + (1-e^{-s})(r_f-r_i), s= [0,\infty)\)
-    </p>
 
-    <div id="applet0">
-        <div id="top-panel" class="row">
-            <div class="column"> <canvas id="test" class="plot" width="400px" height="400px" title="Actual Motion">
-                </canvas>
-            </div>
-            <div class="column"> <canvas id="test2" class="plot" width="400px" height="400px" title="Actual Motion">
-                </canvas>
-            </div>
+<label for="show-q1" id="text">
+    <b>Question 1: </b> What are the limitations of our \(w\) coordinate choice?
+    <br><br>
+</label>
+<button id="show-q1">Show answer</button>
+<br>   
+<span id="answer1" style="display: none"><br>
+    \(y\) can take on any real value, whereas \(w\ge0\). Therefore \(w\) unambiguously gives the same path as \(y\) for \(y\ge0\). 
+</span>
+<br><br>
+
+<div id="applet0">
+    <div id="top-panel" class="row">
+        <div class="column"> <canvas id="ball-launch-1" class="plot"
+            width="435px" height="294px" title="Actual Motion">
+            </canvas>
+        </div>
+        <div class="column"> <canvas id="ball-launch-2" class="plot"
+            width="435px" height="294px" title="Actual Motion">
+            </canvas>
         </div>
     </div>
-    Let's prove that the Principle of Least Action is the same for both parametrizations of the path!
+</div>
 
-    Suppose a constant force \( \vec{F}_0 \) acts along a path from an initial point \( \vec{r}_i = (x_1, y_1) \) to a
-    final point \( \vec{r}_f = (x_2, y_2) \). Define the displacement vector:
-    \[
-    \vec{R} = \vec{r}_f - \vec{r}_i
-    \]
+<br><br>
 
+<div class="buttons">
+    <column id="prev-button">
+        <button onclick = "window.location.href = 'lagrangian.html'">PREVIOUS PAGE</button>
+    </column>
+    <column id="next-button">
+        <button onclick = "window.location.href = 'lagrangian1.html'">NEXT PAGE</button>
+    </column>
+</div>
 
+<br><br><br><br>
 
-    <label for="show-q0" id="text">
-        Try to find the lagrangian of the two paths.
-        <br><br>
-    </label>
-    <button id="show-q0">Show answer</button>
-    <br>
-    <span id="answer0" style="display: none"><br>
-        We consider two different parameterizations of the same path:
-        <br><br>
-
-        <strong>Parametrization A:</strong> A linear interpolation between \( \vec{r}_i \) and \( \vec{r}_f \):
-        \[
-        \vec{r}(t) = \vec{r}_i + t\vec{R}, \quad t \in [0, 1]
-        \]
-        The velocity is:
-        \[
-        \frac{d\vec{r}}{dt} = \vec{R}
-        \]
-        The work done by the force is:
-        \[
-        W_A = \int_0^1 \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \, dt = \vec{F}_0 \cdot \vec{R} \int_0^1 dt = \vec{F}_0 \cdot
-        \vec{R}
-        \]
-
-        <strong>Parametrization B:</strong> An exponential approach to \( \vec{r}_f \):
-        \[
-        \vec{r}(s) = \vec{r}_i + \left(1 - e^{-s} \right)\vec{R}, \quad s \in [0, \infty)
-        \]
-        The velocity is:
-        \[
-        \frac{d\vec{r}}{ds} = e^{-s} \vec{R}
-        \]
-        The work done by the force is:
-        \[
-        W_B = \int_0^\infty \vec{F}_0 \cdot \frac{d\vec{r}}{ds} \, ds = \vec{F}_0 \cdot \vec{R} \int_0^\infty e^{-s} ds
-        = \vec{F}_0 \cdot \vec{R}
-        \]
-
-        Thus, In both parameterizations, the work done is:
-        \[
-        W = \vec{F}_0 \cdot (\vec{r}_f - \vec{r}_i)
-        \]
-        This confirms that the work done by a constant force is independent of the parameterization of the path—it
-        depends only on the endpoints. Although the integrand \( \vec{F}_0 \cdot \frac{d\vec{r}}{dt} \) and the limits
-        of integration differ between the two parameterizations, expressing the integral in terms of the differential
-        displacement \( \vec{F}_0 \cdot d\vec{r} \) reveals the path's independence from the parametrization. This is
-        analogous to the action in Lagrangian mechanics, which, despite being expressed in different generalized
-        coordinates, yields the same physical laws through the Euler-Lagrange equations. The principle of least action
-        assures us that for conservative systems, physical paths minimize (or extremize) the action, and different
-        parametrizations of the same path yield the same result.
-
-    </span>
-
-
-    <br><br>
-
-    <div class="buttons">
-        <column id="next-button">
-            <button onclick="window.location.href = 'lagrangian1.html'">NEXT PAGE</button>
-        </column>
-    </div>
-    <br><br>
-    <br><br>
-    <i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, Nathan Nguyen, 2025.</i>
-    <br><br><br>
+<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</i>
+<br><br><br>
 </body>
-
 </html>

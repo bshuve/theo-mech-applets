@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>trajectory</title>
+    <link rel = "stylesheet" href = "trajectory1.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+    
+    <script defer src = "trajectory3.js"></script>
+
+     <!-- LaTeX support -->
+     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body class="body">
+
+
+    <h1 id="title">Free-fall projectile in 1D: Page 3/4</h1>
+    <p class="text">
+    Along with a visualization of the particle's motion along a specified path, we now show various quantities 
+    (such as the kinetic and potential energies, and their derivatives) as functions of time. We also show the 
+    <b>integral</b> of several of these quantities over the entire path, plotted as a function of \(p\), the 
+    parameter used to specify the path. The checkboxes allow you to choose which of these integrated quantities 
+    to plot. Recall that the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\).
+
+
+    <p id="text">
+    Spend some time exploring the applet, and then answer the questions below.
+    </p>
+
+    <br>    
+    <div class="applet">
+        <div id="top-panel" class="row">
+            <div class="column left">
+                <b>Left plot:</b> energy as a function of time for current value of p.
+                <br> 
+                <b>Right plot:</b> energy integrated over all time as a function of p. 
+                <br> Dot shows selected value of p.
+                <br> 
+                <b>Checkboxes</b> control which energies are being plotted 
+                <br> 
+        
+                <ul class = "checkboxes">
+                    <li>
+                        <input type="checkbox" id="show-k" value="on" checked>
+                        <span id="red"> </span>
+                        <label for="show-k"> KE</label> 
+                    </li>
+
+                    <li>
+                        <input type="checkbox" id="show-np" value="on" checked>
+                        <span id="green"> </span>
+                        <label for="show-np"> -PE</label>
+                    </li>
+
+                    <li>
+                        <input type="checkbox" id="show-nk" value="off">
+                        <span id="lightsalmon"> </span>
+                        <label for="show-nk"> -KE</label>
+                    </li>
+
+                    <li>
+                        <input type="checkbox" id="show-p" value="off">
+                        <span id="grey"> </span>
+                        <label for="show-kp"> PE</label>
+                    </li>
+
+                    <li>
+                        <input type="checkbox" id="show-kmp" value="off">
+                        <span id="blue"></span>
+                        <label for="show-kmp"> KE-PE</label>
+                    </li>
+                    
+                    <li>
+                        <input type="checkbox" id="show-pmk" value="off">
+                        <span id="cyan"> </span>
+                        <label for="show-pmk"> KE^2-PE^2</label>
+                    </li>
+
+                    <li>
+                        <input type="checkbox" id="show-kpp" value="off">
+                        <span id="purple"> </span>
+                        <label for="show-kpp"> KE+PE</label>
+                    </li>
+                    
+                    <li>
+                        <input type="checkbox" id="show-nkmp" value="off">
+                        <span id="plum"> </span>
+                        <label for="show-nkmp"> KE^2+PE^2</label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="column right">
+                <div id="controls">
+                    <p id="text">
+                        Adjust the value of p on the slider and take note of the changes on the graphs.
+                    </p>
+            <br> <br>
+                    <label for="p-slider">p: <span id="print-p">0.00</span></label>
+                    <input id="p-slider" class="slider" type="range" min="-250" max="250" value="0">
+            </div>
+            </div>
+        </div>
+
+        <div id="bottom-panel" class="row">
+            <div class="column left">
+                <div id="energy-graph"></div>
+            </div>
+
+            <div class="column middle">
+                <div id="integral-graph"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <br><br>
+
+
+    <!--Solution for question 4-->
+    <p id="text">
+        <b>Question 4:</b> Return to your answer to Question 2, updating and revising your answers based on what 
+        you've found from exploring this applet. As a reminder, Question 2 asked "Write down a few kinematic 
+        properties that the classical path should have. Which of these properties might you expect the non-classical 
+        path to have as well?"
+    </p>
+
+    <button id="solution-button-4" type="button">Show Solution</button>
+    <div id="solution-container-4" class ='solution-container' style="display: none;">
+        <p>
+            Classical paths
+            <ul>
+                <li>
+                    Follows the equation of motion
+                </li>
+                <li>
+                    Kinetic and potential energies are balanced: Changes in kinetic energy and potential energy are smooth
+                </li>
+                <li>
+                    Action is minimized: The classical path minimizes the integral of L=T-U
+                </li>
+            </ul>
+            <!--nonclassical path-->
+            Nonclassical paths
+            <ul>
+                <li>
+                    Different curvature: Energy variations: Kinetic and potential energies are not smooth, 
+                    leading to larger or smaller action values.
+                </li>
+            </ul>
+        </p>
+    </div>
+
+    <p id="text">
+        <b>Question 5:</b> As best you can, and in your own words, explain why the classical path minimizes the 
+        action defined as the time integral of the kinetic minus potential energies over the path. Choosing two 
+        paths, one with \(p<0\) and another with \(p>0\), explain for each why the action is larger than the minimal 
+        value. Explain why some other candidates for the "action" (such as the integral of the <b>sum</b> 
+        of the kinetic and potential energies) are unsuitable for determining the classical path.
+    </p>
+    <button id="solution-button-5" type="button">Show Solution</button>
+    <div id="solution-container-5" class="solution-container" style="display: none;">
+        <p><b>Solution:</b></p>
+        The integral balances kinetic and potential energy over the path, ensuring minimal deviation from equilibrium conditions.
+        <ul>
+            <li>
+                For paths with \( p < 0 \): The particle remains closer to the ground, causing the potential energy \( U \) 
+                to decrease, but the kinetic energy is not optimized. The action increases due to this imbalance.
+            </li>
+            <li>
+                For paths with \( p > 0 \): The particle travels higher than the classical path, increasing both 
+                potential and kinetic energy, which, again, leads to higher action values.
+            </li>
+            <li>
+                The classical path (when \( p = 0 \)) is the most “efficient” path where energy trade-offs between \( T \) 
+                and \( U \) are balanced, leading to the smallest value of the action.
+                While “action” might still seem abstract, the simulation provides some intuitions. The action is analogous 
+                to a “best score.” Think of the classical path as achieving the most optimal motion based on physics, where 
+                energy is neither wasted nor underutilized.
+            </li>
+        </ul>
+    </div>
+
+    <p id="text">
+    <b>Question 6:</b> What is one new thing you learned while working through this exercise? What is one thing that you are 
+    still confused about?
+    </p>
+
+    <br>
+    <div class="buttons">
+        <column id="previous-button">
+            <button onclick = "window.location.href = 'trajectory2.html'">PREVIOUS PAGE</button>
+        </column>
+    </div>
+
+</body>
+</html>

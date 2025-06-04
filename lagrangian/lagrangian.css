@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* --- Colors --- */
 
 #red { /*Colorblind friendly when used with blue*/
@@ -64,17 +65,16 @@
 
 
 /* --- Page Styling --- */
+=======
+>>>>>>> c24e65b4a668de37aea77e2234bba710064cbae7
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 16px;
-    line-height: 1.4;
-    color: #333;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
     position: relative;
     top: 70px;
-    background-color: #f0eceb;
-    max-width: 950px;
+    background-color:#edcdca;
+    max-width: 1000px;
     margin: auto;
-    
 }
 
 svg, canvas {
@@ -84,40 +84,18 @@ svg, canvas {
     border-color: black;
 }
 
-h1 {
-    font-size: 28px;
-    font-weight: bold;
-    color: #3c3c3c;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 20px;
-}
-
-#text {
-    width: 950px;
-}
-
-/* --- Buttons --- */
 button {
-    background-color: #007bff; 
-    border: none;
-    color: #f0eceb;
-    padding: 12px 20px;
-    font-weight: bold;
+    background: #b5cef5;
+    border: solid;
+    color: rgb(0, 0, 0);
+    padding: 10px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 15px;
     margin: 4px 2px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
 }
 
 button:hover {
@@ -125,45 +103,19 @@ button:hover {
     color: #000000;
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-.button-spacing {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-}
-
-.buttons {
-    max-width: 950px;
-}
-
 .graph-button{
-    height: 60px;
+
+    height: 100px;
     width: 48%; 
 }
-
 .graph-button3{
     font-size: 13px;
-    height: 60px;
+    height: 100px;
     width: 31%; 
     white-space: nowrap;
     padding-left: 0px;
     padding-right: 0px;
 }
-
-
-#previous-button{
-    float: left;
-}
-
-#next-button{
-    float: right;
-}
-
-
-/* --- Sliders --- */
 
 .slider {
     -webkit-appearance: none;
@@ -189,26 +141,28 @@ button:active {
     cursor: pointer;
 }
 
-
-/* --- Applets --- */
-
-#applet0{
-    background-color:#b5cef5;
-    border-radius: 10px;
-    position: relative;
-    height: 450px;
-    width: 850px;
-    margin: auto;
+.button-spacing {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
 }
 
-#applet1{
+.buttons {
+    max-width: 950px;
+}
+
+#text {
+    width: 950px;
+}
+
+#applet0{
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
     height: 340px;
     width: 950px;
 }
-#applet2{
+#applet{
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
@@ -216,7 +170,7 @@ button:active {
     width: 950px;
 }
 
-#applet3{
+#applet2{
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
@@ -224,7 +178,7 @@ button:active {
     width: 950px;
 }
 
-#applet4{
+#applet3{
     background-color:#b5cef5;
     border-radius: 10px;
     position: relative;
@@ -232,7 +186,14 @@ button:active {
     width: 950px;
 }
 
-/* --- Panels --- */
+#applet5{
+    background-color:#b5cef5;
+    border-radius: 10px;
+    position: relative;
+    height: 550px;
+    width: 1070px;
+    margin: auto;
+}
 
 #top-panel{
     /* background-color: green; */
@@ -326,5 +287,72 @@ button:active {
     clear: both;
  }
 
+#previous-button{
+    float: left;
+}
+
+#next-button{
+    float: right;
+}
+
+#red {
+    color: red;
+    background-color:red;
+    width: 30px;
+}
+
+#green {
+    color: green;
+    background-color:green;
+    width: 30px;
+}
+
+#blue {
+    color: blue;
+    background-color:blue;
+    width: 30px;
+}
+
+#periwinkle {
+    /* rename */
+    color: rgb(127, 127, 255);
+    background-color:rgb(127, 127, 255);
+    width: 30px;
+}
 
 
+#orange {
+    color: orange;
+    background-color:orange;
+    width: 30px;
+}
+
+#purple {
+    color: purple;
+    background-color:purple;
+    width: 30px;
+}
+
+#grey {
+    color: rgb(142, 142, 139);
+    background-color:rgb(142, 142, 139);
+    width: 30px;
+}
+
+#lightsalmon {
+    color: lightsalmon;
+    background-color:lightsalmon;
+    width: 30px;
+}
+
+#cyan {
+    color: cyan;
+    background-color:cyan;
+    width: 30px;
+}
+
+#plum {
+    color: plum;
+    background-color:plum;
+    width: 30px;
+}
