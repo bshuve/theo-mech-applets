@@ -70,7 +70,7 @@ function updateFrame(animArea, projectile) {
     // Draw ball
     ctx.beginPath();
     ctx.arc(projectile.currentX, projectile.currentY, 10, 0, Math.PI * 2);
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#DC3220";
     ctx.fill();
 }
 
@@ -148,7 +148,7 @@ function updateFrame2(animArea2, projectile) {
     // Draw ball
     ctx.beginPath();
     ctx.arc(projectile.currentX, projectile.currentY, 10, 0, Math.PI * 2);
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#DC3220";
     ctx.fill();
 }
 

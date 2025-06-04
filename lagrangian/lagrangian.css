@@ -193,7 +193,7 @@ button:active {
 /* --- Applets --- */
 
 #applet0{
-    background-color:#b5cef5;
+    background-color:#F4F5F0;
     border-radius: 10px;
     position: relative;
     height: 450px;
@@ -202,14 +202,14 @@ button:active {
 }
 
 #applet1{
-    background-color:#b5cef5;
+    background-color:#F4F5F0;
     border-radius: 10px;
     position: relative;
     height: 340px;
     width: 950px;
 }
 #applet2{
-    background-color:#b5cef5;
+    background-color:#F4F5F0;
     border-radius: 10px;
     position: relative;
     height: 980px;
@@ -217,7 +217,7 @@ button:active {
 }
 
 #applet3{
-    background-color:#b5cef5;
+    background-color:#F4F5F0;
     border-radius: 10px;
     position: relative;
     height: 660px;
@@ -225,7 +225,7 @@ button:active {
 }
 
 #applet4{
-    background-color:#b5cef5;
+    background-color:#F4F5F0;
     border-radius: 10px;
     position: relative;
     height: 1300px;
@@ -291,7 +291,7 @@ button:active {
 }
 
 #controls {
-    background-color:#c2f0c8;
+    background-color:#F4F5F0;
     box-sizing: border-box;
     width: 275px;
     height: 100%;
@@ -301,7 +301,7 @@ button:active {
 }
 
 #controls2 {
-    background-color:#c2f0c8;
+    background-color:#F4F5F0;
     box-sizing: border-box;
     width: 275px;
     height: 100%;
@@ -311,7 +311,7 @@ button:active {
 }
 
 #controls3 {
-    background-color:#c2f0c8;
+    background-color:#F4F5F0;
     box-sizing: border-box;
     width: 445px;
     height: 100%;

@@ -35,39 +35,8 @@
         <br><br>
     </label>
     <button id="show-q1">Show answers</button><br>
-    <span id="answer1" style="display: none; line-height: 1.8"><br>
-        We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L
-        = T - U\).<br>
-        So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial
-        w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}}
-        - \frac{\partial U}{\partial \dot{w}})\).<br>
-        \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U =
-        2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-        Knowing this, we get:<br>
-        \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) =
-        \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial
-        \dot{w}}(2m \sqrt{w}))\)<br>
-        Which simplifies into:<br>
-        \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
-        <br>Recall that for the \(w\) parameterizations, the following apply: <br>
-        \(w = (1-t^p)^2\)<br>
-        \(\dot{w} = 2y\dot{y} = 2(1-t^p)(-pt^{p-1})\)<br>
-        \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = 2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))\)<br>
-        <br>When we plug these into the equation above, we get the left-hand side of the equation as
-        \(-\frac{1}{2}(2(1-t^p)(-pt^{p-1}))^2 - 4((1-t^p)^2)^{3/2}\), which expands to \(-2p^2t^{2p-2} + 4p^2t^{3p-2} -
-        2p^2t^{4p-2} - 4 + 12t^p - 12t^{2p} + 4t^{3p}\).<br>
-        The right-hand side is \(2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))(1-t^p)^2 - (2(1-t^p)(-pt^{p-1}))^2\) and
-        expands to \(-2p^2t^{2p-2} - 2p^2t^{3p-2} - 2p^2t^{p-2} + 2pt^{p-2} + 6p^2t^{2p-2} - 6pt^{2p-2} + 6pt^{3p-2} -
-        2pt^{4p-2}\).<br>
-        The correct p value satisfies this equation for all t values between 0 and 1. Here, the two sides are only equal
-        when \(p=2\). You can check this by graphing each side in Desmos and using a slider for \(p\)!<br>
-
-
-
-         <b>Corrected Derivation</b>
-        
-        <b>General Equation of Motion (from Page 2):</b> <br> 
-        From the general derivation in the \(w\) coordinate system, we have:
+    <span id="answer1" style="display: none; line-height: 1.8"><br>        
+        From the general derivation in the \(w\) coordinate system from page 2, we have:
         \[
         2w \ddot{w} - \dot{w}^2 + 4g w^{3/2} = 0
         \]
@@ -101,24 +70,22 @@
         \end{align*}
         \]
         
-        <b>Combine All Terms:</b>
+        Combining like terms, we get:
         \[
         \begin{align*}
         \text{LHS} = & \left[ -4p (p-1) (1 - t^p)^3 t^{p-2}  \right] \\
         + & \left[ 4p^2 t^{2p-2} (1 - t^p)^2 \right] \\
         - & \left[ 4p^2 t^{2p-2} (1 - t^p)^2 \right] \\
         + & \left[ 8 (1 - t^p)^3 \right] \\
-        \end{align*}
-        \]
-        Notice the second and third terms cancel each other. This simplifies to:
-        \[
-        \text{LHS} = (1 - t^p)^3 \left[ -4p(p-1)t^{p-2} + 8 \right]
-        \]
-        <br>
         
-        <b>Set Equation to Zero:</b>
+        = & (1 - t^p)^3 \left[ -4p(p-1)t^{p-2} + 8 \right]
+         \end{align*}
+        \]
+        
+        
+        In order to find the values of \(p\) for which the Euler-Lagrange equation is satisfied, we need to find the values such that 
         \[
-        (1 - t^p)^3 \left[ 8 - 4p(p-1)t^{p-2} \right] = 0
+        (1 - t^p)^3 \left[ 8 - 4p(p-1)t^{p-2} \right] = 0.
         \]
         Since \((1 - t^p)^3 \neq 0\) for \(t < 1\), we must find the value of p such that:
         \[
@@ -130,11 +97,11 @@
         \[
         p = 2
         \]
-        When \(p = 2\), \(t^{p-2} = t^{0} = 1\), so:
+        When \(p = 2\), \(t^{p-2} = t^{0} = 1\). Substituting, we get:
         \[
         8 - 4(2)(2-1)(1) = 8 - 8 = 0
         \]
-        For other values of \(p\), the expression depends on \(t\) and cannot be equal to zero.<br><br>
+        which confirms the Euler-Lagrange equation holds! This matches the observations that we get from the applet. 
     </span>
 
     <br><br>
@@ -149,13 +116,13 @@
             <!-- Second column: sliders -->
             <div class="column">
                 <div id="controls3">
-                    <legend>Define Constants:</legend>
+                    <legend>Define Path Time Exponent:</legend>
                     <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
                     <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
                      <p>The graphs below correspond to the following, assuming \(q\) is a general coordinate system:</p>
                     <span id="red">....</span> \(\partial L/\partial q\) parameterization
                     <br><br>
-                    <span id="green">....</span> \(d/dt(\partial L/\partial \dot{q})\) parameterization
+                    <span id="blue">....</span> \(d/dt(\partial L/\partial \dot{q})\) parameterization
                 </div>
             </div>
             <!-- Third column: question -->

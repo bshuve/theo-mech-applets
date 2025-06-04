@@ -113,10 +113,10 @@ var animArea1 = {
         ctx.font = "12px Arial";
         for (let y = 10; y <= 90; y += 10) {
             const canvasY = transformYCoord1(y);
-            ctx.fillStyle = "red";
+            ctx.fillStyle = "#DC3220";
             ctx.fillRect(0, canvasY, 20, 1);
             ctx.fillText(`y=${y}`, 5, canvasY - 5);
-            ctx.fillStyle = "green";
+            ctx.fillStyle = "#005AB5";
             const w = y ** 2;
             ctx.fillRect(CANVAS_WIDTH1 - 20, canvasY, 20, 1);
             ctx.fillText(`w=${w}`, CANVAS_WIDTH1 - 45, canvasY - 5);
@@ -148,10 +148,10 @@ var animArea2 = {
         ctx.font = "12px Arial";
         for (let w = 1000; w <= 10000; w += 1000) {
             const canvasY = transformYCoord2(w);
-            ctx.fillStyle = "green";
+            ctx.fillStyle = "#005AB5";
             ctx.fillRect(0, canvasY, 20, 1);
             ctx.fillText(`w=${w}`, 5, canvasY - 5);
-            ctx.fillStyle = "red";
+            ctx.fillStyle = "#DC3220";
             const yVal = Math.sqrt(w).toFixed(1);
             ctx.fillRect(CANVAS_WIDTH2 - 20, canvasY, 20, 1);
             ctx.fillText(`y=${yVal}`, CANVAS_WIDTH2 - 45, canvasY - 5);

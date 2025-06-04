@@ -526,7 +526,7 @@ function plot(data) {
     line: PE_y_line,
     xScale: PE_y_plot.xScale,
     yScale: PE_y_plot.yScale,
-    color: "red"
+    color: "#DC3220"
   };
 
   // plot the data
@@ -539,7 +539,7 @@ function plot(data) {
     line: PE_w_line,
     xScale: PE_w_plot.xScale,
     yScale: PE_w_plot.yScale,
-    color: "red"
+    color: "#DC3220"
   };
 
   // plot the data
@@ -552,7 +552,7 @@ function plot(data) {
     line: KE_ydot_line,
     xScale: KE_ydot_plot.xScale,
     yScale: KE_ydot_plot.yScale,
-    color: "green"
+    color: "#005AB5"
   };
 
   // plot the data
@@ -565,7 +565,7 @@ function plot(data) {
     line: KE_wdot_line,
     xScale: KE_wdot_plot.xScale,
     yScale: KE_wdot_plot.yScale,
-    color: "green"
+    color: "#005AB5"
   };
 
   // plot the data
@@ -578,7 +578,7 @@ function plot(data) {
     line: PE_yt_line,
     xScale: y_plot.xScale,
     yScale: y_plot.yScale,
-    color: "red"
+    color: "#DC3220"
   };
 
   // plot the data
@@ -591,7 +591,7 @@ function plot(data) {
     line: KE_yt_line,
     xScale: y_plot.xScale,
     yScale: y_plot.yScale,
-    color: "green"
+    color: "#005AB5"
   };
 
   // plot the data
@@ -604,7 +604,7 @@ function plot(data) {
     line: PE_wt_line,
     xScale: w_plot.xScale,
     yScale: w_plot.yScale,
-    color: "red"
+    color: "#DC3220"
   };
 
   // plot the data
@@ -617,7 +617,7 @@ function plot(data) {
     line: KE_wt_line,
     xScale: w_plot.xScale,
     yScale: w_plot.yScale,
-    color: "green"
+    color: "#005AB5"
   };
 
   // plot the data
