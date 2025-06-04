@@ -3,103 +3,237 @@
 
 <head>
     <title>lagrangian</title>
-    <link rel = "stylesheet" href = "lagrangian.css">
+    <link rel="stylesheet" href="lagrangian.css">
 
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
-    
-    <script defer src = "lagrangian2.js"></script>
 
-     <!-- LaTeX support -->
-     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    </head>
+    <!--Load jQuery.js-->
+    <script src="jQuery.js"></script>
+
+    <script defer src="lagrangian2.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
 <body id="body">
+    <h1 id="title">Generalized Coordinate Lagrangians: Page 2</h1>
+    <h2 id="subtitle">Are the Euler-Lagrange equations the same across coordinate systems? (cont) </h2>
 
-<h1 id="title">Generalized Coordinate Lagrangians: Page 3</h1>
-<h2 id="subtitle">Non-classical Path</h2>
-<p id="text">
-    (Chrome Recommended.)
-    <br><br>
-    Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under gravitational acceleration \(-g\). The kinetic energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\).
-    <br><br>
-    We now consider deviations from the classical path. We consider a family of paths defined by \(y(t) = 1-t^p\) for some parameter \(p\) (taking \(g\) to be 2 for simplicity). We can also study this family path using a different coordinate system \(w\), where \(w(y) = y^2\) so \(w(t) = (1-t^p)^2\). Try moving the sliders and observing how the motion and graphs change.
-</p>
-<br>
-<label for="show-q1" id="text">
-    <b>Question 5: </b> Substitute the path \(w(t)\), which depends on the constant \(p\), into the Euler-Lagrange equation for \(w\), and find the value(s) of \(p\) for which the equation is satisfied.
-    <br><br>
-</label>
-<button id="show-q1">Show answers</button><br>    
-<span id="answer1" style="display: none; line-height: 1.8"><br>
-    We know that \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) and that \(L = T - U\).<br>
-    So we know that \(\frac{\partial L}{\partial w} = \frac{\partial T}{\partial w} - \frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}}) = \frac{d}{dt}(\frac{\partial T}{\partial \dot{w}} - \frac{\partial U}{\partial \dot{w}})\).<br>
-    \(T = \frac{1}{2}m(\frac{\dot{w}}{2 \sqrt{w}})^2\) since \(\dot{y} = \frac{\dot{w}}{2 \sqrt{w}}\) and \(U = 2m\sqrt{w}\) since \(y = \sqrt{w}\) and \(g = 2\).<br>
-    Knowing this, we get:<br>
-    \(\frac{\partial}{\partial w}(\frac{1}{2}m\frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial w}(2m \sqrt{w}) = \frac{d}{dt}(\frac{\partial}{\partial \dot{w}}(\frac{1}{2}m \frac{\dot{w}^2}{4w}) - \frac{\partial}{\partial \dot{w}}(2m \sqrt{w}))\)<br>
-    Which simplifies into:<br>
-    \(-\frac{1}{2}\dot{w}^2 - 4w^{3/2} = \ddot{w}w - \dot{w}^2\)<br>
-    <br>Recall that for the \(w\) parameterizations, the following apply: <br>
-    \(w = (1-t^p)^2\)<br>
-    \(\dot{w} = 2y\dot{y} = 2(1-t^p)(-pt^{p-1})\)<br>
-    \(\ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = 2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))\)<br>
-    <br>When we plug these into the equation above, we get the left-hand side of the equation as \(-\frac{1}{2}(2(1-t^p)(-pt^{p-1}))^2 - 4((1-t^p)^2)^{3/2}\), which expands to \(-2p^2t^{2p-2} + 4p^2t^{3p-2} - 2p^2t^{4p-2} - 4 + 12t^p - 12t^{2p} + 4t^{3p}\).<br>
-    The right-hand side is \(2((-pt^{p-1})^2 + (1-t^p)(-p(p-1)t^{p-2}))(1-t^p)^2 - (2(1-t^p)(-pt^{p-1}))^2\) and expands to \(-2p^2t^{2p-2} - 2p^2t^{3p-2} - 2p^2t^{p-2} + 2pt^{p-2} + 6p^2t^{2p-2} - 6pt^{2p-2} + 6pt^{3p-2} - 2pt^{4p-2}\).<br>
-    The correct p value satisfies this equation for all t values between 0 and 1. Here, the two sides are only equal when \(p=2\). You can check this by graphing each side in Desmos and using a slider for \(p\)!<br>
-</span>
+    Even though we can visually see that the two equations are the same parametrization, we can also look at it mathematically. Let's prove that the two equations satisfy the Euler-Lagrange equation.
+    <br> <br> 
+    <label for="show-q2" id="text">
+        <b>Question 2: </b> Transform the kinetic and potential energies to the \(w\) coordinate, and derive the
+        Euler-Lagrange equation for \(w\). Then, consider the particular classical solution \(y(t) = 1 - t^2\) (with \(h
+        = 1\) and \(g = 2\)). Find \(w(t)\) for this path, and then by explicit substitution, verify that it satisfies
+        the Euler-Lagrange equation, \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial
+        \dot{w}})\).
+        <br><br>
+    </label>
+    <button id="show-q2">Show answers</button><br>
+    <span id="answer2" style="line-height: 1.8; display: none"><br>
+    Since \( y = \sqrt{w} \), the vertical velocity is:
+    \[
+    \dot{y} = \frac{\dot{w}}{2\sqrt{w}}
+    \]
+    Substituting these values into the kinetic and potential energy equations, we can calculate the Lagrangian as follows: 
+    \[
+    T = \frac{1}{2} m \dot{y}^2 = \frac{1}{2} m \left( \frac{\dot{w}}{2\sqrt{w}} \right)^2 = \frac{m \dot{w}^2}{8w}
+    \]
+    \[
+    U = m g y = m g \sqrt{w}
+    \]
+    \[
+    L = T - U = \frac{m \dot{w}^2}{8w} - m g \sqrt{w}
+    \]
+    Since we know that the Euler-Lagrange equation is
+    \(
+    \frac{\partial L}{\partial w} = \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{w}} \right)
+    \), we can calculate the LHS and RHS as follows: 
+    \[
+    \text{LHS: }\frac{\partial L}{\partial w} = -\frac{m \dot{w}^2}{8w^2} - \frac{m g}{2} w^{-1/2}
+    \]
+    \[
+    \text{RHS: }\frac{\partial L}{\partial \dot{w}} = \frac{m \dot{w}}{4w}, \quad \frac{d}{dt} \left( \frac{m \dot{w}}{4w} \right) = \frac{m}{4} \left( \frac{\ddot{w} w - \dot{w}^2}{w^2} \right)
+    \]
+    We can now equate and simplify the LHS and RHS as follows:
+    \[
+    -\frac{m \dot{w}^2}{8w^2} - \frac{m g}{2} w^{-1/2} = \frac{m}{4} \left( \frac{\ddot{w} w - \dot{w}^2}{w^2} \right)
+    \]
+    Multiply both sides by \(8w^2\):
+    \[
+    -m \dot{w}^2 - 4m g w^{3/2} = 2m (\ddot{w} w - \dot{w}^2)
+    \]
+    Divide by \(m\) and rearrange:  
+    \[
+    2w \ddot{w} - \dot{w}^2 + 4g w^{3/2} = 0
+    \]
+    Thus, we get derived the <b>Euler-Lagrange equation for \(w\)</b>. <br> <br>
+    
+    <b>Verification with Specific Trajectory</b> <br>
+    Considering the classical solution, we can derive \(w(t), \dot{w},\) and \(\ddot{w}\) from height \(h\) at rest \(g = 2  \text{m/s}^2\)) as follows:
+    \[
+    w = y^2 = (1 - t^2)^2 = 1 - 2t^2 + t^4
+    \]
+    \[
+    \dot{w} = 2y\dot{y} = -4t + 4t^3 
+    \]
+    \[
+    \ddot{w} = 2(\dot{y}^2 + y\ddot{y}) = -4 + 12t^2
+    \]
+    
+    Plug into equation of motion:
+    \[
+    \text{LHS} = 2w \ddot{w} - \dot{w}^2 + 4g w^{3/2}
+    \]
+    \begin{align*}
+    2w \ddot{w} &= 2(1 - 2t^2 + t^4)(-4 + 12t^2) \\
+    &= -8 + 40t^2 - 56t^4 + 24t^6 \\
+    \\
+    -\dot{w}^2 &= -(-4t + 4t^3)^2 = -16t^2 + 32t^4 - 16t^6 \\
+    \\
+    4g w^{3/2} &= 8(1 - t^2)^3 = 8 - 24t^2 + 24t^4 - 8t^6
+    \end{align*}
+    
+    Summing the LHS, we can verify the Euler-Lagrange equation for the given \(w(t)\) as follows: 
+    \[
+    \begin{array}{rcccccc}
+    & & -8 & +40t^2 & -56t^4 & +24t^6 \\
+    & + & 0 & -16t^2 & +32t^4 & -16t^6 \\
+    & + & 8 & -24t^2 & +24t^4 & -8t^6 \\
+    \hline
+    & & 0 & 0 & 0 & 0 \\
+    \end{array}
+    \]
+    Thus, the equation holds (LHS = 0).<br><br>
+    </span>
 
-<br><br> 
+    <p text="id"> 
+        The basic formula for the Euler-Lagrange equation is the same for all coordinates, but when the derivatives are evaluated explicitly, each side of the equation looks different depending on whether we use the y or w parametrization.
+    </p>
 
-<div id="applet2">
-    <div id="top-panel" class="row">
-	<!-- First column: trajectory animation -->
-        <div class="column">
-            <canvas id="ball-launch" class="plot"
-            width="320px" height="294px" title="Actual Motion">
-            </canvas>
+    <p text="id"> 
+    Using the sliders below, you can change the mass and acceleration due to gravity of an object falling under uniform gravity and see an animation of the classical trajectory. You can display plots of  \(\frac{dL}{dq}\) and \(\frac{d}{dt}\)\(\frac{dL}{d\dot q}\) for each of the coordinates y and w.
+    </p>
+    <div id="applet2">
+        <div id="top-panel" class="row">
+            <!-- First column: trajectory animation -->
+            <div class="column">
+                <canvas id="ball-launch" class="plot" width="320px" height="294px" title="Actual Motion">
+                </canvas>
+            </div>
+            <!-- Second column: sliders -->
+            <div class="column">
+                <div id="controls">
+                    <legend>Define Constants:</legend>
+                    <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
+                    <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
+                    <label for="a-slider">\(g\): <span id="print-a">2</span> m/s<sup>2</sup></label>
+                    <input id="a-slider" class="slider" type="range" min="2" max="5" step="0.1" value="2">
+                    <br><br>
+                    <legend>Show Graphs:</legend>
+                    <button class="graph-button" id="graph-button-1"> Hide Y Graphs </button><button
+                        class="graph-button" id="graph-button-2"> Hide W Graphs </button>
+                </div>
+            </div>
+            <!-- Third column: question -->
+            <div class="column">
+                <div id="controls2">
+                    <p>The graphs below correspond to the following coordinate systems:</p>
+                    <span id="blue">....</span> \(y\) parameterization
+                    <br><br>
+                    <span id="green">....</span> \(w\) parameterization
+                    <br><br>
+                </div>
+            </div>
         </div>
-    <!-- Second column: sliders -->
-    <div class="column">
-        <div id="controls">
-            <legend>Define Constants:</legend>
-            <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
-            <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
+        <div id="middle-panel" class="row">
+            <div class="column">
+                <div id="dL-dy-graph"></div>
+            </div>
+
+            <div class="column">
+                <div id="dt-dL-dydot-graph"></div>
+            </div>
         </div>
-    </div>
-    <!-- Third column: question -->
-        <div class="column">
-            <div id="controls2">
-                <p>The graphs below correspond to the following, assuming \(q\) is a general coordinate system:</p>
-                <span id="red">....</span> \(\partial L/\partial q\) parameterization
-                <br><br>
-                <span id="green">....</span> \(d/dt(\partial L/\partial \dot{q})\) parameterization
-                <br><br>
+
+        <div id="bottom-panel" class="row">
+            <div class="column">
+                <div id="dL-dw-graph"></div>
+            </div>
+
+            <div class="column">
+                <div id="dt-dL-dwdot-graph"></div>
             </div>
         </div>
     </div>
-    <div id="middle-panel" class="row">
-        <div class="column">
-            <div id="y-graph"></div>
-        </div>
+    <br>
 
-        <div class="column">
-            <div id="w-graph"></div>
-        </div>
+    (The asymptotes in the W graphs are a coordinate singularity caused by the choice of coordinate).
+
+    <br><br>
+    <label for="show-q3" id="text">
+        <b>Question 3: </b>As you move the sliders to test different values, what do you notice about the relationships
+        between the four graphs?
+        <br><br>
+    </label>
+    <button id="show-q3">Show answer</button>
+    <br><br>
+    <span id="answer3" style="display: none; line-height: 1.8">
+        You may have noticed that the parameterization of each side of the Euler-Lagrange equation looks different
+        across different coordinate systems.
+        That is, the graph for \(\frac{\partial L}{\partial y}\) differs from \(\frac{\partial L}{\partial w}\), and
+        \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) differs from \(\frac{d}{dt}(\frac{\partial L}{\partial
+        \dot{w}})\).<br>
+        However, \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\) and
+        \(\frac{\partial L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\),
+        showing that no matter the choice of \(y\) or \(w\) as coordinates, the Euler-Lagrange equation still holds.
+        These graphs provide a graphical demonstration for the mathematical explanation above.<br>
+        In fact, you will find that the Euler-Lagrange equation can be generalized to any arbitrary coordinate system!
+        <br><br>
+    </span>
+    <label for="show-q4" id="text">
+        <b>Question 4: </b>Recall the Euler-Lagrange equation in the \(w\) coordinate system as \(\frac{\partial
+        L}{\partial w} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\). Why couldn't we just graph and compare
+        \(F_w\equiv-\frac{\partial U}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\)?
+        <br><br>
+    </label>
+    <button id="show-q4">Show answer</button>
+    <br><br>
+    <span id="answer4" style="display: none; line-height: 1.8">
+        It's important to consider that because \(L=T-U\), \(\frac{\partial L}{\partial q} = \frac{\partial T}{\partial
+        q} - \frac{\partial U}{\partial q}\) and \(\frac{\partial L}{\partial \dot{q}} = \frac{\partial T}{\partial
+        \dot{q}} - \frac{\partial U}{\partial \dot{q}}\) for a generalized coordinate \(q\).
+        Also recall that, when taking partial derivatives, \(\dot{q}\) is considered independent of \(q\).<br>
+        In the \(y\) parameterization, \(T\) depends on \(\dot{y}\) but not \(y\).
+        Thus, \(\frac{\partial T}{\partial y} = 0\), so \(\frac{\partial L}{\partial y} = - \frac{\partial U}{\partial
+        y} = -F_y\).
+        In the same way, \(U\) depends on \(y\) but not \(\dot{y} \implies
+        \frac{\partial U}{\partial \dot{y}} = 0\), so \(\frac{\partial L}{\partial \dot{y}} = \frac{\partial T}{\partial
+        \dot{y}}\). If we wanted to, we could just graph \(-\frac{\partial U}{\partial w}\) and
+        \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{w}})\),
+        and the graphs should be equal according to the Euler-Lagrange equation.<br><br>
+        In the \(w\) parameterization, \(U\) is independent of \(\dot w\), so we still have \(\frac{\partial L}{\partial
+        \dot{w}} = \frac{\partial T}{\partial \dot{w}}\). However, \(T\) now has dependence on both \(w\) and
+        \(\dot{w}\), so \(\frac{\partial L}{\partial w}\) has a kinetic energy term and a potential energy term.
+        We must graph \(\frac{\partial L}{\partial w}\) and \(\frac{d}{dt}(\frac{\partial L}{\partial \dot{w}})\) to get
+        equal quantities according to the Euler-Lagrange equation.<br><br>
+        In general, kinetic terms for non-Cartesian coordinates can depend on both coordinates and velocities, and so
+        it's important to pay attention to the dependencies of each term in the Euler-Lagrange equation on each
+        generalized coordinate and velocity.
+        <br><br>
+    </span>
+
+    <div class="buttons">
+        <column id="prev-button">
+            <button onclick="window.location.href = 'lagrangian1.html'">PREVIOUS PAGE</button>
+        </column>
+        <column id="next-button">
+            <button onclick="window.location.href = 'lagrangian3.html'">NEXT PAGE</button>
+        </column>
     </div>
-</div> 
-<br><br>
-
-<div class="buttons">
-    <column id="prev-button">
-        <button onclick = "window.location.href = 'lagrangian1.html'">PREVIOUS PAGE</button>
-    </column>
-    <column id="next-button">
-        <button onclick = "window.location.href = 'lagrangian3.html'">NEXT PAGE</button>
-    </column>
-</div> 
-
-<br><br>
-
+    <br><br><br>
 </body>
-</html>
 
+</html>
