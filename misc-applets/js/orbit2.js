@@ -77,7 +77,7 @@ function plotData(input) {
 
   // Update the line
   var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
-
+  
   u.enter()
     .append("path")
     .attr("class", "line")
