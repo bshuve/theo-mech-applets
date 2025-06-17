@@ -6,7 +6,7 @@ const CANVAS_WIDTH = 330;
 const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
-const dt = 0.01;
+const dt = 0.1;
 const FRAME_RATE = 10   // ms
 const TRANSITION_TIME = 10; // ms
 
@@ -406,3 +406,31 @@ document.getElementById("L-slider").onchange = function () {
   r_max = (L) ** 2 / (G * mass1 * mass2 * mass2) * (1 / (1 - epsilon));
   runAnimation();
 }
+
+
+var showAnswer1 = false;
+document.getElementById("show-q1").addEventListener("click", function () {
+    if (!showAnswer1) {
+        showAnswer1 = true;
+        document.getElementById("show-q1").innerHTML = "Hide Answer";
+        document.getElementById("answer1").style.display = "block";
+    } else {
+        showAnswer1 = false;
+        document.getElementById("show-q1").innerHTML = "Show Answer";
+        document.getElementById("answer1").style.display = "none";
+    }
+});
+
+
+var showAnswer2 = false;
+document.getElementById("show-q2").addEventListener("click", function () {
+    if (!showAnswer2) {
+        showAnswer2 = true;
+        document.getElementById("show-q2").innerHTML = "Hide Answer";
+        document.getElementById("answer2").style.display = "block";
+    } else {
+        showAnswer2 = false;
+        document.getElementById("show-q2").innerHTML = "Show Answer";
+        document.getElementById("answer2").style.display = "none";
+    }
+});
