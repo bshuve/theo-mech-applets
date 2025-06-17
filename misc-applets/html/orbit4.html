@@ -19,30 +19,65 @@
 
 <body id="body">
 
-<h1 id="title">Orbit2</h1>
+<h1 id="title">Two-Body Orbital Dynamics: The General Case</h1>
+    <p id="text">
+        <i>This applet visualizes the motion of two bodies with comparable masses orbiting their common center of mass (barycenter). Unlike the previous example where one mass dominated, here we see how both objects move in response to their mutual gravitational attraction, following elliptical paths around their shared center of mass.</i>
+    </p>
 
-<!-- <p id="text">
-    circa page 300
+    <p id="text">
+        In the general two-body problem, both masses \(m_1\) and \(m_2\) orbit around their center of mass (barycenter). The center of mass is located at distances \(r_1\) and \(r_2\) from each mass respectively, where:
+        \[
+        r_1 = \frac{m_2}{m_1 + m_2} \cdot r \quad \text{and} \quad r_2 = \frac{m_1}{m_1 + m_2} \cdot r
+        \]
+        where \(r = r_1 + r_2\) is the separation distance between the two masses.
+    </p>
 
-    \[U_{eff}(r) = -\frac{Gm_1m_2}{r}+\frac{l^2}{2\mu r^2}\]
+    <p id="text">
+        The <b>reduced mass</b> \(\mu = \frac{m_1 m_2}{m_1 + m_2}\) allows us to treat this as an equivalent one-body problem. The effective potential becomes:
+        \[
+        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} - \frac{G m_1 m_2}{r}
+        \]
+        The separation distance follows the same orbital equation as before:
+        \[
+        r(\theta) = \frac{L^2}{\mu G m_1 m_2} \frac{1}{1 + \epsilon \cos \theta}
+        \]
+    </p>
 
-    \[r(\phi)=\frac{c}{1+\epsilon\cos\phi}\]
+    <p id="text">
+        However, the key difference is in how the individual masses move. Each mass follows its own elliptical orbit around the barycenter:
+        <br>• The <span style="color: green;"><b>green mass</b></span> (\(m_1\)) orbits at distance \(r_1\) from the center of mass
+        <br>• The <span style="color: blue;"><b>blue mass</b></span> (\(m_2\)) orbits at distance \(r_2\) from the center of mass
+        <br>• The <span style="color: red;"><b>red point</b></span> shows the separation distance \(r\) between the masses
+        <br>• The <span style="color: pink;"><b>pink point</b></span> marks the center of mass (barycenter)
+    </p>
 
-    where \(c=l^2/Gm_1m_2\mu\) and \(\mu=m_1m_2/(m_1+m_2)\) is the reduced mass
+    <label for="show-q1" id="text">
+        <b>Question 2: </b> How does the motion differ when \(m_1 \approx m_2\) compared to when \(m_1 >> m_2\)?
+        <br><br>
+    </label>
+    <button id="show-q1">Show answer</button>
+    <br>
+    <span id="answer1" style="display: none"><br>
+        When \(m_1 \approx m_2\), both masses orbit significantly around the barycenter, which lies approximately halfway between them. Each mass traces a substantial elliptical path. When \(m_1 >> m_2\), the barycenter is very close to \(m_1\), so \(m_1\) barely moves while \(m_2\) does most of the orbiting - this is the case we saw in the Sun-Earth system.
+    </span>
 
-    \(x=a\cos t\) and \(y=b\sin t\). We want to convert to polar but also a little different. The foci at \(a^2-b^2\)
-    \[\frac{b}{a}=\sqrt{1-\epsilon^2}\]
-    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta} \longleftrightarrow \frac{(x+d)^2}{a^2}+\frac{y^2}{b^2}=1\longleftrightarrow x=a\cos t - d\quad\text{ and }\quad y=b\sin t\]
-    \[c=r(\pi/2)\]
-    \[a=\frac{c}{1-\epsilon^2}\]
-    \[b=\frac{c}{\sqrt{1-\epsilon^2}}\]
-    \[d=a\epsilon\]
+    <label for="show-q2" id="text">
+        <b>Question 3: </b> What happens to the reduced mass \(\mu\) when the masses are equal (\(m_1 = m_2 = m\))?
+        <br><br>
+    </label>
+    <button id="show-q2">Show answer</button>
+    <br>
+    <span id="answer2" style="display: none"><br>
+        When \(m_1 = m_2 = m\), the reduced mass becomes \(\mu = \frac{m \cdot m}{m + m} = \frac{m^2}{2m} = \frac{m}{2}\). This means the effective mass in the problem is half of either individual mass, and both objects orbit at equal distances from the barycenter.
+    </span>
 
-    <br><br>
+    <p id="text">
+        This simulation uses masses of \(m_1 = 2 \times 10^{28}\) kg and \(m_2 = 6 \times 10^{27}\) kg, giving a mass ratio of about 3:1. This could represent systems like binary stars, double asteroids, or the Pluto-Charon system. Try adjusting the angular momentum \(L\) and eccentricity \(\epsilon\) to see how both objects respond to changes in the orbital parameters.
+    </p>
 
-    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta}\]
-    \[\frac{d\phi}{dt} = \frac{l}{\mu r^2}\]
-</p> -->
+    <p id="text">
+        Notice how the principle of least action still governs the motion - both masses follow the paths that minimize the action integral, resulting in the elegant elliptical dance around their common center of mass that we observe in nature.
+    </p>
 
 <h1>Find the Fastest Path</h1>
 <p id="debug">debug text here</p>

@@ -19,9 +19,12 @@ var L = parseFloat(document.getElementById("L-slider").getAttribute("value"))*1e
 var energy = (epsilon ** 2 - 1) * ((G * sunMass * earthMass * earthMass) / 2 / (L ** 2));
 var r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass); 
 var r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1/(1-epsilon)); 
-
+var kinetic_data = [];
+var full_ke_data = [];
 const SCALE_R = 1e11; // Scale factor for radius (m to AU) for graphing
 const SCALE_U = 5e32; // Scale factor for energy for graphing
+const SCALE_KE = 1e32; // Scale factor for kinetic energy for graphing
+
 /////////////////////////////////////////////////
 /* MASTER GRAPHING CAPABILITY */
 /////////////////////////////////////////////////
@@ -113,6 +116,18 @@ var pe_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy
 var pe_point = potential_energy_plot.svg.append("circle")
 .attr("id", "potential-energy-point").attr("r", 3).attr("fill", "blue").attr("visibility", "visible");
 
+// KINETIC ENERGY
+const kinetic_energy_input = {
+  divID: "#kinetic-graph",
+  svgID: "svg-for-kinetic-energy-plot",
+  domain: {lower: 0, upper: 10},
+  xLabel:  "Radius (AU)",
+  range: {lower: 0, upper: 10},
+  yLabel:  "Kinetic Energy (J)"};
+const kinetic_energy_plot = createPlot(kinetic_energy_input);
+var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line");
+var ke_point = kinetic_energy_plot.svg.append("circle")
+.attr("id", "kinetic-energy-point").attr("r", 3).attr("fill", "black").attr("visibility", "visible");
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -123,7 +138,7 @@ var pe_data = [];
 function potentialEnergyData(){
   pe_data.length = 0;
   
-  for (let r = 1; r <= 4*r_max; r+=r_max/500) {
+  for (let r = 1; r <= 4*r_max; r+=r_max/400) {
       //console.log(r/SCALE_R); 
       let Ueff = (L**2)/(2*earthMass*r**2) - (G*earthMass*sunMass)/r
       //console.log(Ueff);
@@ -132,11 +147,8 @@ function potentialEnergyData(){
       y: Ueff / SCALE_U  // Scaled energy});
   });}
   }
-potentialEnergyData();
-
 
 function plotPotentialEnergy(data) {
-
   // potential energy
   input = {
     data: data,
@@ -145,6 +157,60 @@ function plotPotentialEnergy(data) {
     xScale: potential_energy_plot.xScale,
     yScale: potential_energy_plot.yScale,
     color: "green"};
+
+  // plot the data
+  plotData(input);
+}
+
+
+function kineticEnergyData() {
+  full_ke_data = [];
+  let phi = 0;
+  const maxPhi = 2 * Math.PI * 1.2; 
+  const dphi = 0.01;
+
+  while (phi <= maxPhi) {
+    // Kinetic energy = 0.5 * m * (r * dphi)^2
+    let r = (L * L) / (G * sunMass * earthMass * earthMass * (1 + epsilon * Math.cos(phi)));
+    let dphidt = L / (earthMass * r * r);
+    let v = r * dphidt;
+    let ke = 0.5 * earthMass * v * v; //should this be earthmass? 
+
+    full_ke_data.push({ 
+      x: r / 1.496e11, // Convert to AU
+      y: ke / SCALE_KE  // Scale energy
+    });
+    phi += dphi;
+  }
+}
+
+function plotKineticEnergy(data) {
+  // Update domain and range based on data
+  const xExtent = d3.extent(data, d => d.x);
+  const yExtent = d3.extent(data, d => d.y);
+  
+  kinetic_energy_plot.xScale.domain(xExtent);
+  kinetic_energy_plot.yScale.domain([0, yExtent[1]]);
+  
+  // Update axes
+  kinetic_energy_plot.svg.select(".myXaxis")
+    .transition()
+    .duration(TRANSITION_TIME)
+    .call(d3.axisBottom(kinetic_energy_plot.xScale));
+  
+  kinetic_energy_plot.svg.select(".myYaxis")
+    .transition()
+    .duration(TRANSITION_TIME)
+    .call(d3.axisLeft(kinetic_energy_plot.yScale));
+
+  // kinetic energy
+  input = {
+    data: data,
+    svg: kinetic_energy_plot.svg,
+    line: ke_line,
+    xScale: kinetic_energy_plot.xScale,
+    yScale: kinetic_energy_plot.yScale,
+    color: "red"};
 
   // plot the data
   plotData(input);
@@ -162,9 +228,22 @@ function plotPotentialPoint(r) {
   pe_point.attr("cy", potential_energy_plot.yScale(Ueff / SCALE_U));
 }
 
-// initialize potential plot
-plotPotentialEnergy(pe_data);
+function plotKineticPoint(r) {
+  // Calculate kinetic energy at current radius
+  let dphidt = L / (earthMass * r * r);
+  let v = r * dphidt;
+  let ke = 0.5 * earthMass * v * v;
+  
+  // Update point position
+  ke_point.attr("cx", kinetic_energy_plot.xScale(r / 1.496e11)); // Convert to AU
+  ke_point.attr("cy", kinetic_energy_plot.yScale(ke / SCALE_KE));
+}
 
+// initialize plots
+potentialEnergyData();
+plotPotentialEnergy(pe_data);
+kineticEnergyData();
+plotKineticEnergy(full_ke_data);
 
 /////////////////////////////////////////////////
 /* CANVAS ANIMATIONS */
@@ -263,6 +342,12 @@ function component(width, height, color, x, y) {
     // Convert polar (r, phi) to Cartesian (x, y)
     this.x = transformXCoord(this.r * Math.cos(this.phi));
     this.y = transformYCoord(this.r * Math.sin(this.phi));
+
+    // Kinetic energy = 0.5 * m * (r * dphi)^2
+    // using let not to pollute global variable space
+    //let v = this.r * dphi / dt
+    //let ke = 0.5 * earthMass * v * v  // should this be earthmass when both are moving?
+    //kinetic_data.push({time: animArea.time, ke: ke});
  
   }
 
@@ -281,7 +366,7 @@ function component(width, height, color, x, y) {
     const drawRectangle = (x, y, width, height, color) => {
       ctx = animArea.context
       ctx.fillStyle = color;
-      ctx.fillRect(x, y, width, height);
+      ctx.fillRect(x, y, width, height, color);
     }
     for (let rectangle of rectangles) {
       drawRectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.color);
@@ -294,6 +379,7 @@ var position_data = [];
 var angle_data = [];
 var potential_time_data = [];  // Store potential energy over time
 
+
 function updateFrame() {
   // clear frame and move to next
   animArea.clear();
@@ -301,12 +387,9 @@ function updateFrame() {
   // update positions
   earth.newPos(animArea.time);
 
-  //let t = Math.round(animArea.time * 100) / 100;
-
-
-
   // Update plots
   plotPotentialPoint(earth.r);
+  plotKineticPoint(earth.r);
 
   earth.update();
   sun.update();
@@ -316,7 +399,7 @@ function updateFrame() {
 
   // end animation when t = 1
   if (earth.phi >= 10 * Math.PI) {
-    endAnimation();
+    //endAnimation();
   }
   
 }
@@ -338,13 +421,11 @@ document.getElementById("epsilon-slider").oninput = function () {
   document.getElementById("print-L").innerHTML = L.toFixed(2);
   r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass); 
   r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1/(1-epsilon)); 
-  //epsilon = Math.sqrt(1 - b ** 2 / a ** 2);
-  //document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
-
-  // f = a * epsilon;
-  // document.getElementById("print-focus").innerHTML = f.toFixed(2);
-    potentialEnergyData();  // Regenerate data
-    plotPotentialEnergy(pe_data);  // Replot
+ 
+  potentialEnergyData();  // Regenerate data
+  plotPotentialEnergy(pe_data);  // Replot
+  kineticEnergyData();  // Regenerate KE data
+  plotKineticEnergy(full_ke_data);  // Replot KE
   endAnimation();
   startAnimation();
 }
@@ -358,13 +439,11 @@ document.getElementById("L-slider").oninput = function () {
   document.getElementById("print-L").innerHTML = L.toFixed(2);
   r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass); 
   r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1/(1-epsilon)); 
-  // epsilon = Math.sqrt(1 - b ** 2 / a ** 2);
-  // document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
 
-  // f = a * epsilon;
-  // document.getElementById("print-focus").innerHTML = f.toFixed(2);
-    potentialEnergyData();  // Regenerate data
+  potentialEnergyData();  // Regenerate data
   plotPotentialEnergy(pe_data);  // Replot
+  kineticEnergyData();  // Regenerate KE data
+  plotKineticEnergy(full_ke_data);  // Replot KE
   endAnimation();
   startAnimation();
 }
@@ -384,3 +463,16 @@ document.getElementById("L-slider").onchange = function () {
   r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1/(1-epsilon)); 
   runAnimation();
 }
+
+var showAnswer1 = false;
+document.getElementById("show-q1").addEventListener("click", function () {
+    if (!showAnswer1) {
+        showAnswer1 = true;
+        document.getElementById("show-q1").innerHTML = "Hide Answer";
+        document.getElementById("answer1").style.display = "block";
+    } else {
+        showAnswer1 = false;
+        document.getElementById("show-q1").innerHTML = "Show Answer";
+        document.getElementById("answer1").style.display = "none";
+    }
+});
