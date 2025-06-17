@@ -3,14 +3,14 @@
 
 <head>
     <title>orbit2</title>
-    <link rel = "stylesheet" href = "../css/orbit2.css">
+    <link rel="stylesheet" href="../css/orbit2.css">
     <!-- <link rel="icon" href = "../img/wally.png"> -->
     <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
 
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v4.js"></script>
 
-    <script defer src = "../js/orbit3.js"></script>
+    <script defer src="../js/orbit3.js"></script>
 
     <!-- LaTeX support -->
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -19,68 +19,99 @@
 
 <body id="body">
 
-<h1 id="title">Orbit2</h1>
+    <h1 id="title">Orbital Motion and the Principle of Least Action</h1>
+    <p id="text">
+        <i>This applet visualizes the motion of a planet orbiting a star. It allows students to explore how orbital
+            parameters like angular momentum and eccentricity affect the trajectory and how the principle of least
+            action can be used to determine the path of a two-body system.</i>
+    </p>
 
-<!-- <p id="text">
-    circa page 300
+    <p id="text">
+        In classical mechanics, the motion of two gravitationally interacting bodies (like the Earth and the Sun) can be
+        reduced to a one-body problem using the <b>reduced mass</b> \(\mu = \frac{m_1 m_2}{m_1 + m_2}\). The effective
+        potential in this system is given by:
+        \[
+        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} -\frac{G m_1 m_2}{r}
+        \]
+        where \(L\) is the angular momentum of the system. This potential includes both the gravitational attraction and
+        the centrifugal barrier due to rotation.
+    </p>
 
-    \[U_{eff}(r) = -\frac{Gm_1m_2}{r}+\frac{l^2}{2\mu r^2}\]
+    <p id="text">
+        The resulting orbital path can be derived from Newton’s Laws or from minimizing the action:
+        \[
+        r(\theta) = \frac{L^2}{\mu Gm_1m_2}\frac{1}{1 + \epsilon \cos \theta}
+        \]
+        where \(\epsilon\) is the orbital
+        eccentricity. In the bound case where \(\epsilon < 1\), ellipses will form. However, this is the path of the
+            reduced mass. The path's of \(m_1\) and \(m_2\) will take on the following paths: \[
+            r_{m_1}(\theta)=\frac{m_2}{m_1+m_2}r \] \[ r_{m_2}(\theta)=-\frac{m_1}{m_1+m_2}r. \] </p>
 
-    \[r(\phi)=\frac{c}{1+\epsilon\cos\phi}\]
-
-    where \(c=l^2/Gm_1m_2\mu\) and \(\mu=m_1m_2/(m_1+m_2)\) is the reduced mass
-
-    \(x=a\cos t\) and \(y=b\sin t\). We want to convert to polar but also a little different. The foci at \(a^2-b^2\)
-    \[\frac{b}{a}=\sqrt{1-\epsilon^2}\]
-    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta} \longleftrightarrow \frac{(x+d)^2}{a^2}+\frac{y^2}{b^2}=1\longleftrightarrow x=a\cos t - d\quad\text{ and }\quad y=b\sin t\]
-    \[c=r(\pi/2)\]
-    \[a=\frac{c}{1-\epsilon^2}\]
-    \[b=\frac{c}{\sqrt{1-\epsilon^2}}\]
-    \[d=a\epsilon\]
-
-    <br><br>
-
-    \[r(\theta)=\frac{c}{1+\epsilon\cos\theta}\]
-    \[\frac{d\phi}{dt} = \frac{l}{\mu r^2}\]
-</p> -->
-
-<h1>Find the Fastest Path</h1>
-<p id="debug">debug text here</p>
-<div id="applet">
-    <div id="top-panel">
-        <canvas id="orbit-canvas" title="planetary-motion"></canvas>
-        <div id="potential-energy-graph"></div>
-    </div>
-
-    <div id="bottom-panel">
-        <div id="position-graph"></div>
-        <div id="angle-graph"></div>
-        <div id="kinetic-graph"></div>
-    </div>
-
-    <div id="inner-container">
-        <label for="L-slider">L: <span id="print-L">0.00</span></label>
-        <input id="L-slider" class="slider" type="range" min="0" max="5" value="1" step="0.1">
-        <br>
-        <label for="epsilon-slider">Epsilon: <span id="print-epsilon">0.00</span></label>
-        <input id="epsilon-slider" class="slider" type="range" min="0" max="1" value="0" step="0.1">
-        <label for="speed-slider">frame rate (ms/f): <span id="print-speed">5</span></label>
-        <input id="speed-slider" class="slider" type="range" min="1" max="10" value="5">
-        <fieldset>
-            <legend>LEGEND</legend>
-            <label><span id="orange">.....</span> - Position</label><br>
-            <label><span id="purple">.....</span> - Velocity</label><br>
+            <p id="text">
+                Let's look at system where \(m_1 >> m_2\), such as a star-planet system.
+            </p>
+            <label for="show-q1" id="text">
+                <b>Question 1: </b> What is the value of \(\mu\) when \(m_1 >> m_2\)? What does this imply about how the
+                orbit will look?
+                <br><br>
+            </label>
+            <button id="show-q1">Show answer</button>
             <br>
-            <label><span id="red">.....</span> - Kinetic</label><br>
-            <label><span id="green">.....</span> - Potential</label><br>
-            <label><span id="blue">.....</span> - Action</label><br>
-        </fieldset>
-        <p>\(f=\) <span id="print-focus">2.00</span></p>
-        <p>\(\epsilon=\) <span id="print-epsilon">0.00</span></p>
-    </div>
+            <span id="answer1" style="display: none"><br>
+                When \(m_1 >> m_2\), \(\mu\) will get close to \(\frac{m_1 m_2}{m_1}\), which simplifies to \( m_2\),
+                giving us an elliptical equation that simulates \(m_2\), or \(m_{earth}\) orbitting around a very heavy
+                mass. This makes sense with the radius equations, as \(r_1\) will be very close to 0 and \(r_2\) will be
+                very close to \(r\).
+            </span>
 
-</div>
+            <p id="text">
+                In this
+                applet, we model this using the masses of the Sun and Earth for \(m_1\) and \(m_2\) respectively. Let's
+                call these \(m_{sun}\) and \(m_{earth}\).The sliders below let you control both \(\epsilon\) and angular
+                momentum \(L\), allowing you to see how the
+                orbit changes in real time. You’ll also see graphs showing position, angle, and energy over time.
+                </p>
+                 <p id="text">Try
+                adjusting the sliders to see how higher angular momentum stabilizes the orbit and how increasing
+                eccentricity makes it more elongated. 
+            </p>
+            <h1>Find the Fastest Path</h1>
+            <p id="debug">debug text here</p>
+            <div id="applet">
+                <div id="top-panel">
+                    <canvas id="orbit-canvas" title="planetary-motion"></canvas>
+                    <div id="potential-energy-graph"></div>
+                </div>
+
+                <div id="bottom-panel">
+                    <div id="position-graph"></div>
+                    <div id="angle-graph"></div>
+                    <div id="kinetic-graph"></div>
+                </div>
+
+                <div id="inner-container">
+                    <label for="L-slider">L: <span id="print-L">0.00</span></label>
+                    <input id="L-slider" class="slider" type="range" min="0" max="5" value="1" step="0.1">
+                    <br>
+                    <label for="epsilon-slider">Epsilon: <span id="print-epsilon">0.00</span></label>
+                    <input id="epsilon-slider" class="slider" type="range" min="0" max="1" value="0" step="0.1">
+                    <label for="speed-slider">frame rate (ms/f): <span id="print-speed">5</span></label>
+                    <input id="speed-slider" class="slider" type="range" min="1" max="10" value="5">
+                    <fieldset>
+                        <legend>LEGEND</legend>
+                        <label><span id="orange">.....</span> - Position</label><br>
+                        <label><span id="purple">.....</span> - Velocity</label><br>
+                        <br>
+                        <label><span id="red">.....</span> - Kinetic</label><br>
+                        <label><span id="green">.....</span> - Potential</label><br>
+                        <label><span id="blue">.....</span> - Action</label><br>
+                    </fieldset>
+                    <p>\(f=\) <span id="print-focus">2.00</span></p>
+                    <p>\(\epsilon=\) <span id="print-epsilon">0.00</span></p>
+                </div>
+
+            </div>
 
 </body>
-</html>
 
+</html> 
