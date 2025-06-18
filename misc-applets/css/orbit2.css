@@ -107,6 +107,17 @@ button:active {
     height: 280px;
     width: 330px;
 }
+#kinetic-graph {
+    position: absolute;
+    right: 0px;
+    height: 280px;
+    width: 330px;
+}
+#kinetic-graph2 {
+    position: absolute;
+    height: 280px;
+    width: 330px;
+}
 
 #integral-graph {
     position: absolute;
