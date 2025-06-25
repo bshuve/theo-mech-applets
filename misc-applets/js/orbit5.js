@@ -5,8 +5,8 @@
  * It demonstrates conservation of energy, kinetic energy components, and
  * the relationship between orbital parameters and energy.
  * 
- * @author Theo Mech Applets
- * @version 2.0
+ * @author Harvey Mudd College
+ * @version 1.0
  */
 
 /////////////////////////////////////////////////
@@ -549,13 +549,21 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
         .attr("width", bar_width)
         .attr("height", Math.max(0, orbital_ke_scaled));
     
-    // Update total energy line
+    // Update total energy line - use the constant conserved energy
     const total_y = totalEnergyPlot.yScale(energy / SCALE_U);
     teTotalLine
         .attr("x1", 0)
         .attr("y1", total_y)
         .attr("x2", totalEnergyPlot.xScale.range()[1])
         .attr("y2", total_y);
+    
+    // DEBUG: Alternative total energy line using the sum (commented out for debugging)
+    // const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
+    // teTotalLine
+    //     .attr("x1", 0)
+    //     .attr("y1", sum_total_y)
+    //     .attr("x2", totalEnergyPlot.xScale.range()[1])
+    //     .attr("y2", sum_total_y);
     
     // Update display
     document.getElementById("print-total-energy").innerHTML = energy.toExponential(2);
