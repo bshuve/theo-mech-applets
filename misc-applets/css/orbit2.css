@@ -86,6 +86,13 @@ button:active {
     width: 330px;
 }
 
+#orbit-canvas2 {
+    position: absolute;
+    left: 0px;
+    height: 580px;
+    width: 680px;
+}
+
 #position-graph {
     position: absolute;
     right: 0px;
