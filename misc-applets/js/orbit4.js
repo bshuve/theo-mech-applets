@@ -2,8 +2,8 @@
 /* Parameters */
 /////////////////////////////////////////////////
 
-const CANVAS_WIDTH = 330;
-const CANVAS_HEIGHT = 280;
+const CANVAS_WIDTH = 680;
+const CANVAS_HEIGHT = 580;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
 const dt = 0.1;
@@ -218,7 +218,7 @@ function transformYCoord(y) {
 
 // JS object for both canvases
 var animArea = {
-  panel: document.getElementById("orbit-canvas"),
+  panel: document.getElementById("orbit-canvas2"),
   start: function () {
     this.panel.width = CANVAS_WIDTH;
     this.panel.height = CANVAS_HEIGHT;
