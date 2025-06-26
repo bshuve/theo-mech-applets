@@ -2,55 +2,171 @@
 <html lang="en">
 
 <head>
-    <title>orbit5</title>
-    <link rel="stylesheet" href="../css/orbit2.css">
-    <!-- <link rel="icon" href = "../img/wally.png"> -->
-    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
-
-    <!-- Load d3.js -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orbital Mechanics Energy Analysis - orbit5</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/orbit5.css">
+    
+    <!-- External Libraries -->
     <script src="https://d3js.org/d3.v4.js"></script>
-
-    <script defer src="../js/orbit5.js"></script>
-
-    <!-- LaTeX support -->
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
+    
+    <!-- Application Script -->
+    <script defer src="../js/orbit5.js"></script>
 </head>
 
 <body id="body">
-
+    <!-- Main Application Container -->
     <div id="applet">
-        <div id="top-panel">
-            <canvas id="orbit-canvas" title="planetary-motion"></canvas>
-            <div id="potential-energy-graph"></div>
+        
+        <!-- Top Panel: Orbit Animation and Energy Graphs -->
+        <div id="top-panel" style="display: flex;">
+            <!-- Orbit Animation Display -->
+            <div id="orbit-animation" class="graph-container">
+                <!-- D3 will create SVG here showing the orbital motion -->
+            </div>
+            
+            <!-- Potential Energy Graph -->
+            <div id="potential-energy-graph" class="graph-container">
+                <!-- Shows potential energy vs radius with moving point -->
+            </div>
+            
+            <!-- Radial Kinetic Energy Graph -->
+            <div id="radial-kinetic-graph" class="graph-container">
+                <!-- Shows radial kinetic energy vs radius with moving bar -->
+            </div>
         </div>
 
+        <!-- Bottom Panel: Additional Analysis Graphs -->
         <div id="bottom-panel">
-            <div id="position-graph"></div>
-            <div id="angle-graph"></div>
-            <div id="kinetic-graph"></div>
-            <div id="gravitational-energy-graph"></div>
+            <!-- Position Graph (placeholder for future use) -->
+            <div id="position-graph" class="graph-container">
+                <!-- Could show position vs time -->
+            </div>
+            
+            <!-- Angle Graph (placeholder for future use) -->
+            <div id="angle-graph" class="graph-container">
+                <!-- Could show angular position vs time -->
+            </div>
+            
+            <!-- Kinetic Energy Graph -->
+            <div id="kinetic-graph" class="graph-container">
+                <!-- Shows total kinetic energy vs radius -->
+            </div>
+            
+            <!-- Orbital Kinetic Energy Graph -->
+            <div id="orbital-kinetic-graph" class="graph-container">
+                <!-- Shows orbital kinetic energy vs radius with moving bar -->
+            </div>
+            
+            <!-- Gravitational Energy Graph (placeholder for future use) -->
+            <div id="gravitational-energy-graph" class="graph-container">
+                <!-- Could show gravitational energy vs radius -->
+            </div>
         </div>
 
+        <!-- Total Energy Analysis Graph -->
+        <div id="total-energy-graph" class="graph-container">
+            <!-- Large graph showing:
+                 - Potential energy line (green)
+                 - Moving dot on potential energy line
+                 - Stacked bars: yellow (radial KE) + purple (orbital KE)
+                 - Horizontal dotted line for total energy (red)
+            -->
+        </div>
+
+        <!-- Control Panel -->
         <div id="inner-container">
-            <label for="L-slider">L: <span id="print-L">0.00</span></label>
-            <input id="L-slider" class="slider" type="range" min="0" max="5" value="1" step="0.1">
-            <br>
-            <label for="epsilon-slider">Epsilon: <span id="print-epsilon">0.00</span></label>
-            <input id="epsilon-slider" class="slider" type="range" min="0" max="1" value="0" step="0.1">
-            <label for="speed-slider">frame rate (ms/f): <span id="print-speed">5</span></label>
-            <input id="speed-slider" class="slider" type="range" min="1" max="10" value="5">
-            <fieldset>
-                <legend>LEGEND</legend>
-                <label><span id="orange">.....</span> - Position</label><br>
-                <label><span id="purple">.....</span> - Velocity</label><br>
-                <br>
-                <label><span id="red">.....</span> - Kinetic</label><br>
-                <label><span id="green">.....</span> - Potential</label><br>
-                <label><span id="blue">.....</span> - Action</label><br>
-            </fieldset>
-            <p>\(f=\) <span id="print-focus">2.00</span></p>
-            <p>\(\epsilon=\) <span id="print-epsilon">0.00</span></p>
+            <!-- Orbital Parameter Controls -->
+            <div class="control-section">
+                <h3>Orbital Parameters</h3>
+                
+                <!-- Angular Momentum Control -->
+                <div class="control-group">
+                    <label for="L-slider">
+                        Angular Momentum (L): 
+                        <span id="print-L" class="value-display">0.00</span>
+                    </label>
+                    <input id="L-slider" 
+                           class="slider" 
+                           type="range" 
+                           min="0" 
+                           max="5" 
+                           value="1" 
+                           step="0.1"
+                           title="Adjust the angular momentum of the orbit">
+                </div>
+                
+                <!-- Eccentricity Control -->
+                <div class="control-group">
+                    <label for="epsilon-slider">
+                        Eccentricity (ε): 
+                        <span id="print-epsilon" class="value-display">0.00</span>
+                    </label>
+                    <input id="epsilon-slider" 
+                           class="slider" 
+                           type="range" 
+                           min="0" 
+                           max="1" 
+                           value="0" 
+                           step="0.1"
+                           title="Adjust the eccentricity of the orbit">
+                </div>
+                
+                <!-- Animation Speed Control -->
+                <div class="control-group">
+                    <label for="speed-slider">
+                        Animation Speed (ms/frame): 
+                        <span id="print-speed" class="value-display">5</span>
+                    </label>
+                    <input id="speed-slider" 
+                           class="slider" 
+                           type="range" 
+                           min="1" 
+                           max="10" 
+                           value="5"
+                           title="Adjust the animation speed">
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="control-section">
+                <fieldset>
+                    <legend>Graph Legend</legend>
+                    <div class="legend-item">
+                        <span id="orange" class="color-indicator">.....</span> 
+                        <span class="legend-text">Position</span>
+                    </div>
+                    <div class="legend-item">
+                        <span id="purple" class="color-indicator">.....</span> 
+                        <span class="legend-text">Velocity</span>
+                    </div>
+                    <div class="legend-item">
+                        <span id="red" class="color-indicator">.....</span> 
+                        <span class="legend-text">Kinetic Energy</span>
+                    </div>
+                    <div class="legend-item">
+                        <span id="green" class="color-indicator">.....</span> 
+                        <span class="legend-text">Potential Energy</span>
+                    </div>
+                    <div class="legend-item">
+                        <span id="blue" class="color-indicator">.....</span> 
+                        <span class="legend-text">Action</span>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Energy Information Display -->
+            <div class="control-section">
+                <h3>Energy Analysis</h3>
+                <div class="energy-info">
+                    <p>Focus Parameter: \(f=\) <span id="print-focus" class="value-display">2.00</span></p>
+                    <p>Eccentricity: \(\epsilon=\) <span id="print-epsilon" class="value-display">0.00</span></p>
+                    <p>Total Energy: <span id="print-total-energy" class="value-display">0.00</span> J</p>
+                </div>
+            </div>
         </div>
 
     </div>
