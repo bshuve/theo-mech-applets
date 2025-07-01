@@ -2,6 +2,7 @@
 /* Parameters */
 /////////////////////////////////////////////////
 
+
 const CANVAS_WIDTH = 330;
 const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
@@ -16,14 +17,21 @@ const earthMass = 6 * (10 ** 24);
 const mu = (sunMass * earthMass) / (sunMass + earthMass);
 var r_min = parseFloat(document.getElementById("rmin-slider").getAttribute("value")) * 1.496e+11;
 var L = parseFloat(document.getElementById("L-slider").getAttribute("value")) * 1e40; // kg·m²/s
-
-function calculateEpsilon() {
+var energy, epsilon;
+function calculateDerivedQuantities() {
   // From the relation: r_min = L²/(G*sunMass*earthMass²) * 1/(1+ε)
   // Solving for ε: ε = L²/(G*sunMass*earthMass²*r_min) - 1
   const numerator = L * L;
   const denominator = G * sunMass * earthMass * earthMass * r_min;
-  console.log(Number(Math.max(0, (numerator / denominator) - 1).toFixed(3)));
-  return Number(Math.max(0, (numerator / denominator) - 1).toFixed(3));
+  epsilon = Number(Math.max(0, (numerator / denominator) - 1).toFixed(3));
+  epsilon = Math.min(epsilon, 0.999);
+  if (!epsilon) {
+    epsilon = 0;
+  }
+
+  // Calculate and display total energy
+  energy = -(epsilon ** 2 - 1) * ((G * sunMass * earthMass)**2 * mu / 2 / (L ** 2));
+
 }
 
 function updateRminLimits() {
@@ -57,24 +65,20 @@ function updateRminLimits() {
   
   // Update step size to be reasonable for the range
   const range = r_min_max_AU - r_min_min_AU;
-  const step = Math.max(0.01, range / 100);
+  const step = Math.min(0.01, range / 100);
   slider.setAttribute("step", step.toFixed(3));
 }
-
-var epsilon = calculateEpsilon();
-var energy = (epsilon ** 2 - 1) * ((G * sunMass * earthMass * earthMass) / 2 / (L ** 2));
 var radial_ke_data = [];
 var orbital_ke_data = [];
 const SCALE_R = 1.496e+11; // Scale factor for radius (m to AU) for graphing
-const SCALE_U = 5e32; // Scale factor for energy for graphing
-const SCALE_KE = 1e32; // Scale factor for kinetic energy for graphing
+const SCALE_U = 1e33; // Scale factor for energy for graphing
+const SCALE_KE = 1e33; // Scale factor for kinetic energy for graphing
 const NUM_STARS = 50;
 const stars = Array.from({ length: NUM_STARS }, () => ({
   x: Math.random() * CANVAS_WIDTH,
   y: Math.random() * CANVAS_HEIGHT,
   radius: Math.random() * 1.5 + 0.5 // random star size
 }));
-
 
 const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 const originalPanel = document.getElementById("orbit-canvas");
@@ -211,9 +215,7 @@ function potentialEnergyData() {
   pe_data.length = 0;
 
   for (let r = 1; r <= 5e12; r += 5e12 / 500) {
-    //console.log(r/SCALE_R); 
     let Ueff = (L ** 2) / (2 * earthMass * r ** 2) - (G * earthMass * sunMass) / r
-    //console.log(Ueff);
     pe_data.push({
       x: r / SCALE_R,  // Scaled radius
       y: Ueff / SCALE_U  // Scaled energy});
@@ -252,10 +254,7 @@ function radialKineticEnergyData() {
     let dr_dphi = (r * epsilon * Math.sin(phi)) / (1 + epsilon * Math.cos(phi));
     let drdt = dr_dphi * dphidt;
 
-    // Tangential velocity component
-    //let v_phi = r * dphidt;
-
-    // Total kinetic energy (both components)
+    // radial kinetic 
     let ke = 0.5 * earthMass * (drdt * drdt);
 
     radial_ke_data.push({
@@ -306,18 +305,10 @@ function orbitalKineticEnergyData() {
   const dphi = 0.001;
 
   while (phi <= maxPhi) {
-    // Calculate radial distance and velocities
+    // Calculate radial distance 
     let r = (L * L) / (G * sunMass * earthMass * earthMass * (1 + epsilon * Math.cos(phi)));
-    let dphidt = L / (earthMass * r * r);
 
-    // Radial velocity component (dr/dt)
-    let dr_dphi = (r * epsilon * Math.sin(phi)) / (1 + epsilon * Math.cos(phi));
-    let drdt = dr_dphi * dphidt;
-
-    // Tangential velocity component
-    //let v_phi = r * dphidt;
-
-    // Total kinetic energy (both components)
+    // Orbital Kinetic Energy
     let ke = 0.5 * L * L / (earthMass * r * r);
 
     orbital_ke_data.push({
@@ -373,23 +364,6 @@ function plotPotentialPoint(r) {
 }
 
 function plotRadialKineticPoint(r, phi) {
-
-  //OLD CODE 
-  // Calculate velocity components
-  // let dphidt = L / (earthMass * r * r);
-  // let dr_dphi = (r * epsilon * Math.sin(phi)) / (1 + epsilon * Math.cos(phi));
-  // let drdt = dr_dphi * dphidt;
-  // //let v_phi = r * dphidt;
-
-  // // Total kinetic energy
-  // let ke = 0.5 * earthMass * (drdt * drdt);
-
-
-  // // Update point position
-  // radial_ke_point.attr("cx", radial_kinetic_energy_plot.xScale(r / 1.496e11)); // Convert to AU
-  // radial_ke_point.attr("cy", radial_kinetic_energy_plot.yScale(ke / SCALE_KE));
-
-
   //NEW CODE 
   // Find the closest data point in radial_ke_data based on radius
   const r_au = r / 1.496e11; // Convert to AU
@@ -413,22 +387,6 @@ function plotRadialKineticPoint(r, phi) {
 
 function plotOrbitalKineticPoint(r, phi) {
 
-  //OLD CODE 
-  // Calculate velocity components
-  // let dphidt = L / (earthMass * r * r);
-  // let dr_dphi = (r * epsilon * Math.sin(phi)) / (1 + epsilon * Math.cos(phi));
-  // let drdt = dr_dphi * dphidt;
-  // //let v_phi = r * dphidt;
-
-  // // Total kinetic energy
-  // let ke = 0.5 * earthMass * (drdt * drdt);
-
-
-  // // Update point position
-  // radial_ke_point.attr("cx", radial_kinetic_energy_plot.xScale(r / 1.496e11)); // Convert to AU
-  // radial_ke_point.attr("cy", radial_kinetic_energy_plot.yScale(ke / SCALE_KE));
-
-
   //NEW CODE 
   // Find the closest data point in radial_ke_data based on radius
   const r_au = r / 1.496e11; // Convert to AU
@@ -444,12 +402,20 @@ function plotOrbitalKineticPoint(r, phi) {
       closest_point = orbital_ke_data[i];
     }
   }
-
   // Use the y-value from the pre-calculated curve data
   orbital_ke_point.attr("cx", orbital_kinetic_energy_plot.xScale(r_au));
   orbital_ke_point.attr("cy", orbital_kinetic_energy_plot.yScale(closest_point.y));
 }
 
+// Function to update displayed values
+function updateDisplayedValues() {
+  document.getElementById("print-L").innerHTML = (L / 1e40).toFixed(2);
+  document.getElementById("print-energy").innerHTML = (energy / 1e33).toFixed(2);
+  document.getElementById("print-rmin").innerHTML = (r_min / 1.496e11).toFixed(2);
+  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(3);
+}
+
+calculateDerivedQuantities();
 // Initialize limits and plots
 updateRminLimits();
 potentialEnergyData();
@@ -504,8 +470,6 @@ function transformYCoord(y) {
   return (65 + ((y - low) / (high - low)) * (150));
 }
 
-console.log(transformXCoord(0));
-console.log(transformYCoord(0));
 // JS object for both canvases
 var animArea = {
   panel: hiPPICanvas,
@@ -524,7 +488,7 @@ var animArea = {
     this.context.fillStyle = "black";
     this.context.fillRect(0, 0, this.panel.width, this.panel.height);
     // Draw ellipse orbit path
-earth.generateEllipse();
+    earth.generateEllipse();
      this.context.fillStyle = "rgba(255, 255, 255, 0.5)";
     for (let star of stars) {
     this.context.beginPath();
@@ -556,13 +520,11 @@ function component(radius, color, x, y) {
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     ctx.fill();
   }
-
   this.newPos = function (t) {
     // Calculate radial distance at current phi
     this.r = (L * L) / (G * sunMass * earthMass * mu * (1 + epsilon * Math.cos(this.phi)));
     // Update phi using dphi/dt = L / (earthMass * r^2)
     let dphi = L / (earthMass * Math.pow(this.r, 2)) * dt;
-
     this.phi += dphi;
     // Convert polar (r, phi) to Cartesian (x, y)
     this.x = transformXCoord(this.r * Math.cos(this.phi));
@@ -570,6 +532,9 @@ function component(radius, color, x, y) {
   }
 
   this.generateEllipse = function () {
+    // Clear the circles array to prevent memory leak
+    circles = [];
+    
     for (let angle = 0; angle <= 2 * Math.PI; angle += 0.1) {
       let r = ((L) ** 2) / (G * sunMass * earthMass * mu * (1 + epsilon * Math.cos(angle)));
       
@@ -591,8 +556,7 @@ function component(radius, color, x, y) {
     }
     
     for (let circle of circles) {
-      
-      drawCircle(circle.x, circle.y, 0.1, circle.color);
+      drawCircle(circle.x, circle.y, 0.5, circle.color);
     }
   }
 }
@@ -600,10 +564,8 @@ function component(radius, color, x, y) {
 function updateFrame() {
   // clear frame and move to next
   animArea.clear();
-
   // update positions
   earth.newPos(animArea.time);
-
   // Update plots
   plotPotentialPoint(earth.r);
   plotRadialKineticPoint(earth.r, earth.phi);
@@ -613,11 +575,6 @@ function updateFrame() {
   sun.update();
   
   animArea.time += dt;
-
-  // end animation when t = 1
-  if (earth.phi >= 10 * Math.PI) {
-    //endAnimation();
-  }
 }
 
 // run animation on load
@@ -635,9 +592,8 @@ document.getElementById("rmin-slider").oninput = function () {
 
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
   document.getElementById("print-L").innerHTML = (L/1e40).toFixed(1);
-  epsilon = calculateEpsilon();
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(3);
-  //r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1 / (1 - epsilon));
+
+  calculateDerivedQuantities();
 
   potentialEnergyData();  // Regenerate data
   plotPotentialEnergy(pe_data);  // Replot
@@ -659,10 +615,8 @@ document.getElementById("L-slider").oninput = function () {
   
   r_min = parseFloat(document.getElementById("rmin-slider").value) * 1.496e+11;
   document.getElementById("print-rmin").innerHTML = (r_min/1.496e+11).toFixed(2);
-  
-  epsilon = calculateEpsilon();
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(3);
-  //r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1 / (1 - epsilon));
+
+  calculateDerivedQuantities();
 
   potentialEnergyData();  // Regenerate data
   plotPotentialEnergy(pe_data);  // Replot
@@ -677,18 +631,26 @@ document.getElementById("L-slider").oninput = function () {
 // run animation
 document.getElementById("rmin-slider").onchange = function () {
   r_min = parseFloat(document.getElementById("rmin-slider").value) * 1.496e+11;
-  epsilon = calculateEpsilon();
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(3);
-  //r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1 / (1 - epsilon));
+  // Recalculate derived quantities
+    calculateDerivedQuantities();
+
+    // Update displayed values
+    updateDisplayedValues();
+
+    // Restart animation
   runAnimation();
 }
 
 // run animation
 document.getElementById("L-slider").onchange = function () {
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
-  epsilon = calculateEpsilon();
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(3);
-  //r_max = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1 / (1 - epsilon));
+  // Recalculate derived quantities
+  calculateDerivedQuantities();
+
+  // Update displayed values
+  updateDisplayedValues();
+
+  // Restart animation
   runAnimation();
 }
 
@@ -706,17 +668,14 @@ document.getElementById("show-q1").addEventListener("click", function () {
 });
 
 
-
 //https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 function createHiPPICanvas(width, height) {
     const ratio = window.devicePixelRatio;
     const canvas = document.createElement("canvas");
-
     canvas.width = width * ratio;
     canvas.height = height * ratio;
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
     canvas.getContext("2d").scale(ratio, ratio);
-
     return canvas;
 }
