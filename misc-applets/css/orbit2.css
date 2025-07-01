@@ -132,6 +132,17 @@ button:active {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+#applet2 {
+    background-color: #b5cef5;
+    margin-top: 20px;
+    position: relative;
+    height: 600px;
+    width: 1000px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* ==========================================================================
    PANEL LAYOUTS
    ========================================================================== */
@@ -223,6 +234,13 @@ button:active {
 #kinetic-graph {
     position: absolute;
     left: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+#kinetic-graph2 {
+    position: absolute;
+    right: 0px;
     height: 280px;
     width: 330px;
 }
@@ -412,6 +430,7 @@ legend {
         height: auto;
         min-height: 900px;
     }
+    
     
     #top-panel,
     #bottom-panel {
