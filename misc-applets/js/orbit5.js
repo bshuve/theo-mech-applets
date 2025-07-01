@@ -30,8 +30,7 @@ const TRANSITION_TIME = 10;           // D3 transition duration (ms)
 
 // Scaling factors for visualization
 const SCALE_R = 1e11;                 // Scale factor for radius (m to AU)
-const SCALE_U = 5e32;                 // Scale factor for potential energy
-const SCALE_KE = 1e32;                // Scale factor for kinetic energy
+const SCALE_ENERGY = 1e32;            // Unified scale factor for all energy components
 
 // Graph dimensions and margins
 const GRAPH_MARGIN = { 
@@ -172,7 +171,7 @@ const potentialEnergyPlot = createPlot({
     domain: { lower: 0, upper: 10 },
     range: { lower: -20, upper: 5 },
     xLabel: "Radius (AU × 10³)",
-    yLabel: "Potential (J × 10^34)"
+    yLabel: "Potential Energy (J × 10^32)"
 });
 
 // Radial Kinetic Energy Plot
@@ -182,7 +181,7 @@ const radialKineticEnergyPlot = createPlot({
     domain: { lower: 0, upper: 10 },
     range: { lower: 0, upper: 10 },
     xLabel: "Radius (AU)",
-    yLabel: "Radial Kinetic Energy (J)"
+    yLabel: "Radial Kinetic Energy (J × 10^32)"
 });
 
 // Orbital Kinetic Energy Plot
@@ -550,20 +549,20 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
         .attr("height", Math.max(0, orbital_ke_scaled));
     
     // Update total energy line - use the constant conserved energy
-    const total_y = totalEnergyPlot.yScale(energy / SCALE_U);
-    teTotalLine
-        .attr("x1", 0)
-        .attr("y1", total_y)
-        .attr("x2", totalEnergyPlot.xScale.range()[1])
-        .attr("y2", total_y);
-    
-    // DEBUG: Alternative total energy line using the sum (commented out for debugging)
-    // const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
+    // const total_y = totalEnergyPlot.yScale(energy / SCALE_U);
     // teTotalLine
     //     .attr("x1", 0)
-    //     .attr("y1", sum_total_y)
+    //     .attr("y1", total_y)
     //     .attr("x2", totalEnergyPlot.xScale.range()[1])
-    //     .attr("y2", sum_total_y);
+    //     .attr("y2", total_y);
+    
+    // DEBUG: Alternative total energy line using the sum (commented out for debugging)
+    const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
+    teTotalLine
+        .attr("x1", 0)
+        .attr("y1", sum_total_y)
+        .attr("x2", totalEnergyPlot.xScale.range()[1])
+        .attr("y2", sum_total_y);
     
     // Update display
     document.getElementById("print-total-energy").innerHTML = energy.toExponential(2);
@@ -651,8 +650,15 @@ function animate() {
     const r = calculateRadius(phi);
     const dphidt = calculateAngularVelocity(r);
     
-    // Update time and position
-    phi += dphidt * DT;
+    // Debug: Log angular velocity and radius to verify Kepler's Second Law
+    if (Math.abs(phi) < 0.1 || Math.abs(phi - Math.PI) < 0.1) {
+        console.log(`Phi: ${phi.toFixed(2)} rad, Radius: ${(r/SCALE_R).toFixed(2)} AU, Angular Velocity: ${dphidt.toExponential(2)} rad/s`);
+    }
+    
+    // Update angular position using proper Kepler's Second Law
+    // This ensures the Earth moves faster when closer to the Sun
+    const deltaPhi = dphidt * DT;
+    phi += deltaPhi;
     time += DT;
 
     // Update all visualizations
@@ -661,8 +667,9 @@ function animate() {
     updateKineticEnergyBars(r, phi, dphidt);
     updateTotalEnergyGraph(r, phi, dphidt);
 
-    // Continue animation
-    requestAnimationFrame(animate);
+    // Get speed from slider and continue animation with controlled timing
+    const speed = parseInt(document.getElementById("speed-slider").value);
+    setTimeout(animate, speed);
 }
 
 /////////////////////////////////////////////////
@@ -706,6 +713,12 @@ function updateOrbitalParameters() {
 document.getElementById("epsilon-slider").oninput = updateOrbitalParameters;
 document.getElementById("L-slider").oninput = updateOrbitalParameters;
 
+// Speed slider event listener
+document.getElementById("speed-slider").oninput = function() {
+    const speed = this.value;
+    document.getElementById("print-speed").innerHTML = speed;
+};
+
 /////////////////////////////////////////////////
 /* INITIALIZATION */
 /////////////////////////////////////////////////
@@ -726,7 +739,7 @@ function initialize() {
     updateOrbitalKineticEnergyPlot();
     
     // Start animation
-    requestAnimationFrame(animate);
+    animate();
 }
 
 // Start the application when the page loads
