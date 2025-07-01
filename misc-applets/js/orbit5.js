@@ -564,9 +564,17 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
     // const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
     // teTotalLine
     //     .attr("x1", 0)
-    //     .attr("y1", sum_total_y)
+    //     .attr("y1", total_y)
     //     .attr("x2", totalEnergyPlot.xScale.range()[1])
-    //     .attr("y2", sum_total_y);
+    //     .attr("y2", total_y);
+    
+    // DEBUG: Alternative total energy line using the sum (commented out for debugging)
+    const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
+    teTotalLine
+        .attr("x1", 0)
+        .attr("y1", sum_total_y)
+        .attr("x2", totalEnergyPlot.xScale.range()[1])
+        .attr("y2", sum_total_y);
     
     // Update display
     document.getElementById("print-total-energy").innerHTML = energy.toExponential(2);
