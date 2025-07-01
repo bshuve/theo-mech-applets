@@ -25,7 +25,7 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
 const DT = 31560;                     // Time step for animation
-const FRAME_RATE = 10;                // Animation frame rate (ms)
+const FRAME_RATE = 100;               // Animation frame rate (ms) - much slower default
 const TRANSITION_TIME = 10;           // D3 transition duration (ms)
 
 // Scaling factors for visualization
@@ -651,8 +651,15 @@ function animate() {
     const r = calculateRadius(phi);
     const dphidt = calculateAngularVelocity(r);
     
-    // Update time and position
-    phi += dphidt * DT;
+    // Debug: Log angular velocity and radius to verify Kepler's Second Law
+    if (Math.abs(phi) < 0.1 || Math.abs(phi - Math.PI) < 0.1) {
+        console.log(`Phi: ${phi.toFixed(2)} rad, Radius: ${(r/SCALE_R).toFixed(2)} AU, Angular Velocity: ${dphidt.toExponential(2)} rad/s`);
+    }
+    
+    // Update angular position using proper Kepler's Second Law
+    // This ensures the Earth moves faster when closer to the Sun
+    const deltaPhi = dphidt * DT;
+    phi += deltaPhi;
     time += DT;
 
     // Update all visualizations
@@ -661,8 +668,9 @@ function animate() {
     updateKineticEnergyBars(r, phi, dphidt);
     updateTotalEnergyGraph(r, phi, dphidt);
 
-    // Continue animation
-    requestAnimationFrame(animate);
+    // Get speed from slider and continue animation with controlled timing
+    const speed = parseInt(document.getElementById("speed-slider").value);
+    setTimeout(animate, speed);
 }
 
 /////////////////////////////////////////////////
@@ -706,6 +714,12 @@ function updateOrbitalParameters() {
 document.getElementById("epsilon-slider").oninput = updateOrbitalParameters;
 document.getElementById("L-slider").oninput = updateOrbitalParameters;
 
+// Speed slider event listener
+document.getElementById("speed-slider").oninput = function() {
+    const speed = this.value;
+    document.getElementById("print-speed").innerHTML = speed;
+};
+
 /////////////////////////////////////////////////
 /* INITIALIZATION */
 /////////////////////////////////////////////////
@@ -726,7 +740,7 @@ function initialize() {
     updateOrbitalKineticEnergyPlot();
     
     // Start animation
-    requestAnimationFrame(animate);
+    animate();
 }
 
 // Start the application when the page loads
