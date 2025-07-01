@@ -19,69 +19,95 @@
 
 <body id="body">
 
-    <h1 id="title">Orbital Motion and the Principle of Least Action</h1>
+    <h1 id="title">Exploring Orbital Parameters: Minimum Radius Effects</h1>
 
     <p id="text">
-        <i>This applet visualizes the motion of a planet orbiting a star, demonstrating the physical principles that
-            govern its trajectory. By adjusting key orbital parameters, you can explore how energy and angular momentum
-            shape the path of a celestial body.</i>
-    </p>
-
-    <p id="text">
-        In classical mechanics, the motion of two gravitationally interacting bodies—like the Earth and the Sun—can be
-        complex. To simplify this, we can reframe it as an equivalent one-body problem. This is achieved using the
-        concept of <strong>reduced mass</strong>, denoted by the symbol μ (mu), where:
-    </p>
-    <p style="text-align: center; font-size: 18px;">μ = (m₁m₂)/(m₁ + m₂)</p>
-    <p id="text">
-        This allows us to describe the motion of one body relative to the other in a much simpler way.
+        <i>Building on our exploration of eccentricity from the previous page, this applet reveals how the minimum
+            orbital radius (\(r_{\text{min}}\)) interacts with planetary motion. </i>
     </p>
 
     <p id="text">
-        We can get the shape of the orbital path of μ as a function of the angle θ as follows:
-    </p>
-    <p style="text-align: center; font-size: 18px;">r(θ) = (L²)/(μGm₁m₂) × 1/(1 + ε cos θ)</p>
-    <p id="text">
-        Here, ε is the <strong>orbital eccentricity</strong>, a parameter that defines the orbit's shape. When ε < 1, the path is a bound, elliptical orbit. While r(θ) describes the path of the reduced mass, the actual paths of the two individual bodies are given by:
-    </p>
-    <p style="text-align: center; font-size: 18px;">r₁(θ) = (m₂)/(m₁+m₂) × r(θ)   and   r₂(θ) = -(m₁)/(m₁+m₂) × r(θ)</p>
-
-    <p id="text">
-        The total energy E of the system is also useful to understanding the behavior of the orbit. This energy
-        is composed of three parts:
-    </p>
-    <p style="text-align: center; font-size: 16px;">E = ½μṙ² + L²/(2μr²) - Gm₁m₂/r</p>
-    <p id="text">
-        The <strong>Radial Kinetic Energy</strong> is the energy of motion directly towards or away from the center of mass. The
-        <strong>Angular Kinetic Energy</strong>, is the energy of the orbital motion. Notice how this term has a dependence on r and not ṙ. As r gets close to 0, there is an increasing outward force, preventing the orbit from getting too close to the center of mass. This is known as the centrifugal barrier.
+        Previously we saw how eccentricity (\(\epsilon\)) determines orbital shapes. Now we'll discover how
+        \(r_{\text{min}}\), the closest approach distance, interacts with angular momentum (\(L\)) and total energy
+        (\(E\)). At perihelion (\(r_{\text{min}}\)), the radial velocity vanishes (\(\dot{r} = 0\)), concentrating all
+        kinetic energy in angular motion:
     </p>
 
-    <p id="text">
-        Notice how the angular kinetic energy and gravitational potential energy both have a dependency on r. These last two terms are often combined into an <strong>Effective Potential</strong> (U_eff), which we use to understand the shape of the trajectory:
-    </p>
-    <p style="text-align: center; font-size: 16px;">U_eff(r) = L²/(2μr²) - Gm₁m₂/r</p>
-
-    <p id="text">
-        This applet models a star-planet system where the star's mass (m₁) is much greater than the planet's (m₂),
-        similar to our Sun and Earth.
-    </p>
-
-    <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
-        <label for="show-q1" id="text">
-            <b>Question:</b> In a system like the Sun and Earth where m₁ ≫ m₂, what does the reduced
-            mass μ approximate to? What does this imply about the motion of the two bodies?
-        </label>
-        <br><br>
-        <button id="show-q1">Show answer</button>
-        <span id="answer1" style="display: none"><br>
-            When m₁ ≫ m₂, the denominator m₁ + m₂ is approximately equal to m₁. So, μ ≈ (m₁m₂)/m₁, which simplifies to μ ≈ m₂. This means the reduced mass is nearly identical to the planet's mass. As a result, the motion will follow the Earth around the center of mass, which will be mostly the Sun.
-        </span>
+    <div style="text-align: center; margin: 20px 0;">
+        \[ E = \frac{L^2}{2\mu r_{\text{min}}^2} - \frac{G m_1 m_2}{r_{\text{min}}} \]
     </div>
 
     <p id="text">
-        Use the sliders below to see how angular momentum (L) and minimum radius (r_min) affects the orbit. As you adjust the parameters, observe the changes in
-        the three graphs. Pay attention to the radius of the planet from the sun and how this relates to the effective potential and kinetic energies.
+        This reveals a key insight: <strong>For fixed angular momentum, changing \(r_{\text{min}}\) directly determines
+            the orbital energy</strong>. Smaller \(r_{\text{min}}\) values create deeper gravitational wells, resulting
+        in more negative (bound) energies. The eccentricity we controlled previously naturally emerges from this
+        relationship:
     </p>
+
+    <div style="text-align: center; margin: 20px 0;">
+        \[ \epsilon = \sqrt{1 + \frac{2 E L^2}{\mu (G m_1 m_2)^2}} \]
+    </div>
+
+    <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
+        <label for="show-q1" id="text">
+            <b>Investigate:</b> What happens to orbital eccentricity when you decrease \(r_{\text{min}}\) while keeping
+            angular momentum constant? Why does this occur?
+        </label>
+        <br><br>
+        <button id="show-q1">Reveal Explanation</button>
+        <span id="answer1" style="display: none"><br>
+            Decreasing \(r_{\text{min}}\) at constant \(L\) makes the total energy more negative (since \(E \propto
+            -\frac{Gm_1m_2}{r_{\text{min}}}\)), increasing eccentricity (\(\epsilon\)). This creates more elongated
+            orbits because the planet must travel farther from the star to conserve angular momentum, demonstrating the
+            fundamental connection between close approach distance and orbital shape.
+        </span>
+    </div>
+
+    <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
+        <h3>Boundary Effects: What Happens When r<sub>min</sub> Changes?</h3>
+        <p id="text">
+            As you experiment with the r<sub>min</sub> slider, notice how the orbital behavior changes at the
+            boundaries:
+        </p>
+        <ul id="text">
+            <li><strong>Minimum r<sub>min</sub> (0.5 AU):</strong> Creates highly eccentric orbits where the planet
+                swings close to the star before flying far out. The centrifugal barrier becomes significant at this
+                close approach.</li>
+
+            <li><strong>Maximum r<sub>min</sub> (2.0 AU):</strong> Produces nearly circular orbits. The planet maintains
+                a more consistent distance from the star, with minimal energy variation.</li>
+
+            <li><strong>Beyond boundaries (theoretical):</strong>
+                <ul>
+                    <li>If r<sub>min</sub> could be <strong>smaller than 0.5 AU</strong>, angular momentum would need to
+                        increase dramatically to prevent collision. At very small distances, relativistic effects would
+                        become significant.</li>
+                    <li>If r<sub>min</sub> could be <strong>larger than 2.0 AU</strong>, the orbit would become more
+                        circular but with lower orbital energy. At extremely large r<sub>min</sub>, the orbit would
+                        become unbound if energy approaches zero.</li>
+                </ul>
+            </li>
+        </ul>
+        <p id="text">
+            The effective potential curve helps explain these limits. As r<sub>min</sub> increases, the potential well
+            becomes shallower, reducing the energy difference between perihelion and aphelion.
+        </p>
+    </div>
+
+    <p id="text">
+        Using the same star-planet system from the previous page, adjust the sliders to explore how minimum radius and
+        angular momentum jointly determine orbital characteristics:
+    </p>
+
+
+
+    <ul id="text">
+        <li><strong>Energy binding:</strong> Observe how decreasing \(r_{\text{min}}\) lowers orbital energy levels</li>
+        <li><strong>Eccentricity control:</strong> See how \(r_{\text{min}}\) directly sets orbital elongation</li>
+        <li><strong>Potential landscape:</strong> Watch the effective potential curve deepen as \(r_{\text{min}}\)
+            decreases</li>
+        <li><strong>Energy conversion:</strong> Track kinetic/potential energy exchange at perihelion vs. aphelion</li>
+    </ul>
 
     <div id="applet">
         <div id="top-panel">
@@ -95,8 +121,8 @@
         </div>
 
         <div id="inner-container">
-            <label for="L-slider">L: <span id="print-L">2.7</span></label>
-            <input id="L-slider" class="slider" type="range" min="0.5" max="5" value="2.7" step="0.1">
+            <label for="L-slider">L (×10⁴⁰ kg·m²/s): <span id="print-L">2.7</span></label>
+            <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
             <br>
             <label for="rmin-slider">r_min (AU): <span id="print-rmin">1.00</span></label>
             <input id="rmin-slider" class="slider" type="range" min="0.5" max="2.0" value="1" step="0.1">
@@ -109,15 +135,18 @@
                 <label><span id="purple">.....</span> - Velocity</label><br>
             </fieldset>
             <p><strong>ε =</strong> <span id="print-epsilon">0.00</span></p>
-            <p><strong>E =</strong> <span id="print-energy">0.00</span> × 10³⁴ J</p>
+            <p><strong>E =</strong> <span id="print-energy">0.00</span> × 10³³ J</p>
         </div>
     </div>
     <div class="buttons">
-
+        <column id="prev-button">
+            <button onclick="window.location.href = 'orbit3b.html'">PREVIOUS PAGE</button>
+        </column>
         <column id="next-button">
-            <button onclick="window.location.href = 'orbit4.html'">NEXT PAGE</button>
+            <button onclick="window.location.href = 'orbit3c.html'">NEXT PAGE</button>
         </column>
     </div>
+
     <br><br><br>
 </body>
 
