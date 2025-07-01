@@ -30,8 +30,7 @@ const TRANSITION_TIME = 10;           // D3 transition duration (ms)
 
 // Scaling factors for visualization
 const SCALE_R = 1e11;                 // Scale factor for radius (m to AU)
-const SCALE_U = 5e32;                 // Scale factor for potential energy
-const SCALE_KE = 1e32;                // Scale factor for kinetic energy
+const SCALE_ENERGY = 1e32;            // Unified scale factor for all energy components
 
 // Graph dimensions and margins
 const GRAPH_MARGIN = { 
@@ -170,9 +169,9 @@ const potentialEnergyPlot = createPlot({
     divID: "#potential-energy-graph",
     svgID: "svg-for-potential-energy-plot",
     domain: { lower: 0, upper: 10 },
-    range: { lower: -20, upper: 5 },
+    range: { lower: -40, upper: 2 },
     xLabel: "Radius (AU × 10³)",
-    yLabel: "Potential (J × 10^34)"
+    yLabel: "Potential Energy (J × 10^32)"
 });
 
 // Radial Kinetic Energy Plot
@@ -182,7 +181,7 @@ const radialKineticEnergyPlot = createPlot({
     domain: { lower: 0, upper: 10 },
     range: { lower: 0, upper: 10 },
     xLabel: "Radius (AU)",
-    yLabel: "Radial Kinetic Energy (J)"
+    yLabel: "Radial Kinetic Energy (J × 10^32)"
 });
 
 // Orbital Kinetic Energy Plot
@@ -192,7 +191,7 @@ const orbitalKineticEnergyPlot = createPlot({
     domain: { lower: 0, upper: 4 },
     range: { lower: 0, upper: 3 },
     xLabel: "Radius (AU)",
-    yLabel: "Orbital Kinetic Energy (J)"
+    yLabel: "Orbital Kinetic Energy (J × 10^32)"
 });
 
 // Total Energy Plot
@@ -200,9 +199,9 @@ const totalEnergyPlot = createPlot({
     divID: "#total-energy-graph",
     svgID: "svg-for-total-energy-plot",
     domain: { lower: 0, upper: 10 },
-    range: { lower: -20, upper: 10 },
+    range: { lower: -40, upper: 2 },
     xLabel: "Radius (AU)",
-    yLabel: "Total Energy (J × 10^34)"
+    yLabel: "Energy (J × 10^32)"
 });
 
 /////////////////////////////////////////////////
@@ -354,13 +353,13 @@ function generatePotentialEnergyData() {
         
         pe_data.push({
             x: r / SCALE_R,
-            y: Ueff / SCALE_U
+            y: Ueff / SCALE_ENERGY
         });
     }
     
     // Update plot scales
     potentialEnergyPlot.xScale.domain([0, 10]);
-    potentialEnergyPlot.yScale.domain([-20, 5]);
+    potentialEnergyPlot.yScale.domain([-40, 2]);
     
     potentialEnergyPlot.svg.select(".myXaxis")
         .transition()
@@ -390,7 +389,7 @@ function generateRadialKineticEnergyData() {
 
         radial_ke_data.push({
             x: r / SCALE_R,
-            y: ke / SCALE_KE
+            y: ke / SCALE_ENERGY
         });
         phi += dphi;
     }
@@ -411,7 +410,7 @@ function generateOrbitalKineticEnergyData() {
         
         orbital_ke_data.push({
             x: r / SCALE_R,
-            y: ke / SCALE_KE
+            y: ke / SCALE_ENERGY
         });
         phi += dphi;
     }
@@ -500,7 +499,7 @@ function updatePotentialEnergyPoint(r) {
     
     pePoint
         .attr("cx", potentialEnergyPlot.xScale(r / SCALE_R))
-        .attr("cy", potentialEnergyPlot.yScale(Ueff / SCALE_U));
+        .attr("cy", potentialEnergyPlot.yScale(Ueff / SCALE_ENERGY));
 }
 
 /**
@@ -526,31 +525,35 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
     // Update moving dot
     tePePoint
         .attr("cx", totalEnergyPlot.xScale(r / SCALE_R))
-        .attr("cy", totalEnergyPlot.yScale(Ueff / SCALE_U));
+        .attr("cy", totalEnergyPlot.yScale(Ueff / SCALE_ENERGY));
     
     // Calculate bar positions
     const x_pos = totalEnergyPlot.xScale(r / SCALE_R);
     const bar_width = 15;
-    const pe_y = totalEnergyPlot.yScale(Ueff / SCALE_U);
-    const radial_ke_scaled = ke_radial / SCALE_KE;
-    const orbital_ke_scaled = ke_orbital / SCALE_KE;
+    const pe_y = totalEnergyPlot.yScale(Ueff / SCALE_ENERGY);
+    const radial_ke_scaled = ke_radial / SCALE_ENERGY;
+    const orbital_ke_scaled = ke_orbital / SCALE_ENERGY;
     
     // Update radial kinetic energy bar (yellow)
+    // Position the bar above the potential energy dot
+    const radial_bar_y = pe_y - Math.abs(radial_ke_scaled);
     teRadialBar
         .attr("x", x_pos - bar_width/2)
-        .attr("y", pe_y - radial_ke_scaled)
+        .attr("y", radial_bar_y)
         .attr("width", bar_width)
-        .attr("height", Math.max(0, radial_ke_scaled));
+        .attr("height", Math.abs(radial_ke_scaled));
     
     // Update orbital kinetic energy bar (purple)
+    // Position the bar above the radial kinetic energy bar
+    const orbital_bar_y = radial_bar_y - Math.abs(orbital_ke_scaled);
     teOrbitalBar
         .attr("x", x_pos - bar_width/2)
-        .attr("y", pe_y - radial_ke_scaled - orbital_ke_scaled)
+        .attr("y", orbital_bar_y)
         .attr("width", bar_width)
-        .attr("height", Math.max(0, orbital_ke_scaled));
+        .attr("height", Math.abs(orbital_ke_scaled));
     
     // Update total energy line - use the constant conserved energy
-    const total_y = totalEnergyPlot.yScale(energy / SCALE_U);
+    const total_y = totalEnergyPlot.yScale(energy / SCALE_ENERGY);
     teTotalLine
         .attr("x1", 0)
         .attr("y1", total_y)
@@ -614,7 +617,7 @@ function updateKineticEnergyBars(r, phi, dphidt) {
     const drdt = calculateRadialVelocity(r, phi, dphidt);
     const ke_radial = calculateRadialKineticEnergy(drdt);
     const x_radial = radialKineticEnergyPlot.xScale(r / SCALE_R);
-    const y_radial = radialKineticEnergyPlot.yScale(ke_radial / SCALE_KE);
+    const y_radial = radialKineticEnergyPlot.yScale(ke_radial / SCALE_ENERGY);
     const y0_radial = radialKineticEnergyPlot.yScale(0);
     const barWidth = 20;
     const barHeight = y0_radial - y_radial;
@@ -628,7 +631,7 @@ function updateKineticEnergyBars(r, phi, dphidt) {
     // Orbital kinetic energy bar
     const ke_orbital = calculateOrbitalKineticEnergy(r);
     const x_orbital = orbitalKineticEnergyPlot.xScale(r / SCALE_R);
-    const y_orbital = orbitalKineticEnergyPlot.yScale(ke_orbital / SCALE_KE);
+    const y_orbital = orbitalKineticEnergyPlot.yScale(ke_orbital / SCALE_ENERGY);
     const y0_orbital = orbitalKineticEnergyPlot.yScale(0);
     const barHeight_orbital = y0_orbital - y_orbital;
     
