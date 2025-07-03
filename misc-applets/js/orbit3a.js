@@ -8,7 +8,7 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
 const dt = 315600;
-const FRAME_RATE = 10   // ms
+var FRAME_RATE = 10   // ms
 const TRANSITION_TIME = 10; // ms
 
 const G = 6.7 * 10 ** (-11);
@@ -30,9 +30,9 @@ function calculateDerivedQuantities() {
   }
 
   // Calculate and display total energy
-  energy = -(epsilon ** 2 - 1) * ((G * sunMass * earthMass)**2 * mu / 2 / (L ** 2));
-
+  energy = (epsilon ** 2 - 1) * ((G * sunMass * earthMass)**2 * mu / 2 / (L ** 2));
 }
+
 
 function updateRminLimits() {
   // Calculate r_min limits based on current L
@@ -416,6 +416,7 @@ function updateDisplayedValues() {
 }
 
 calculateDerivedQuantities();
+updateDisplayedValues();
 // Initialize limits and plots
 updateRminLimits();
 potentialEnergyData();
@@ -594,7 +595,7 @@ document.getElementById("rmin-slider").oninput = function () {
   document.getElementById("print-L").innerHTML = (L/1e40).toFixed(1);
 
   calculateDerivedQuantities();
-
+  updateDisplayedValues();
   potentialEnergyData();  // Regenerate data
   plotPotentialEnergy(pe_data);  // Replot
   radialKineticEnergyData();  // Regenerate KE data
@@ -617,7 +618,7 @@ document.getElementById("L-slider").oninput = function () {
   document.getElementById("print-rmin").innerHTML = (r_min/1.496e+11).toFixed(2);
 
   calculateDerivedQuantities();
-
+  updateDisplayedValues();
   potentialEnergyData();  // Regenerate data
   plotPotentialEnergy(pe_data);  // Replot
   radialKineticEnergyData();  // Regenerate KE data
@@ -629,7 +630,7 @@ document.getElementById("L-slider").oninput = function () {
 }
 
 // run animation
-document.getElementById("rmin-slider").onchange = function () {
+document.getElementById("rmin-slider").onmouseup = function () {
   r_min = parseFloat(document.getElementById("rmin-slider").value) * 1.496e+11;
   // Recalculate derived quantities
     calculateDerivedQuantities();
@@ -642,7 +643,7 @@ document.getElementById("rmin-slider").onchange = function () {
 }
 
 // run animation
-document.getElementById("L-slider").onchange = function () {
+document.getElementById("L-slider").onmouseup = function () {
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
   // Recalculate derived quantities
   calculateDerivedQuantities();
@@ -652,6 +653,36 @@ document.getElementById("L-slider").onchange = function () {
 
   // Restart animation
   runAnimation();
+}
+
+document.getElementById("speed-slider").oninput = function () {
+  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
+  
+  // Update the frame rate without restarting animation
+  updateFrameRate(newFrameRate);
+}
+
+document.getElementById("speed-slider").onmouseup = function () {
+  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
+  
+  // Update the frame rate without restarting animation
+  updateFrameRate(newFrameRate);
+}
+
+// Add this new function to handle frame rate updates
+function updateFrameRate(newFrameRate) {
+  // Clear the existing interval
+  if (animArea.interval) {
+    clearInterval(animArea.interval);
+  }
+  
+  // Update the global FRAME_RATE variable
+  FRAME_RATE = newFrameRate;
+  
+  // Start new interval with updated frame rate
+  animArea.interval = setInterval(updateFrame, FRAME_RATE);
 }
 
 var showAnswer1 = false;
@@ -665,6 +696,18 @@ document.getElementById("show-q1").addEventListener("click", function () {
     document.getElementById("show-q1").innerHTML = "Show Answer";
     document.getElementById("answer1").style.display = "none";
   }
+});
+
+// Initialize the display on page load
+document.addEventListener("DOMContentLoaded", function () {
+  // Set initial slider display values
+    // document.getElementById("print-L").innerHTML = (L / 1e40).toFixed(2);
+    // document.getElementById("print-E").innerHTML = (E / 1e33).toFixed(2);
+
+  // Calculate and display initial derived values
+  calculateDerivedQuantities();
+  updateDisplayedValues();
+  //runAnimation();
 });
 
 

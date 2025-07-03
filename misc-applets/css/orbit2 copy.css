@@ -1,0 +1,473 @@
+/**
+ * Orbital Mechanics Applet Stylesheet
+ * 
+ * This stylesheet provides styling for the orbital mechanics visualization applet,
+ * including layout, controls, graphs, and interactive elements.
+ * 
+ * @author Theo Mech Applets
+ * @version 2.0
+ */
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+
+body {
+    position: relative;
+    top: 70px;
+    background-color: #edcdca;
+    max-width: 1000px;
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   GRAPH AND CANVAS STYLES
+   ========================================================================== */
+
+svg, canvas {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+    background-color: white;
+}
+
+.graph-container {
+    /* Base styling for graph containers */
+    position: relative;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   BUTTON STYLES
+   ========================================================================== */
+
+button {
+    background-color: #007bff;
+    border: none;
+    color: #f0eceb;
+    padding: 12px 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+    background: #c2f0c8;
+    color: #000000;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Toggle button specific styles */
+        .toggle-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            margin: 2px;
+            min-width: 120px;
+        }
+
+        .toggle-button.hidden {
+            background-color: #dc3545;
+            opacity: 0.7;
+        }
+
+        .toggle-button.visible {
+            background-color: #28a745;
+        }
+        
+/* ==========================================================================
+   SLIDER STYLES
+   ========================================================================== */
+
+.slider {
+    -webkit-appearance: none;
+    width: 90%;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+    border-radius: 7px;
+    transition: background 0.3s;
+}
+
+.slider:hover {
+    background: #b8b8b8;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    background: #038857;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    transition: background 0.3s;
+}
+
+.slider::-moz-range-thumb:hover {
+    background: #038857;
+}
+
+/* ==========================================================================
+   MAIN APPLICATION LAYOUT
+   ========================================================================== */
+
+#applet {
+    background-color: #b5cef5;
+    margin-top: 20px;
+    position: relative;
+    height: 900px;
+    width: 1000px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#applet2 {
+    background-color: #b5cef5;
+    margin-top: 20px;
+    position: relative;
+    height: 600px;
+    width: 1000px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   PANEL LAYOUTS
+   ========================================================================== */
+
+/* Top Panel: Orbit Animation and Energy Graphs */
+#top-panel {
+    position: absolute;
+    height: 280px;
+    width: 680px;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+/* Bottom Panel: Additional Analysis Graphs */
+#bottom-panel {
+    position: absolute;
+    top: 320px;
+    left: 20px;
+    height: 280px;
+    width: 680px;
+    display: flex;
+    gap: 20px;
+}
+
+/* Total Energy Graph */
+#total-energy-graph {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    height: 280px;
+    width: 680px;
+}
+
+/* ==========================================================================
+   INDIVIDUAL GRAPH POSITIONING
+   ========================================================================== */
+
+/* Orbit Animation */
+#orbit-animation {
+    position: absolute;
+    left: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+
+#orbit-canvas2 {
+    position: absolute;
+    left: 0px;
+    height: 580px;
+    width: 680px;
+}
+
+#position-graph {
+
+    position: absolute;
+    right: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+/* Radial Kinetic Energy Graph */
+#radial-kinetic-graph {
+    position: absolute;
+    left: 350px;
+    height: 280px;
+    width: 330px;
+}
+
+/* Position Graph */
+#position-graph {
+    position: absolute;
+    left: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+/* Angle Graph */
+#angle-graph {
+    position: absolute;
+    left: 350px;
+    height: 280px;
+    width: 330px;
+}
+
+/* Kinetic Energy Graph */
+#kinetic-graph {
+    position: absolute;
+    left: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+#kinetic-graph2 {
+    position: absolute;
+    right: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+/* Orbital Kinetic Energy Graph */
+#orbital-kinetic-graph {
+    position: absolute;
+    left: 350px;
+    height: 280px;
+    width: 330px;
+}
+
+/* Gravitational Energy Graph */
+#gravitational-energy-graph {
+    position: absolute;
+    left: 0px;
+    height: 280px;
+    width: 330px;
+}
+
+/* ==========================================================================
+   CONTROL PANEL
+   ========================================================================== */
+
+#inner-container {
+    background-color: #c2f0c8;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    height: 540px;
+    width: 260px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+/* Control Sections */
+.control-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #a0d8a0;
+}
+
+.control-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.control-section h3 {
+    margin: 0 0 10px 0;
+    color: #2c5e2c;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Control Groups */
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Value Displays */
+.value-display {
+    font-weight: bold;
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+/* ==========================================================================
+   LEGEND STYLES
+   ========================================================================== */
+
+fieldset {
+    border: 1px solid #a0d8a0;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0;
+}
+
+legend {
+    font-weight: bold;
+    color: #2c5e2c;
+    padding: 0 5px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.color-indicator {
+    width: 30px;
+    height: 15px;
+    margin-right: 8px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.legend-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* ==========================================================================
+   COLOR INDICATORS FOR LEGEND
+   ========================================================================== */
+
+#red {
+    color: red;
+    background-color: red;
+}
+
+#green {
+    color: green;
+    background-color: green;
+}
+
+#blue {
+    color: blue;
+    background-color: blue;
+}
+
+#orange {
+    color: orange;
+    background-color: orange;
+}
+
+#purple {
+    color: purple;
+    background-color: purple;
+}
+
+/* ==========================================================================
+   ENERGY INFORMATION
+   ========================================================================== */
+
+.energy-info p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.energy-info p:first-child {
+    margin-top: 0;
+}
+
+.energy-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    #applet {
+        width: 95%;
+        max-width: 1000px;
+    }
+    
+    #inner-container {
+        width: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        top: 20px;
+    }
+    
+    #applet {
+        height: auto;
+        min-height: 900px;
+    }
+    
+    
+    #top-panel,
+    #bottom-panel {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #total-energy-graph {
+        position: relative;
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    #inner-container {
+        position: relative;
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+

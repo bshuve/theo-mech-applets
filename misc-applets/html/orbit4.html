@@ -21,7 +21,7 @@
 
 <h1 id="title">Two-Body Orbital Dynamics: The General Case</h1>
     <p id="text">
-        <i>This applet visualizes the motion of two bodies with comparable masses orbiting their common center of mass (barycenter). Unlike the previous example where one mass dominated, here we see how both objects move in response to their mutual gravitational attraction, following elliptical paths around their shared center of mass.</i>
+        <i>This applet visualizes the motion of two bodies with comparable masses orbiting their common center of mass (barycenter). Unlike the previous example where one mass dominated, here we see how both objects move when they are similar masses, following elliptical paths around their shared center of mass.</i>
     </p>
 
     <p id="text">
@@ -29,15 +29,11 @@
         \[
         r_1 = \frac{m_2}{m_1 + m_2} \cdot r \quad \text{and} \quad r_2 = \frac{m_1}{m_1 + m_2} \cdot r
         \]
-        where \(r = r_1 + r_2\) is the separation distance between the two masses.
+        where \(r = r_2 - r_1\) is the separation distance between the two masses.
     </p>
 
     <p id="text">
-        The <b>reduced mass</b> \(\mu = \frac{m_1 m_2}{m_1 + m_2}\) allows us to treat this as an equivalent one-body problem. The effective potential becomes:
-        \[
-        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} - \frac{G m_1 m_2}{r}
-        \]
-        The separation distance follows the same orbital equation as before:
+        The separation distance of the reduced mass follows the same orbital equation as before:
         \[
         r(\theta) = \frac{L^2}{\mu G m_1 m_2} \frac{1}{1 + \epsilon \cos \theta}
         \]
@@ -50,9 +46,10 @@
         <br>• The <span style="color: red;"><b>red point</b></span> shows the separation distance \(r\) between the masses
         <br>• The <span style="color: pink;"><b>pink point</b></span> marks the center of mass (barycenter)
     </p>
+<div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
 
     <label for="show-q1" id="text">
-        <b>Question 2: </b> How does the motion differ when \(m_1 \approx m_2\) compared to when \(m_1 >> m_2\)?
+        <b>Question: </b> How does the motion differ when \(m_1 \approx m_2\) compared to when \(m_1 >> m_2\)?
         <br><br>
     </label>
     <button id="show-q1">Show answer</button>
@@ -60,58 +57,55 @@
     <span id="answer1" style="display: none"><br>
         When \(m_1 \approx m_2\), both masses orbit significantly around the barycenter, which lies approximately halfway between them. Each mass traces a substantial elliptical path. When \(m_1 >> m_2\), the barycenter is very close to \(m_1\), so \(m_1\) barely moves while \(m_2\) does most of the orbiting - this is the case we saw in the Sun-Earth system.
     </span>
+</div>
 
+<div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
     <label for="show-q2" id="text">
-        <b>Question 3: </b> What happens to the reduced mass \(\mu\) when the masses are equal (\(m_1 = m_2 = m\))?
-        <br><br>
+        <b>Question: </b> maybe add anohter        <br><br>
     </label>
     <button id="show-q2">Show answer</button>
     <br>
     <span id="answer2" style="display: none"><br>
-        When \(m_1 = m_2 = m\), the reduced mass becomes \(\mu = \frac{m \cdot m}{m + m} = \frac{m^2}{2m} = \frac{m}{2}\). This means the effective mass in the problem is half of either individual mass, and both objects orbit at equal distances from the barycenter.
+        .
     </span>
-
+</div>
     <p id="text">
-        This simulation uses masses of \(m_1 = 2 \times 10^{28}\) kg and \(m_2 = 6 \times 10^{27}\) kg, giving a mass ratio of about 3:1. This could represent systems like binary stars, double asteroids, or the Pluto-Charon system. Try adjusting the angular momentum \(L\) and eccentricity \(\epsilon\) to see how both objects respond to changes in the orbital parameters.
+        This simulation uses masses that could represent systems like binary stars, double asteroids, or the Pluto-Charon system. Try adjusting the mass ratio and eccentricity \(\epsilon\) to see how both objects respond to changes in the orbital parameters.
     </p>
 
     <p id="text">
-        Notice how the principle of least action still governs the motion - both masses follow the paths that minimize the action integral, resulting in the elegant elliptical dance around their common center of mass that we observe in nature.
+        Notice how the principle of least action still dictates the motion - both masses follow the paths that minimize the action integral. Look at how the position of the bodies relate to the position of the reduced mass. 
     </p>
-
-<h1>Find the Fastest Path</h1>
-<p id="debug">debug text here</p>
-<div id="applet">
+<div id="applet2">
     <div id="top-panel">
         <canvas id="orbit-canvas2" title="planetary-motion"></canvas>
     </div>
 
     <div id="inner-container">
-        <label for="L-slider">L: <span id="print-L">0.00</span></label>
-        <input id="L-slider" class="slider" type="range" min="0" max="5" value="1" step="0.1">
+        <label for="mass-ratio-slider">Mass Ratio (m₁/m₂): <span id="print-mass-ratio">3.0</span></label>
+        <input id="mass-ratio-slider" class="slider" type="range" min="1" max="10" value="3" step="0.1">
         <br>
         <label for="epsilon-slider">Epsilon: <span id="print-epsilon">0.00</span></label>
-        <input id="epsilon-slider" class="slider" type="range" min="0" max="1" value="0" step="0.1">
-        <label for="speed-slider">frame rate (ms/f): <span id="print-speed">5</span></label>
-        <input id="speed-slider" class="slider" type="range" min="1" max="10" value="5">
-        <fieldset>
-            <legend>LEGEND</legend>
-            <label><span id="orange">.....</span> - Position</label><br>
-            <label><span id="purple">.....</span> - Velocity</label><br>
-            <br>
-            <label><span id="red">.....</span> - Kinetic</label><br>
-            <label><span id="green">.....</span> - Potential</label><br>
-            <label><span id="blue">.....</span> - Action</label><br>
-        </fieldset>
-        <p>\(f=\) <span id="print-focus">2.00</span></p>
-        <p>\(\epsilon=\) <span id="print-epsilon">0.00</span></p>
+        <input id="epsilon-slider" class="slider" type="range" min="0" max=".99" value="0" step="0.01">
+        <label for="speed-slider">frame rate (ms/f): <span id="print-speed">10</span></label>
+        <input id="speed-slider" class="slider" type="range" min="1" max="50" value="10">
+        <div class="control-section">
+            <h3>Component Visibility</h3>
+            <button id="toggle-mass1" class="toggle-button visible">Green Mass (m₁)</button><br>
+            <button id="toggle-mass2" class="toggle-button visible">Blue Mass (m₂)</button><br>
+            <button id="toggle-separation" class="toggle-button visible">Red Point (r)</button><br>
+            <button id="toggle-com" class="toggle-button visible">Pink COM</button><br>
+        </div>
+        <p>\(m_1 =\) <span id="print-mass1">1.95e+28</span> kg</p>
+        <p>\(m_2 =\) <span id="print-mass2">6.50e+27</span> kg</p>
+    
     </div>
 
 </div>
 <div class="buttons">
 
         <column id="prev-button">
-            <button onclick="window.location.href = 'orbit3.html'">PREV PAGE</button>
+            <button onclick="window.location.href = 'orbit3a.html'">PREV PAGE</button>
         </column>
     </div>
 </body>

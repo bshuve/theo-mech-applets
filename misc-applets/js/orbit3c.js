@@ -6,8 +6,8 @@ const CANVAS_WIDTH = 330;
 const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
-const dt = 15600;
-const FRAME_RATE = 10   // ms
+const dt = 315600;
+var FRAME_RATE = 10   // ms
 const TRANSITION_TIME = 10; // ms
 
 const G = 6.7 * 10 ** (-11);
@@ -635,7 +635,7 @@ document.getElementById("L-slider").oninput = function () {
 }
 
 // Restart animation when Energy slider is released
-document.getElementById("E-slider").onchange = function () {
+document.getElementById("E-slider").onmouseup = function () {
   E = parseFloat(document.getElementById("E-slider").value) * 1e33;
 
   // Recalculate derived quantities
@@ -649,7 +649,7 @@ document.getElementById("E-slider").onchange = function () {
 }
 
 // Restart animation when Angular Momentum slider is released
-document.getElementById("L-slider").onchange = function () {
+document.getElementById("L-slider").onmouseup = function () {
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
 
   // Recalculate derived quantities
@@ -660,6 +660,37 @@ document.getElementById("L-slider").onchange = function () {
 
   // Restart animation
   runAnimation();
+}
+
+
+document.getElementById("speed-slider").oninput = function () {
+  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
+  
+  // Update the frame rate without restarting animation
+  updateFrameRate(newFrameRate);
+}
+
+document.getElementById("speed-slider").onchange = function () {
+  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
+  
+  // Update the frame rate without restarting animation
+  updateFrameRate(newFrameRate);
+}
+
+// Add this new function to handle frame rate updates
+function updateFrameRate(newFrameRate) {
+  // Clear the existing interval
+  if (animArea.interval) {
+    clearInterval(animArea.interval);
+  }
+  
+  // Update the global FRAME_RATE variable
+  FRAME_RATE = newFrameRate;
+  
+  // Start new interval with updated frame rate
+  animArea.interval = setInterval(updateFrame, FRAME_RATE);
 }
 
 // Show/Hide answer toggle
@@ -676,12 +707,24 @@ document.getElementById("show-q1").addEventListener("click", function () {
   }
 });
 
+var showAnswer2 = false;
+document.getElementById("show-q2").addEventListener("click", function () {
+  if (!showAnswer2) {
+    showAnswer2 = true;
+    document.getElementById("show-q2").innerHTML = "Hide Answer";
+    document.getElementById("answer2").style.display = "block";
+  } else {
+    showAnswer2 = false;
+    document.getElementById("show-q2").innerHTML = "Show Answer";
+    document.getElementById("answer2").style.display = "none";
+  }
+});
+
 // Initialize the display on page load
 document.addEventListener("DOMContentLoaded", function () {
   // Set initial slider display values
     // document.getElementById("print-L").innerHTML = (L / 1e40).toFixed(2);
     // document.getElementById("print-E").innerHTML = (E / 1e33).toFixed(2);
-  document.getElementById("print-speed").innerHTML = "5";
 
   // Calculate and display initial derived values
   calculateDerivedQuantities();
