@@ -22,12 +22,12 @@
     <h1 id="title">Exploring Orbital Parameters: Minimum Radius Effects</h1>
 
     <p id="text">
-        <i>Building on our exploration of eccentricity from the previous page, this applet reveals how the minimum
+        <i>Building on our exploration of energy from the previous page, this applet reveals how the minimum
             orbital radius (\(r_{\text{min}}\)) interacts with planetary motion. </i>
     </p>
 
     <p id="text">
-        Previously we saw how eccentricity (\(\epsilon\)) determines orbital shapes. Now, we'll discover how
+        Previously we saw how energy (\(E\)) determines orbital shapes. Now, we'll discover how
         \(r_{\text{min}}\), the closest approach distance, interacts with angular momentum (\(L\)) and total energy
         (\(E\)). At perihelion (\(r_{\text{min}}\)), the radial velocity vanishes (\(\dot{r} = 0\)), concentrating all
         kinetic energy in angular motion:
@@ -113,7 +113,7 @@
         </div>
 
         <div id="inner-container">
-            <label for="L-slider">L (×10⁴⁰ kg·m²/s): <span id="print-L">2.7</span></label>
+            <label for="L-slider">L (10e40 kg*m²/s): <span id="print-L">2.7</span></label>
             <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
             <br>
             <label for="rmin-slider">r_min (AU): <span id="print-rmin">1.00</span></label>
@@ -121,23 +121,18 @@
             <br>
             <label for="speed-slider">frame rate (ms/f): <span id="print-speed">10</span></label>
             <input id="speed-slider" class="slider" type="range" min="1" max="50" value="10">
-            <fieldset>
-                <legend>LEGEND</legend>
-                <label><span id="orange">.....</span> - Position</label><br>
-                <label><span id="purple">.....</span> - Velocity</label><br>
-            </fieldset>
             <p><strong>ε =</strong> <span id="print-epsilon">0.00</span></p>
             <p><strong>E =</strong> <span id="print-energy">0.00</span> × 10³³ J</p>
         </div>
     </div>
     <div class="buttons">
-        <column id="prev-button">
-            <button onclick="window.location.href = 'orbit3b.html'">PREVIOUS PAGE</button>
-        </column>
-        <column id="next-button">
-            <button onclick="window.location.href = 'orbit3c.html'">NEXT PAGE</button>
-        </column>
-    </div>
+                <column id="prev-button">
+                    <button onclick="window.location.href = 'orbit3c.html'">PREVIOUS PAGE</button>
+                </column>
+                <column id="next-button">
+                    <button onclick="window.location.href = 'orbit4.html'">NEXT PAGE</button>
+                </column>
+            </div>
 
     <br><br><br>
 </body>
