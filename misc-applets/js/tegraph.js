@@ -1,12 +1,3 @@
-/**
- * Total Energy Graph Module
- * 
- * This module provides functionality for creating and updating a total energy graph
- * that shows potential energy, kinetic energy components, and total energy.
- * 
- * @author Harvey Mudd College
- * @version 1.0
- */
 
 /////////////////////////////////////////////////
 /* CONSTANTS AND CONFIGURATION */
