@@ -530,27 +530,28 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
     // Calculate bar positions
     const x_pos = totalEnergyPlot.xScale(r / SCALE_R);
     const bar_width = 15;
-    const pe_y = totalEnergyPlot.yScale(Ueff / SCALE_ENERGY);
-    const radial_ke_scaled = ke_radial / SCALE_ENERGY;
-    const orbital_ke_scaled = ke_orbital / SCALE_ENERGY;
-    
-    // Update radial kinetic energy bar (yellow)
-    // Position the bar above the potential energy dot
-    const radial_bar_y = pe_y - Math.abs(radial_ke_scaled);
+    // New stacking logic:
+    // Radial bar: from Ueff to Ueff + ke_radial
+    // Radial bar: from Ueff to Ueff + ke_radial
+    const y_pe = totalEnergyPlot.yScale(Ueff / SCALE_ENERGY);
+    const y_pe_plus_radial = totalEnergyPlot.yScale((Ueff + ke_radial) / SCALE_ENERGY);
+    const radial_bar_y = Math.min(y_pe, y_pe_plus_radial);
+    const radial_bar_height = Math.abs(y_pe - y_pe_plus_radial);
     teRadialBar
         .attr("x", x_pos - bar_width/2)
         .attr("y", radial_bar_y)
         .attr("width", bar_width)
-        .attr("height", Math.abs(radial_ke_scaled));
-    
-    // Update orbital kinetic energy bar (purple)
-    // Position the bar above the radial kinetic energy bar
-    const orbital_bar_y = radial_bar_y - Math.abs(orbital_ke_scaled);
+        .attr("height", radial_bar_height);
+
+    // Orbital bar: from Ueff + ke_radial to Ueff + ke_radial + ke_orbital
+    const y_pe_plus_radial_orbital = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_ENERGY);
+    const orbital_bar_y = Math.min(y_pe_plus_radial, y_pe_plus_radial_orbital);
+    const orbital_bar_height = Math.abs(y_pe_plus_radial - y_pe_plus_radial_orbital);
     teOrbitalBar
         .attr("x", x_pos - bar_width/2)
         .attr("y", orbital_bar_y)
         .attr("width", bar_width)
-        .attr("height", Math.abs(orbital_ke_scaled));
+        .attr("height", orbital_bar_height);
     
     // Update total energy line - use the constant conserved energy
     const total_y = totalEnergyPlot.yScale(energy / SCALE_ENERGY);
@@ -569,7 +570,7 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
     //     .attr("y2", total_y);
     
     // DEBUG: Alternative total energy line using the sum (commented out for debugging)
-    const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
+    const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_ENERGY);
     teTotalLine
         .attr("x1", 0)
         .attr("y1", sum_total_y)
