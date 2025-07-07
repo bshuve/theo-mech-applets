@@ -1,7 +1,17 @@
 body {
   margin: 16px;
   padding: 16px;
-  background: #E0CDB2;
+  background: #182030;
+}
+
+#star-background {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw; 
+  height: 100vh;
+  z-index: -1;   /* behind the page*/
+  pointer-events: none; /* user can't click stars*/
 }
 
 #applet {
@@ -19,7 +29,7 @@ body {
   width: 100%;
   padding: 12px;
   position: relative;
-  background: #EEEEEE;
+  background: transparent;
   border-radius: 8px;
 }
 
@@ -47,15 +57,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #EEEEEE;
 }
 
 #radial-kinetic-graph,
 #orbital-kinetic-graph,
 #potential-energy-graph,
 #total-energy-graph {
-  background: #EEEEEE;
+  background: transparent;
   padding: 12px;
-  border-radius: 4px;
   margin: 8px;
 }
 
@@ -64,4 +74,18 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+#orbit5-prev {
+  background: #232946;
+  color: #00BFFF;
+  border-radius: 6px;
+  padding: 10px 28px;
+  outline: none;
+}
+
+#orbit5-prev:hover, #orbit5-prev:focus {
+  background: #00BFFF;
+  color: #232946;
+  outline: none;
 }

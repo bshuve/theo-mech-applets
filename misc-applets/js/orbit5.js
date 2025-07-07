@@ -19,8 +19,11 @@ const SUN_MASS = 2e30;                // Mass of the Sun (kg)
 const EARTH_MASS = 6e24;              // Mass of the Earth (kg)
 const MU = (SUN_MASS * EARTH_MASS) / (SUN_MASS + EARTH_MASS); // Reduced mass
 
+// Visual constants
+const NUM_STARS = 300;
+
 // Animation and display constants
-const CANVAS_WIDTH = 600;
+const CANVAS_WIDTH = 1000;
 const CANVAS_HEIGHT = 600;
 const SVG_WIDTH = 300;
 const SVG_HEIGHT = 300;
@@ -63,6 +66,46 @@ let time = 0;                         // Elapsed time
 let pe_data = [];                     // Potential energy data
 let radial_ke_data = [];              // Radial kinetic energy data
 let orbital_ke_data = [];             // Orbital kinetic energy data
+
+/////////////////////////////////////////////////
+/* STARS BACKGROUND */
+/////////////////////////////////////////////////
+
+function drawStars() {
+  const canvas = document.getElementById("star-background");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
+
+  let stars = [];
+  for (let i = 0; i < NUM_STARS; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      phase: Math.random() * Math.PI * 2,  // initial offset between 0 and 2pi (full sine wave)
+      speed: Math.random() * 0.5 + 0.5  // how fast star twinkles 0.5 - 1.0 radians/second
+    });
+  }
+
+  function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#182030";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const now = performance.now() / 1000; // returns time elapsed in seconds
+    for (let star of stars) {
+      const opacity = 0.3 + 0.7 * Math.abs(Math.sin(now * star.speed + star.phase));
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`
+      ctx.fill();
+    }
+    requestAnimationFrame(animateStars);
+  }
+
+  animateStars();
+}
 
 /////////////////////////////////////////////////
 /* GRAPH CREATION AND MANAGEMENT */
@@ -160,6 +203,14 @@ function plotLine(plot, data, color, lineGroupId) {
         .attr("stroke-width", 1.5);
 }
 
+// After plotLine function, add the styleAxes helper:
+function styleAxes(plot) {
+  plot.svg.selectAll(".domain, .tick line")
+    .attr("stroke", "#EEEEEE");
+  plot.svg.selectAll("text")
+    .attr("fill", "#EEEEEE");
+}
+
 /////////////////////////////////////////////////
 /* PLOT INSTANCES */
 /////////////////////////////////////////////////
@@ -173,6 +224,7 @@ const potentialEnergyPlot = createPlot({
   xLabel: "Radius (AU × 10³)",
   yLabel: "Potential Energy (J × 10^32)"
 });
+styleAxes(potentialEnergyPlot);
 
 // Radial Kinetic Energy Plot
 const radialKineticEnergyPlot = createPlot({
@@ -183,6 +235,7 @@ const radialKineticEnergyPlot = createPlot({
   xLabel: "Radius (AU)",
   yLabel: "Radial Kinetic Energy (J × 10^32)"
 });
+styleAxes(radialKineticEnergyPlot);
 
 // Orbital Kinetic Energy Plot
 const orbitalKineticEnergyPlot = createPlot({
@@ -193,6 +246,7 @@ const orbitalKineticEnergyPlot = createPlot({
   xLabel: "Radius (AU)",
   yLabel: "Orbital Kinetic Energy (J × 10^32)"
 });
+styleAxes(orbitalKineticEnergyPlot);
 
 // Total Energy Plot
 const totalEnergyPlot = createPlot({
@@ -203,6 +257,7 @@ const totalEnergyPlot = createPlot({
   xLabel: "Radius (AU)",
   yLabel: "Energy (J × 10^32)"
 });
+styleAxes(totalEnergyPlot);
 
 /////////////////////////////////////////////////
 /* VISUAL ELEMENTS */
@@ -211,17 +266,16 @@ const totalEnergyPlot = createPlot({
 // Potential energy moving point
 const pePoint = potentialEnergyPlot.svg.append("circle")
     .attr("id", "potential-energy-point")
-    .attr("r", 3)
-    .attr("fill", "blue")
+    .attr("r", 4)
+    .attr("fill", "#00BFFF")
     .attr("visibility", "visible");
 
 // Total energy graph elements
 const tePePoint = totalEnergyPlot.svg.append("circle")
     .attr("id", "total-energy-pe-point")
     .attr("r", 4)
-    .attr("fill", "green")
-    .attr("stroke", "black")
-    .attr("stroke-width", 1)
+    .attr("fill", "#00BFFF")
+
     .attr("visibility", "visible");
 
 const teRadialBar = totalEnergyPlot.svg.append("rect")
@@ -230,7 +284,7 @@ const teRadialBar = totalEnergyPlot.svg.append("rect")
     .attr("width", 15)
     .attr("y", 0)
     .attr("height", 0)
-    .attr("fill", "orange")
+    .attr("fill", "#FFB347")
     .attr("opacity", 0.8);
 
 const teOrbitalBar = totalEnergyPlot.svg.append("rect")
@@ -239,7 +293,7 @@ const teOrbitalBar = totalEnergyPlot.svg.append("rect")
     .attr("width", 15)
     .attr("y", 0)
     .attr("height", 0)
-    .attr("fill", "purple")
+    .attr("fill", "#B266FF")
     .attr("opacity", 0.8);
 
 const teTotalLine = totalEnergyPlot.svg.append("line")
@@ -248,7 +302,7 @@ const teTotalLine = totalEnergyPlot.svg.append("line")
     .attr("y1", 0)
     .attr("x2", 0)
     .attr("y2", 0)
-    .attr("stroke", "red")
+    .attr("stroke", "#FF1744")
     .attr("stroke-width", 2)
     .attr("stroke-dasharray", "5,5");
 
@@ -259,7 +313,7 @@ radialKineticEnergyPlot.svg.append("rect")
   .attr("width", 20)
     .attr("y", radialKineticEnergyPlot.yScale(0))
   .attr("height", 0)
-  .attr("fill", "orange");
+  .attr("fill", "#FFB347");
 
 orbitalKineticEnergyPlot.svg.append("rect")
   .attr("id", "orbital-kinetic-energy-bar")
@@ -267,7 +321,7 @@ orbitalKineticEnergyPlot.svg.append("rect")
   .attr("width", 20)
     .attr("y", orbitalKineticEnergyPlot.yScale(0))
   .attr("height", 0)
-  .attr("fill", "purple");
+  .attr("fill", "#B266FF");
 
 /////////////////////////////////////////////////
 /* ORBITAL CALCULATIONS */
@@ -431,7 +485,8 @@ function updatePotentialEnergyPlot() {
         .attr("transform", `translate(0, ${zeroY})`)
         .call(d3.axisBottom(potentialEnergyPlot.xScale));
 
-    plotLine(potentialEnergyPlot, pe_data, "green", "potential-energy-line");
+    plotLine(potentialEnergyPlot, pe_data, "#00BFFF", "potential-energy-line");
+    styleAxes(potentialEnergyPlot);
 }
 
 /**
@@ -445,7 +500,8 @@ function updateTotalEnergyPotentialPlot() {
         .attr("transform", `translate(0, ${zeroY})`)
         .call(d3.axisBottom(totalEnergyPlot.xScale));
 
-    plotLine(totalEnergyPlot, pe_data, "green", "total-energy-pe-line");
+    plotLine(totalEnergyPlot, pe_data, "#00BFFF", "total-energy-pe-line");
+    styleAxes(totalEnergyPlot);
 }
 
 /**
@@ -467,6 +523,7 @@ function updateRadialKineticEnergyPlot() {
         .transition()
         .duration(TRANSITION_TIME)
         .call(d3.axisLeft(radialKineticEnergyPlot.yScale));
+    styleAxes(radialKineticEnergyPlot);
 }
 
 /**
@@ -488,6 +545,7 @@ function updateOrbitalKineticEnergyPlot() {
     .transition()
     .duration(TRANSITION_TIME)
         .call(d3.axisLeft(orbitalKineticEnergyPlot.yScale));
+    styleAxes(orbitalKineticEnergyPlot);
 }
 
 /**
@@ -554,14 +612,6 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
         .attr("x2", totalEnergyPlot.xScale.range()[1])
         .attr("y2", total_y);
     
-
-    // const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_U);
-    // teTotalLine
-    //     .attr("x1", 0)
-    //     .attr("y1", total_y)
-    //     .attr("x2", totalEnergyPlot.xScale.range()[1])
-    //     .attr("y2", total_y);
-    
     // DEBUG: Alternative total energy line using the sum (commented out for debugging)
     const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_ENERGY);
     teTotalLine
@@ -581,6 +631,7 @@ const orbitSVG = d3.select("#orbit-animation")
   .attr("width", CANVAS_WIDTH)
   .attr("height", CANVAS_HEIGHT);
 
+
 // Draw sun (central body)
 const sun = orbitSVG.append("circle")
   .attr("cx", CANVAS_WIDTH/2)
@@ -588,21 +639,47 @@ const sun = orbitSVG.append("circle")
   .attr("r", 10)
   .attr("fill", "#F5BF0F");
 
-// Draw earth (orbiting body)
-const earth = orbitSVG.append("circle")
-  .attr("r", 4)
-  .attr("fill", "blue");
-
 /**
- * Updates the orbit visualization
- * @param {number} r - Radial distance (meters)
- * @param {number} phi - Angular position (radians)
+ * Draws dotted orbit that earth follows
+ * @param {number} L 
+ * @param {number} epsilon 
  */
+function drawOrbitTrace(L, epsilon) {
+  const points = [];
+  for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+    const r = (L * L) / (G * SUN_MASS * EARTH_MASS * EARTH_MASS * (1 + epsilon * Math.cos(angle)));
+    const x = CANVAS_WIDTH/2 + (r / SCALE_R) * 60 * Math.cos(angle);
+    const y = CANVAS_HEIGHT/2 + (r / SCALE_R) * 60 * Math.sin(angle);
+    points.push([x, y]);
+  }
+  orbitSVG.selectAll(".orbit-trace").remove();  // clear existing trace
+  // Draw trace
+  orbitSVG.append("path")
+    .datum(points)
+    .attr("class", "orbit-trace")
+    .attr("fill", "none")
+    .attr("stroke", "#EEEEEE")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "2,4") // dotted line (dash len, gap len)
+    .attr("d", d3.line());
+
+  // Remove and re-append the earth so it is above the trace
+  orbitSVG.selectAll("#earth-orbit").remove();
+  orbitSVG.append("circle")
+    .attr("id", "earth-orbit")
+    .attr("r", 4)
+    .attr("fill", "#00BFFF")
+    .attr("stroke", "white")
+    .attr("stroke-width", 1);
+}
+
+// Remove the original earth definition, and update updateOrbitVisualization to use #earth-orbit
 function updateOrbitVisualization(r, phi) {
     const x = CANVAS_WIDTH/2 + (r / SCALE_R) * 60 * Math.cos(phi);
     const y = CANVAS_HEIGHT/2 + (r / SCALE_R) * 60 * Math.sin(phi);
-    
-    earth.attr("cx", x).attr("cy", y);
+    orbitSVG.select("#earth-orbit")
+      .attr("cx", x)
+      .attr("cy", y);
 }
 
 /**
@@ -669,6 +746,10 @@ function animate() {
 /* EVENT HANDLERS */
 /////////////////////////////////////////////////
 
+window.addEventListener("load", drawStars);
+window.addEventListener("resize", drawStars);
+
+
 /**
  * Updates orbital parameters and regenerates all data
  */
@@ -681,6 +762,7 @@ function updateOrbitalParameters() {
     r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS);
     r_max = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 - epsilon));
     regenerateAllDataAndPlots();
+    drawOrbitTrace(L, epsilon);
     phi = 0;
     time = 0;
 }
