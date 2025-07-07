@@ -83,8 +83,8 @@ function drawStars() {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 1.5 + 0.5,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.5 + 0.5
+      phase: Math.random() * Math.PI * 2,  // initial offset between 0 and 2pi (full sine wave)
+      speed: Math.random() * 0.5 + 0.5  // how fast star twinkles 0.5 - 1.0 radians/second
     });
   }
 
@@ -639,23 +639,47 @@ const sun = orbitSVG.append("circle")
   .attr("r", 10)
   .attr("fill", "#F5BF0F");
 
-// Draw earth (orbiting body)
-const earth = orbitSVG.append("circle")
-  .attr("r", 4)
-  .attr("fill", "#00BFFF")
-  .attr("stroke", "white")
-  .attr("stroke-width", 1);
-
 /**
- * Updates the orbit visualization
- * @param {number} r - Radial distance (meters)
- * @param {number} phi - Angular position (radians)
+ * Draws dotted orbit that earth follows
+ * @param {number} L 
+ * @param {number} epsilon 
  */
+function drawOrbitTrace(L, epsilon) {
+  const points = [];
+  for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+    const r = (L * L) / (G * SUN_MASS * EARTH_MASS * EARTH_MASS * (1 + epsilon * Math.cos(angle)));
+    const x = CANVAS_WIDTH/2 + (r / SCALE_R) * 60 * Math.cos(angle);
+    const y = CANVAS_HEIGHT/2 + (r / SCALE_R) * 60 * Math.sin(angle);
+    points.push([x, y]);
+  }
+  orbitSVG.selectAll(".orbit-trace").remove();  // clear existing trace
+  // Draw trace
+  orbitSVG.append("path")
+    .datum(points)
+    .attr("class", "orbit-trace")
+    .attr("fill", "none")
+    .attr("stroke", "#EEEEEE")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "2,4") // dotted line (dash len, gap len)
+    .attr("d", d3.line());
+
+  // Remove and re-append the earth so it is above the trace
+  orbitSVG.selectAll("#earth-orbit").remove();
+  orbitSVG.append("circle")
+    .attr("id", "earth-orbit")
+    .attr("r", 4)
+    .attr("fill", "#00BFFF")
+    .attr("stroke", "white")
+    .attr("stroke-width", 1);
+}
+
+// Remove the original earth definition, and update updateOrbitVisualization to use #earth-orbit
 function updateOrbitVisualization(r, phi) {
     const x = CANVAS_WIDTH/2 + (r / SCALE_R) * 60 * Math.cos(phi);
     const y = CANVAS_HEIGHT/2 + (r / SCALE_R) * 60 * Math.sin(phi);
-    
-    earth.attr("cx", x).attr("cy", y);
+    orbitSVG.select("#earth-orbit")
+      .attr("cx", x)
+      .attr("cy", y);
 }
 
 /**
@@ -738,6 +762,7 @@ function updateOrbitalParameters() {
     r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS);
     r_max = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 - epsilon));
     regenerateAllDataAndPlots();
+    drawOrbitTrace(L, epsilon);
     phi = 0;
     time = 0;
 }
