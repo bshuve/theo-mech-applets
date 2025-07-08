@@ -796,3 +796,161 @@ function initialize() {
 
 // Start the application when the page loads
 initialize();
+
+
+// Guided Tour of Page
+
+
+// Info to show on tutorial as JSON
+const tutorialSteps = [
+  {
+    text: "This is the Sun (yellow) and the Earth (blue). The simulation shows Earth's orbit around the Sun.",
+    position: () => {
+      const sun = document.querySelector("#orbit-animation svg circle");
+      const rect = sun.getBoundingClientRect();
+      return { top: rect.top + window.scrollY - 20, left: rect.left + window.scrollX + 40 };
+    },
+    // positionElement: () => document.querySelector("#orbit-animation svg circle")
+  },
+  {
+    text: "Use these sliders to adjust the orbit's angular momentum and eccentricity (ovalness)",
+    position: () => {
+      const sliders = document.getElementById("slider-row");
+      const rect = sliders.getBoundingClientRect();
+      return { top: rect.top + window.scrollY - 20, left: rect.left + window.scrollX + 20 };
+    },
+    // positionElement: () => document.getElementById("slider-row")
+  },
+  {
+    text: "This graph shows the radial kinetic energy of the orbiting body as a function of distance (radius)",
+    position: () => {
+      const graph = document.getElementById("radial-kinetic-graph");
+      const rect = graph.getBoundingClientRect();
+      return { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20};
+    },
+    positionElement: () => document.getElementById("radial-kinetic-graph")
+  },
+  {
+    text: "This graph shows the orbital kinetic energy: energy due to motion around the Sun.",
+    position: () => {
+      const graph = document.getElementById("orbital-kinetic-graph");
+      const rect = graph.getBoundingClientRect();
+      return { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+    },
+    positionElement: () => document.getElementById("orbital-kinetic-graph")
+  },
+  {
+    text: "This graph shows the potential energy as a function of distance from the Sun.",
+    position: () => {
+      const graph = document.getElementById("potential-energy-graph");
+      const rect = graph.getBoundingClientRect();
+      return { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+    },
+    positionElement: () => document.getElementById("potential-energy-graph")
+  },
+  {
+    text: "This graph shows the total energy, with bars for kinetic and potential energy at the current position.",
+    position: () => {
+      const graph = document.getElementById("total-energy-graph");
+      const rect = graph.getBoundingClientRect();
+      return { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+    },
+    positionElement: () => document.getElementById("total-energy-graph")
+  }
+];
+
+// iterating through tutorial
+let tutorialStep = 0;
+let rocket = document.getElementById("tutorial-rocket");
+// let rocket = document.getElementById("tutorial-rocket-img");
+let lastRocketPos = null; // {top, left}
+
+function showTutorialStep(step) {
+  const overlay = document.getElementById("tutorial-overlay");
+  const box = document.getElementById("tutorial-box");
+  const text = document.getElementById("tutorial-text");
+  const elem = tutorialSteps[step].positionElement && tutorialSteps[step].positionElement();
+
+  if (step >= tutorialSteps.length) {
+    overlay.style.display = "none";
+    rocket.style.display = "none";
+    document.body.style.overflow = "";
+    return;
+  }
+
+  overlay.style.display = "block";
+  text.innerHTML = tutorialSteps[step].text;
+
+  // If there's an element to scroll to, do it, then position after a delay
+  if (elem) {
+    elem.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => positionTutorialBoxAndRocket(step, box), 400); // 400ms delay for smooth scroll
+  } else {
+    positionTutorialBoxAndRocket(step, box);
+  }
+}
+
+function positionTutorialBoxAndRocket(step, box) {
+  const pos = tutorialSteps[step].position();
+  box.style.top = pos.top + "px";
+  box.style.left = pos.left + "px";
+
+  // rocket position
+  const rocketTarget = { top: pos.top + 20, left: pos.left - 60 };
+
+  if (step === 0 || !lastRocketPos) {
+    rocket.style.top = rocketTarget.top + "px";
+    rocket.style.left = rocketTarget.left + "px";
+    rocket.style.display = "block";
+    rocket.classList.add("hovering");
+    lastRocketPos = rocketTarget;
+  } else {
+    rocket.classList.remove("hovering");
+    animateRocket(lastRocketPos, rocketTarget, 700, () => {
+      rocket.classList.add("hovering");
+    });
+    lastRocketPos = rocketTarget;
+  }
+}
+
+// Animate rocket movement
+function animateRocket(start, end, duration, callback) {
+  let startTime = null;
+  function animateStep(timestamp) {
+    if (!startTime) startTime = timestamp;
+    let progress = Math.min((timestamp - startTime) / duration, 1);
+    let top = start.top + (end.top - start.top) * progress;
+    let left = start.left + (end.left - start.left) * progress;
+    rocket.style.top = top + "px";
+    rocket.style.left = left + "px";
+    if (progress < 1) {
+      requestAnimationFrame(animateStep);
+    } else {
+      if (callback) callback();
+    }
+  }
+  requestAnimationFrame(animateStep)
+}
+
+// button handlers
+document.getElementById("tutorial-next").onclick = function() {
+  tutorialStep++;
+  showTutorialStep(tutorialStep);
+};
+document.getElementById("tutorial-skip").onclick = function() {
+  document.getElementById("tutorial-overlay").style.display = "none";
+  rocket.style.display = "none";
+}
+
+// showTutorialStep(0);
+
+// show tutorial on first visit only
+window.addEventListener("load", function() {
+  if (!this.localStorage.getItem("tutorialSeen")) {
+    this.document.body.style.overflow = "hidden";
+    showTutorialStep(0);
+    this.localStorage.setItem("tutorialSeen", "true");
+  } else {
+    this.document.body.style.overflow = "";
+  }
+});

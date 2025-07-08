@@ -89,3 +89,55 @@ body {
   color: #232946;
   outline: none;
 }
+
+#tutorial-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 10;
+}
+
+/* #tutorial-backdrop {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #E5C357;
+  z-index: 1;
+} */
+
+#tutorial-box {
+  position: absolute;
+  background: #FFFFFF;
+  color: #232946;
+  border-radius: 10px;
+  padding: 24px 24px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+#tutorial-buttons {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+#tutorial-next:hover, #tutorial-skip:hover {
+  background: #00BFFF;
+  color: #232946;
+}
+
+@keyframes rocket-hover {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+#tutorial-rocket.hovering {
+  animation: rocket-hover 1.2s infinite;
+}
+
+/*
+#tutorial-rocket-img.hovering {
+  animation: rocket-hover 1.2s infinite;
+}
+*/
