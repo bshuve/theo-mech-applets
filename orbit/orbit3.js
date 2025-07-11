@@ -7,57 +7,117 @@ const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 330;
 const SVG_HEIGHT = 280;
 const dt = 315600;
-const FRAME_RATE = 10   // ms
+var FRAME_RATE = 10   // ms
 const TRANSITION_TIME = 10; // ms
 
 const G = 6.7 * 10 ** (-11);
 const sunMass = 2 * (10 ** 30);
 const earthMass = 6 * (10 ** 24);
 const mu = (sunMass * earthMass) / (sunMass + earthMass);
-var epsilon = parseFloat(document.getElementById("epsilon-slider").getAttribute("value"));
+
+// Initialize with slider values
 var L = parseFloat(document.getElementById("L-slider").getAttribute("value")) * 1e40; // kg·m²/s
-var energy = (epsilon ** 2 - 1) * ((G * sunMass * earthMass * earthMass) / 2 / (L ** 2));
-var r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
+var E = parseFloat(document.getElementById("E-slider").getAttribute("value")) * 1e33; // J
+
+function updateEnergyLimits() {
+  // Calculate energy limits based on current L
+  const energy_for_eps_1 = -0.0009995 * (mu * (G * sunMass * earthMass) ** 2) / L / L;
+  const energy_for_eps_0 = -0.5 * (mu * (G * sunMass * earthMass) ** 2) / L / L;
+
+  // Convert to AU for slider
+  const energy_min = energy_for_eps_0 / 1e33;
+  const energy_max = energy_for_eps_1 / 1e33;
+
+  // Update slider attributes
+  const slider = document.getElementById("E-slider");
+  slider.setAttribute("min", energy_min.toFixed(2));
+  slider.setAttribute("max", energy_max.toFixed(2));
+
+  // Ensure current value is within new limits
+  const currentValue = parseFloat(slider.value);
+  if (currentValue < energy_min) {
+    slider.value = energy_min.toFixed(2);
+    energy = energy_min * 1e33;
+    document.getElementById("print-E").innerHTML = energy_min.toFixed(2);
+  } else if (currentValue > energy_max) {
+    slider.value = energy_max.toFixed(2);
+    energy = energy_max * 1e33;
+    document.getElementById("print-E").innerHTML = energy_max.toFixed(2);
+  }
+
+  // Update step size to be reasonable for the range
+  const range = energy_max - energy_min;
+  const step = Math.min(0.01, range / 100);
+  slider.setAttribute("step", step.toFixed(3));
+}
+
+// Calculate derived quantities
+var epsilon, r_min
+
+function calculateDerivedQuantities() {
+  epsilon = Math.sqrt(1 + (2 * E * L * L) / (mu * (G * sunMass * earthMass) ** 2));
+  epsilon = Math.min(epsilon, 0.999);
+  if (!epsilon) {
+    epsilon = 0;
+  }
+
+  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass) * (1 / (1 + epsilon));
+}
+
+// Initialize derived quantities
+calculateDerivedQuantities();
+
 var radial_ke_data = [];
 var orbital_ke_data = [];
 const SCALE_R = 1e11; // Scale factor for radius (m to AU) for graphing
 const SCALE_U = 1e33; // Scale factor for energy for graphing
-const SCALE_KE = 1e32; // Scale factor for kinetic energy for graphing
-const NUM_STARS = 50;
-const stars = Array.from({ length: NUM_STARS }, () => ({
-  x: Math.random() * CANVAS_WIDTH,
-  y: Math.random() * CANVAS_HEIGHT,
-  radius: Math.random() * 1.5 + 0.5 // random star size
-}));
+const SCALE_KE = 1e33; // Scale factor for kinetic energy for graphing
+const NUM_STARS = 300;
+
+/////////////////////////////////////////////////
+/* STARS BACKGROUND */
+/////////////////////////////////////////////////
+
+function drawStars() {
+  const canvas = document.getElementById("star-background");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
+
+  let stars = [];
+  for (let i = 0; i < NUM_STARS; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      phase: Math.random() * Math.PI * 2,  // initial offset between 0 and 2pi (full sine wave)
+      speed: Math.random() * 0.5 + 0.5  // how fast star twinkles 0.5 - 1.0 radians/second
+    });
+  }
+
+  function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#182030";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const now = performance.now() / 1000; // returns time elapsed in seconds
+    for (let star of stars) {
+      const opacity = 0.3 + 0.7 * Math.abs(Math.sin(now * star.speed + star.phase));
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`
+      ctx.fill();
+    }
+    requestAnimationFrame(animateStars);
+  }
+
+  animateStars();
+}
 
 const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 const originalPanel = document.getElementById("orbit-canvas");
 originalPanel.replaceWith(hiPPICanvas);
 hiPPICanvas.id = "orbit-canvas";
-/////////////////////////////////////////////////
-/* UTILITY FUNCTIONS */
-/////////////////////////////////////////////////
-
-function formatScientific(value, decimals = 2) {
-    if (value === 0) return "0.00";
-    
-    const exponent = Math.floor(Math.log10(Math.abs(value)));
-    const mantissa = value / Math.pow(10, exponent);
-    
-    return `${mantissa.toFixed(decimals)} × 10${exponent >= 0 ? '' : ''}e${exponent}`;
-}
-
-function updateCalculatedValues() {
-    // Update r_min
-    r_min = (L ** 2) / (G * sunMass * earthMass * earthMass);
-    document.getElementById("print-r-min").innerHTML = formatScientific(r_min);
-    
-    // Update energy
-   energy = -(epsilon ** 2 - 1) * ((G * sunMass * earthMass)**2 * mu / 2 / (L ** 2));
-    document.getElementById("print-energy").innerHTML = formatScientific(energy);
-    
-}
-
 /////////////////////////////////////////////////
 /* MASTER GRAPHING CAPABILITY */
 /////////////////////////////////////////////////
@@ -186,7 +246,7 @@ var pe_data = [];
 function potentialEnergyData() {
   pe_data.length = 0;
 
-  for (let r = 1; r <= 4 * 1e12; r += 1e12 / 500) {
+  for (let r = 1; r <= 1e12; r += 1e12 / 400) {
     let Ueff = (L ** 2) / (2 * earthMass * r ** 2) - (G * earthMass * sunMass) / r
     pe_data.push({
       x: r / SCALE_R,  // Scaled radius
@@ -285,7 +345,7 @@ function orbitalKineticEnergyData() {
     let drdt = dr_dphi * dphidt;
 
     // Total kinetic energy (both components)
-    let ke = 0.5 * L * L/(earthMass*r * r);
+    let ke = 0.5 * L * L / (earthMass * r * r);
 
     orbital_ke_data.push({
       x: r / 1.496e11, // Convert to AU
@@ -383,10 +443,13 @@ function plotOrbitalKineticPoint(r, phi) {
 
 // Function to update displayed values
 function updateDisplayedValues() {
+  document.getElementById("print-L").innerHTML = (L / 1e40).toFixed(2);
+  document.getElementById("print-E").innerHTML = (E / 1e33).toFixed(2);
   document.getElementById("print-rmin").innerHTML = (r_min / 1.496e11).toFixed(2);
   document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(3);
 }
 
+updateEnergyLimits();
 // initialize plots
 potentialEnergyData();
 plotPotentialEnergy(pe_data);
@@ -394,7 +457,7 @@ radialKineticEnergyData();
 plotRadialKineticEnergy(radial_ke_data);
 orbitalKineticEnergyData();
 plotOrbitalKineticEnergy(orbital_ke_data);
-updateCalculatedValues(); // Initialize calculated values display
+updateDisplayedValues();
 
 /////////////////////////////////////////////////
 /* CANVAS ANIMATIONS */
@@ -403,9 +466,9 @@ updateCalculatedValues(); // Initialize calculated values display
 // wrapper function to start animations
 function startAnimation() {
   // projectiles - changed from rectangles to circles with radius parameter
-  
+
   earth = new component(4, "AliceBlue", transformXCoord(0), transformYCoord(0)); // radius = 2
-  
+
   earth.phi = 0;
   sun = new component(8, "yellow", transformXCoord(0), transformYCoord(0)); // radius = 5
   animArea.start();
@@ -431,7 +494,7 @@ function distance(x1, y1, x2, y2) {
 function transformXCoord(x) {
   const low = -6e11; // -4 AU
   const high = 6e11;  // +4 AU
-  return  (90 + ((x - low) / (high - low)) * (150));
+  return (90 + ((x - low) / (high - low)) * (150));
 }
 
 // parameterized coord -> canvas coord
@@ -460,12 +523,6 @@ var animArea = {
     this.context.fillRect(0, 0, this.panel.width, this.panel.height);
     // Draw ellipse orbit path
     earth.generateEllipse();
-     this.context.fillStyle = "rgba(255, 255, 255, 0.5)";
-    for (let star of stars) {
-    this.context.beginPath();
-    this.context.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-    this.context.fill();
-  }
   },
   stop: function () {
     clearInterval(this.interval);
@@ -505,10 +562,10 @@ function component(radius, color, x, y) {
   this.generateEllipse = function () {
     // Clear the circles array to prevent memory leak
     circles = [];
-    
+
     for (let angle = 0; angle <= 2 * Math.PI; angle += 0.1) {
       let r = ((L) ** 2) / (G * sunMass * earthMass * mu * (1 + epsilon * Math.cos(angle)));
-      
+
       circles.push({
         x: transformXCoord(r * Math.cos(angle)),
         y: transformYCoord(r * Math.sin(angle)),
@@ -516,7 +573,7 @@ function component(radius, color, x, y) {
         color: this.color,
       });
     }
-    
+
     const drawCircle = (x, y, radius, color) => {
       ctx = animArea.context;
       //console.log(ctx);
@@ -525,7 +582,7 @@ function component(radius, color, x, y) {
       ctx.arc(x, y, radius, 0, 2 * Math.PI);
       ctx.fill();
     }
-    
+
     for (let circle of circles) {
       drawCircle(circle.x, circle.y, 0.5, circle.color);
     }
@@ -544,7 +601,7 @@ function updateFrame() {
 
   earth.update();
   sun.update();
-  
+
   animArea.time += dt;
 }
 
@@ -557,60 +614,115 @@ runAnimation();
 /* EVENT LISTENERS */
 /////////////////////////////////////////////////
 
-// update curve when changing a
-document.getElementById("epsilon-slider").oninput = function () {
-  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
-
+// Update system when changing Energy (E) slider
+document.getElementById("E-slider").oninput = function () {
+  E = parseFloat(document.getElementById("E-slider").value) * 1e33;
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
-  document.getElementById("print-L").innerHTML = L.toFixed(2);
-  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
-  updateCalculatedValues()
-  potentialEnergyData();  // Regenerate data
-  plotPotentialEnergy(pe_data);  // Replot
-  radialKineticEnergyData();  // Regenerate KE data
-  plotRadialKineticEnergy(radial_ke_data);  // Replot KE
+
+  // Recalculate derived quantities
+  calculateDerivedQuantities();
+
+  // Update displayed values
+  updateDisplayedValues();
+
+  // Regenerate and replot all graphs
+  potentialEnergyData();
+  plotPotentialEnergy(pe_data);
+  radialKineticEnergyData();
+  plotRadialKineticEnergy(radial_ke_data);
   orbitalKineticEnergyData();
   plotOrbitalKineticEnergy(orbital_ke_data);
+
+  // Restart animation with new parameters
   endAnimation();
   startAnimation();
 }
 
-// update curve when changing d
+// Update system when changing Angular Momentum (L) slider
 document.getElementById("L-slider").oninput = function () {
-  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
-
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
-  document.getElementById("print-L").innerHTML = L.toFixed(2);
-  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
-  updateCalculatedValues()
-  potentialEnergyData();  // Regenerate data
-  plotPotentialEnergy(pe_data);  // Replot
-  radialKineticEnergyData();  // Regenerate KE data
-  plotRadialKineticEnergy(radial_ke_data);  // Replot KE
+  E = parseFloat(document.getElementById("E-slider").value) * 1e33;
+
+  updateEnergyLimits();
+  // Recalculate derived quantities
+  calculateDerivedQuantities();
+
+  // Update displayed values
+  updateDisplayedValues();
+
+  // Regenerate and replot all graphs
+  potentialEnergyData();
+  plotPotentialEnergy(pe_data);
+  radialKineticEnergyData();
+  plotRadialKineticEnergy(radial_ke_data);
   orbitalKineticEnergyData();
   plotOrbitalKineticEnergy(orbital_ke_data);
+
+  // Restart animation with new parameters
   endAnimation();
   startAnimation();
 }
 
-// run animation
-document.getElementById("epsilon-slider").onchange = function () {
-  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
-  
-  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
+// Restart animation when Energy slider is released
+document.getElementById("E-slider").onmouseup = function () {
+  E = parseFloat(document.getElementById("E-slider").value) * 1e33;
+
+  // Recalculate derived quantities
+  calculateDerivedQuantities();
+
+  // Update displayed values
+  updateDisplayedValues();
+
+  // Restart animation
   runAnimation();
 }
 
-// run animation
-document.getElementById("L-slider").onchange = function () {
+// Restart animation when Angular Momentum slider is released
+document.getElementById("L-slider").onmouseup = function () {
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
 
-  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
+  // Recalculate derived quantities
+  calculateDerivedQuantities();
+
+  // Update displayed values
+  updateDisplayedValues();
+
+  // Restart animation
   runAnimation();
 }
 
+
+document.getElementById("speed-slider").oninput = function () {
+  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
+  
+  // Update the frame rate without restarting animation
+  updateFrameRate(newFrameRate);
+}
+
+document.getElementById("speed-slider").onchange = function () {
+  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
+  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
+  
+  // Update the frame rate without restarting animation
+  updateFrameRate(newFrameRate);
+}
+
+// Add this new function to handle frame rate updates
+function updateFrameRate(newFrameRate) {
+  // Clear the existing interval
+  if (animArea.interval) {
+    clearInterval(animArea.interval);
+  }
+  
+  // Update the global FRAME_RATE variable
+  FRAME_RATE = newFrameRate;
+  
+  // Start new interval with updated frame rate
+  animArea.interval = setInterval(updateFrame, FRAME_RATE);
+}
+
+// Show/Hide answer toggle
 var showAnswer1 = false;
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
@@ -624,15 +736,43 @@ document.getElementById("show-q1").addEventListener("click", function () {
   }
 });
 
+var showAnswer2 = false;
+document.getElementById("show-q2").addEventListener("click", function () {
+  if (!showAnswer2) {
+    showAnswer2 = true;
+    document.getElementById("show-q2").innerHTML = "Hide Answer";
+    document.getElementById("answer2").style.display = "block";
+  } else {
+    showAnswer2 = false;
+    document.getElementById("show-q2").innerHTML = "Show Answer";
+    document.getElementById("answer2").style.display = "none";
+  }
+});
+
+// Initialize the display on page load
+document.addEventListener("DOMContentLoaded", function () {
+  // Set initial slider display values
+    // document.getElementById("print-L").innerHTML = (L / 1e40).toFixed(2);
+    // document.getElementById("print-E").innerHTML = (E / 1e33).toFixed(2);
+
+  // Calculate and display initial derived values
+  calculateDerivedQuantities();
+  updateDisplayedValues();
+  //runAnimation();
+});
 
 //https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
 function createHiPPICanvas(width, height) {
-    const ratio = window.devicePixelRatio;
-    const canvas = document.createElement("canvas");
-    canvas.width = width * ratio;
-    canvas.height = height * ratio;
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-    canvas.getContext("2d").scale(ratio, ratio);
-    return canvas;
+  const ratio = window.devicePixelRatio;
+  const canvas = document.createElement("canvas");
+  canvas.width = width * ratio;
+  canvas.height = height * ratio;
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+  canvas.getContext("2d").scale(ratio, ratio);
+  return canvas;
 }
+
+// Initialize star background
+window.addEventListener("load", drawStars);
+window.addEventListener("resize", drawStars);

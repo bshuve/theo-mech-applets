@@ -73,12 +73,47 @@ var orbital_ke_data = [];
 const SCALE_R = 1.496e+11; // Scale factor for radius (m to AU) for graphing
 const SCALE_U = 1e33; // Scale factor for energy for graphing
 const SCALE_KE = 1e33; // Scale factor for kinetic energy for graphing
-const NUM_STARS = 50;
-const stars = Array.from({ length: NUM_STARS }, () => ({
-  x: Math.random() * CANVAS_WIDTH,
-  y: Math.random() * CANVAS_HEIGHT,
-  radius: Math.random() * 1.5 + 0.5 // random star size
-}));
+const NUM_STARS = 300;
+
+/////////////////////////////////////////////////
+/* STARS BACKGROUND */
+/////////////////////////////////////////////////
+
+function drawStars() {
+  const canvas = document.getElementById("star-background");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
+
+  let stars = [];
+  for (let i = 0; i < NUM_STARS; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      phase: Math.random() * Math.PI * 2,  // initial offset between 0 and 2pi (full sine wave)
+      speed: Math.random() * 0.5 + 0.5  // how fast star twinkles 0.5 - 1.0 radians/second
+    });
+  }
+
+  function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#182030";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const now = performance.now() / 1000; // returns time elapsed in seconds
+    for (let star of stars) {
+      const opacity = 0.3 + 0.7 * Math.abs(Math.sin(now * star.speed + star.phase));
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`
+      ctx.fill();
+    }
+    requestAnimationFrame(animateStars);
+  }
+
+  animateStars();
+}
 
 const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 const originalPanel = document.getElementById("orbit-canvas");
@@ -490,12 +525,6 @@ var animArea = {
     this.context.fillRect(0, 0, this.panel.width, this.panel.height);
     // Draw ellipse orbit path
     earth.generateEllipse();
-     this.context.fillStyle = "rgba(255, 255, 255, 0.5)";
-    for (let star of stars) {
-    this.context.beginPath();
-    this.context.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-    this.context.fill();
-  }
   },
   stop: function () {
     clearInterval(this.interval);
@@ -722,3 +751,7 @@ function createHiPPICanvas(width, height) {
     canvas.getContext("2d").scale(ratio, ratio);
     return canvas;
 }
+
+// Initialize star background
+window.addEventListener("load", drawStars);
+window.addEventListener("resize", drawStars);

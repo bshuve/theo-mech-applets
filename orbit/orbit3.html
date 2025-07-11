@@ -3,15 +3,16 @@
 
 <head>
     <title>orbit3</title>
-    <link rel="stylesheet" href="../css/orbit2.css">
+    <link rel="stylesheet" href="./orbit3.css">
     <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="d3.v4.js"></script>
     <!-- LaTeX support -->
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script defer src="../js/orbit3c.js"></script>
+    <script defer src="./orbit3.js"></script>
 </head>
 
 <body id="body">
+    <canvas id="star-background"></canvas>
 
     <h1 id="title">Conserved Quantities: Energy and Angular Momentum Control</h1>
 
@@ -159,11 +160,14 @@
                     <p>\(r_{min} =\) <span id="print-rmin">1.50</span> AU</p>
                     <p>\(\epsilon =\) <span id="print-epsilon">0.50</span></p>
                 </div>
-
+ 
             </div>
             <div class="buttons">
+                <column id="prev-button">
+                    <button onclick="window.location.href = 'orbit2.html'">PREV PAGE</button>
+                </column>
                 <column id="next-button">
-                    <button onclick="window.location.href = 'orbit3a.html'">NEXT PAGE</button>
+                    <button onclick="window.location.href = 'orbit4.html'">NEXT PAGE</button>
                 </column>
             </div>
 

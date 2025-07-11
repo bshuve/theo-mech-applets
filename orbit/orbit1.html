@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Orbital Motion and the Principle of Least Action</title>
+    <link rel="stylesheet" href="./orbit1.css">
+
+    <!-- Load d3.js -->
+    <script src="d3.v4.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script defer src="./orbit1.js"></script>
+</head>
+
+<body id="body">
+    <canvas id="star-background"></canvas>
+    <h1 id="title">Orbital Motion and the Principle of Least Action</h1>
+
+    <p id="text">
+        <i>This applet visualizes the motion of a planet orbiting a star, demonstrating the physical principles that
+            govern its trajectory. By adjusting key orbital parameters, you can explore how energy and angular momentum
+            shape the path of a celestial body.</i>
+    </p>
+
+    <p id="text">
+        In classical mechanics, the motion of two gravitationally interacting bodies—like the Earth and the Sun—can be
+        complex. To simplify this, we can reframe it as an equivalent one-body problem. This is achieved using the
+        concept of <strong>reduced mass</strong>, denoted by the symbol μ (mu), where:
+        
+        \[ \mu = \frac{m_1 m_2}{m_1 + m_2} \]
+
+        This allows us to describe the motion of one body relative to the other in a much simpler way.
+    </p>
+
+    <p id="text">
+        We can get the shape of the orbital path of μ as a function of the angle θ as follows:
+        
+        \[ r(\theta) = \frac{L^2}{\mu G m_1 m_2}\frac{1}{1 + \epsilon \cos \theta} \]
+
+        Here, \(\epsilon\) is the <strong>orbital eccentricity</strong>, a parameter that defines the orbit's shape.
+        When \(\epsilon < 1\), the path is a bound, elliptical orbit. While \(r(\theta)\) describes the path of the
+            reduced mass, the actual paths of the two individual bodies are given by: \[
+            r_{1}(\theta)=\frac{m_2}{m_1+m_2}r(\theta) \quad \text{and} \quad
+            r_{2}(\theta)=-\frac{m_1}{m_1+m_2}r(\theta) \] 
+    </p>
+
+    <p id="text">
+        The total energy \(E\) of the system is also useful to understanding the behavior of the orbit. This
+        energy
+        is composed of three parts:
+        \[
+        E = \underbrace{\frac{1}{2} \mu \dot{r}^2}_{\text{Radial Kinetic Energy}} + \underbrace{\frac{L^2}{2\mu
+        r^2}}_{\text{Angular Kinetic Energy}} - \underbrace{\frac{G m_1 m_2}{r}}_{\text{Gravitational Potential
+        Energy}}
+        \]
+        The <strong>Radial Kinetic Energy</strong> is the energy of motion directly towards or away from the
+        center of mass. The
+        <strong>Angular Kinetic Energy</strong> is the energy of the orbital motion. Notice how this term has a
+        dependence on \(r\) and not \(\dot r\). As r gets close to 0, there is an increasing outward force,
+        preventing the orbit from getting too close to the center of mass. This is known as the centrifugal
+        barrier.
+    </p>
+
+    <p id="text">
+        Notice how the angular kinetic energy and gravitational potential energy both have a dependency on
+        \(r\). These last two terms are often combined into an <strong>Effective Potential</strong>
+        (\(U_{\text{eff}}\)), which we use to understand the shape of the trajectory:
+        \[
+        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} -\frac{G m_1 m_2}{r}
+        \]
+    </p>
+
+    <p id="text">
+        This applet models a star-planet system where the star's mass (\(m_1\)) is much greater than the
+        planet's (\(m_2\)),
+        similar to our Sun and Earth.
+    </p>
+
+    <!-- I'll come to edit this well -->
+    <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
+        <label for="show-q1" id="text">
+            <b>Question:</b> In a system like the Sun and Earth where \(m_1 \gg m_2\), what does the reduced
+            mass \(\mu\) approximate to? What does this imply about the motion of the two bodies?
+        </label>
+        <br><br>
+        <button id="show-q1">Show answer</button>
+        <span id="answer1" style="display: none"><br>
+            When \(m_1 \gg m_2\), the denominator \(m_1 + m_2\) is approximately equal to \(m_1\). So, \(\mu
+            \approx
+            \frac{m_1 m_2}{m_1}\), which simplifies to \( \mu \approx m_2\). This means the reduced mass is
+            nearly
+            identical to the planet's mass. As a result, the motion will follow the Earth around the center of
+            mass, which will be mostly the Sun.
+        </span>
+    </div>
+
+    <p id="text">
+        Use the sliders below to see how angular momentum and eccentricity affects the orbit. As you adjust the
+        parameters, observe the changes in
+        the three graphs. Pay attention to the radius of the planet from the sun and how this relates to the
+        effective potential and kinetic energies.
+    </p>
+
+    <div id="applet">
+        <div id="top-panel">
+            <canvas id="orbit-canvas" title="planetary-motion"></canvas>
+            <div id="potential-energy-graph"></div>
+        </div>
+
+        <div id="bottom-panel">
+            <div id="kinetic-graph"></div>
+            <div id="kinetic-graph2"></div>
+        </div>
+
+        <div id="inner-container">
+            <div class="parameter-group">
+                <label for="L-slider">L (×10⁴⁰ kg·m²/s): <span id="print-L">2.7</span></label>
+                <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
+            </div>
+
+            <div class="parameter-group">
+                <label for="epsilon-slider">Eccentricity (ε): <span id="print-epsilon">0.00</span></label>
+                <input id="epsilon-slider" class="slider" type="range" min="0" max="0.99" value="0" step="0.01">
+            </div>
+
+            <fieldset>
+                <legend>LEGEND</legend>
+                <label><span id="orange">.....</span> - Position</label><br>
+                <label><span id="purple">.....</span> - Velocity</label><br>
+            </fieldset>
+
+            <div class="calculated-values">
+                <h4>Calculated Values:</h4>
+                <p>\(r_{\text{min}} = \) <span id="print-r-min">1.50 × 10¹¹</span> m</p>
+                <p>\(E = \) <span id="print-energy">-2.97 × 10³³</span> J</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <column id="next-button">
+            <button onclick="window.location.href = 'orbit2.html'">NEXT PAGE</button>
+        </column>
+    </div>
+</body>
+</html>

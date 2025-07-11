@@ -1,17 +1,3 @@
-/**
- * Orbital Mechanics Applet Stylesheet
- * 
- * This stylesheet provides styling for the orbital mechanics visualization applet,
- * including layout, controls, graphs, and interactive elements.
- * 
- * @author Theo Mech Applets
- * @version 2.0
- */
-
-/* ==========================================================================
-   BASE STYLES
-   ========================================================================== */
-
 body {
   margin: 16px;
   padding: 16px;
@@ -485,5 +471,4 @@ legend {
         height: auto;
         margin-top: 20px;
     }
-}
-
+} 
