@@ -65,10 +65,6 @@ function drawStars() {
   animateStars();
 }
 
-const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-const originalPanel = document.getElementById("orbit-canvas");
-originalPanel.replaceWith(hiPPICanvas);
-hiPPICanvas.id = "orbit-canvas";
 /////////////////////////////////////////////////
 /* UTILITY FUNCTIONS */
 /////////////////////////////////////////////////
@@ -186,7 +182,7 @@ var pe_point = potential_energy_plot.svg.append("circle")
 
 // RADIAL KINETIC ENERGY
 const radial_kinetic_energy_input = {
-  divID: "#kinetic-graph",
+  divID: "#radial-kinetic-line",
   svgID: "svg-for-radial-kinetic-energy-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Radius (AU)",
@@ -198,9 +194,9 @@ var radial_ke_line = radial_kinetic_energy_plot.svg.append("g").attr("id", "kine
 var radial_ke_point = radial_kinetic_energy_plot.svg.append("circle")
   .attr("id", "kinetic-energy-point").attr("r", 3).attr("fill", "black").attr("visibility", "visible");
 
-// Orbital KINETIC ENERGY
+// ORBITAL KINETIC ENERGY
 const orbital_kinetic_energy_input = {
-  divID: "#kinetic-graph2",
+  divID: "#orbital-kinetic-line",
   svgID: "svg-for-orbital-kinetic-energy-plot",
   domain: { lower: 0, upper: 10 },
   xLabel: "Radius (AU)",
@@ -264,7 +260,7 @@ function radialKineticEnergyData() {
     let ke = 0.5 * earthMass * (drdt * drdt);
 
     radial_ke_data.push({
-      x: r / 1.496e11, // Convert to AU
+      x: r / SCALE_R, // Use SCALE_R for consistency
       y: ke / SCALE_KE  // Scale energy
     });
     phi += dphi;
@@ -323,7 +319,7 @@ function orbitalKineticEnergyData() {
     let ke = 0.5 * L * L/(earthMass*r * r);
 
     orbital_ke_data.push({
-      x: r / 1.496e11, // Convert to AU
+      x: r / SCALE_R, // Use SCALE_R for consistency
       y: ke / SCALE_KE  // Scale energy
     });
     phi += dphi;
@@ -376,7 +372,7 @@ function plotPotentialPoint(r) {
 
 function plotRadialKineticPoint(r, phi) {
   // Find the closest data point in radial_ke_data based on radius
-  const r_au = r / 1.496e11; // Convert to AU
+  const r_au = r / SCALE_R; // Convert to AU
 
   // Find closest point by radius
   let closest_point = radial_ke_data[0];
@@ -397,7 +393,7 @@ function plotRadialKineticPoint(r, phi) {
 
 function plotOrbitalKineticPoint(r, phi) {
   // Find the closest data point in orbital_ke_data based on radius
-  const r_au = r / 1.496e11; // Convert to AU
+  const r_au = r / SCALE_R; // Convert to AU
 
   // Find closest point by radius
   let closest_point = orbital_ke_data[0];
@@ -432,154 +428,143 @@ plotOrbitalKineticEnergy(orbital_ke_data);
 updateCalculatedValues(); // Initialize calculated values display
 
 /////////////////////////////////////////////////
-/* CANVAS ANIMATIONS */
+/* D3 ORBIT ANIMATION (adapted from orbit5.js) */
 /////////////////////////////////////////////////
 
-// wrapper function to start animations
-function startAnimation() {
-  // projectiles - changed from rectangles to circles with radius parameter
-  
-  earth = new component(4, "AliceBlue", transformXCoord(0), transformYCoord(0)); // radius = 2
-  
-  earth.phi = 0;
-  sun = new component(8, "yellow", transformXCoord(0), transformYCoord(0)); // radius = 5
-  animArea.start();
-  earth.generateEllipse();
+function setupOrbitSVG() {
+  // Remove any existing SVG
+  d3.select('#orbit-animation').selectAll('svg').remove();
+
+  // Get actual container size
+  const container = document.getElementById('orbit-animation');
+  const ORBIT_SVG_WIDTH = container.offsetWidth;
+  const ORBIT_SVG_HEIGHT = container.offsetHeight;
+  const ORBIT_CENTER_X = ORBIT_SVG_WIDTH * 0.7;
+  const ORBIT_CENTER_Y = ORBIT_SVG_HEIGHT / 2;
+  const ORBIT_SCALE = Math.min(ORBIT_SVG_WIDTH, ORBIT_SVG_HEIGHT) * 0.13; // Responsive scaling
+
+  // Create SVG
+  const orbitSVG = d3.select('#orbit-animation')
+    .append('svg')
+    .attr('width', '100%')
+    .attr('height', '100%');
+
+  // Draw sun at center
+  orbitSVG.append('circle')
+    .attr('cx', ORBIT_CENTER_X)
+    .attr('cy', ORBIT_CENTER_Y)
+    .attr('r', Math.max(16, ORBIT_SVG_WIDTH * 0.02))
+    .attr('fill', 'yellow')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2);
+
+  // Store for use in animation
+  window._orbitSVG = orbitSVG;
+  window._ORBIT_CENTER_X = ORBIT_CENTER_X;
+  window._ORBIT_CENTER_Y = ORBIT_CENTER_Y;
+  window._ORBIT_SCALE = ORBIT_SCALE;
 }
 
-function runAnimation() {
-  startAnimation();
-  animArea.run();
-}
-
-// wrapper function to end animations
-function endAnimation() {
-  animArea.stop();
-}
-
-// distance between two points
-function distance(x1, y1, x2, y2) {
-  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-}
-
-//parameterized coord -> canvas coord
-function transformXCoord(x) {
-  const low = -6e11; // -4 AU
-  const high = 6e11;  // +4 AU
-  return  (90 + ((x - low) / (high - low)) * (150));
-}
-
-// parameterized coord -> canvas coord
-function transformYCoord(y) {
-  const low = -6e11; // -4 AU
-  const high = 6e11;  // +4 AU
-  return (65 + ((y - low) / (high - low)) * (150));
-}
-
-// JS object for both canvases
-var animArea = {
-  panel: hiPPICanvas,
-  start: function () {
-    this.panel.width = CANVAS_WIDTH;
-    this.panel.height = CANVAS_HEIGHT;
-    this.context = this.panel.getContext("2d");
-    this.time = 0;
-    updateFrame();
-  },
-  run: function () {
-    this.interval = setInterval(updateFrame, FRAME_RATE);
-  },
-  clear: function () {
-    this.context.clearRect(0, 0, this.panel.width, this.panel.height);
-    this.context.fillStyle = "black";
-    this.context.fillRect(0, 0, this.panel.width, this.panel.height);
-    // Draw ellipse orbit path
-    earth.generateEllipse();
-  },
-  stop: function () {
-    clearInterval(this.interval);
-    this.time = 0;
-  },
-}
-
-// Modified component function to create circles instead of rectangles
-function component(radius, color, x, y) {
-  this.radius = radius;
-  this.color = color;
-  this.x = x; //in canvas
-  this.y = y; //in canvas
-  this.phi = 0; //physical
-  this.r = 0; //physical
-
-  let circles = [];
-
-  this.update = function () {
-    const ctx = animArea.context;
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    ctx.fill();
+function drawOrbitTrace(L, epsilon) {
+  const orbitSVG = window._orbitSVG;
+  const ORBIT_CENTER_X = window._ORBIT_CENTER_X;
+  const ORBIT_CENTER_Y = window._ORBIT_CENTER_Y;
+  const ORBIT_SCALE = window._ORBIT_SCALE;
+  const points = [];
+  for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+    const r = (L * L) / (G * sunMass * earthMass * earthMass * (1 + epsilon * Math.cos(angle)));
+    const x = ORBIT_CENTER_X + (r / SCALE_R) * ORBIT_SCALE * Math.cos(angle);
+    const y = ORBIT_CENTER_Y + (r / SCALE_R) * ORBIT_SCALE * Math.sin(angle);
+    points.push([x, y]);
   }
-  this.newPos = function (t) {
-    // Calculate radial distance at current phi
-    this.r = (L * L) / (G * sunMass * earthMass * mu * (1 + epsilon * Math.cos(this.phi)));
-    // Update phi using dphi/dt = L / (earthMass * r^2)
-    let dphi = L / (earthMass * Math.pow(this.r, 2)) * dt;
-    this.phi += dphi;
-    // Convert polar (r, phi) to Cartesian (x, y)
-    this.x = transformXCoord(this.r * Math.cos(this.phi));
-    this.y = transformYCoord(this.r * Math.sin(this.phi));
-  }
+  orbitSVG.selectAll('.orbit-trace').remove();
+  orbitSVG.append('path')
+    .datum(points)
+    .attr('class', 'orbit-trace')
+    .attr('fill', 'none')
+    .attr('stroke', '#EEEEEE')
+    .attr('stroke-width', 2)
+    .attr('stroke-dasharray', '2,4')
+    .attr('d', d3.line());
 
-  this.generateEllipse = function () {
-    // Clear the circles array to prevent memory leak
-    circles = [];
-    
-    for (let angle = 0; angle <= 2 * Math.PI; angle += 0.1) {
-      let r = ((L) ** 2) / (G * sunMass * earthMass * mu * (1 + epsilon * Math.cos(angle)));
-      
-      circles.push({
-        x: transformXCoord(r * Math.cos(angle)),
-        y: transformYCoord(r * Math.sin(angle)),
-        radius: this.radius,
-        color: this.color,
-      });
-    }
-    
-    const drawCircle = (x, y, radius, color) => {
-      ctx = animArea.context;
-      //console.log(ctx);
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-    
-    for (let circle of circles) {
-      drawCircle(circle.x, circle.y, 0.5, circle.color);
-    }
-  }
+  // Remove and re-append the planet so it is above the trace
+  orbitSVG.selectAll('#planet-orbit').remove();
+  orbitSVG.append('circle')
+    .attr('id', 'planet-orbit')
+    .attr('r', Math.max(8, window._ORBIT_SCALE * 0.13))
+    .attr('fill', '#00BFFF')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2);
 }
 
-function updateFrame() {
-  // clear frame and move to next
-  animArea.clear();
-  // update positions
-  earth.newPos(animArea.time);
-  // Update plots
-  plotPotentialPoint(earth.r);
-  plotRadialKineticPoint(earth.r, earth.phi);
-  plotOrbitalKineticPoint(earth.r, earth.phi);
-
-  earth.update();
-  sun.update();
-  
-  animArea.time += dt;
+function updateOrbitVisualization(r, phi) {
+  const ORBIT_CENTER_X = window._ORBIT_CENTER_X;
+  const ORBIT_CENTER_Y = window._ORBIT_CENTER_Y;
+  const ORBIT_SCALE = window._ORBIT_SCALE;
+  const x = ORBIT_CENTER_X + (r / SCALE_R) * ORBIT_SCALE * Math.cos(phi);
+  const y = ORBIT_CENTER_Y + (r / SCALE_R) * ORBIT_SCALE * Math.sin(phi);
+  window._orbitSVG.select('#planet-orbit')
+    .attr('cx', x)
+    .attr('cy', y);
 }
 
-// run animation on load
-runAnimation();
+// Animation state
+let phi = 0;
+let time = 0;
 
+function animate() {
+  const r = (L * L) / (G * sunMass * earthMass * earthMass * (1 + epsilon * Math.cos(phi)));
+  const dphidt = L / (earthMass * r * r);
+  const deltaPhi = dphidt * dt;
+  phi += deltaPhi;
+  time += dt;
+  updateOrbitVisualization(r, phi);
+  plotPotentialPoint(r);
+  plotRadialKineticPoint(r, phi);
+  plotOrbitalKineticPoint(r, phi);
+  setTimeout(animate, 5);
+}
+
+function updateOrbitalParameters() {
+  epsilon = parseFloat(document.getElementById('epsilon-slider').value);
+  L = parseFloat(document.getElementById('L-slider').value) * 1e40;
+  document.getElementById('print-epsilon').innerHTML = epsilon.toFixed(2);
+  document.getElementById('print-L').innerHTML = (L/1e40).toFixed(2);
+  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
+  energy = (epsilon ** 2 - 1) * ((G * sunMass * earthMass * earthMass) / 2 / (L ** 2));
+  updateCalculatedValues();
+  potentialEnergyData();
+  plotPotentialEnergy(pe_data);
+  radialKineticEnergyData();
+  plotRadialKineticEnergy(radial_ke_data);
+  orbitalKineticEnergyData();
+  plotOrbitalKineticEnergy(orbital_ke_data);
+  setupOrbitSVG();
+  drawOrbitTrace(L, epsilon);
+  phi = 0;
+  time = 0;
+}
+
+document.getElementById('epsilon-slider').oninput = updateOrbitalParameters;
+document.getElementById('L-slider').oninput = updateOrbitalParameters;
+
+window.addEventListener('resize', function() {
+  setupOrbitSVG();
+  drawOrbitTrace(L, epsilon);
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+  setupOrbitSVG();
+  drawOrbitTrace(L, epsilon);
+  updateCalculatedValues();
+  potentialEnergyData();
+  plotPotentialEnergy(pe_data);
+  radialKineticEnergyData();
+  plotRadialKineticEnergy(radial_ke_data);
+  orbitalKineticEnergyData();
+  plotOrbitalKineticEnergy(orbital_ke_data);
+  animate();
+});
 
 
 /////////////////////////////////////////////////
@@ -601,8 +586,10 @@ document.getElementById("epsilon-slider").oninput = function () {
   plotRadialKineticEnergy(radial_ke_data);  // Replot KE
   orbitalKineticEnergyData();
   plotOrbitalKineticEnergy(orbital_ke_data);
-  endAnimation();
-  startAnimation();
+  setupOrbitSVG();
+  drawOrbitTrace(L, epsilon);
+  phi = 0;
+  time = 0;
 }
 
 // update curve when changing d
@@ -620,38 +607,22 @@ document.getElementById("L-slider").oninput = function () {
   plotRadialKineticEnergy(radial_ke_data);  // Replot KE
   orbitalKineticEnergyData();
   plotOrbitalKineticEnergy(orbital_ke_data);
-  endAnimation();
-  startAnimation();
+  setupOrbitSVG();
+  drawOrbitTrace(L, epsilon);
+  phi = 0;
+  time = 0;
 }
 
-// run animation
-document.getElementById("epsilon-slider").onchange = function () {
-  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
-  
-  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
-  runAnimation();
+// Improved question/answer toggle logic
+const q1Btn = document.getElementById('show-q1');
+const q1Answer = document.getElementById('answer1');
+if (q1Btn && q1Answer) {
+  q1Btn.addEventListener('click', function () {
+    const isVisible = q1Answer.style.display === 'block';
+    q1Answer.style.display = isVisible ? 'none' : 'block';
+    q1Btn.textContent = isVisible ? 'Show answer' : 'Hide answer';
+  });
 }
-
-// run animation
-document.getElementById("L-slider").onchange = function () {
-  L = parseFloat(document.getElementById("L-slider").value) * 1e40;
-
-  r_min = (L) ** 2 / (G * sunMass * earthMass * earthMass);
-  runAnimation();
-}
-
-var showAnswer1 = false;
-document.getElementById("show-q1").addEventListener("click", function () {
-  if (!showAnswer1) {
-    showAnswer1 = true;
-    document.getElementById("show-q1").innerHTML = "Hide Answer";
-    document.getElementById("answer1").style.display = "block";
-  } else {
-    showAnswer1 = false;
-    document.getElementById("show-q1").innerHTML = "Show Answer";
-    document.getElementById("answer1").style.display = "none";
-  }
-});
 
 
 //https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas

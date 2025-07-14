@@ -78,23 +78,16 @@
         similar to our Sun and Earth.
     </p>
 
-    <!-- I'll come to edit this well -->
-    <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
-        <label for="show-q1" id="text">
-            <b>Question:</b> In a system like the Sun and Earth where \(m_1 \gg m_2\), what does the reduced
-            mass \(\mu\) approximate to? What does this imply about the motion of the two bodies?
-        </label>
-        <br><br>
-        <button id="show-q1">Show answer</button>
-        <span id="answer1" style="display: none"><br>
-            When \(m_1 \gg m_2\), the denominator \(m_1 + m_2\) is approximately equal to \(m_1\). So, \(\mu
-            \approx
-            \frac{m_1 m_2}{m_1}\), which simplifies to \( \mu \approx m_2\). This means the reduced mass is
-            nearly
-            identical to the planet's mass. As a result, the motion will follow the Earth around the center of
-            mass, which will be mostly the Sun.
-        </span>
-    </div>
+    <!-- Improved question/answer block -->
+    <section class="question-block" id="question1-block">
+        <div class="question-text">
+            <strong>Question:</strong> In a system like the Sun and Earth where \(m_1 \gg m_2\), what does the reduced mass \(\mu\) approximate to? What does this imply about the motion of the two bodies?
+        </div>
+        <button id="show-q1" class="toggle-answer">Show answer</button>
+        <div id="answer1" class="answer-text" style="display: none;">
+            When \(m_1 \gg m_2\), the denominator \(m_1 + m_2\) is approximately equal to \(m_1\). So, \(\mu \approx \frac{m_1 m_2}{m_1}\), which simplifies to \( \mu \approx m_2\). This means the reduced mass is nearly identical to the planet's mass. As a result, the motion will follow the Earth around the center of mass, which will be mostly the Sun.
+        </div>
+    </section>
 
     <p id="text">
         Use the sliders below to see how angular momentum and eccentricity affects the orbit. As you adjust the
@@ -104,41 +97,41 @@
     </p>
 
     <div id="applet">
-        <div id="top-panel">
-            <canvas id="orbit-canvas" title="planetary-motion"></canvas>
-            <div id="potential-energy-graph"></div>
-        </div>
-
-        <div id="bottom-panel">
-            <div id="kinetic-graph"></div>
-            <div id="kinetic-graph2"></div>
-        </div>
-
-        <div id="inner-container">
-            <div class="parameter-group">
-                <label for="L-slider">L (×10⁴⁰ kg·m²/s): <span id="print-L">2.7</span></label>
-                <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
-            </div>
-
-            <div class="parameter-group">
-                <label for="epsilon-slider">Eccentricity (ε): <span id="print-epsilon">0.00</span></label>
-                <input id="epsilon-slider" class="slider" type="range" min="0" max="0.99" value="0" step="0.01">
-            </div>
-
-            <fieldset>
-                <legend>LEGEND</legend>
-                <label><span id="orange">.....</span> - Position</label><br>
-                <label><span id="purple">.....</span> - Velocity</label><br>
-            </fieldset>
-
-            <div class="calculated-values">
-                <h4>Calculated Values:</h4>
-                <p>\(r_{\text{min}} = \) <span id="print-r-min">1.50 × 10¹¹</span> m</p>
-                <p>\(E = \) <span id="print-energy">-2.97 × 10³³</span> J</p>
+        <!-- Animation and sliders -->
+        <div id="animation-container">
+            <div id="orbit-animation"></div>
+            <div id="slider-row">
+                <div id="L-slider-container">
+                    <label for="L-slider">Momentum (L): </label>
+                    <span id="print-L">2.7</span><br>
+                    <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
+                </div>
+                <div id="epsilon-slider-container">
+                    <label for="epsilon-slider">Eccentricity (ε): </label>
+                    <span id="print-epsilon">0.00</span><br>
+                    <input id="epsilon-slider" class="slider" type="range" min="0" max="0.99" value="0" step="0.01">
+                </div>
             </div>
         </div>
+        <!-- Graphs in a column: two rows, each with two graphs -->
+        <div id="graphs-container">
+                <div id="radial-kinetic-line" class="energy-graph"></div>
+                <div id="orbital-kinetic-line" class="energy-graph"></div>
+                <div id="potential-energy-graph" class="energy-graph"></div>
+        </div>
+        <!-- Calculated values -->
+        <div class="calculated-values">
+            <h4>Calculated Values:</h4>
+            <p>\(r_{\text{min}} = \) <span id="print-r-min">1.50 × 10¹¹</span> m</p>
+            <p>\(E = \) <span id="print-energy">-2.97 × 10³³</span> J</p>
+        </div>
+        <!-- Legend -->
+        <fieldset>
+            <legend>LEGEND</legend>
+            <label><span id="orange">.....</span> - Position</label><br>
+            <label><span id="purple">.....</span> - Velocity</label><br>
+        </fieldset>
     </div>
-
     <div class="buttons">
         <column id="next-button">
             <button onclick="window.location.href = 'orbit2.html'">NEXT PAGE</button>
