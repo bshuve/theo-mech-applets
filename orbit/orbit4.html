@@ -2,25 +2,20 @@
 <html lang="en">
 
 <head>
-    <title>orbit2</title>
-    <link rel = "stylesheet" href = "./orbit4.css">
-    <!-- <link rel="icon" href = "../img/wally.png"> -->
-    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
-
+    <title>Two-Body Orbital Dynamics: The General Case</title>
+    <link rel="stylesheet" href="./orbit4.css">
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
-
-    <script defer src = "./orbit4.js"></script>
-
     <!-- LaTeX support -->
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
+    <script defer src="./orbit4.js"></script>
 </head>
 
 <body id="body">
     <canvas id="star-background"></canvas>
 
-<h1 id="title">Two-Body Orbital Dynamics: The General Case</h1>
+    <h1 id="title">Two-Body Orbital Dynamics: The General Case</h1>
+
     <p id="text">
         <i>This applet visualizes the motion of two bodies with comparable masses orbiting their common center of mass (barycenter). Unlike the previous example where one mass dominated, here we see how both objects move when they are similar masses, following elliptical paths around their shared center of mass.</i>
     </p>
@@ -47,29 +42,18 @@
         <br>• The <span style="color: red;"><b>red point</b></span> shows the separation distance \(r\) between the masses
         <br>• The <span style="color: pink;"><b>pink point</b></span> marks the center of mass (barycenter)
     </p>
-<div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
 
-    <label for="show-q1" id="text">
-        <b>Question: </b> How does the motion differ when \(m_1 \approx m_2\) compared to when \(m_1 >> m_2\)?
-        <br><br>
-    </label>
-    <button id="show-q1">Show answer</button>
-    <br>
-    <span id="answer1" style="display: none"><br>
-        When \(m_1 \approx m_2\), both masses orbit significantly around the barycenter, which lies approximately halfway between them. Each mass traces a substantial elliptical path. When \(m_1 >> m_2\), the barycenter is very close to \(m_1\), so \(m_1\) barely moves while \(m_2\) does most of the orbiting - this is the case we saw in the Sun-Earth system.
-    </span>
-</div>
+    <!-- Improved question/answer block -->
+    <section class="question-block" id="question1-block">
+        <div class="question-text">
+            <strong>Question:</strong> How does the motion differ when \(m_1 \approx m_2\) compared to when \(m_1 >> m_2\)?
+        </div>
+        <button id="show-q1" class="toggle-answer">Show answer</button>
+        <div id="answer1" class="answer-text" style="display: none;">
+            When \(m_1 \approx m_2\), both masses orbit significantly around the barycenter, which lies approximately halfway between them. Each mass traces a substantial elliptical path. When \(m_1 >> m_2\), the barycenter is very close to \(m_1\), so \(m_1\) barely moves while \(m_2\) does most of the orbiting - this is the case we saw in the Sun-Earth system.
+        </div>
+    </section>
 
-<div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
-    <label for="show-q2" id="text">
-        <b>Question: </b> maybe add anohter        <br><br>
-    </label>
-    <button id="show-q2">Show answer</button>
-    <br>
-    <span id="answer2" style="display: none"><br>
-        .
-    </span>
-</div>
     <p id="text">
         This simulation uses masses that could represent systems like binary stars, double asteroids, or the Pluto-Charon system. Try adjusting the mass ratio and eccentricity \(\epsilon\) to see how both objects respond to changes in the orbital parameters.
     </p>
@@ -77,41 +61,51 @@
     <p id="text">
         Notice how the principle of least action still dictates the motion - both masses follow the paths that minimize the action integral. Look at how the position of the bodies relate to the position of the reduced mass. 
     </p>
-<div id="applet2">
-    <div id="top-panel">
-        <canvas id="orbit-canvas2" title="planetary-motion"></canvas>
-    </div>
 
-    <div id="inner-container">
-        <label for="mass-ratio-slider">Mass Ratio (m₁/m₂): <span id="print-mass-ratio">3.0</span></label>
-        <input id="mass-ratio-slider" class="slider" type="range" min="1" max="10" value="3" step="0.1">
-        <br>
-        <label for="epsilon-slider">Epsilon: <span id="print-epsilon">0.00</span></label>
-        <input id="epsilon-slider" class="slider" type="range" min="0" max=".99" value="0" step="0.01">
-        <label for="speed-slider">frame rate (ms/f): <span id="print-speed">10</span></label>
-        <input id="speed-slider" class="slider" type="range" min="1" max="50" value="10">
+    <div id="applet">
+        <!-- Animation and sliders -->
+        <div id="animation-container">
+            <div id="orbit-animation"></div>
+            <div id="slider-row">
+                <div id="mass-ratio-slider-container">
+                    <label for="mass-ratio-slider">Mass Ratio (m₁/m₂): </label>
+                    <span id="print-mass-ratio">3.0</span><br>
+                    <input id="mass-ratio-slider" class="slider" type="range" min="1" max="10" value="3" step="0.1">
+                </div>
+                <div id="epsilon-slider-container">
+                    <label for="epsilon-slider">Eccentricity (ε): </label>
+                    <span id="print-epsilon">0.00</span><br>
+                    <input id="epsilon-slider" class="slider" type="range" min="0" max="0.99" value="0" step="0.01">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Component visibility controls -->
         <div class="control-section">
             <h3>Component Visibility</h3>
-            <button id="toggle-mass1" class="toggle-button visible">Green Mass (m₁)</button><br>
-            <button id="toggle-mass2" class="toggle-button visible">Blue Mass (m₂)</button><br>
-            <button id="toggle-separation" class="toggle-button visible">Red Point (r)</button><br>
-            <button id="toggle-com" class="toggle-button visible">Pink COM</button><br>
+            <button id="toggle-mass1" class="toggle-button visible">Green Mass (m₁)</button>
+            <button id="toggle-mass2" class="toggle-button visible">Blue Mass (m₂)</button>
+            <button id="toggle-separation" class="toggle-button visible">Red Point (r)</button>
+            <button id="toggle-com" class="toggle-button visible">Pink COM</button>
         </div>
-        <p>\(m_1 =\) <span id="print-mass1">1.95e+28</span> kg</p>
-        <p>\(m_2 =\) <span id="print-mass2">6.50e+27</span> kg</p>
-    
+        
+        <!-- Mass information -->
+        <div class="calculated-values">
+            <h4>Mass Information:</h4>
+            <p>\(m_1 =\) <span id="print-mass1">1.95e+28</span> kg</p>
+            <p>\(m_2 =\) <span id="print-mass2">6.50e+27</span> kg</p>
+        </div>
     </div>
 
-</div>
-<div class="buttons">
-
+    <div class="buttons">
         <column id="prev-button">
-            <button onclick="window.location.href = 'orbit3.html'">PREV PAGE</button>
+            <button onclick="window.location.href = 'orbit3.html'">PREVIOUS PAGE</button>
         </column>
         <column id="next-button">
             <button onclick="window.location.href = 'orbit5.html'">NEXT PAGE</button>
         </column>
     </div>
 </body>
+
 </html>
 

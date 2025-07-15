@@ -1,25 +1,21 @@
 /////////////////////////////////////////////////
-/* Parameters */
+/* PARAMETERS */
 /////////////////////////////////////////////////
 
-const CANVAS_WIDTH = 680;
-const CANVAS_HEIGHT = 580;
-const SVG_WIDTH = 330;
-const SVG_HEIGHT = 280;
-const dt = 1;
-var FRAME_RATE = 10   // ms
+const G = 6.7e-11;
+const TOTAL_MASS = 3e28; // Keep total mass constant
+const SCALE_R = 1e7; // Scale factor for radius (m to display units)
+const DT = 0.1; // Time step for animation (increased for visibility)
 const TRANSITION_TIME = 10; // ms
 
-const G = 6.7 * 10 ** (-11);
-const TOTAL_MASS = 3 * (10 ** 28); // Keep total mass constant
+// Initialize parameters from sliders
 var massRatio = parseFloat(document.getElementById("mass-ratio-slider").getAttribute("value"));
 var mass1 = TOTAL_MASS * massRatio / (massRatio + 1);
 var mass2 = TOTAL_MASS / (massRatio + 1);
 var mu = (mass1 * mass2) / (mass1 + mass2);
 var epsilon = parseFloat(document.getElementById("epsilon-slider").getAttribute("value"));
-var L = 2 * 1e40; // Fixed angular momentum
+var L = 2e40; // Fixed angular momentum
 var energy = (epsilon ** 2 - 1) * ((G * mass1 * mass2 * mass2) / 2 / (L ** 2));
-var r_max = (L) ** 2 / (G * (mass1 + mass2) * mu) * (1 / (1 - epsilon));
 
 // Component visibility flags
 var componentVisibility = {
@@ -47,8 +43,8 @@ function drawStars() {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 1.5 + 0.5,
-      phase: Math.random() * Math.PI * 2,  // initial offset between 0 and 2pi (full sine wave)
-      speed: Math.random() * 0.5 + 0.5  // how fast star twinkles 0.5 - 1.0 radians/second
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.5 + 0.5
     });
   }
 
@@ -57,7 +53,7 @@ function drawStars() {
     ctx.fillStyle = "#182030";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const now = performance.now() / 1000; // returns time elapsed in seconds
+    const now = performance.now() / 1000;
     for (let star of stars) {
       const opacity = 0.3 + 0.7 * Math.abs(Math.sin(now * star.speed + star.phase));
       ctx.beginPath();
@@ -71,334 +67,340 @@ function drawStars() {
   animateStars();
 }
 
-const hiPPICanvas = createHiPPICanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-const originalPanel = document.getElementById("orbit-canvas2");
-originalPanel.replaceWith(hiPPICanvas);
-hiPPICanvas.id = "orbit-canvas2";
-
 /////////////////////////////////////////////////
-/* CANVAS ANIMATIONS */
+/* D3 ORBIT VISUALIZATION */
 /////////////////////////////////////////////////
 
-// wrapper function to start animations
-function startAnimation() {
-  // projectiles - Updated to use radius instead of width/height
-  sat1 = new component(8, "green", transformXCoord(0), transformYCoord(0));
-  sat2 = new component(8, "blue", transformXCoord(0), transformYCoord(0));
-  sat_mid = new component(3, "red", transformXCoord(0), transformYCoord(0));
-  sat_mid.phi = 0;
-  com = new component(3, "pink", transformXCoord(0), transformYCoord(0));
-  animArea.start();
+function setupOrbitSVG() {
+  // Remove any existing SVG
+  d3.select('#orbit-animation').selectAll('svg').remove();
+
+  // Get actual container size
+  const container = document.getElementById('orbit-animation');
+  const ORBIT_SVG_WIDTH = container.offsetWidth;
+  const ORBIT_SVG_HEIGHT = container.offsetHeight;
+  const ORBIT_CENTER_X = ORBIT_SVG_WIDTH / 2;
+  const ORBIT_CENTER_Y = ORBIT_SVG_HEIGHT / 2;
+  const ORBIT_SCALE = Math.min(ORBIT_SVG_WIDTH, ORBIT_SVG_HEIGHT) * 0.25; // Increased scale factor
+
+  // Create SVG
+  const orbitSVG = d3.select('#orbit-animation')
+    .append('svg')
+    .attr('width', '100%')
+    .attr('height', '100%')
+    .style('overflow', 'visible'); // Allow content to extend beyond bounds
+
+  // Store for use in animation
+  window._orbitSVG = orbitSVG;
+  window._ORBIT_CENTER_X = ORBIT_CENTER_X;
+  window._ORBIT_CENTER_Y = ORBIT_CENTER_Y;
+  window._ORBIT_SCALE = ORBIT_SCALE;
 }
 
-function runAnimation() {
-  startAnimation();
-  animArea.run();
-}
+function drawOrbitTraces() {
+  const orbitSVG = window._orbitSVG;
+  const ORBIT_CENTER_X = window._ORBIT_CENTER_X;
+  const ORBIT_CENTER_Y = window._ORBIT_CENTER_Y;
+  const ORBIT_SCALE = window._ORBIT_SCALE;
+  
+  // Remove existing traces
+  orbitSVG.selectAll('.orbit-trace').remove();
+  orbitSVG.selectAll('.mass1-orbit').remove();
+  orbitSVG.selectAll('.mass2-orbit').remove();
+  orbitSVG.selectAll('.separation-point').remove();
+  orbitSVG.selectAll('.com-point').remove();
 
-// wrapper function to end animations
-function endAnimation() {
-  animArea.stop();
-}
-
-// distance between two points
-function distance(x1, y1, x2, y2) {
-  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-}
-
-//parameterized coord -> canvas coord
-function transformXCoord(x) {
-  const low = -3e7; // -4 AU
-  const high = 3e7;  // +4 AU
-  return (270 + ((x - low) / (high - low)) * (150));
-}
-
-// parameterized coord -> canvas coord
-function transformYCoord(y) {
-  const low = -3e7; // -4 AU
-  const high = 3e7;  // +4 AU
-  return (210 + ((y - low) / (high - low)) * (150));
-}
-
-// JS object for both canvases
-var animArea = {
-  panel: hiPPICanvas,
-  start: function () {
-    this.panel.width = CANVAS_WIDTH;
-    this.panel.height = CANVAS_HEIGHT;
-    this.context = this.panel.getContext("2d");
-    this.time = 0;
-    updateFrame();
-  },
-  run: function () {
-    this.interval = setInterval(updateFrame, FRAME_RATE);
-  },
-  clear: function () {
-    this.context.clearRect(0, 0, this.panel.width, this.panel.height);
-    this.context.fillStyle = "black";
-    this.context.fillRect(0, 0, this.panel.width, this.panel.height);
-  },
-  stop: function () {
-    clearInterval(this.interval);
-    this.time = 0;
-  },
-}
-
-// to create projectiles - Updated to draw spheres instead of rectangles
-function component(radius, color, x, y) {
-  this.radius = radius;
-  this.color = color;
-  this.x = x; //in canvas
-  this.y = y; //in canvas
-  this.phi = 0; //physical
-  this.r = 0; //physical
-  this.visible = true; // visibility property
-
-  let circles = [];
-
-  this.update = function () {
-    if (!this.visible) return; // Don't draw if not visible
-    var ctx = animArea.context;
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    ctx.fill();
+  // Generate orbit points for separation distance
+  const separationPoints = [];
+  for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+    const r_separation = (L ** 2) / (G * (mass1 * mass2) * mu * (1 + epsilon * Math.cos(angle)));
+    const x = ORBIT_CENTER_X + (r_separation / SCALE_R) * ORBIT_SCALE * Math.cos(angle);
+    const y = ORBIT_CENTER_Y + (r_separation / SCALE_R) * ORBIT_SCALE * Math.sin(angle);
+    separationPoints.push([x, y]);
   }
 
-  this.newPos = function (t) {
-    // Calculate separation distance (same for all objects)
-    let r_separation = (L * L) / (G * (mass1 * mass2) * mu * (1 + epsilon * Math.cos(this.phi)));
-
-    // Update phi using the separation distance
-    let dphi = L / (mu * Math.pow(r_separation, 2)) * dt;
-    this.phi += dphi;
-
-    // Now set individual positions relative to center of mass
-    if (this === sat1) {
-      this.r = r_separation * mass2 / (mass1 + mass2);
-    }
-    else if (this === sat2) {
-      this.r = -r_separation * mass1 / (mass1 + mass2);
-    }
-    else if (this === com) {
-      this.r = 0; // Center of mass is at origin
-    }
-    else {
-      this.r = r_separation; // sat_mid shows separation distance
-    }
-    
-    // Convert polar (r, phi) to Cartesian (x, y)
-    this.x = transformXCoord(this.r * Math.cos(this.phi));
-    this.y = transformYCoord(this.r * Math.sin(this.phi));
+  // Draw separation trace (red) - only if separation is visible
+  if (componentVisibility.separation) {
+    orbitSVG.append('path')
+      .datum(separationPoints)
+      .attr('class', 'orbit-trace')
+      .attr('fill', 'none')
+      .attr('stroke', 'rgba(255, 100, 100, 0.3)')
+      .attr('stroke-width', 2)
+      .attr('stroke-dasharray', '2,4')
+      .attr('d', d3.line());
   }
 
-  this.generateEllipse = function () {
-    for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
-      let r = ((mass2 * L) ** 2) / (G * mass1 * mass2 * mass2 * (1 + epsilon * Math.cos(angle)));
+  // Generate orbit points for mass1 (green)
+  const mass1Points = [];
+  for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+    const r_separation = (L ** 2) / (G * (mass1 * mass2) * mu * (1 + epsilon * Math.cos(angle)));
+    const r1 = r_separation * mass2 / (mass1 + mass2);
+    const x = ORBIT_CENTER_X + (r1 / SCALE_R) * ORBIT_SCALE * Math.cos(angle);
+    const y = ORBIT_CENTER_Y + (r1 / SCALE_R) * ORBIT_SCALE * Math.sin(angle);
+    mass1Points.push([x, y]);
+  }
 
-      circles.push({
-        x: transformXCoord(r * Math.cos(angle)),
-        y: transformYCoord(r * Math.sin(angle)),
-        radius: this.radius,
-        color: this.color
-      });
-    }
-    const drawCircle = (x, y, radius, color) => {
-      ctx = animArea.context;
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(x + radius, y + radius, radius, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-    for (let circle of circles) {
-      drawCircle(circle.x, circle.y, circle.radius, circle.color);
-    }
+  // Draw mass1 orbit trace (green) - only if mass1 is visible
+  if (componentVisibility.mass1) {
+    orbitSVG.append('path')
+      .datum(mass1Points)
+      .attr('class', 'mass1-orbit')
+      .attr('fill', 'none')
+      .attr('stroke', 'rgba(100, 255, 100, 0.3)')
+      .attr('stroke-width', 2)
+      .attr('stroke-dasharray', '2,4')
+      .attr('d', d3.line());
+  }
+
+  // Generate orbit points for mass2 (blue)
+  const mass2Points = [];
+  for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+    const r_separation = (L ** 2) / (G * (mass1 * mass2) * mu * (1 + epsilon * Math.cos(angle)));
+    const r2 = -r_separation * mass1 / (mass1 + mass2);
+    const x = ORBIT_CENTER_X + (r2 / SCALE_R) * ORBIT_SCALE * Math.cos(angle);
+    const y = ORBIT_CENTER_Y + (r2 / SCALE_R) * ORBIT_SCALE * Math.sin(angle);
+    mass2Points.push([x, y]);
+  }
+
+  // Draw mass2 orbit trace (blue) - only if mass2 is visible
+  if (componentVisibility.mass2) {
+    orbitSVG.append('path')
+      .datum(mass2Points)
+      .attr('class', 'mass2-orbit')
+      .attr('fill', 'none')
+      .attr('stroke', 'rgba(100, 100, 255, 0.3)')
+      .attr('stroke-width', 2)
+      .attr('stroke-dasharray', '2,4')
+      .attr('d', d3.line());
+  }
+
+  // Create the moving objects
+  orbitSVG.append('circle')
+    .attr('id', 'mass1-point')
+    .attr('r', Math.max(8, ORBIT_SCALE * 0.1))
+    .attr('fill', '#51cf66')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2);
+
+  orbitSVG.append('circle')
+    .attr('id', 'mass2-point')
+    .attr('r', Math.max(8, ORBIT_SCALE * 0.1))
+    .attr('fill', '#339af0')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2);
+
+  orbitSVG.append('circle')
+    .attr('id', 'separation-point')
+    .attr('r', Math.max(6, ORBIT_SCALE * 0.08))
+    .attr('fill', '#ff6b6b')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2);
+
+  orbitSVG.append('circle')
+    .attr('id', 'com-point')
+    .attr('r', Math.max(4, ORBIT_SCALE * 0.06))
+    .attr('fill', '#cc5de8')
+    .attr('stroke', 'white')
+    .attr('stroke-width', 2);
+}
+
+function updateOrbitVisualization(phi) {
+  const ORBIT_CENTER_X = window._ORBIT_CENTER_X;
+  const ORBIT_CENTER_Y = window._ORBIT_CENTER_Y;
+  const ORBIT_SCALE = window._ORBIT_SCALE;
+  const orbitSVG = window._orbitSVG;
+
+  // Calculate separation distance
+  const r_separation = (L ** 2) / (G * (mass1 * mass2) * mu * (1 + epsilon * Math.cos(phi)));
+
+  // Calculate individual positions
+  const r1 = r_separation * mass2 / (mass1 + mass2);
+  const r2 = -r_separation * mass1 / (mass1 + mass2);
+
+  // Update mass1 position (green)
+  if (componentVisibility.mass1) {
+    const x1 = ORBIT_CENTER_X + (r1 / SCALE_R) * ORBIT_SCALE * Math.cos(phi);
+    const y1 = ORBIT_CENTER_Y + (r1 / SCALE_R) * ORBIT_SCALE * Math.sin(phi);
+    orbitSVG.select('#mass1-point')
+      .attr('cx', x1)
+      .attr('cy', y1)
+      .style('display', 'block');
+  } else {
+    orbitSVG.select('#mass1-point').style('display', 'none');
+  }
+
+  // Update mass2 position (blue)
+  if (componentVisibility.mass2) {
+    const x2 = ORBIT_CENTER_X + (r2 / SCALE_R) * ORBIT_SCALE * Math.cos(phi);
+    const y2 = ORBIT_CENTER_Y + (r2 / SCALE_R) * ORBIT_SCALE * Math.sin(phi);
+    orbitSVG.select('#mass2-point')
+      .attr('cx', x2)
+      .attr('cy', y2)
+      .style('display', 'block');
+  } else {
+    orbitSVG.select('#mass2-point').style('display', 'none');
+  }
+
+  // Update separation point (red)
+  if (componentVisibility.separation) {
+    const x_sep = ORBIT_CENTER_X + (r_separation / SCALE_R) * ORBIT_SCALE * Math.cos(phi);
+    const y_sep = ORBIT_CENTER_Y + (r_separation / SCALE_R) * ORBIT_SCALE * Math.sin(phi);
+    orbitSVG.select('#separation-point')
+      .attr('cx', x_sep)
+      .attr('cy', y_sep)
+      .style('display', 'block');
+  } else {
+    orbitSVG.select('#separation-point').style('display', 'none');
+  }
+
+  // Update center of mass (pink) - always at center
+  if (componentVisibility.com) {
+    orbitSVG.select('#com-point')
+      .attr('cx', ORBIT_CENTER_X)
+      .attr('cy', ORBIT_CENTER_Y)
+      .style('display', 'block');
+  } else {
+    orbitSVG.select('#com-point').style('display', 'none');
   }
 }
 
-// Function to update masses based on mass ratio
-function updateMasses() {
+/////////////////////////////////////////////////
+/* ANIMATION LOOP */
+/////////////////////////////////////////////////
+
+let animationId = null;
+let phi = 0; // Current angular position
+let time = 0; // Elapsed time
+
+/**
+ * Main animation function that updates all visualizations
+ */
+function animate() {
+  // Calculate current orbital state
+  const r_separation = (L ** 2) / (G * (mass1 * mass2) * mu * (1 + epsilon * Math.cos(phi)));
+  
+  // Update angular position using proper orbital mechanics
+  const dphidt = L / (mu * Math.pow(r_separation, 2));
+  const deltaPhi = dphidt * DT;
+  phi += deltaPhi;
+  time += DT;
+  
+  // Update orbit visualization
+  updateOrbitVisualization(phi);
+  
+  // Continue animation using setTimeout like orbit1
+  setTimeout(animate, 5);
+}
+
+/////////////////////////////////////////////////
+/* EVENT HANDLERS */
+/////////////////////////////////////////////////
+
+/**
+ * Updates orbital parameters and regenerates all data
+ */
+function updateOrbitalParameters() {
+  massRatio = parseFloat(document.getElementById("mass-ratio-slider").value);
+  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
+  
+  // Recalculate masses
   mass1 = TOTAL_MASS * massRatio / (massRatio + 1);
   mass2 = TOTAL_MASS / (massRatio + 1);
   mu = (mass1 * mass2) / (mass1 + mass2);
   
-  // Update display values
+  // Update energy
+  energy = (epsilon ** 2 - 1) * ((G * mass1 * mass2 * mass2) / 2 / (L ** 2));
+  
+  // Update displayed values
+  document.getElementById("print-mass-ratio").innerHTML = massRatio.toFixed(1);
+  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
   document.getElementById("print-mass1").innerHTML = mass1.toExponential(2);
   document.getElementById("print-mass2").innerHTML = mass2.toExponential(2);
+
+  // Restart animation with new parameters
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+  }
+  phi = 0;
+  time = 0;
+  setupOrbitSVG();
+  drawOrbitTraces();
+  animate();
 }
 
+// Attach event listeners
+document.getElementById("mass-ratio-slider").oninput = updateOrbitalParameters;
+document.getElementById("epsilon-slider").oninput = updateOrbitalParameters;
 
-function updateFrame() {
-  // clear frame and move to next
-  animArea.clear();
-
-  // update positions
-  sat_mid.newPos(animArea.time);
-  sat2.newPos(animArea.time);
-  sat1.newPos(animArea.time);
-  com.newPos(animArea.time);
-  
-  sat1.visible = componentVisibility.mass1;
-  sat2.visible = componentVisibility.mass2;
-  sat_mid.visible = componentVisibility.separation;
-  com.visible = componentVisibility.com;
-
-  sat_mid.update();
-  sat2.update();
-  sat1.update();
-  com.update();
-
-  animArea.time += dt;
-
-
-}
-
-// run animation on load
-runAnimation();
-// Initialize display values on load
-//updateMasses();
-
-/////////////////////////////////////////////////
-/* EVENT LISTENERS */
-/////////////////////////////////////////////////
-
-// Component visibility toggle functions
+// Component visibility toggles
 function toggleComponent(componentName, buttonId) {
   componentVisibility[componentName] = !componentVisibility[componentName];
   const button = document.getElementById(buttonId);
   
   if (componentVisibility[componentName]) {
-    button.textContent = button.textContent.replace('Show', 'Hide');
     button.classList.remove('hidden');
     button.classList.add('visible');
   } else {
-    button.textContent = button.textContent.replace('Hide', 'Show');
     button.classList.remove('visible');
     button.classList.add('hidden');
   }
+  
+  // Redraw orbit traces to show/hide the appropriate traces
+  drawOrbitTraces();
 }
 
-// Toggle button event listeners
-document.getElementById("toggle-mass1").addEventListener("click", function() {
-  toggleComponent('mass1', 'toggle-mass1');
-});
+document.getElementById("toggle-mass1").onclick = () => toggleComponent('mass1', 'toggle-mass1');
+document.getElementById("toggle-mass2").onclick = () => toggleComponent('mass2', 'toggle-mass2');
+document.getElementById("toggle-separation").onclick = () => toggleComponent('separation', 'toggle-separation');
+document.getElementById("toggle-com").onclick = () => toggleComponent('com', 'toggle-com');
 
-document.getElementById("toggle-mass2").addEventListener("click", function() {
-  toggleComponent('mass2', 'toggle-mass2');
-});
-
-document.getElementById("toggle-separation").addEventListener("click", function() {
-  toggleComponent('separation', 'toggle-separation');
-});
-
-document.getElementById("toggle-com").addEventListener("click", function() {
-  toggleComponent('com', 'toggle-com');
-});
-
-// Update curve when changing mass ratio
-document.getElementById("mass-ratio-slider").oninput = function () {
-  massRatio = parseFloat(document.getElementById("mass-ratio-slider").value);
-  document.getElementById("print-mass-ratio").innerHTML = massRatio.toFixed(1);
-  
-  updateMasses();
-  endAnimation();
-  startAnimation();
-}
-
-// Update curve when changing epsilon
-document.getElementById("epsilon-slider").oninput = function () {
-  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
-  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
-  
-
-  
-  endAnimation();
-  startAnimation();
-}
-
-// Run animation when mass ratio changes
-document.getElementById("mass-ratio-slider").onmouseup = function () {
-  massRatio = parseFloat(document.getElementById("mass-ratio-slider").value);
-  updateMasses();
-  runAnimation();
-}
-
-// Run animation when epsilon changes
-document.getElementById("epsilon-slider").onmouseup = function () {
-  
-  epsilon = parseFloat(document.getElementById("epsilon-slider").value);
-  runAnimation();
-}
-
-document.getElementById("speed-slider").oninput = function () {
-  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
-  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
-  
-  // Update the frame rate without restarting animation
-  updateFrameRate(newFrameRate);
-}
-
-document.getElementById("speed-slider").onchange = function () {
-  const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
-  document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
-  
-  // Update the frame rate without restarting animation
-  updateFrameRate(newFrameRate);
-}
-
-// Add this new function to handle frame rate updates
-function updateFrameRate(newFrameRate) {
-  // Clear the existing interval
-  if (animArea.interval) {
-    clearInterval(animArea.interval);
-  }
-  
-  // Update the global FRAME_RATE variable
-  FRAME_RATE = newFrameRate;
-  
-  // Start new interval with updated frame rate
-  animArea.interval = setInterval(updateFrame, FRAME_RATE);
-}
-
+// Question toggle
 var showAnswer1 = false;
 document.getElementById("show-q1").addEventListener("click", function () {
-    if (!showAnswer1) {
-        showAnswer1 = true;
-        document.getElementById("show-q1").innerHTML = "Hide Answer";
-        document.getElementById("answer1").style.display = "block";
-    } else {
-        showAnswer1 = false;
-        document.getElementById("show-q1").innerHTML = "Show Answer";
-        document.getElementById("answer1").style.display = "none";
-    }
+  if (!showAnswer1) {
+    showAnswer1 = true;
+    document.getElementById("show-q1").innerHTML = "Hide Answer";
+    document.getElementById("answer1").style.display = "block";
+  } else {
+    showAnswer1 = false;
+    document.getElementById("show-q1").innerHTML = "Show Answer";
+    document.getElementById("answer1").style.display = "none";
+  }
 });
 
-var showAnswer2 = false;
-document.getElementById("show-q2").addEventListener("click", function () {
-    if (!showAnswer2) {
-        showAnswer2 = true;
-        document.getElementById("show-q2").innerHTML = "Hide Answer";
-        document.getElementById("answer2").style.display = "block";
-    } else {
-        showAnswer2 = false;
-        document.getElementById("show-q2").innerHTML = "Show Answer";
-        document.getElementById("answer2").style.display = "none";
-    }
-});
+/////////////////////////////////////////////////
+/* INITIALIZATION */
+/////////////////////////////////////////////////
 
-//https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas
-function createHiPPICanvas(width, height) {
-  const ratio = window.devicePixelRatio;
-  const canvas = document.createElement("canvas");
-  canvas.width = width * ratio;
-  canvas.height = height * ratio;
-  canvas.style.width = width + "px";
-  canvas.style.height = height + "px";
-  canvas.getContext("2d").scale(ratio, ratio);
-  return canvas;
+/**
+ * Initializes the application
+ */
+function initialize() {
+  // Update displayed values
+  document.getElementById("print-mass-ratio").innerHTML = massRatio.toFixed(1);
+  document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
+  document.getElementById("print-mass1").innerHTML = mass1.toExponential(2);
+  document.getElementById("print-mass2").innerHTML = mass2.toExponential(2);
+  
+  // Setup orbit visualization
+  setupOrbitSVG();
+  drawOrbitTraces();
+  
+  // Start animation
+  animate();
 }
+
+// Handle window resize
+window.addEventListener('resize', function() {
+  setupOrbitSVG();
+  drawOrbitTraces();
+});
 
 // Initialize star background
 window.addEventListener("load", drawStars);
 window.addEventListener("resize", drawStars);
+
+// Initialize the application when the page loads
+document.addEventListener("DOMContentLoaded", initialize);
 

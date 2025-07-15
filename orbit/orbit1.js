@@ -192,7 +192,7 @@ const radial_kinetic_energy_input = {
 const radial_kinetic_energy_plot = createPlot(radial_kinetic_energy_input);
 var radial_ke_line = radial_kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line");
 var radial_ke_point = radial_kinetic_energy_plot.svg.append("circle")
-  .attr("id", "kinetic-energy-point").attr("r", 3).attr("fill", "black").attr("visibility", "visible");
+  .attr("id", "kinetic-energy-point").attr("r", 3).attr("fill", "white").attr("visibility", "visible");
 
 // ORBITAL KINETIC ENERGY
 const orbital_kinetic_energy_input = {
@@ -206,7 +206,7 @@ const orbital_kinetic_energy_input = {
 const orbital_kinetic_energy_plot = createPlot(orbital_kinetic_energy_input);
 var orbital_ke_line = orbital_kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line");
 var orbital_ke_point = orbital_kinetic_energy_plot.svg.append("circle")
-  .attr("id", "kinetic-energy-point").attr("r", 3).attr("fill", "black").attr("visibility", "visible");
+  .attr("id", "kinetic-energy-point").attr("r", 3).attr("fill", "white").attr("visibility", "visible");
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -217,6 +217,7 @@ var pe_data = [];
 function potentialEnergyData() {
   pe_data.length = 0;
 
+  // produces 501 data values
   for (let r = 1; r <= 4 * 1e12; r += 1e12 / 500) {
     let Ueff = (L ** 2) / (2 * earthMass * r ** 2) - (G * earthMass * sunMass) / r
     pe_data.push({

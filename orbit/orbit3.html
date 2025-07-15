@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>orbit3</title>
+    <title>Conserved Quantities: Energy and Angular Momentum Control</title>
     <link rel="stylesheet" href="./orbit3.css">
     <!-- Load d3.js -->
     <script src="d3.v4.js"></script>
@@ -36,142 +36,139 @@
         r(\theta) = \frac{L^2}{\mu G m_1 m_2}\frac{1}{1 + \epsilon \cos \theta}
         \]
         Here, \(\epsilon\) is the <strong>orbital eccentricity</strong>, a parameter that defines the orbit's shape.
+    </p>
 
-            <p id="text">
-                The total energy \(E\) of the system is also useful to understanding the behavior of the orbit. This
-                energy
-                is composed of three parts:
-                \[
-                E = \underbrace{\frac{1}{2} \mu \dot{r}^2}_{\text{Radial Kinetic Energy}} + \underbrace{\frac{L^2}{2\mu
-                r^2}}_{\text{Angular Kinetic Energy}} - \underbrace{\frac{G m_1 m_2}{r}}_{\text{Gravitational Potential Energy}}
-                \]
-                The <strong>Radial Kinetic Energy</strong> is the energy of motion directly towards or away from the
-                center of mass. The
-                <strong>Angular Kinetic Energy</strong> is the energy of the orbital motion. Notice how this term has a
-                dependence on \(r\) and not \(\dot r\). As r gets close to 0, there is an increasing outward force,
-                preventing the orbit from getting too close to the center of mass. This is known as the centrifugal
-                barrier.
-            </p>
-
-            <p id="text">
-                Notice how the angular kinetic energy and gravitational potential energy both have a dependency on
-                \(r\). These last two terms are often combined into an <strong>Effective Potential</strong>
-                (\(U_{\text{eff}}\)), which we use to understand the shape of the trajectory:
-                \[
-                U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} -\frac{G m_1 m_2}{r}
-                \]
-            </p>
-
-            <p id="text">
-                This applet models a star-planet system where the star's mass (\(m_1\)) is much greater than the
-                planet's (\(m_2\)),
-                similar to our Sun and Earth.
-            </p>
-
-            <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
-                <label for="show-q1" id="text">
-                    <b>Question:</b> In a system like the Sun and Earth where \(m_1 \gg m_2\), what does the reduced
-                    mass \(\mu\) approximate to? What does this imply about the motion of the two bodies?
-                </label>
-                <br><br>
-                <button id="show-q1">Show answer</button>
-                <span id="answer1" style="display: none"><br>
-                    When \(m_1 \gg m_2\), the denominator \(m_1 + m_2\) is approximately equal to \(m_1\). So, \(\mu
-                    \approx
-                    \frac{m_1 m_2}{m_1}\), which simplifies to \( \mu \approx m_2\). This means the reduced mass is
-                    nearly
-                    identical to the planet's mass. As a result, the motion will follow the Earth around the center of
-                    mass, which will be mostly the Sun.
-                </span>
-            </div>
     <p id="text">
-        We examine the most fundamental
-        approach: directly setting the <strong>conserved quantities</strong> of the system. In orbital mechanics, energy
+        The total energy \(E\) of the system is also useful to understanding the behavior of the orbit. This
+        energy is composed of three parts:
+        \[
+        E = \underbrace{\frac{1}{2} \mu \dot{r}^2}_{\text{Radial Kinetic Energy}} + \underbrace{\frac{L^2}{2\mu
+        r^2}}_{\text{Angular Kinetic Energy}} - \underbrace{\frac{G m_1 m_2}{r}}_{\text{Gravitational Potential Energy}}
+        \]
+        The <strong>Radial Kinetic Energy</strong> is the energy of motion directly towards or away from the
+        center of mass. The <strong>Angular Kinetic Energy</strong> is the energy of the orbital motion. Notice how this term has a
+        dependence on \(r\) and not \(\dot r\). As r gets close to 0, there is an increasing outward force,
+        preventing the orbit from getting too close to the center of mass. This is known as the centrifugal
+        barrier.
+    </p>
+
+    <p id="text">
+        Notice how the angular kinetic energy and gravitational potential energy both have a dependency on
+        \(r\). These last two terms are often combined into an <strong>Effective Potential</strong>
+        (\(U_{\text{eff}}\)), which we use to understand the shape of the trajectory:
+        \[
+        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} -\frac{G m_1 m_2}{r}
+        \]
+    </p>
+
+    <p id="text">
+        This applet models a star-planet system where the star's mass (\(m_1\)) is much greater than the
+        planet's (\(m_2\)), similar to our Sun and Earth.
+    </p>
+
+    <!-- Improved question/answer block -->
+    <section class="question-block" id="question1-block">
+        <div class="question-text">
+            <strong>Question:</strong> In a system like the Sun and Earth where \(m_1 \gg m_2\), what does the reduced
+            mass \(\mu\) approximate to? What does this imply about the motion of the two bodies?
+        </div>
+        <button id="show-q1" class="toggle-answer">Show answer</button>
+        <div id="answer1" class="answer-text" style="display: none;">
+            When \(m_1 \gg m_2\), the denominator \(m_1 + m_2\) is approximately equal to \(m_1\). So, \(\mu
+            \approx \frac{m_1 m_2}{m_1}\), which simplifies to \( \mu \approx m_2\). This means the reduced mass is
+            nearly identical to the planet's mass. As a result, the motion will follow the Earth around the center of
+            mass, which will be mostly the Sun.
+        </div>
+    </section>
+
+    <p id="text">
+        We examine the most fundamental approach: directly setting the <strong>conserved quantities</strong> of the system. In orbital mechanics, energy
         and angular momentum are conserved throughout the motion, meaning they remain constant as the planet orbits.
         These two quantities completely determine the orbital characteristics.
     </p>
 
-            <p id="text">
-                The <strong>angular momentum L</strong> represents the "amount of rotation" in the system. It directly
-                influences the orbital size and prevents the orbiting body from spiraling into the central mass -thanks
-                to the centrifugal barrier.
-            </p>
+    <p id="text">
+        The <strong>angular momentum L</strong> represents the "amount of rotation" in the system. It directly
+        influences the orbital size and prevents the orbiting body from spiraling into the central mass -thanks
+        to the centrifugal barrier.
+    </p>
 
-            <p id="text">
-                What makes this approach powerful is that E and L completely determine the orbital parameters. Once you
-                set these conserved quantities, the minimum radius and eccentricity are calculated as follows:
-                \[
-                r_{\text{min}} = \frac{-G m_1 m_2 + \sqrt{(G m_1 m_2)^2 + 2EL^2/\mu}}{2E}
-                \]
-                \[
-                \epsilon = \sqrt{1 + \frac{2EL^2}{\mu(G m_1 m_2)^2}}
-                \]
-            </p>
+    <p id="text">
+        What makes this approach powerful is that E and L completely determine the orbital parameters. Once you
+        set these conserved quantities, the minimum radius and eccentricity are calculated as follows:
+        \[
+        r_{\text{min}} = \frac{-G m_1 m_2 + \sqrt{(G m_1 m_2)^2 + 2EL^2/\mu}}{2E}
+        \]
+        \[
+        \epsilon = \sqrt{1 + \frac{2EL^2}{\mu(G m_1 m_2)^2}}
+        \]
+    </p>
 
-            <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
-                <label for="show-q2" id="text">
-                    <b>Question:</b> What happens to r_min when you make the total energy less negative (closer to zero)
-                    while keeping angular momentum constant? Why does this occur physically?
-                </label>
-                <br><br>
-                <button id="show-q2">Show answer</button>
-                <span id="answer2" style="display: none"><br>
-                    When E becomes less negative (approaches zero), the r_min decreases. This occurs because less
-                    negative energy means the system is less tightly bound. The
-                    planet can travel farther from the star before gravity pulls it back, creating a more stretched
-                    ellipse and decreasing r_min. 
-                </span>
-            </div>
+    <!-- Improved question/answer block -->
+    <section class="question-block" id="question2-block">
+        <div class="question-text">
+            <strong>Question:</strong> What happens to r_min when you make the total energy less negative (closer to zero)
+            while keeping angular momentum constant? Why does this occur physically?
+        </div>
+        <button id="show-q2" class="toggle-answer">Show answer</button>
+        <div id="answer2" class="answer-text" style="display: none;">
+            When E becomes less negative (approaches zero), the r_min decreases. This occurs because less
+            negative energy means the system is less tightly bound. The planet can travel farther from the star before gravity pulls it back, creating a more stretched
+            ellipse and decreasing r_min. 
+        </div>
+    </section>
 
-            <p id="text">
-                As you adjust E and L, observe these key relationships:
-            </p>
+    <p id="text">
+        As you adjust E and L, observe these key relationships:
+    </p>
 
-            <ul id="text">
-                <li><strong>Eccentricity:</strong> Watch how making energy less negative (closer to zero) increases
-                    eccentricity, stretching the orbit.</li>
-                <li><strong>Angular Momentum Effects:</strong> See how higher L values create larger orbits and lower
-                    eccentricities at the same energy.</li>
-                <li><strong>Effective Potential Shape:</strong> Watch how changing E and L shapes the effective
-                    potential curve, determining the allowed range of motion.</li>
-            </ul>
+    <ul id="text">
+        <li><strong>Eccentricity:</strong> Watch how making energy less negative (closer to zero) increases
+            eccentricity, stretching the orbit.</li>
+        <li><strong>Angular Momentum Effects:</strong> See how higher L values create larger orbits and lower
+            eccentricities at the same energy.</li>
+        <li><strong>Effective Potential Shape:</strong> Watch how changing E and L shapes the effective
+            potential curve, determining the allowed range of motion.</li>
+    </ul>
 
-
-            <div id="applet2">
-                <div id="top-panel">
-                    <canvas id="orbit-canvas" title="planetary-motion"></canvas>
-                    <div id="potential-energy-graph"></div>
-                </div>
-
-                <div id="bottom-panel">
-                    <div id="kinetic-graph"></div>
-                    <div id="kinetic-graph2"></div>
-                </div>
-
-                <div id="inner-container">
-                    <label for="L-slider">L (10e40 kg*m²/s): <span id="print-L">2.7</span></label>
+    <div id="applet">
+        <!-- Animation and sliders -->
+        <div id="animation-container">
+            <div id="orbit-animation"></div>
+            <div id="slider-row">
+                <div id="L-slider-container">
+                    <label for="L-slider">L (10e40 kg*m²/s): </label>
+                    <span id="print-L">2.7</span><br>
                     <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
-                    <br>
-                    <label for="E-slider">E (10e33 J): <span id="print-E">-2.66</span></label>
-                    <input id="E-slider" class="slider" type="range" min="-5" max="-0.1" value="-2.66" step="0.1">
-                    <br>
-                    <label for="speed-slider">frame rate (ms/f): <span id="print-speed">10</span></label>
-                    <input id="speed-slider" class="slider" type="range" min="1" max="50" value="10">
-                    <p>\(r_{min} =\) <span id="print-rmin">1.50</span> AU</p>
-                    <p>\(\epsilon =\) <span id="print-epsilon">0.50</span></p>
                 </div>
- 
+                <div id="E-slider-container">
+                    <label for="E-slider">E (10e33 J): </label>
+                    <span id="print-E">-2.66</span><br>
+                    <input id="E-slider" class="slider" type="range" min="-5" max="-0.1" value="-2.66" step="0.1">
+                </div>
             </div>
-            <div class="buttons">
-                <column id="prev-button">
-                    <button onclick="window.location.href = 'orbit2.html'">PREV PAGE</button>
-                </column>
-                <column id="next-button">
-                    <button onclick="window.location.href = 'orbit4.html'">NEXT PAGE</button>
-                </column>
-            </div>
-
-            <br><br><br>
+        </div>
+        <!-- Graphs in a row -->
+        <div id="graphs-container">
+            <div id="kinetic-graph" class="energy-graph"></div>
+            <div id="kinetic-graph2" class="energy-graph"></div>
+            <div id="potential-energy-graph" class="energy-graph"></div>
+        </div>
+        <!-- Calculated values -->
+        <div class="calculated-values">
+            <h4>Calculated Values:</h4>
+            <p>\(r_{min} =\) <span id="print-rmin">1.50</span> AU</p>
+            <p>\(\epsilon =\) <span id="print-epsilon">0.50</span></p>
+        </div>
+    </div>
+    <div class="buttons">
+        <column id="prev-button">
+            <button onclick="window.location.href = 'orbit2.html'">PREVIOUS PAGE</button>
+        </column>
+        <column id="next-button">
+            <button onclick="window.location.href = 'orbit4.html'">NEXT PAGE</button>
+        </column>
+    </div>
 </body>
 
 </html>

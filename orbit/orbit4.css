@@ -17,458 +17,269 @@ body {
   pointer-events: none; /* user can't click stars*/
 }
 
+#title {
+  text-align: center;
+  color: #00BFFF;
+  margin-bottom: 24px;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+#text {
+  margin: 16px 0;
+  font-size: 1.1em;
+  line-height: 1.7;
+}
+
 #applet {
   margin: 32px auto;
   padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: fit-content;
+  width: 100%;
+  max-width: 1200px;
   border-radius: 8px;
   gap: 24px;
-  background: rgba(35, 41, 70, 0.8);
-  backdrop-filter: blur(10px);
-}
-
-#applet2 {
-  margin: 32px auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: fit-content;
-  border-radius: 8px;
-  gap: 24px;
-  background: rgba(35, 41, 70, 0.8);
-  backdrop-filter: blur(10px);
+  background: transparent;
 }
 
 #animation-container {
   width: 100%;
-  padding: 12px;
+  padding: 0;
   position: relative;
   background: transparent;
   border-radius: 8px;
 }
 
-#graphs-container {
+#orbit-animation {
   width: 100%;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  height: 400px;
+  background: transparent;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: none;
+  overflow: visible;
 }
 
 #slider-row {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 16px;
-  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin: 0 auto;
+  gap: 24px;
+  width: 100%;
 }
 
-#L-slider-container, #epsilon-slider-container {
+#mass-ratio-slider-container,
+#epsilon-slider-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #EEEEEE;
-}
-
-#radial-kinetic-graph,
-#orbital-kinetic-graph,
-#potential-energy-graph,
-#total-energy-graph {
-  background: transparent;
-  padding: 12px;
-  margin: 8px;
-}
-
-#kinetic-row,
-#potential-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-/* ==========================================================================
-   GRAPH AND CANVAS STYLES
-   ========================================================================== */
-
-svg, canvas {
-    box-sizing: border-box;
-    border-radius: 10px;
-    border-style: solid;
-    border-color: #EEEEEE;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.graph-container {
-    /* Base styling for graph containers */
-    position: relative;
-    overflow: hidden;
-}
-
-/* ==========================================================================
-   BUTTON STYLES
-   ========================================================================== */
-
-button {
-    background-color: #232946;
-    border: none;
-    color: #00BFFF;
-    padding: 12px 20px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 4px 2px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-}
-
-button:hover {
-    background: #00BFFF;
-    color: #232946;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-/* ==========================================================================
-   SLIDER STYLES
-   ========================================================================== */
-
-.slider {
-    -webkit-appearance: none;
-    width: 90%;
-    height: 15px;
-    background: #4a5568;
-    outline: none;
-    border-radius: 7px;
-    transition: background 0.3s;
-}
-
-.slider:hover {
-    background: #718096;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    background: #00BFFF;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: background 0.3s;
-}
-
-.slider::-webkit-slider-thumb:hover {
-    background: #0099CC;
-}
-
-.slider::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    background: #00BFFF;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    transition: background 0.3s;
-}
-
-.slider::-moz-range-thumb:hover {
-    background: #0099CC;
-}
-
-/* ==========================================================================
-   PANEL LAYOUTS
-   ========================================================================== */
-
-/* Top Panel: Orbit Animation and Energy Graphs */
-#top-panel {
-    position: absolute;
-    height: 280px;
-    width: 680px;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    gap: 20px;
-}
-
-/* Bottom Panel: Additional Analysis Graphs */
-#bottom-panel {
-    position: absolute;
-    top: 320px;
-    left: 20px;
-    height: 280px;
-    width: 680px;
-    display: flex;
-    gap: 20px;
-}
-
-/* Total Energy Graph */
-#total-energy-graph {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    height: 280px;
-    width: 680px;
-}
-
-/* ==========================================================================
-   INDIVIDUAL GRAPH POSITIONING
-   ========================================================================== */
-
-/* Orbit Animation */
-#orbit-animation {
-    position: absolute;
-    left: 0px;
-    height: 280px;
-    width: 330px;
-}
-
-#orbit-canvas2 {
-    position: absolute;
-    left: 0px;
-    height: 580px;
-    width: 680px;
-}
-
-#radial-kinetic-graph {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 280px;
-    width: 330px;
-}
-
-#position-graph {
-    position: absolute;
-    top: 0px;
-    left: 350px;
-    height: 280px;
-    width: 330px;
-}
-
-#angle-graph {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 280px;
-    width: 330px;
-}
-
-#kinetic-graph {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 280px;
-    width: 330px;
-}
-
-#kinetic-graph2 {
-    position: absolute;
-    top: 0px;
-    left: 350px;
-    height: 280px;
-    width: 330px;
-}
-
-#orbital-kinetic-graph {
-    position: absolute;
-    top: 0px;
-    left: 350px;
-    height: 280px;
-    width: 330px;
-}
-
-#gravitational-energy-graph {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 280px;
-    width: 330px;
-}
-
-#inner-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 280px;
-    height: 580px;
-    background: rgba(35, 41, 70, 0.9);
-    border-radius: 10px;
-    padding: 20px;
-    color: #EEEEEE;
+  flex: 1;
 }
 
 .control-section {
-    margin-top: 20px;
-}
-
-.control-section:last-child {
-    margin-bottom: 0;
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .control-section h3 {
-    margin: 0 0 10px 0;
-    color: #00BFFF;
-    font-size: 14px;
-    text-transform: uppercase;
+  margin: 0 0 16px 0;
+  color: #00BFFF;
+  font-size: 1.2em;
 }
 
-.control-group {
-    margin-bottom: 15px;
+.calculated-values {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border-radius: 8px;
+  text-align: center;
 }
 
-.control-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #EEEEEE;
-    font-size: 12px;
+.calculated-values h4 {
+  margin: 0 0 12px 0;
+  color: #00BFFF;
+  font-size: 1.1em;
 }
 
-.value-display {
-    background: rgba(0, 191, 255, 0.1);
-    padding: 8px;
-    border-radius: 5px;
-    margin-top: 5px;
-    font-family: monospace;
-    font-size: 11px;
-    color: #00BFFF;
+.calculated-values p {
+  margin: 8px 0;
+  font-size: 1em;
 }
 
-fieldset {
-    border: 1px solid #4a5568;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 15px 0;
-    background: rgba(35, 41, 70, 0.5);
+/* Question block styling */
+.question-block {
+  background: transparent;
+  border-left: 4px solid #00BFFF;
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
 }
 
-legend {
-    color: #00BFFF;
-    font-weight: bold;
-    font-size: 12px;
-    padding: 0 5px;
+.question-text {
+  margin-bottom: 16px;
+  font-size: 1.1em;
+  line-height: 1.6;
 }
 
-.legend-item {
-    margin: 5px 0;
-    font-size: 11px;
+.toggle-answer {
+  background: #232946;
+  border: 2px solid #00BFFF;
+  color: #00BFFF;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
 }
 
-.legend-item:last-child {
-    margin-bottom: 0;
+.toggle-answer:hover {
+  background: #00BFFF;
+  color: #232946;
 }
 
-.color-indicator {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 5px;
-    vertical-align: middle;
+.answer-text {
+  padding: 16px;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 1em;
+  line-height: 1.6;
 }
 
-.legend-text {
-    color: #EEEEEE;
-    font-size: 11px;
-    vertical-align: middle;
+/* Button styles */
+.toggle-button {
+  background: #232946;
+  border: 2px solid #00BFFF;
+  color: #00BFFF;
+  padding: 8px 16px;
+  margin: 4px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
 }
 
-#red {
-    background-color: #ff6b6b;
+.toggle-button:hover {
+  background: #00BFFF;
+  color: #232946;
 }
 
-#green {
-    background-color: #51cf66;
+.toggle-button.visible {
+  background: #00BFFF;
+  color: #232946;
 }
 
-#blue {
-    background-color: #339af0;
+.toggle-button.hidden {
+  background: #232946;
+  color: #666;
+  border-color: #666;
 }
 
-#orange {
-    background-color: #ffa94d;
+/* Slider styles */
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #4a5568;
+  outline: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+  margin: 8px 0;
 }
 
-#purple {
-    background-color: #cc5de8;
+.slider:hover {
+  background: #718096;
 }
 
-.energy-info p {
-    margin: 5px 0;
-    font-size: 11px;
-    color: #EEEEEE;
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #00BFFF;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.3s;
 }
 
-.energy-info p:first-child {
-    font-weight: bold;
-    color: #00BFFF;
+.slider::-webkit-slider-thumb:hover {
+  background: #0099CC;
 }
 
-.energy-info p:last-child {
-    margin-bottom: 0;
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #00BFFF;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  transition: background 0.3s;
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN
-   ========================================================================== */
-
-@media (max-width: 1024px) {
-    #applet {
-        width: 95%;
-        max-width: 900px;
-    }
-    
-    #inner-container {
-        position: relative;
-        width: 100%;
-        height: auto;
-        margin-top: 20px;
-    }
+.slider::-moz-range-thumb:hover {
+  background: #0099CC;
 }
 
+/* Navigation buttons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 32px 0;
+  gap: 16px;
+}
+
+.buttons button {
+  background: #232946;
+  border: 2px solid #00BFFF;
+  color: #00BFFF;
+  padding: 12px 24px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1em;
+}
+
+.buttons button:hover {
+  background: #00BFFF;
+  color: #232946;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-        margin: 0;
-    }
-    
-    #applet {
-        width: 100%;
-        padding: 15px;
-    }
-    
-    #top-panel,
-    #bottom-panel {
-        position: relative;
-        width: 100%;
-        height: auto;
-        flex-direction: column;
-    }
-    
-    #total-energy-graph {
-        position: relative;
-        width: 100%;
-        height: 300px;
-    }
-    
-    #inner-container {
-        position: relative;
-        width: 100%;
-        height: auto;
-        margin-top: 20px;
-    }
+  body {
+    margin: 8px;
+    padding: 8px;
+  }
+  
+  #title {
+    font-size: 2em;
+  }
+  
+  #applet {
+    margin: 16px auto;
+    padding: 16px;
+  }
+  
+  #slider-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .buttons button {
+    width: 100%;
+    max-width: 200px;
+  }
 } 
