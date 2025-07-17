@@ -2,22 +2,20 @@
 <html lang="en">
 
 <head>
-    <title>orbit3</title>
-    <link rel="stylesheet" href="../css/orbit2.css">
-    <!-- <link rel="icon" href = "../img/wally.png"> -->
-    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+    <title>Exploring Orbital Parameters: Minimum Radius Effects</title>
+    <link rel="stylesheet" href="./orbit2.css">
 
     <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v4.js"></script>
-
-    <script defer src="../js/orbit3a.js"></script>
+    <script src="d3.v4.js"></script>
 
     <!-- LaTeX support -->
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
+    <script defer src="./orbit2.js"></script>
 </head>
 
 <body id="body">
+    <canvas id="star-background"></canvas>
 
     <h1 id="title">Exploring Orbital Parameters: Minimum Radius Effects</h1>
 
@@ -48,21 +46,20 @@
         \[ \epsilon = \sqrt{1 + \frac{2 E L^2}{\mu (G m_1 m_2)^2}} \]
     </div>
 
-    <div style="background-color:#f0f0f0; border-left: 5px solid #007BFF; padding: 15px; margin: 20px 0;">
-        <label for="show-q1" id="text">
-            <b>Question:</b> What happens to orbital eccentricity when you decrease \(r_{\text{min}}\) while keeping
+    <!-- Improved question/answer block -->
+    <section class="question-block" id="question1-block">
+        <div class="question-text">
+            <strong>Question:</strong> What happens to orbital eccentricity when you decrease \(r_{\text{min}}\) while keeping
             angular momentum constant? Why does this occur?
-        </label>
-        <br><br>
-        <button id="show-q1">Show Answer</button>
-        <span id="answer1" style="display: none"><br>
+        </div>
+        <button id="show-q1" class="toggle-answer">Show answer</button>
+        <div id="answer1" class="answer-text" style="display: none;">
             Decreasing \(r_{\text{min}}\) at constant \(L\) makes the total energy more negative (since \(E \propto
             -\frac{Gm_1m_2}{r_{\text{min}}}\)), increasing eccentricity (\(\epsilon\)). This creates more elongated
             orbits because the planet must travel farther from the star to conserve angular momentum, demonstrating the
             connection between close approach distance and orbital shape.
-        </span>
-    </div>
-
+        </div>
+    </section>
 
     <p id="text">
         As you experiment with the r<sub>min</sub> slider, notice how the orbital behavior changes at the
@@ -101,40 +98,45 @@
         <li><strong>Energy conversion:</strong> See how kinetic/potential energy exchange at perihelion and aphelion.</li>
     </ul>
 
-    <div id="applet2">
-        <div id="top-panel">
-            <canvas id="orbit-canvas" title="planetary-motion"></canvas>
-            <div id="potential-energy-graph"></div>
-        </div>
+    <div id="applet">
+        <!-- Animation and sliders -->
+        <div id="animation-container">
+            <div id="orbit-animation"></div>
+            <div id="slider-row">
+                <div id="L-slider-container">
+                    <label for="L-slider">L (10e40 kg*m²/s): </label>
+                    <span id="print-L">2.7</span><br>
+                    <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
+                </div>
+                <div id="rmin-slider-container">
+                    <label for="rmin-slider">r_min (AU): </label>
+                    <span id="print-rmin">1.00</span><br>
+                    <input id="rmin-slider" class="slider" type="range" min="0.5" max="2.0" value="1" step="0.1">
+                </div>
 
-        <div id="bottom-panel">
-            <div id="kinetic-graph"></div>
-            <div id="kinetic-graph2"></div>
+            </div>
         </div>
-
-        <div id="inner-container">
-            <label for="L-slider">L (10e40 kg*m²/s): <span id="print-L">2.7</span></label>
-            <input id="L-slider" class="slider" type="range" min="1" max="5" value="2.7" step="0.1">
-            <br>
-            <label for="rmin-slider">r_min (AU): <span id="print-rmin">1.00</span></label>
-            <input id="rmin-slider" class="slider" type="range" min="0.5" max="2.0" value="1" step="0.1">
-            <br>
-            <label for="speed-slider">frame rate (ms/f): <span id="print-speed">10</span></label>
-            <input id="speed-slider" class="slider" type="range" min="1" max="50" value="10">
+        <!-- Graphs in a row -->
+        <div id="graphs-container">
+            <div id="kinetic-graph" class="energy-graph"></div>
+            <div id="kinetic-graph2" class="energy-graph"></div>
+            <div id="potential-energy-graph" class="energy-graph"></div>
+        </div>
+        <!-- Calculated values -->
+        <div class="calculated-values">
+            <h4>Calculated Values:</h4>
             <p><strong>ε =</strong> <span id="print-epsilon">0.00</span></p>
             <p><strong>E =</strong> <span id="print-energy">0.00</span> × 10³³ J</p>
         </div>
     </div>
     <div class="buttons">
-                <column id="prev-button">
-                    <button onclick="window.location.href = 'orbit3c.html'">PREVIOUS PAGE</button>
-                </column>
-                <column id="next-button">
-                    <button onclick="window.location.href = 'orbit4.html'">NEXT PAGE</button>
-                </column>
-            </div>
-
-    <br><br><br>
+        <column id="prev-button">
+            <button onclick="window.location.href = 'orbit1.html'">PREVIOUS PAGE</button>
+        </column>
+        <column id="next-button">
+            <button onclick="window.location.href = 'orbit3.html'">NEXT PAGE</button>
+        </column>
+    </div>
 </body>
 
 </html>
