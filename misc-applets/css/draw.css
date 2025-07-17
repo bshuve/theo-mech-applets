@@ -1,43 +1,118 @@
-body{
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
     position: relative;
     top: 70px;
-    background-color:#edcdca;
+    background-color: #edcdca;
     max-width: 1000px;
-    margin: auto;
+    margin: 0 auto;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
-svg, canvas {
-    box-sizing: border-box;
-    border-radius: 10px;
-    border-style: solid;
-    border-color: black;
+/* Typography */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
 }
 
+#debug {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: monospace;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Main Application Container */
 #applet {
-    background-color:#b5cef5;
+    background-color: #b5cef5;
     margin-top: 20px;
     position: relative;
-    height: 700px;
-    width: 1000px;
+    height: 900px;
+    width: 900px;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Canvas Styles */
 #canvas {
     background-color: white;
     width: 500px;
     height: 500px;
+    border-radius: 10px;
+    border: 2px solid black;
+    cursor: crosshair;
 }
 
+/* Graph Containers */
 #coord-graph {
-    /* background-color: green; */
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 10px;
 }
 
 #energy-graph {
-    /* background-color: red; */
     position: absolute;
     right: 20px;
+    bottom: 10px;
+}
+
+#coord-dxdy-graph {
+    position: absolute;
+    right: 20px;
+    top: 300px;
+}
+
+/* SVG Styles */
+svg {
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: white;
+}
+
+/* Button Styles */
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+#clear-canvas {
+    position: absolute;
     bottom: 20px;
+    left: 20px;
+}
+
+/* Bottom Panel (if needed for future use) */
+#bottom-panel {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+#derivative-graph,
+#integral-graph {
+    flex: 1;
+    min-height: 200px;
 }

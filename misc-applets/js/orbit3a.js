@@ -663,7 +663,7 @@ document.getElementById("speed-slider").oninput = function () {
   updateFrameRate(newFrameRate);
 }
 
-document.getElementById("speed-slider").onmouseup = function () {
+document.getElementById("speed-slider").onchange = function () {
   const newFrameRate = parseFloat(document.getElementById("speed-slider").value);
   document.getElementById("print-speed").innerHTML = newFrameRate.toFixed(0);
   
