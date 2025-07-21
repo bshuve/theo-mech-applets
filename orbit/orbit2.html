@@ -36,10 +36,7 @@
     </div>
 
     <p id="text">
-        This reveals a key insight: <strong>For fixed angular momentum, changing \(r_{\text{min}}\) directly determines
-            the orbital energy</strong>. Smaller \(r_{\text{min}}\) values result
-        in more negative (bound) energies. The eccentricity we controlled previously can be calculated from this
-        relationship:
+        This reveals a key insight: <strong>For fixed angular momentum, increasing \(r_{\text{min}}\) leads to more negative (more tightly bound) energy, while decreasing \(r_{\text{min}}\) increases the energy (making it less negative or even positive for unbound orbits)</strong>. The eccentricity we controlled previously can be calculated from this relationship:
     </p>
 
     <div style="text-align: center; margin: 20px 0;">
@@ -54,10 +51,7 @@
         </div>
         <button id="show-q1" class="toggle-answer">Show answer</button>
         <div id="answer1" class="answer-text" style="display: none;">
-            Decreasing \(r_{\text{min}}\) at constant \(L\) makes the total energy more negative (since \(E \propto
-            -\frac{Gm_1m_2}{r_{\text{min}}}\)), increasing eccentricity (\(\epsilon\)). This creates more elongated
-            orbits because the planet must travel farther from the star to conserve angular momentum, demonstrating the
-            connection between close approach distance and orbital shape.
+            Decreasing \(r_{\text{min}}\) at constant \(L\) increases the total energy (makes it less negative or even positive), which decreases the eccentricity for bound orbits (\(\epsilon < 1\)). If the energy becomes positive, the orbit becomes unbound (\(\epsilon \geq 1\)). This reflects the fact that a planet with a very close approach and not enough angular momentum can escape the gravitational pull.
         </div>
     </section>
 
@@ -66,25 +60,13 @@
         boundaries:
     </p>
     <ul id="text">
-        <li><strong>Minimum r<sub>min</sub>:</strong> Creates highly eccentric orbits where the planet
-            swings close to the star before flying far out. The centrifugal barrier becomes significant at this
-            close approach.</li>
+        <li><strong>Minimum r<sub>min</sub>:</strong> As you decrease r<sub>min</sub>, the orbit approaches the limit where it becomes unbound (\(\epsilon \to 1\)). The applet restricts to bound orbits (\(\epsilon < 1\)), so you won't see hyperbolic trajectories here.</li>
 
-        <li><strong>Maximum r<sub>min</sub>:</strong> Produces circular orbits. The planet maintains
-            a more consistent distance from the star, with minimal energy variation.</li>
-
-        <li><strong>Beyond boundaries (theoretical):</strong>
-            <ul>
-                <li>If r<sub>min</sub> could be <strong>smaller</strong>, angular momentum would need to increase
-                    dramatically to prevent collision and keep the orbit bound; otherwise, the planet would escape on an
-                    unbound hyperbolic trajectory.</li>
-                <li>If r<sub>min</sub> could be <strong>larger</strong>, the orbit would ???
-            </ul>
-        </li>
+        <li><strong>Maximum r<sub>min</sub>:</strong> This corresponds to a circular orbit, where the radius and potential energy remain constant. In the effective potential picture, this is a stable equilibrium point.</li>
     </ul>
     <p id="text">
         The effective potential curve helps explain these limits. As r<sub>min</sub> increases, the potential well
-        becomes shallower, reducing the energy difference between perihelion and aphelion.
+        becomes deeper, and the orbit becomes more tightly bound.
     </p>
 
     <p id="text">
@@ -93,9 +75,9 @@
     </p>
 
     <ul id="text">
-        <li><strong>Energy:</strong> Observe how decreasing \(r_{\text{min}}\) lowers energy levels but doesn't change the effective potentiel energy for a given radius.</li>
-        <li><strong>Eccentricity</strong> Observe how \(r_{\text{min}}\) directly affects orbital eccentricity.</li>
-        <li><strong>Energy conversion:</strong> See how kinetic/potential energy exchange at perihelion and aphelion.</li>
+        <li><strong>Energy:</strong> Observe how increasing \(r_{\text{min}}\) lowers the total energy (makes it more negative), corresponding to more tightly bound orbits.</li>
+        <li><strong>Eccentricity:</strong> See how \(r_{\text{min}}\) directly affects orbital eccentricity for a given angular momentum.</li>
+        <li><strong>Energy conversion:</strong> Watch how kinetic and potential energy exchange at perihelion and aphelion.</li>
     </ul>
 
     <div id="applet">
@@ -110,8 +92,8 @@
                 </div>
                 <div id="rmin-slider-container">
                     <label for="rmin-slider">r_min (AU): </label>
-                    <span id="print-rmin">1.00</span><br>
-                    <input id="rmin-slider" class="slider" type="range" min="0.5" max="2.0" value="1" step="0.1">
+                    <span id="print-rmin">0.80</span><br>
+                    <input id="rmin-slider" class="slider" type="range" min="0.50" max="1.00" value="0.80" step="0.01">
                 </div>
 
             </div>
