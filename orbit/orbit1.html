@@ -25,76 +25,51 @@
     </p>
 
     <p id="text">
-        In classical mechanics, the motion of two gravitationally interacting bodies—like the Earth and the Sun—can be
-        complex. To simplify this, we can reframe it as an equivalent one-body problem. This is achieved using the
-        concept of <strong>reduced mass</strong>, denoted by the symbol μ (mu), where:
-        
+        In classical mechanics, the two-body problem under Newtonian gravity can be reduced to an equivalent one-body problem using the <b>reduced mass</b> \(\mu\):
         \[ \mu = \frac{m_1 m_2}{m_1 + m_2} \]
-
-        This allows us to describe the motion of one body relative to the other in a much simpler way.
+        This allows us to analyze the relative motion as if a single particle of mass \(\mu\) orbits a fixed center, greatly simplifying the analysis.
     </p>
 
     <p id="text">
-        We can get the shape of the orbital path of μ as a function of the angle θ as follows:
-        
-        \[ r(\theta) = \frac{L^2}{\mu G m_1 m_2}\frac{1}{1 + \epsilon \cos \theta} \]
-
-        Here, \(\epsilon\) is the <strong>orbital eccentricity</strong>, a parameter that defines the orbit's shape.
-        When \(\epsilon < 1\), the path is a bound, elliptical orbit. While \(r(\theta)\) describes the path of the
-            reduced mass, the actual paths of the two individual bodies are given by: \[
-            r_{1}(\theta)=\frac{m_2}{m_1+m_2}r(\theta) \quad \text{and} \quad
-            r_{2}(\theta)=-\frac{m_1}{m_1+m_2}r(\theta) \] 
+        The general solution for the orbit in a central potential is:
+        \[ r(\theta) = \frac{L^2}{\mu G m_1 m_2} \frac{1}{1 + \epsilon \cos \theta} \]
+        where \(L\) is the conserved angular momentum, and \(\epsilon\) is the <b>orbital eccentricity</b>. For \(\epsilon = 0\), the orbit is circular; for \(0 < \epsilon < 1\), it is elliptical; for \(\epsilon = 1\), parabolic; and for \(\epsilon > 1\), hyperbolic.
     </p>
 
     <p id="text">
-        The total energy \(E\) of the system is also useful to understanding the behavior of the orbit. This
-        energy
-        is composed of three parts:
+        The eccentricity \(\epsilon\) is determined by both the total energy \(E\) and angular momentum \(L\):
         \[
-        E = \underbrace{\frac{1}{2} \mu \dot{r}^2}_{\text{Radial Kinetic Energy}} + \underbrace{\frac{L^2}{2\mu
-        r^2}}_{\text{Angular Kinetic Energy}} - \underbrace{\frac{G m_1 m_2}{r}}_{\text{Gravitational Potential
-        Energy}}
+        \epsilon = \sqrt{1 + \frac{2 E L^2}{\mu (G m_1 m_2)^2}}
         \]
-        The <strong>Radial Kinetic Energy</strong> is the energy of motion directly towards or away from the
-        center of mass. The
-        <strong>Angular Kinetic Energy</strong> is the energy of the orbital motion. Notice how this term has a
-        dependence on \(r\) and not \(\dot r\). As r gets close to 0, there is an increasing outward force,
-        preventing the orbit from getting too close to the center of mass. This is known as the centrifugal
-        barrier.
+        This relationship shows how the geometry of the orbit encodes the system's dynamics. For a fixed \(L\), increasing \(E\) (making it less negative) increases \(\epsilon\), stretching the orbit.
     </p>
 
     <p id="text">
-        Notice how the angular kinetic energy and gravitational potential energy both have a dependency on
-        \(r\). These last two terms are often combined into an <strong>Effective Potential</strong>
-        (\(U_{\text{eff}}\)), which we use to understand the shape of the trajectory:
+        The total mechanical energy is:
         \[
-        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} -\frac{G m_1 m_2}{r}
+        E = \frac{1}{2} \mu \dot{r}^2 + \frac{L^2}{2\mu r^2} - \frac{G m_1 m_2}{r}
         \]
+        The first term is the radial kinetic energy, the second is the angular kinetic energy, and the third is the gravitational potential energy. The sum of the last two terms is often called the <b>effective potential</b>:
+        \[
+        U_{\text{eff}}(r) = \frac{L^2}{2 \mu r^2} - \frac{G m_1 m_2}{r}
+        \]
+        The effective potential helps visualize stable and unstable orbits, and the centrifugal barrier at small \(r\).
     </p>
 
     <p id="text">
-        This applet models a star-planet system where the star's mass (\(m_1\)) is much greater than the
-        planet's (\(m_2\)),
-        similar to our Sun and Earth.
+        <b>Instructions:</b> Use the sliders to adjust angular momentum \(L\) and eccentricity \(\epsilon\). Observe how the orbit and the energy graphs respond. Try to relate the changes you see to the equations above. For example, what happens to the minimum radius as you increase \(L\)? Can you create a nearly parabolic trajectory?
     </p>
 
-    <!-- Improved question/answer block -->
+    <!-- Conceptual question -->
     <section class="question-block" id="question1-block">
         <div class="question-text">
-            <strong>Question:</strong> In a system like the Sun and Earth where \(m_1 \gg m_2\), what does the reduced mass \(\mu\) approximate to? What does this imply about the motion of the two bodies?
+            <strong>Conceptual Question:</strong> In the limit where \(m_1 \gg m_2\), what does the reduced mass \(\mu\) approach, and what does this imply about the motion of the two bodies?
         </div>
         <button id="show-q1" class="toggle-answer">Show answer</button>
         <div id="answer1" class="answer-text" style="display: none;">
-            When \(m_1 \gg m_2\), the denominator \(m_1 + m_2\) is approximately equal to \(m_1\). So, \(\mu \approx \frac{m_1 m_2}{m_1}\), which simplifies to \( \mu \approx m_2\). This means the reduced mass is nearly identical to the planet's mass. As a result, the motion will follow the Earth around the center of mass, which will be mostly the Sun.
+            When \(m_1 \gg m_2\), \(\mu \approx m_2\). This means the lighter body (e.g., a planet) essentially orbits the much heavier one (e.g., a star), which remains nearly stationary in the center-of-mass frame.
         </div>
     </section>
-
-    <p id="text">
-        Use the sliders below to see how angular momentum and eccentricity affects the orbit. As you adjust the
-        parameters, observe the changes in
-        the three graphs. Pay attention to the radius of the planet from the sun and how this relates to the
-        effective potential and kinetic energies.
-    </p>
 
     <div id="applet">
         <!-- Animation and sliders -->

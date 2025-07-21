@@ -31,39 +31,9 @@ function calculateDerivedQuantities() {
   energy = (epsilon ** 2 - 1) * ((G * sunMass * earthMass)**2 * mu / 2 / (L ** 2));
 }
 
+// Remove dynamic min/max/step logic for r_min slider
 function updateRminLimits() {
-  // Calculate r_min limits based on current L
-  // For ε = 1: r_min_min = L²/(2*G*sunMass*earthMass²)
-  // For ε = 0: r_min_max = L²/(G*sunMass*earthMass²)
-  
-  const r_min_for_eps_1 = (L * L) / (1.98 * G * sunMass * earthMass * earthMass);
-  const r_min_for_eps_0 = (L * L) / (G * sunMass * earthMass * earthMass);
-  
-  // Convert to AU for slider
-  const r_min_min_AU = r_min_for_eps_1 / 1.496e+11;
-  const r_min_max_AU = r_min_for_eps_0 / 1.496e+11;
-  
-  // Update slider attributes
-  const slider = document.getElementById("rmin-slider");
-  slider.setAttribute("min", r_min_min_AU.toFixed(2));
-  slider.setAttribute("max", r_min_max_AU.toFixed(2));
-  
-  // Ensure current value is within new limits
-  const currentValue = parseFloat(slider.value);
-  if (currentValue < r_min_min_AU) {
-    slider.value = r_min_min_AU.toFixed(2);
-    r_min = r_min_min_AU * 1.496e+11;
-    document.getElementById("print-rmin").innerHTML = r_min_min_AU.toFixed(2);
-  } else if (currentValue > r_min_max_AU) {
-    slider.value = r_min_max_AU.toFixed(2);
-    r_min = r_min_max_AU * 1.496e+11;
-    document.getElementById("print-rmin").innerHTML = r_min_max_AU.toFixed(2);
-  }
-  
-  // Update step size to be reasonable for the range
-  const range = r_min_max_AU - r_min_min_AU;
-  const step = Math.min(0.01, range / 100);
-  slider.setAttribute("step", step.toFixed(3));
+  // No-op: keep slider range fixed at [0.50, 1.00]
 }
 
 const SCALE_R = 1.496e+11; // Scale factor for radius (m to AU) for graphing
@@ -476,7 +446,9 @@ function updateDisplayedValues() {
 
 function updateOrbitalParameters() {
   r_min = parseFloat(document.getElementById("rmin-slider").value) * 1.496e+11;
-  document.getElementById("print-rmin").innerHTML = (r_min/1.496e+11).toFixed(2);
+  const rminSlider = document.getElementById("rmin-slider");
+  const rminValue = parseFloat(rminSlider.value);
+  document.getElementById("print-rmin").textContent = rminValue.toFixed(2);
 
   L = parseFloat(document.getElementById("L-slider").value) * 1e40;
   document.getElementById("print-L").innerHTML = (L/1e40).toFixed(1);
@@ -523,14 +495,16 @@ window.addEventListener('resize', function() {
 
 window.addEventListener('DOMContentLoaded', function() {
   try {
+    // Explicitly set r_min slider to 0.80 and update display
+    const rminSlider = document.getElementById("rmin-slider");
+    rminSlider.value = 0.80;
+    document.getElementById("print-rmin").textContent = "0.80";
     // Initialize orbital parameters first
     calculateDerivedQuantities();
     updateDisplayedValues();
-    
     // Setup orbit visualization
     setupOrbitSVG();
     drawOrbitTrace(L, epsilon);
-    
     // Generate and plot data
     potentialEnergyData();
     plotPotentialEnergy(pe_data);
@@ -538,7 +512,6 @@ window.addEventListener('DOMContentLoaded', function() {
     plotRadialKineticEnergy(radial_ke_data);
     orbitalKineticEnergyData();
     plotOrbitalKineticEnergy(orbital_ke_data);
-    
     // Start animation
     animate();
   } catch (error) {
