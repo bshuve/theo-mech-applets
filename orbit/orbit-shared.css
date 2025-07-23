@@ -1,0 +1,392 @@
+/* Shared Orbit Applets Stylesheet: orbit-shared.css
+   Merged from orbit1.css, orbit2.css, orbit4.css, orbit5.css
+   Unique/overlapping rules are namespaced by applet-specific IDs or containers.
+*/
+
+/* ===== BASE STYLES (shared) ===== */
+body {
+  margin: 16px;
+  padding: 16px;
+  background: #182030;
+  color: #EEEEEE;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+#star-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#applet {
+  margin: 32px auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  gap: 24px;
+}
+
+#animation-container {
+  width: 100%;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border-radius: 8px;
+  position: relative;
+}
+
+#orbit-animation {
+  width: 100vw;
+  max-width: 100vw;
+  height: 50vw;
+  min-height: 400px;
+  max-height: 700px;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border-radius: 8px;
+  border: none;
+  overflow: visible;
+}
+#orbit-animation svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#slider-row {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 0 auto;
+  gap: 24px;
+  position: static;
+}
+
+#L-slider-container, #epsilon-slider-container, #rmin-slider-container, #mass-ratio-slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #EEEEEE;
+  min-width: 150px;
+}
+
+#graphs-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  background: transparent;
+  padding: 0;
+}
+
+.energy-graph {
+  padding: 12px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1 1 0;
+  background: transparent;
+  height: 350px;
+}
+
+.calculated-values {
+  margin-top: 12px;
+  background: transparent;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.calculated-values h4 {
+  margin: 0 0 12px 0;
+  color: #00BFFF;
+  font-size: 1.1em;
+}
+
+.calculated-values p {
+  margin: 8px 0;
+  font-size: 1em;
+}
+
+fieldset {
+  border: 1px solid #EEEEEE;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 12px;
+}
+
+legend {
+  font-weight: bold;
+}
+
+/* ===== BUTTONS ===== */
+button, .toggle-button {
+  background-color: #232946;
+  border: none;
+  color: #00BFFF;
+  padding: 12px 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.3s, color 0.3s, transform 0.1s;
+  margin: 4px 2px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+button:hover, .toggle-button:hover {
+  background: #00BFFF;
+  color: #232946;
+}
+button:active, .toggle-button:active {
+  transform: scale(0.98);
+}
+
+/* Unique button for orbit5 */
+#orbit5-prev {
+  background: #232946;
+  color: #00BFFF;
+  border-radius: 6px;
+  padding: 10px 28px;
+  outline: none;
+}
+#orbit5-prev:hover, #orbit5-prev:focus {
+  background: #00BFFF;
+  color: #232946;
+  outline: none;
+}
+
+/* ===== SLIDERS ===== */
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  background: #4a5568;
+  outline: none;
+  border-radius: 7px;
+  transition: background 0.3s;
+  margin: 8px 0;
+}
+.slider:hover {
+  background: #718096;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #00BFFF;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+.slider::-webkit-slider-thumb:hover {
+  background: #0099CC;
+}
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #00BFFF;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  transition: background 0.3s;
+}
+.slider::-moz-range-thumb:hover {
+  background: #0099CC;
+}
+
+/* ===== QUESTION BLOCKS ===== */
+.question-block {
+  background: #232946;
+  border-left: 5px solid #00BFFF;
+  padding: 18px 24px;
+  margin: 28px 0 24px 0;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  max-width: 900px;
+}
+.question-block .question-text {
+  font-size: 1.08em;
+  margin-bottom: 12px;
+}
+.toggle-answer {
+  background: #00BFFF;
+  color: #232946;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s, color 0.2s;
+}
+.toggle-answer:hover {
+  background: #0099CC;
+  color: #fff;
+}
+.answer-text {
+  margin-top: 10px;
+  background: #182030;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 1em;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ===== D3 GRAPH AXES ===== */
+.plot .myXaxis path,
+.plot .myXaxis line,
+.plot .myYaxis path,
+.plot .myYaxis line {
+  stroke: #fff;
+}
+.plot .myXaxis text,
+.plot .myYaxis text {
+  fill: #fff;
+}
+.plot text {
+  fill: #fff;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 900px) {
+  #graphs-container {
+    flex-direction: column;
+  }
+  .energy-graph {
+    margin: 8px 0;
+  }
+}
+@media (max-width: 768px) {
+  body {
+    margin: 8px;
+    padding: 8px;
+  }
+  #applet {
+    margin: 8px;
+    padding: 12px;
+  }
+  #slider-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  #orbit-animation {
+    height: 300px;
+  }
+}
+
+/* ====== ORBIT4 UNIQUE ====== */
+#orbit4-body #title {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #00BFFF;
+  text-align: center;
+}
+#orbit4-body .control-section {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border-radius: 8px;
+  text-align: center;
+}
+#orbit4-body .toggle-button {
+  border: 2px solid #00BFFF;
+  font-size: 0.9em;
+  padding: 8px 16px;
+  margin: 4px;
+}
+#orbit4-body .toggle-button.visible {
+  background: #00BFFF;
+  color: #232946;
+}
+#orbit4-body .toggle-button.hidden {
+  background: #232946;
+  color: #666;
+  border-color: #666;
+}
+#orbit4-body .buttons button {
+  border: 2px solid #00BFFF;
+  font-size: 1em;
+  padding: 12px 24px;
+}
+
+/* ====== ORBIT5 UNIQUE ====== */
+#orbit5-body #applet {
+  width: fit-content;
+}
+#orbit5-body #animation-container {
+  padding: 12px;
+}
+#orbit5-body #slider-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  width: 90%;
+}
+#orbit5-body #graphs-container {
+  flex-direction: column;
+  padding: 12px;
+}
+#orbit5-body #kinetic-row,
+#orbit5-body #potential-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#orbit5-body #radial-kinetic-graph,
+#orbit5-body #orbital-kinetic-graph,
+#orbit5-body #potential-energy-graph,
+#orbit5-body #total-energy-graph {
+  background: transparent;
+  padding: 12px;
+  margin: 8px;
+}
+#orbit5-body #tutorial-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 10;
+}
+#orbit5-body #tutorial-box {
+  position: absolute;
+  background: #FFFFFF;
+  color: #232946;
+  border-radius: 10px;
+  padding: 24px 24px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+#orbit5-body #tutorial-buttons {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+#orbit5-body #tutorial-next:hover, #orbit5-body #tutorial-skip:hover {
+  background: #00BFFF;
+  color: #232946;
+}
+@keyframes rocket-hover {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+#orbit5-body #tutorial-rocket.hovering {
+  animation: rocket-hover 1.2s infinite;
+} 
