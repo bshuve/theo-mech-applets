@@ -1,4 +1,4 @@
-#red, #green, #lightsalmon, #grey, #blue, #cyan, #purple, #orange, #plum, #periwinkle {
+#red, #green, #lightsalmon, #grey, #blue, #cyan, #purple, #col1, #col2, #plum, #periwinkle {
     display: inline-block;
     width: 20px;
     height: 15px; /* Increased height */
@@ -14,8 +14,8 @@
 #grey { background-color: grey; }
 #blue { background-color: blue; }
 #cyan { background-color: cyan; }
-#purple { background-color: purple; }
-#orange { background-color: orange; }
+#col1 { background-color: #D81B60; }
+#col2 { background-color: #1E88E5; }
 #plum { background-color: plum; }
 #periwinkle {background-color: #CCCCFF;}
 

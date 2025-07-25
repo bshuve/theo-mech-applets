@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>trajectory</title>
+    <title>N2L and Least Action</title>
     <link rel="stylesheet" href="trajectory.css">
 
     
@@ -22,36 +22,41 @@
     </p>
 
     <p id="text">
-        Consider an object of mass \(m=1\) \(kg\) constrained to move in the \(y\)-direction under uniform gravitational
-        acceleration \(-g\), where the gravitational constant \(g=9.8\) \(m/s^2\). The kinetic energy of the object is
-        \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the motion of the object from
-        \(t=-\sqrt{\frac{2y_i}{g}}\) s to \(t=\sqrt{\frac{2y_i}{g}}\) s, with its position beginning and ending at
-        \(y=0\). The position \(y_i=1\) \(m\) occurs when \(t=0\) \(s\).<br>
+        We consider a simple physical system: a point mass moving freely under uniform gravitational acceleration. 
+        We consider the motion of the object from
+        \(t_i=-\sqrt{\frac{2y_0}{g}}\) to \(t_f=\sqrt{\frac{2y_0}{g}}\), with its position beginning and ending at
+        \(y=0\), with \(y_0=1\) m. The classical path is \(y(t) = y_0-\frac{1}{2}gt^2\), which has constant acceleration \(\ddot{y}=-g\).
+        This acceleration satisfies Newton's 2nd Law, \(F_y=m\ddot{y}\).
     </p>
 
     <p id="text">
-        In the applet below, we consider a family of paths which add a cosine time dependence to the classical
-        trajectory. The cosine function is chosen so that the initial and final positions are the same as the classical
-        path. Specifically, the path is parametrized by the function \(y(t) = (y_i-\frac{1}{2}gt^2) +
-        py_i\cos(\frac{\pi}{2}\frac{t}{t_0}) \) so that when \(p=0\), we have the classical path \(y(t) = y_i -
-        \frac{1}{2}gt^2\).
+        Alternate paths must satisfy the same boundary condition as the classical path. 
+        We consider a family of paths \(y(t) = (y_0-\frac{1}{2}gt^2) +
+        py_0\cos(\frac{\pi}{2}\frac{t}{t_i}) \) parametrized by \(p\). This gives the classical path when \(p=0\).
+    </p>  
+
+    <p id="text">
+    <b>Question 1: </b> Check that the alternate path has the property \(y(t_i)=y(t_f)=0\).
+    <br>
     </p>
 
     <p id="text">
     <label for="show-q1" id="text">
-        <b>Question 1: </b> What are the limitations of our \(w\) coordinate choice?
+        <b>Question 2: </b> Find the acceleration \(\ddot{y}\) of the alternate path. Check
+        that it matches the classical acceleration when \(p=0\).
         <br><br>
     </label>
     <button id="show-q1">Show answer</button>
     <br>
     <span id="answer1" style="display: none"><br>
-        <b> Answer: </b>The acceleration is \(-g-p(\frac{\pi}{2}\frac{1}{t_0})^2\cos(\frac{\pi}{2}\frac{t}{t_0}) \)F=ma only when p = 0.
+        <b> Answer: </b>The acceleration is \(-g-p(\frac{\pi}{2}\frac{1}{t_i})^2\cos(\frac{\pi}{2}\frac{t}{t_i}) \). 
+        This acceleration is \(-g\) only when \(p=0\).
     </span>
     </p>
 
     <p id="text">
-        The applet below allows you to change the value of p. The red arrows show the acceleration \(\ddot{y}\) of the
-        path. The blue arrows show F/m, which, if Newton’s 2nd Law holds, should match \(\ddot{y}\).
+        In the applet below, we show the trajectory \(y(t)\). The blue arrows show \(F/m\), while 
+        the red arrows show \(\ddot{y}\). Use the slider to change \(p.\)
     </p>
 
 
@@ -68,10 +73,17 @@
             <div class="column">
                 <div id="controls">
                     <br> <br>
-                    <label for="p-slider">p: <span id="print-p">0.00</span></label>
-                    <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0">
+                    <label for="p-slider">p: <span id="print-p">0.50</span></label>
+                    <input id="p-slider" class="slider" type="range" min="-100" max="100" value="0.5">
 
                     <br> <br>
+
+                    <fieldset>
+                        <legend>LEGEND</legend>
+                        <label><span id="col1"></span>\(\ddot y\)</label><br>
+                        <label><span id="col2"></span>\(F/m\)</label><br>
+                    </fieldset>
+
                 </div>
             </div>
         </div>
@@ -79,18 +91,20 @@
 
     <p id="text">
     <label for="show-q2" id="text">
-        Check out how the action and acceleration changes with p. When is the acceleration the same as F/m? When is
-        action least? What does this suggest about the Principle of Least Action?
+        <b>Question 3: </b> According to what you see in the applet, when does Newton's 2nd Law hold? What 
+        is true about the action for this path?
         <br><br>
     </label>
     <button id="show-q2">Show answer</button>
     <br>
     <span id="answer2" style="display: none"><br>
-       The path minimizing the action (p = 0) is identical to the path that satifies Newton's 2nd Law. This means that real world trajectories conincide with the path where action is minimized and Newton's 2nd Law is followed. 
+       The path minimizing the action (\(p = 0\)) is identical to the path that satifies Newton's 2nd Law. 
+       This means that real world trajectories conincide with the path where action is minimized and Newton's 
+       2nd Law holds. 
     </span>
     </p>
 
-    <i>Created by Brian Shuve, Nathan Nguyen, 2025.</i>
+    <i>Created by Nathan Nguyen, Brian Shuve, 2025.</i>
 
     <br><br>
 
