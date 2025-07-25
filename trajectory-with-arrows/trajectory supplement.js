@@ -138,8 +138,8 @@ function component(width, height, color, type, p) {
     this.writeValues = function() {
         animArea.context.font = "18px Verdana";
         animArea.context.fillText("F/m: -9.8 m/s^2", 10, 350);
-        animArea.context.fillText("Max Acceleration:" + calculateAccel(this.p, 0).toFixed(4) + " m/s^2" , 10, 375);
-        animArea.context.fillText("Action:" + computeAction(this.p).toFixed(4) + " J * s", 350, 362);
+        animArea.context.fillText("Acceleration at peak:" + calculateAccel(this.p, 0).toFixed(4) + " m/s^2" , 10, 390);
+        animArea.context.fillText("Action:" + computeAction(this.p).toFixed(4) + " J.s", 350, 350);
     }
 }
 
@@ -155,12 +155,12 @@ startAnimation(p_initial);
 //https://stackoverflow.com/questions/808826/drawing-an-arrow-using-html-canvas
 //this draws an arrow on the canvas from one point to another point. This is for accel arrow.
 function canvas_arrow(context, fromx, fromy, tox, toy) {
-    var headlen = 7; // length of head in pixels
+    var headlen = 10; // length of head in pixels
     var dx = tox - fromx;
     var dy = toy - fromy;
     var angle = Math.atan2(dy, dx);
     context.beginPath();
-    context.strokeStyle = "#DC3220";
+    context.strokeStyle = "#D81B60";
     context.moveTo(fromx, fromy);
     context.lineTo(tox, toy);
     context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
@@ -170,12 +170,12 @@ function canvas_arrow(context, fromx, fromy, tox, toy) {
 }
 //same as above but in blue. This is for F/m arrow.
 function canvas_arrow2(context, fromx, fromy, tox, toy) {
-    var headlen = 7; // length of head in pixels
+    var headlen = 10; // length of head in pixels
     var dx = tox - fromx;
     var dy = toy - fromy;
     var angle = Math.atan2(dy, dx);
     context.beginPath();
-    context.strokeStyle = "#005AB5";
+    context.strokeStyle = "#1E88E5";
     context.moveTo(fromx, fromy);
     context.lineTo(tox, toy);
     context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
