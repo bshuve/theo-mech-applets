@@ -16,16 +16,17 @@
 
 <body id="body">
 
-    <h1 id="title">Free-fall projectile in 1D: Page 4/4</h1>
+    <h1 id="title">Global and Local Action Minimization</h1>
     <p id="text">
-        (Chrome Recommended.)
-        <br><br>
-        In this last page, all points \(y_1\)-\(y_5\) are available to manipulate with sliders with random initial values. Attempt to find the global classical path by changing the 
-        slider values and taking a look at the action plots for the separate \(y_i\) points. Hint: the global classical trajectory has an action of \(-1334\). <br><br>
+
+
+        Finally, you are now free to manipulate all points \(y_1\) through \(y_5\). These points are set to 
+         random initial values. Try to find the global classical path using the action plots for each
+          separate \(y_i\) choice. <b>Hint:</b> the global classical trajectory has an action of \(-1334\) J.s. <br><br>
 
         When you think you've found the trajectory that minimizes the global action, check your answer by clicking the "Global Classical Path" button. <br><br>
     </p>
-<div id="applet">
+<div id="applet2">
     <div class="column">
         <div id="position-graph"></div>
     </div>
@@ -57,7 +58,7 @@
                 <input id="y5-slider" class="slider" type="range" min="0" max="200">
                 <span id="print-y5"></span>
             </div>
-            <p>Action: <span id="print-action">0</span></p>
+            <p>Action (J.s): <span id="print-action">0</span></p>
             <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
             <button type="button" class="button" id="reset-button">GLOBAL CLASSICAL PATH</button> 
             <div id="checkbox-grid">
@@ -79,7 +80,9 @@
 </div>
 <br><br>
 <p id="text">
-    <b>Question 3:</b> In your own words, and based on your experience with this applet, explain why minimizing the global action over a time interval implies minimization of <i>local</i> action in each time subinterval (and, consequently, obeying the classical equations of motion at each point). 
+    <b>Question 3:</b> In your own words, and based on your experience with this applet, explain why minimizing the global action 
+    over a time interval implies minimizing the <i>local</i> action in each time subinterval 
+    (and, consequently, obeying the classical equations of motion at each point). 
 </p>     
 
 <br>

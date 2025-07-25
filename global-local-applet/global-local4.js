@@ -239,9 +239,9 @@ const position_input = {
   divID: "#position-graph",
   svgID: "svg-for-position-plots",
   domain: {lower: 0, upper: tList[tList.length - 1]},
-  xLabel: "Time",
+  xLabel: "Time (s)",
   range: {lower: 0, upper: 200},
-  yLabel: "Displacement"};
+  yLabel: "Height (m)"};
 const position_plot = createPlot(position_input);
 var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line").attr("stroke", "white");
 
@@ -311,9 +311,9 @@ const integral_input = {
   divID: "#integral-graph",
   svgID: "svg-for-integral-plots",
   domain: {lower: min_y, upper: max_y},
-  xLabel: "y coord",
+  xLabel: "y coord (m)",
   range: {lower: -2500, upper: 10000},
-  yLabel: "Global Action"};
+  yLabel: "Global Action (J.s)"};
 
 const integral_plot = createPlot(integral_input);
 const colors = ["red", "orange", "green", "blue", "purple"];
