@@ -55,13 +55,13 @@ h1 {
 #coord-graph {
     position: absolute;
     right: 20px;
-    top: 10px;
+    top: 00px;
 }
 
 #energy-graph {
     position: absolute;
     right: 20px;
-    bottom: 10px;
+    bottom: 00px;
 }
 
 #coord-dxdy-graph {

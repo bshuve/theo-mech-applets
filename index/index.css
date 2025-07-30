@@ -1,0 +1,259 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+        }
+        
+        .intro p {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .search-container {
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 25px 15px 50px;
+            border-radius: 30px;
+            border: 2px solid #e0e0e0;
+            font-size: 1.1rem;
+            background-color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.1rem;
+        }
+        
+        .applets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            justify-items: center;
+            margin-bottom: 60px;
+        }
+        
+        .applet-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .applet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .applet-image {
+            height: 140px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .applet-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(1px);
+        }
+        
+        .applet-image i {
+            font-size: 3rem;
+            color: white;
+            opacity: 0.95;
+            z-index: 1;
+        }
+        
+        .applet-content {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .applet-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .applet-description {
+            margin-bottom: 25px;
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: auto;
+            color: #999;
+            font-size: 0.95rem;
+            border-top: 1px solid #eee;
+            width: 100%;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        footer a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .applets-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .intro p {
+                font-size: 0.95rem;
+            }
+            
+            .search-box input {
+                padding: 12px 20px 12px 45px;
+                font-size: 1rem;
+            }
+            
+            .applet-content {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 30px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+        }
