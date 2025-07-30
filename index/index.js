@@ -19,7 +19,7 @@ const appletsData = [
         icon: "fas fa-project-diagram"
     },
     {
-        id: "lagrangian/lagrangian0.html",
+        id: "lagrangian/lagrangian0",
         title: "Lagrangian Mechanics",
         description: "Interactive visualization of Lagrangian formalism with constraints and generalized coordinates.",
         icon: "fas fa-calculator"
@@ -31,7 +31,7 @@ const appletsData = [
         icon: "fas fa-chart-line"
     },
     {
-        id: "rhr-applets/rhr1",
+        id: "rhr-applet/rhr1",
         title: "Right-Hand Rule",
         description: "Interactive guide to the right-hand rule for cross products and magnetic forces.",
         icon: "fas fa-hand-point-right"
