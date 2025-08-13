@@ -1,6 +1,6 @@
 /* Parameters */
 const CANVAS_WIDTH = 380;
-const CANVAS_HEIGHT = 294;
+const CANVAS_HEIGHT = 280;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
@@ -11,9 +11,7 @@ const x_initial = 20;
 const y_initial = 100;
 const m = 1;
 const g = 2;
-const p_initial = parseInt(document.getElementById("p-slider").value);
 var p = parseInt(document.getElementById("p-slider").value); // 0.0
-const range_p = parseInt(document.getElementById("p-slider").max);
 // create action variable
 var S = 0;
 
@@ -30,11 +28,11 @@ function endAnimation() {
 
 /* Coordinate transformations */
 function transformXCoord(x) {
-  return x_initial + (x+1) * (CANVAS_WIDTH - 3 * x_initial) / 2;
+  return x_initial + x * (CANVAS_WIDTH / 1.2);
 }
 
 function transformYCoord(y) {
-  return CANVAS_HEIGHT - y_initial - y * (CANVAS_HEIGHT/2 - 2 * x_initial) / (2 * range_p);
+  return (y_initial * 2.3) - y * (CANVAS_HEIGHT / 1.8);
 }
 
 var animArea = {
@@ -44,20 +42,18 @@ var animArea = {
     this.panel.height = CANVAS_HEIGHT;
     this.context = this.panel.getContext("2d");
 
-    /* Set the initial time to -1 */
-    this.time = -1;
+    /* Set the initial time to 0.01 */
+    this.time = 0.01;
 
     this.interval = setInterval(updateFrame, FRAME_RATE);
 
-    // add text and ground to panel
+    // add text to panel
     this.context.font = "18px Verdana";
     this.context.fillStyle = "black";
     this.context.fillText("Height vs Time", 10, 30);
-    this.context.fillStyle = "black";
-    this.context.fillRect(x_initial, transformYCoord(-0.05), CANVAS_WIDTH-40, 3);
   },
   stop: function () {
-    this.time = -1;
+    this.time = 0.01;
     // Terminate setInterval
     clearInterval(this.interval);
   },
@@ -84,9 +80,10 @@ function component(width, height, color, x, y, p) {
   /* This is the function that updates the projectile positions.
   Notice the use of the transform() functions. */
 
+  // Introduce slight offset to ensure first point gets plotted!
   this.newPos = function (t) {
-    this.x = transformXCoord(t);
-    this.y = transformYCoord((1 + this.p) * (1 - t**2));
+    this.x = transformXCoord(t-0.02);
+    this.y = transformYCoord(1-(t-0.02)**this.p);
   }
 }
 
@@ -107,7 +104,7 @@ function updateFrame() {
 }
 
 // run animation on load
-startAnimation(p_initial);
+startAnimation(p);
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -119,38 +116,42 @@ function energyAndDerivativeData() {
   var kinetic_energy_data = [];
   var potential_energy_data = [];
   var minus_potential_energy_data = [];
-  var kinetic_derivative_data = [];
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
-  var t = -1;
+  var derivative_kinetic_derivative_data = [];
+  var t = 0.0001;
   // reset action
   S = 0;
 
   while (t <= end_time) {
     //parametrize graphs
-    let y = (1 + p) * (1 - t**2);
-    let v = -2*t*(1+p);
-    let KE = (1/2 * m * (v)**2); // kinetic energy T
-    let PE = m * g * y; // potential energy U
+    // when p is equal to 4, we can see the graphs over the full domain
+    let y = 1-t**p;
+    let v = -p*t**(p-1);
+    let a = -p*(p-1)*t**(p-2);
+    let KE = 1/2 * m * ((-4*t**(4-1))**2); // graph kinetic energy T when p=4 to get the full graph since graph doesn't change with path
+    let PE = m * g * (1-t**4); // graph potential energy U when p=4 to get the full graph since graph doesn't change with path
     let nPE = -PE; // negative potential energy -U
     let dKE = m * v; // dT/dv
     let dPE = m * g; // dU/dy
     let dnPE = -dPE; // -dU/dy
-    S += dt * (KE - PE);
+    let ddKE = m * a; // d/dt(dT/dv)
+    S += dt * ((1/2 * m * v**2) - (m * g * y));
 
     // push all data into arrays
-    kinetic_energy_data.push({ "x": (v), "y": KE });
-    potential_energy_data.push({ "x": y, "y": PE });
-    minus_potential_energy_data.push({ "x": y, "y": nPE });
-    kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dKE });
+    kinetic_energy_data.push({ "x": -4*t**(4-1), "y": KE });
+    potential_energy_data.push({ "x": 1-t**4, "y": PE });
+    minus_potential_energy_data.push({ "x": 1-t**4, "y": nPE });
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
+    derivative_kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": ddKE });
+
     t += dt;
   }
 
   return {
-    k: kinetic_energy_data, np: minus_potential_energy_data, p: potential_energy_data, 
-    kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
+    k: kinetic_energy_data, p: potential_energy_data, np: minus_potential_energy_data,
+    pd: potential_derivative_data, npd: n_potential_derivative_data, kdd: derivative_kinetic_derivative_data
   };
 }
 
@@ -220,7 +221,7 @@ function createPlot(input) {
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
     .attr("y", -margin.left + 20)
-    .attr("x", -margin.top)
+    .attr("x", -margin.top + 15)
     .text(input.yLabel)
 
   return { svg: svg, xScale: xScale, yScale: yScale };
@@ -231,9 +232,9 @@ function createPlot(input) {
 const potential_energy_input = {
   divID: "#PE-energy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: 0, upper: 2 }, // domain of the plot
+  domain: { lower: 0, upper: 1 }, // domain of the plot
   xLabel: "y Position (m)", // x-axis label
-  range: { lower: -5, upper: 5 }, // range of the plot
+  range: { lower: -2, upper: 2 }, // range of the plot
   yLabel: "Potential Energy (J)"// y-axis label
 };
 
@@ -243,31 +244,32 @@ const potential_energy_plot = createPlot(potential_energy_input);
 // graph each line on the plot
 // potential energy U
 var pe_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy-line").attr("visibility", "visible");
-// negative potential energy -U
+// negative potential energy -U 
 var npe_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-line").attr("visibility", "visible");
+
 
 // PE DERIVATIVE OF ENERGY
 const potential_derivative_input = {
   divID: "#PE-derivative-graph",
   svgID: "svg-for-PE-derivative",
-  domain: { lower: -1, upper: 1 },
+  domain: { lower: 0, upper: 1 },
   xLabel: "Time (s)",
-  range: { lower: -10, upper: 10 },
+  range: { lower: -4, upper: 4 },
   yLabel: "Potential Derivative (\u2202U/\u2202y)"
 };
 
 const potential_derivative_plot = createPlot(potential_derivative_input);
 
-// -dU/dy
-var npd_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line").attr("visibility", "visible");
 // dU/dy
 var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-derivative-line").attr("visibility", "visible");
+// -dU/dy
+var npd_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line").attr("visibility", "visible");
 
 // KINETIC ENERGY GRAPH
 const kinetic_energy_input = {
   divID: "#KE-energy-graph",
   svgID: "svg-for-KE-plot",
-  domain: { lower: -5, upper: 5 },
+  domain: { lower: -5, upper: 0},
   xLabel: "\u1E8F Velocity (m/s)",
   range: { lower: 0, upper: 8 },
   yLabel: "Kinetic Energy (J)"
@@ -275,27 +277,29 @@ const kinetic_energy_input = {
 
 const kinetic_energy_plot = createPlot(kinetic_energy_input);
 
-// kinetic energy T
+// kinetic energy T left side
 var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line").attr("visibility", "visible");
+// kinetic energy T right side
+// var ke_r_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-r-line").attr("visibility", "visible");
 
-// KE DERIVATIVE OF ENERGY
-const kinetic_derivative_input = {
-  divID: "#KE-derivative-graph",
-  svgID: "svg-for-KE-derivative",
-  domain: { lower: -1, upper: 1 },
+// d/dt KE DERIVATIVE OF ENERGY
+const derivative_kinetic_derivative_input = {
+  divID: "#dKE-derivative-graph",
+  svgID: "svg-for-dKE-derivative",
+  domain: { lower: 0, upper: 1 },
   xLabel: "Time (s)",
-  range: { lower: -10, upper: 10 },
-  yLabel: "Kinetic Derivative (\u2202T/\u2202\u1E8F)"
+  range: { lower: -4, upper: 4 },
+  yLabel: "d/dt Kinetic Derivative (d/dt(\u2202T/\u2202\u1E8F))"
 };
 
-const kinetic_derivative_plot = createPlot(kinetic_derivative_input);
+const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
 
-// dT/dv
-var kd_line = kinetic_derivative_plot.svg.append("g").attr("id", "kinetic-derivative-line");
+// d/dt(dT/dv)
+var kdd_line = derivative_kinetic_derivative_plot.svg.append("g").attr("id", "derivative-kinetic-derivative-line");
 
 // update energy plots
 function plotEnergy(data) {
-  // kinetic energy
+  // kinetic energy 
   var input = {
     data: data.k,
     svg: kinetic_energy_plot.svg,
@@ -308,7 +312,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
-  // potential energy
+  // potential energy 
   input = {
     data: data.p,
     svg: potential_energy_plot.svg,
@@ -333,18 +337,19 @@ function plotEnergy(data) {
 
   // plot the data
   plotData(input);
+
 }
 
 // update derivative plots
 function plotDerivative(data) {
 
-  // dT/dv
+  // d/dt(dT/dv)
   var input = {
-    data: data.kd,
-    svg: kinetic_derivative_plot.svg,
-    line: kd_line,
-    xScale: kinetic_derivative_plot.xScale,
-    yScale: kinetic_derivative_plot.yScale,
+    data: data.kdd,
+    svg: derivative_kinetic_derivative_plot.svg,
+    line: kdd_line,
+    xScale: derivative_kinetic_derivative_plot.xScale,
+    yScale: derivative_kinetic_derivative_plot.yScale,
     color: "red"
   };
 
@@ -387,12 +392,8 @@ plotEnergy(initial_data);
 // initialize energy lines
 plotDerivative(initial_data);
 
-// update slope on kinetic derivative plot
-let a = -2*(1+p)
-document.getElementById("slope").innerHTML = (m * a).toFixed(2);
-
 // calculate action on load
-document.getElementById("print-S").innerHTML = S.toFixed(2);
+document.getElementById("print-S").innerHTML = S.toFixed(4);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -405,39 +406,42 @@ on the HTML page (ex. button click, slider change, etc). */
 // by default, all answers are hidden
 var showAnswer1 = false;
 var showAnswer2 = false;
+var showAnswer3 = false;
 
 function slider_update() {
   // updates global value for p
   p = parseFloat(document.getElementById("p-slider").value);
   document.getElementById("print-p").innerHTML = p.toFixed(1);
-/*
+
+  /*
   if (showAnswer1) { // checks if the answer is being shown before updating it
     document.getElementById("answer1").innerHTML = "<br><br>Force = " + (-m * g).toFixed(2) + " N"
       + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
   }
-*/
+  */
+
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
   }
-  // update slope on kinetic derivative plot
-  let a = -2*(1+p)
-  document.getElementById("slope").innerHTML = (m * a).toFixed(2);
+  if (showAnswer3) { // checks if the answer is being shown before updating it
+    document.getElementById("answer3").style.display = "block";
+  }
   const data = energyAndDerivativeData();
   // update plots
   plotEnergy(data);
   plotDerivative(data);
-  document.getElementById("print-S").innerHTML = S.toFixed(2);
+  document.getElementById("print-S").innerHTML = S.toFixed(4);
   endAnimation();
   startAnimation(p);
 }
 
-// checks if the p-slider has been changed
+// checks if any sliders have been changed
 document.getElementById("p-slider").oninput = function () {
   slider_update();
 }
 
-// shows the answer if the q1 button is clicked
 /*
+// shows the answer if the q1 button is clicked
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
@@ -461,5 +465,18 @@ document.getElementById("show-q2").addEventListener("click", function () {
     showAnswer2 = false;
     document.getElementById("show-q2").innerHTML = "Show Answer";
     document.getElementById("answer2").style.display = "none";
+  }
+});
+
+// shows the answer if the q3 button is clicked
+document.getElementById("show-q3").addEventListener("click", function () {
+  if (!showAnswer3) {
+    showAnswer3 = true;
+    document.getElementById("show-q3").innerHTML = "Hide Answer";
+    slider_update();
+  } else {
+    showAnswer3 = false;
+    document.getElementById("show-q3").innerHTML = "Show Answer";
+    document.getElementById("answer3").style.display = "none";
   }
 });
