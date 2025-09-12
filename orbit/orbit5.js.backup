@@ -998,16 +998,3 @@ function restartTutorial() {
 
 // Add this event listener for the button
 document.getElementById("show-tutorial-btn").onclick = restartTutorial;
-
-
-// Add this function to restart the tutorial from the beginning
-function restartTutorial() {
-  tutorialStep = 0;
-  lastRocketPos = null;
-  rocket.style.display = "none";
-  rocket.classList.remove("hovering");
-  showTutorialStep(0);
-}
-
-// Add this event listener for the button
-document.getElementById("show-tutorial-btn").onclick = restartTutorial;

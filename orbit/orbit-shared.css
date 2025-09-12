@@ -361,32 +361,54 @@ button:active, .toggle-button:active {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   z-index: 10;
+  background: transparent;
+  pointer-events: none;
 }
 #orbit5-body #tutorial-box {
-  position: absolute;
-  background: #FFFFFF;
-  color: #232946;
+  position: fixed;
+  background: rgba(35, 41, 70, 0.92);
+  color: #EEEEEE;
   border-radius: 10px;
-  padding: 24px 24px 16px 24px;
+  padding: 12px 18px 8px 18px;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 20;
+  border: 2px solid #00BFFF;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  max-width: 340px;
+  min-width: 220px;
+  font-size: 1em;
+  pointer-events: auto;
+  opacity: 0.97;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 #orbit5-body #tutorial-buttons {
-  margin-top: 16px;
+  margin-top: 10px;
   width: 100%;
   display: flex;
   justify-content: space-around;
 }
-#orbit5-body #tutorial-next:hover, #orbit5-body #tutorial-skip:hover {
+#orbit5-body #tutorial-next, #orbit5-body #tutorial-skip {
   background: #00BFFF;
   color: #232946;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.2s, color 0.2s;
+}
+#orbit5-body #tutorial-next:hover, #orbit5-body #tutorial-skip:hover {
+  background: #0099CC;
+  color: #fff;
+}
+#orbit5-body #tutorial-rocket.hovering {
+  animation: rocket-hover 1.2s infinite;
 }
 @keyframes rocket-hover {
   0% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
   100% { transform: translateY(0); }
-}
-#orbit5-body #tutorial-rocket.hovering {
-  animation: rocket-hover 1.2s infinite;
 } 

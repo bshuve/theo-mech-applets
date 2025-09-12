@@ -51,10 +51,7 @@
         </div>
     </div>
 
-    <div class="buttons">
-        <button id="show-tutorial-btn" onclick="restartTutorial()">SHOW TUTORIAL</button>
-        <button id="orbit5-prev" onclick="window.location.href = 'orbit4.html'">PREV PAGE</button>
-    </div>
+    <button id="orbit5-prev" onclick="window.location.href = 'orbit4.html'">PREV PAGE</button>
 
     <div id="tutorial-overlay" style="display: none;">
         <div id="tutorial-backdrop"></div>
