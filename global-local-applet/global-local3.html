@@ -16,20 +16,25 @@
 
 <body id="body">
 
-<h1 id="title">Free-fall projectile in 1D: Page 3/4</h1>
+<h1 id="title">Global and Local Action Minimization</h1>
 <p id="text">
-    (Chrome Recommended.)
-    <br><br>
-    In this page, you can set multiple points on the trajectory by varying the respective sliders. However, we have fixed  \(y_1\) and \(y_5\) to 0 to reduce the number of parameters you control and allow you to explore them more thoroughly. There are now three curves on the animation: the black curve is the classical path, the white curve is the path between the specified paths, and the grey curve is the classical path <b>subject to the constraint</b> that \(y_1=y_5=0\). <br> <br>
 
-    Try moving the sliders for \(y_2\), \(y_3\), and \(y_4\) and see how these changes affect the action. The graphs show the action over the entire trajectory; by clicking on the checkboxes, you can add or remove graphs for each \(y_i\) showing how the action varies with that parameter <i>assuming all other points are held fixed</i>. Investigate how these curves as you change each slider. <br><br>
+
+    You can now vary multiple points on the trajectory. However, we have fixed  \(y_1\) and \(y_5\) to 0 to reduce
+     the number of parameters you control and allow you to explore them more thoroughly.
+      The action now depends on \(y_2\), \(y_3\), and \(y_4\).
+      As before, the black curve is the global classical path, the white curve is the classical path 
+       between adjacent specified paths. The new grey curve is the classical path <i>subject to the constraint</i> that \(y_1=y_5=0\). <br> <br>
+
+    Try moving the sliders for \(y_2\), \(y_3\), and \(y_4\) and see how these changes affect the action. The graphs show the action over the entire trajectory; by clicking on the checkboxes, you can add or remove graphs for each \(y_i\) showing how the action varies with that parameter <i>assuming all other points are held fixed</i>.
+     Investigate how these curves change as you move each slider. <br><br>
 
  If you hit the "Randomize" button, can you recover the local minimum of the action by varying \(y_2\), \(y_3\), and \(y_4\)? Note that you will not be able to find the absolute minimum action because \(y_1\) and \(y_5\) cannot be set to the classical values.
 
     <br><br>
 </p>
 
-<div id="applet">
+<div id="applet2">
     <div class="column">
         <div id="position-graph"></div>
     </div>
@@ -57,7 +62,7 @@
 
                 <label id="constants"><span id="purple">.....</span> y5: </label><div>0</div><div></div>
             </div>
-            <p>Action: <span id="print-action">0</span></p>
+            <p>Action (J.s): <span id="print-action">0</span></p>
             <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
             <button type="button" class="button" id="reset-button">RESET</button> 
             <div id="checkbox-grid">

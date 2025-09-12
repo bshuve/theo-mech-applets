@@ -1,11 +1,14 @@
-body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 14px;
-    position: relative;
-    top: 70px;
-    background-color:#edcdca;
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2B2B2B;
+    background: #EEEEEE;
+    margin: 0;
+    padding: 20px;
     max-width: 1000px;
     margin: auto;
+    border-radius: 12px;
 }
 
 svg, canvas {
@@ -16,17 +19,17 @@ svg, canvas {
 }
 
 button {
-    background: #b5cef5;
-    border: solid;
-    color: rgb(0, 0, 0);
-    padding: 10px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+    background: #174D38;
+    border: none;
+    color: #F2F2F2;
+    padding: 12px 20px;
     font-size: 15px;
-    margin: 4px 2px;
-    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    margin: 10px 0;
 }
 
 button:hover {
@@ -92,11 +95,20 @@ button:hover {
     left: 0px;
 }
 
+#applet2 {
+    background-color:#b5cef5;
+    position: relative;
+    height: 440px;
+    width: 1050px;
+    left: 0px;
+}
+
 .column {
     float: left;
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
+    
 }
 
 /* Clear floats after the columns: 

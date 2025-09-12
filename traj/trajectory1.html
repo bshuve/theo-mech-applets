@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>trajectory</title>
+    <title>Least Action 1</title>
     <!-- link css styling -->
     <link rel = "stylesheet" href = "trajectory1.css">
     <script src="d3.v4.js"></script>
@@ -13,19 +13,13 @@
 </head>
 
 <body id="body">
-    <h1 class="title">Free-fall projectile in 1D: Page 1/4</h1>
-    <p class="text">
-        Throughout this activity, we consider an  object of mass \(m=1\) \(kg\) constrained to move in the \(y\)-direction
-        under uniform gravitational acceleration \(-g\), where the gravitational constant \(g=9.8\) \(m/s^2\). The kinetic
-        energy of the object is \(T=\frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the motion 
-        of the object from \(t=-\sqrt{\frac{2y_i}{g}}\) s to \(t=\sqrt{\frac{2y_i}{g}}\) s, with its position beginning 
-        and ending at \(y=0\). The position \(y_i=1\) \(m\) occurs when \(t=0\) \(s\) </br>
-    </p>
+    <h1 class="title">Principle of Least Action: Classical and Alternate Paths</h1>
 
     <p class="text">
         <b>Question 1:</b> 
         In your own words, what is the Principle of Least Action? Why is it significant?
     </p>
+
 
     <p class="text">
         <b>Question 2:</b>
@@ -35,14 +29,25 @@
     </p>
 
     <p class="text">
-        Once you've answered questions 1 and 2, play around with the following applet. It allows you to specify alternative paths
-        that obey the boundary conditions specified in the problem and to visualize an object's motion along the alternative path
-        in compariosn to the classical path.
+        We now explore classical and alternate trajectories for a simple physical system: a point mass moving freely
+         in uniform gravity.
+        We consider an  object of mass \(m=1\) kg constrained to move in the \(y\)-direction
+        under uniform gravitational acceleration \(-g\).  We consider the motion 
+        of the object from \(t_i=-\sqrt{\frac{2y_0}{g}}\) to \(t_f=\sqrt{\frac{2y_0}{g}}\), with its position beginning 
+        and ending at \(y=0\). The maximum height \(y_0=1\) \(m\) occurs when \(t=0\) \(s\). </br>
+    </p>
+
+
+
+    <p class="text">
+        We consider a family of alternate paths of the form  \(y(t) = (1+p)(y_0-\frac{1}{2}gt^2)\), so that 
+        when \(p=0\), we have the classical path \(y(t) = y_0 - \frac{1}{2}gt^2\). Each of the alternate paths
+        obeys the same boundary conditions as the classical path.
     </p>
 
     <p class="text">
-        In the applet below, the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\) so that 
-        when \(p=0\), we have the classical path \(y(t) = y_i - \frac{1}{2}gt^2\).
+        In the applet below, use the slider to change \(p\). What does the trajectory look like 
+        for \(p\neq0\), and how does the action change?
     </p>
 <br>
 <br>
@@ -68,7 +73,7 @@
                 <fieldset>
                     <legend>LEGEND</legend>
                     <label><span id="purple"></span>Correct classical path</label><br>
-                    <label><span id="orange"></span>Alternative path</label><br>
+                    <label><span id="orange"></span>Alternate path</label><br>
                 </fieldset>
 
                 <br>
@@ -85,7 +90,7 @@
 <br>
 <p id="text">
     <b>Question 3:</b>
-    Consider two alternative paths, one with \(p<0\) and the other with \(p>0\). For each, explain
+    Consider two alternate paths, one with \(p<0\) and the other with \(p>0\). For each, explain
     in your own words what's "wrong" with each path (i.e., why it's not the path that a particle
     experiencing \(-g\) would follow).
 </p>

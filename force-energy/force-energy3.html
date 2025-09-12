@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>force vs. acceleration</title>
+    <title>Action-EL</title>
     <link rel = "stylesheet" href = "force-energy.css">
 
     <!-- Load d3.js -->
@@ -16,82 +16,87 @@
 
 <body id="body">
 
-<h1 id="title">Force vs. Acceleration: Page 3</h1>
-<h2 id="subtitle">Non-Uniform Acceleration</h2>
-<p id="text" style="line-height: 1.8">
-    (Chrome Recommended.)
-    <br><br>
-    Consider a similar setup to the last page (projectile motion under uniform gravitational acceleration \(-g\) from initial height \(h\)). However, we now parametrize the path of the object by
-    the function \(y(t) = 1-t^p\). <br>
-    <!-- The action of the object is given by \(S = \int_{0}^{4} (T-U) \ dt \). -->
-</p>
-
+    <h1 id="title">Satisfying the Euler-Lagrange Equations to Minimize Action</h1>
+    <h2 id="subtitle">Example: Spring Force</h2>
 <p id="text">
-    Try dragging the value of the p-slider in this applet to see how the animation and graphs change. Notice how the action \(S\) reaches a minimum when the path is classical.
+    We now perform a similar exercise with a spring obeying Hooke's Law. Consider a mass \(m\) moving
+    in the \(x\)-direction under the influence of a spring of constant \(k\).
+
 </p>
 
-<p id="text">
-    After testing different \(p\) values, try answering the following questions.
-</p>
-
-<!--
-<label for="show-q1" id="text">
-    <b>Question 1: </b>What is the force acting on the object? Is it a conservative force?
-    <br><br>
+<label for="show-more" id="text" style="line-height: 2">
+    <b>Question 3: </b> Show that the Euler-Lagrange equation is equivalent to Newton's Second Law for the mass-spring system.
 </label>
-<button id="show-q1">Show answers</button>        
-<span id="answer1"></span>
 <br><br>
--->
-
-<label for="show-q2" id="text">
-    <b>Question 4: </b>Through explicit differentiation, find the acceleration of the object as a function of time. Is this acceleration uniform?
+<button id="show-more">Show Answer</button>
+<br><br>
+<span id="answer3" style="display: none; line-height: 1.8">
+    We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial x} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{x}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{x}^2\), \(U = \frac{1}{2}k{x}^2\) for this system.
     <br><br>
-</label>
-<button id="show-q2">Show answers</button>       
-<span id="answer2" style="display: none"><br>
-    The object's acceleration is described by \(a(t) = -p(p-1) t^{p-2}\). In this scenario, the acceleration is not uniform unless \(p=2\).
+    \(\frac{\partial L}{\partial x} = -\frac{\partial U}{\partial x} = -kx\)
+    <br><br>
+    \(\frac{\partial L}{\partial \dot{x}} = \frac{\partial T}{\partial \dot{x}} = m\dot{x} \implies \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}}) = m\ddot{x}\).
+    <br><br>
+    Note that the Euler-Lagrange equation gives \(-\frac{\partial U}{\partial x} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{x}})\).
+    <br><br>
+    We know that there is only the force associated with the spring potential is \(F_x=-\frac{\partial U}{\partial y}\), so the net force in the \(x\) direction is just \(F_x=-kx\) as well.
+    <br><br>
+    So, using the Euler-Lagrange equation, we can prove Newton's 2nd Law, \(F_x=-kx=m\ddot x\).
+    <br><br>
 </span>
 
-<br><br> 
+<p id="text">
+
+    In the applet below, we visualize the motion for a system with mass \(m =5\,\,\mathrm{kg}\) and 
+    spring constant \(k=5\,\,\mathrm{N/m}\), giving an angular frequency \(\omega = 1\,\,\mathrm{s}^{-1}\).
+    The mass starts from rest at \(t=0\) while displaced from equilibrium by a distance \(A=0.1\,\,\mathrm{m}\),
+    and we take as our final time \(t_f= 6\pi/\omega \). 
+
+    <br><br>
+
+    The classical path is \(x(t) = A\cos(\omega t)\). For alternate paths, we need to maintain the same 
+    initial and final displacements. We take as our family of alternate paths parameterized
+    by a distance \(B\) according to \( x(t) = A\cos(\omega t) + B\sin(2\omega t) \).
+
+    <br><br> 
+
+    In the applet below, vary the value of \(B\) and study how the motion, action, and each 
+    side of the Euler-Lagrange equation changes with your choice. What value of \(B\)
+    satisfies the Euler-Lagrange equation?
+</p>
+
+<br>
 
 <div id="applet">
     <div id="top-panel" class="row">
-    <!-- First column: trajectory animation -->
+	<!-- First column: trajectory animation -->
         <div class="column">
-            <canvas id="ball-launch" class="plot" title="Actual Motion"></canvas>
+            <canvas id="spring-canvas" class="plot"
+            width="320px" height="294px" title="Actual Motion">
+            </canvas>
         </div>
+
 	<!-- Second column: sliders -->
         <div class="column">
-            <div id="controls-pg3">
+            <div id="controls">
                 <legend>Define Constants:</legend>
-                <p>\(m\): <span id="print-m">1.0</span> kg</p>
-                <p>\(g\): <span id="print-a">2.0</span> m/s<sup>2</sup></p>
-                <label for="p-slider">\(p\): <span id="print-p">0.0</span></label>
-                <input id="p-slider" class="slider" type="range" min="0" max="4" step="0.1" value="0">
-                <p>Action \(S\): <span id="print-S"></span></p>
+                <p>\(m\): 5.0 kg</p>
+                <p>\(k\): 5.0 N/m</p>
+                <p>\(A\): 0.1 m</p>
+                <label for="B-slider">\(B\) (m): <span id="print-B">0.05</span></label>
+                <input id="B-slider" class="slider" type="range" min="-0.1" max="0.1" step="0.01" value="0.05">
+                <p>Action (J.s): <span id="print-S"></span></p>
             </div>
         </div>
-    <!-- Third column: legend -->
+    <!-- Third column: question -->
         <div class="column">
-            <div id="controls2-pg3">
+            <div id="controls2">
                 <span id="green">....</span> Potential Energy
                 <br><br>
                 <span id="grey">....</span> Negative Potential Energy
                 <br><br>
                 <span id="red">....</span> Kinetic Energy
-                <br><br>
-
             </div>
-        </div>
-    </div>
-    <div id="middle-panel" class="row">
-        <div class="column left">
-            <div id="PE-energy-graph"></div>
-        </div>
-
-        <div class="column-right">
-            <div id="KE-energy-graph"></div>
         </div>
     </div>
     <div id="bottom-panel" class="row">
@@ -102,41 +107,22 @@
             <div id="dKE-derivative-graph"></div>
         </div>
     </div>
-    <div id="legend-txt5">
-        <p>Upper (green): \( U \)</p>
-    </div>
-    <div id="legend-txt6">
-        <p>Lower (grey): \( -U \)</p>
-    </div>
     <div id="legend-txt3">
-        <p>Upper (green): \( \partial U/ \partial y \)</p>
+        <p>Green: \( \partial U/ \partial y \)</p>
     </div>
     <div id="legend-txt4">
-        <p>Lower (grey): \( -\partial U / \partial y \)</p>
+        <p>Grey: \( -\partial U / \partial y \)</p>
     </div>
+
 </div> 
 <br>
 
-<label for="show-q3" id="text" style="line-height: 2">
-    <b>Question 5: </b>As you manipulated the p-slider, how did the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? What value of \(p\) satisfies the Euler-Lagrange equation?
-</label>
-<br><br>
-<button id="show-q3">Show answer</button>
-<br><br>        
-<span id="answer3" style="display: none; line-height: 1.8">
-    Just like in the last example, the potential is independent of \(p\), and thus the value of \(p\) does not change the generalized force term of the Euler-Lagrange equation, \(\frac{\partial L}{\partial y}=-\frac{\partial U}{\partial y}=-mg\). In particular, this is a constant.
-    <br><br>
-    Although the relationship between \(T\) and \(\dot{y}\) is quadratic, the non-uniform acceleration means that \(\frac{d}{dt}\left(\frac{\partial T}{\partial\dot y}\right) = m\ddot{y}\) is no longer in general a constant.  When we look at the Kinetic Derivative \((\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph though, we can see that the only \(p\) value
-    that satisfies \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) is \(p=2\), which is the value of \(p\) that gives a constant acceleration.
-</span>
-<br><br>
+
+
 
 <div class="buttons">
     <column id="prev-button">
         <button onclick = "window.location.href = 'force-energy2.html'">PREVIOUS PAGE</button>
-    </column>
-    <column id="next-button">
-        <button onclick = "window.location.href = 'force-energy4.html'">NEXT PAGE</button>
     </column>
 </div> 
 

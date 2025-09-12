@@ -1,20 +1,27 @@
 /* Parameters */
-const CANVAS_WIDTH = parseInt(document.getElementById("ball-launch").getAttribute("width"));
-const CANVAS_HEIGHT = parseInt(document.getElementById("ball-launch").getAttribute("height"));
+const CANVAS_WIDTH = 380;
+const CANVAS_HEIGHT = 294;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
 const TRANSITION_TIME = 10; // ms
 const dt = 0.002;
-const end_time = 2;
+const end_time = 1;
 const FRAME_RATE = 1; // ms
 const x_initial = 20;
-var h = parseFloat(document.getElementById("h-slider").value); // 50.0
-var a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g = -9.8
-var m = parseFloat(document.getElementById("m-slider").value); // 10.0
+const y_initial = 100;
+const m = 1;
+const g = 2;
+// const p_initial = parseInt(document.getElementById("p-slider").value);
+const p_initial = 0.5;
+var p = parseInt(document.getElementById("p-slider").value); // 0.0
+p = 0.5;
+const range_p = parseInt(document.getElementById("p-slider").max);
+// create action variable
+var S = 0;
 
 /* Canvas Animation */
-function startAnimation(y, m, a) {
-  projectile = new component(3, 3, "purple", x_initial, y, m, a);
+function startAnimation(p) {
+  projectile = new component(3, 3, "purple", x_initial, y_initial, p);
   animArea.start();
 }
 
@@ -25,11 +32,11 @@ function endAnimation() {
 
 /* Coordinate transformations */
 function transformXCoord(x) {
-  return (CANVAS_WIDTH * x) + 20;
+  return x_initial + (x+1) * (CANVAS_WIDTH - 3 * x_initial) / 2;
 }
 
 function transformYCoord(y) {
-  return -h - (CANVAS_HEIGHT / 2 * y) + 280;
+  return CANVAS_HEIGHT - y_initial - y * (CANVAS_HEIGHT/2 - 2 * x_initial) / (2 * range_p);
 }
 
 var animArea = {
@@ -39,36 +46,33 @@ var animArea = {
     this.panel.height = CANVAS_HEIGHT;
     this.context = this.panel.getContext("2d");
 
-    /* Set the initial time to 0 */
-    this.time = 0;
+    /* Set the initial time to -1 */
+    this.time = -1;
 
     this.interval = setInterval(updateFrame, FRAME_RATE);
 
     // add text and ground to panel
     this.context.font = "18px Verdana";
     this.context.fillStyle = "black";
-    this.context.fillText("Projectile Motion", 10, 30);
-    this.context = this.panel.getContext("2d");
-    this.context.fillStyle = "gray";
-    this.context.fillRect(0, transformYCoord(0) - h, 25, 3);
-    this.context.fillRect(25, transformYCoord(0) - h, -25, 300);
+    this.context.fillText("Height vs Time", 10, 30);
+    this.context.fillStyle = "black";
+    this.context.fillRect(x_initial, transformYCoord(-0.05), CANVAS_WIDTH-40, 3);
   },
   stop: function () {
-    this.time = 0;
+    this.time = -1;
     // Terminate setInterval
     clearInterval(this.interval);
   },
 }
 
 /* Define component Objects */
-function component(width, height, color, x, y, m, a) {
+function component(width, height, color, x, y, p) {
   this.width = width;
   this.height = height;
   this.color = color;
   this.x = x;
   this.y = y;
-  this.m = m;
-  this.a = a;
+  this.p = p;
 
   /* This is the function that draws the projectiles using
   the built-in fillRect() function. */
@@ -84,7 +88,7 @@ function component(width, height, color, x, y, m, a) {
 
   this.newPos = function (t) {
     this.x = transformXCoord(t);
-    this.y = transformYCoord(0.5 * a * t ** 2) - y;
+    this.y = transformYCoord((1 + this.p) * (1 - t**2));
   }
 }
 
@@ -105,7 +109,7 @@ function updateFrame() {
 }
 
 // run animation on load
-startAnimation(h, m, a);
+startAnimation(p_initial);
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -116,56 +120,39 @@ function energyAndDerivativeData() {
   // create arrays of data for each plot
   var kinetic_energy_data = [];
   var potential_energy_data = [];
-  var dashed_potential_data = [];
   var minus_potential_energy_data = [];
-  var dashed_n_potential_data = [];
   var kinetic_derivative_data = [];
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
-  var dashed_kinetic_energy_pos_data = [];
-  var dashed_kinetic_energy_neg_data = [];
-  var t = 0;
+  var t = -1;
+  // reset action
+  S = 0;
 
   while (t <= end_time) {
     //parametrize graphs
-    let KE = 1 / 2 * (m * (a * t) ** 2); // kinetic energy T
-    let KEdp = 1 / 2 * (m * (15 * t) ** 2); // dashed plot for kinetic energy T
-    let PE = m * a * (1 / 2 * a * t ** 2 + h); // potential energy U
+    let y = (1 + p) * (1 - t**2);
+    let v = -2*t*(1+p);
+    let KE = (1/2 * m * (v)**2); // kinetic energy T
+    let PE = m * g * y; // potential energy U
     let nPE = -PE; // negative potential energy -U
-    let dKE = m * a * t; // dT/dv
-    let dPE = -m * a; // -dU/dy
-    let dnPE = m * a; // dU/dy
+    let dKE = m * v; // dT/dv
+    let dPE = m * g; // dU/dy
+    let dnPE = -dPE; // -dU/dy
+    S += dt * (KE - PE);
 
     // push all data into arrays
-    kinetic_energy_data.push({ "x": (a * t), "y": KE / 1000 });
-    dashed_kinetic_energy_pos_data.push({ "x": (15 * t), "y": KEdp / 1000 });
-    dashed_kinetic_energy_neg_data.push({ "x": (-15 * t), "y": KEdp / 1000 });
-    if (1 / 2 * a * t ** 2 + h >= 0) { // this condition prevents the PE from being graphed for -y positions
-      potential_energy_data.push({ "x": 1 / 2 * a * t ** 2 + h, "y": PE / 1000 });
-      minus_potential_energy_data.push({ "x": 1 / 2 * a * t ** 2 + h, "y": nPE / 1000 });
-    }
+    kinetic_energy_data.push({ "x": (v), "y": KE });
+    potential_energy_data.push({ "x": y, "y": PE });
+    minus_potential_energy_data.push({ "x": y, "y": nPE });
     kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dKE });
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
     t += dt;
   }
-  // push data for dashed potential energy plots
-  // note that this iterates for all values of h for each dt
-  var ti = 0;
-  var hi = 0;
-  while (ti <= 2) {
-    while (hi <= 100) {
-      let dashPE = -m * a * (1 / 2 * a * ti ** 2 + hi); // dashed PE plot
-      let dashnPE = -dashPE; // negative dashed PE plot
-      dashed_potential_data.push({ "x": (1 / 2 * a * ti ** 2 + hi), "y": dashPE / 1000 });
-      dashed_n_potential_data.push({ "x": (1 / 2 * a * ti ** 2 + hi), "y": dashnPE / 1000 });
-      hi += 0.5;
-    }
-    ti += dt;
-  }
+
   return {
-    k: kinetic_energy_data, np: minus_potential_energy_data, dkp: dashed_kinetic_energy_pos_data, dkn: dashed_kinetic_energy_neg_data,
-    p: potential_energy_data, dp: dashed_potential_data, dnp: dashed_n_potential_data, kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
+    k: kinetic_energy_data, np: minus_potential_energy_data, p: potential_energy_data, 
+    kd: kinetic_derivative_data, pd: potential_derivative_data, npd: n_potential_derivative_data
   };
 }
 
@@ -190,26 +177,6 @@ function plotData(input) {
     )
     .attr("fill", "none")
     .attr("stroke", input.color)
-    .attr("stroke-width", 1.5);
-}
-
-function dashplotData(input) {
-  // update the line
-  var u = input.line.selectAll(".line").data([input.data], d => input.xScale(d.x));
-
-  u.enter()
-    .append("path")
-    .attr("class", "line")
-    .merge(u)
-    .transition()
-    .duration(TRANSITION_TIME)
-    .attr("d", d3.line()
-      .x((d) => input.xScale(d.x))
-      .y((d) => input.yScale(d.y))
-    )
-    .attr("fill", "none")
-    .attr("stroke", input.color)
-    .attr("stroke-dasharray", 5)
     .attr("stroke-width", 1.5);
 }
 
@@ -266,11 +233,11 @@ function createPlot(input) {
 const potential_energy_input = {
   divID: "#PE-energy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: 0, upper: 100 }, // domain of the plot
+  domain: { lower: 0, upper: 2 }, // domain of the plot
   xLabel: "y Position (m)", // x-axis label
-  range: { lower: -15, upper: 15 }, // range of the plot
-  yLabel: "Potential Energy (kJ)"// y-axis label
-};              
+  range: { lower: -5, upper: 5 }, // range of the plot
+  yLabel: "Potential Energy (J)"// y-axis label
+};
 
 // the svg element is essentially saved as this const variable
 const potential_energy_plot = createPlot(potential_energy_input);
@@ -280,18 +247,14 @@ const potential_energy_plot = createPlot(potential_energy_input);
 var pe_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy-line").attr("visibility", "visible");
 // negative potential energy -U
 var npe_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-line").attr("visibility", "visible");
-// dashed plot for U
-var dpe_line = potential_energy_plot.svg.append("g").attr("id", "dashed-potential-energy-line").attr("visibility", "visible");
-// dashed plot for -U
-var dnpe_line = potential_energy_plot.svg.append("g").attr("id", "dashed-n-potential-energy-line").attr("visibility", "visible");
 
 // PE DERIVATIVE OF ENERGY
 const potential_derivative_input = {
   divID: "#PE-derivative-graph",
   svgID: "svg-for-PE-derivative",
-  domain: { lower: 0, upper: 2 },
+  domain: { lower: -1, upper: 1 },
   xLabel: "Time (s)",
-  range: { lower: -175, upper: 175 },
+  range: { lower: -10, upper: 10 },
   yLabel: "Potential Derivative (\u2202U/\u2202y)"
 };
 
@@ -306,28 +269,24 @@ var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-de
 const kinetic_energy_input = {
   divID: "#KE-energy-graph",
   svgID: "svg-for-KE-plot",
-  domain: { lower: -30, upper: 30 },
+  domain: { lower: -5, upper: 5 },
   xLabel: "\u1E8F Velocity (m/s)",
-  range: { lower: 0, upper: 4.5 },
-  yLabel: "Kinetic Energy (kJ)"
+  range: { lower: 0, upper: 8 },
+  yLabel: "Kinetic Energy (J)"
 };
 
 const kinetic_energy_plot = createPlot(kinetic_energy_input);
 
 // kinetic energy T
 var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line").attr("visibility", "visible");
-// dashed plot for T
-var dkep_line = kinetic_energy_plot.svg.append("g").attr("id", "dashed-kinetic-energy-pos-line").attr("visibility", "visible");
-// dashed plot for -T
-var dken_line = kinetic_energy_plot.svg.append("g").attr("id", "dashed-kinetic-energy-neg-line").attr("visibility", "visible");
 
 // KE DERIVATIVE OF ENERGY
 const kinetic_derivative_input = {
   divID: "#KE-derivative-graph",
   svgID: "svg-for-KE-derivative",
-  domain: { lower: 0, upper: 2 },
+  domain: { lower: -1, upper: 1 },
   xLabel: "Time (s)",
-  range: { lower: -300, upper: 300 },
+  range: { lower: -10, upper: 10 },
   yLabel: "Kinetic Derivative (\u2202T/\u2202\u1E8F)"
 };
 
@@ -350,58 +309,6 @@ function plotEnergy(data) {
 
   // plot the data
   plotData(input);
-
-  // kinetic energy dashed
-  var input = {
-    data: data.dkp,
-    svg: kinetic_energy_plot.svg,
-    line: dkep_line,
-    xScale: kinetic_energy_plot.xScale,
-    yScale: kinetic_energy_plot.yScale,
-    color: "red"
-  };
-
-  // plot the data
-  dashplotData(input);
-
-  // negative kinetic energy dashed
-  var input = {
-    data: data.dkn,
-    svg: kinetic_energy_plot.svg,
-    line: dken_line,
-    xScale: kinetic_energy_plot.xScale,
-    yScale: kinetic_energy_plot.yScale,
-    color: "red"
-  };
-
-  // plot the data
-  dashplotData(input);
-
-  // potential energy dashed
-  input = {
-    data: data.dp,
-    svg: potential_energy_plot.svg,
-    line: dpe_line,
-    xScale: potential_energy_plot.xScale,
-    yScale: potential_energy_plot.yScale,
-    color: "green"
-  };
-
-  // plot the data
-  dashplotData(input);
-
-  // negative potential energy dashed
-  input = {
-    data: data.dnp,
-    svg: potential_energy_plot.svg,
-    line: dnpe_line,
-    xScale: potential_energy_plot.xScale,
-    yScale: potential_energy_plot.yScale,
-    color: "gray"
-  };
-
-  // plot the data
-  dashplotData(input);
 
   // potential energy
   input = {
@@ -483,8 +390,11 @@ plotEnergy(initial_data);
 plotDerivative(initial_data);
 
 // update slope on kinetic derivative plot
-document.getElementById("slope").innerHTML = (m*a).toFixed(2);
+let a = -2*(1+p)
+document.getElementById("slope").innerHTML = (m * a).toFixed(2);
 
+// calculate action on load
+document.getElementById("print-S").innerHTML = S.toFixed(2);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -497,48 +407,39 @@ on the HTML page (ex. button click, slider change, etc). */
 // by default, all answers are hidden
 var showAnswer1 = false;
 var showAnswer2 = false;
-var showAnswer3 = false;
 
 function slider_update() {
-  // updates global values for m, a, h
-  m = parseFloat(document.getElementById("m-slider").value);
-  document.getElementById("print-m").innerHTML = m.toFixed(1);
-  a = -1 * parseFloat(document.getElementById("a-slider").value); // a = -g
-  document.getElementById("print-a").innerHTML = -1 * a.toFixed(1); // g is positive
-  h = parseFloat(document.getElementById("h-slider").value);
-  document.getElementById("print-h").innerHTML = h.toFixed(1);
+  // updates global value for p
+  p = parseFloat(document.getElementById("p-slider").value);
+  document.getElementById("print-p").innerHTML = p.toFixed(1);
+/*
   if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (m * a).toFixed(2) + " N"
+    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (-m * g).toFixed(2) + " N"
       + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
   }
+*/
   if (showAnswer2) { // checks if the answer is being shown before updating it
     document.getElementById("answer2").style.display = "block";
   }
-  if (showAnswer3) { // checks if the answer is being shown before updating it
-    document.getElementById("answer3").style.display = "block";
-  }
   // update slope on kinetic derivative plot
-  document.getElementById("slope").innerHTML = (m*a).toFixed(2);
+  let a = -2*(1+p)
+  document.getElementById("slope").innerHTML = (m * a).toFixed(2);
   const data = energyAndDerivativeData();
   // update plots
   plotEnergy(data);
   plotDerivative(data);
+  document.getElementById("print-S").innerHTML = S.toFixed(2);
   endAnimation();
-  startAnimation(h, m, a);
+  startAnimation(p);
 }
 
-// checks if any sliders have been changed
-document.getElementById("m-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("a-slider").oninput = function () {
-  slider_update();
-}
-document.getElementById("h-slider").oninput = function () {
+// checks if the p-slider has been changed
+document.getElementById("p-slider").oninput = function () {
   slider_update();
 }
 
 // shows the answer if the q1 button is clicked
+/*
 document.getElementById("show-q1").addEventListener("click", function () {
   if (!showAnswer1) {
     showAnswer1 = true;
@@ -550,29 +451,17 @@ document.getElementById("show-q1").addEventListener("click", function () {
     document.getElementById("answer1").innerHTML = "";
   }
 });
+*/
 
 // shows the answer if the q2 button is clicked
-document.getElementById("show-q2").addEventListener("click", function () {
+document.getElementById("show-more").addEventListener("click", function () {
   if (!showAnswer2) {
     showAnswer2 = true;
-    document.getElementById("show-q2").innerHTML = "Hide Answer";
+    document.getElementById("show-more").innerHTML = "Hide Answer";
     slider_update();
   } else {
     showAnswer2 = false;
-    document.getElementById("show-q2").innerHTML = "Show Answer";
+    document.getElementById("show-more").innerHTML = "(Optional) Show Proof";
     document.getElementById("answer2").style.display = "none";
-  }
-});
-
-// shows the proof if the proof button is clicked
-document.getElementById("show-more").addEventListener("click", function () {
-  if (!showAnswer3) {
-    showAnswer3 = true;
-    document.getElementById("show-more").innerHTML = "Hide Proof";
-    slider_update();
-  } else {
-    showAnswer3 = false;
-    document.getElementById("show-more").innerHTML = "Show Proof";
-    document.getElementById("answer3").style.display = "none";
   }
 });

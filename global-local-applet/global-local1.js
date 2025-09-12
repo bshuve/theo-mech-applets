@@ -12,7 +12,7 @@ const SVG_HEIGHT = 360;
 
 const TRANSITION_TIME = 10; // ms
 const FRAME_RATE = 0.1; // ms
-const dt = 0.01;
+const dt = 0.02;
 
 const y0 = 0;
 
@@ -137,7 +137,7 @@ function component(width, height, color, x, y, type) {
             this.y = yList[i-1] + ((yList[i] - yList[i-1] + 0.5 * g * (tList[i] - tList[i-1]) ** 2) / (tList[i] - tList[i-1])) * (t - tList[i-1]) - 0.5 * g * (t - tList[i-1]) ** 2;
 
         } else if (this.type == 2) {   // actual 1D
-            this.y = t * (20 - t);
+            this.y = 0.5 * g* t * (20 - t);
         }
     }
 }
@@ -245,9 +245,9 @@ const position_input = {
   divID: "#position-graph",
   svgID: "svg-for-position-plots",
   domain: {lower: 0, upper: tList[tList.length - 1]},
-  xLabel: "Time",
+  xLabel: "Time (s)",
   range: {lower: 0, upper: 200},
-  yLabel: "Displacement"};
+  yLabel: "Height (m)"};
 const position_plot = createPlot(position_input);
 var x_actual_line = position_plot.svg.append("g").attr("id", "x-actual-line").attr("stroke", "black");
 var x_parameterized_line = position_plot.svg.append("g").attr("id", "x-parameterized-line").attr("stroke", "white");
@@ -329,9 +329,9 @@ const integral_input = {
   divID: "#integral-graph",
   svgID: "svg-for-integral-plots",
   domain: {lower: min_y, upper: max_y},
-  xLabel: "y coord",
+  xLabel: "y1 (m)",
   range: {lower: -2500, upper: 10000},
-  yLabel: "Global Action"};
+  yLabel: "Global Action (J.s)"};
 
 const integral_plot = createPlot(integral_input);
 const colors = ["red", "orange", "green", "blue", "purple"];

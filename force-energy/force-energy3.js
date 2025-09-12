@@ -1,110 +1,174 @@
+/////////////////////////////////////////////////
 /* Parameters */
-const CANVAS_WIDTH = 380;
-const CANVAS_HEIGHT = 280;
+/////////////////////////////////////////////////
+
+const CANVAS_WIDTH = 320;
+const CANVAS_HEIGHT = 294;
 const SVG_WIDTH = 445;
 const SVG_HEIGHT = 300;
+const dt = 0.005;
+const end_time = 6*Math.PI;
+const FRAME_RATE = 1;   // ms
 const TRANSITION_TIME = 10; // ms
-const dt = 0.002;
-const end_time = 1;
-const FRAME_RATE = 1; // ms
-const x_initial = 20;
-const y_initial = 100;
-const m = 1;
-const g = 2;
-var p = parseInt(document.getElementById("p-slider").value); // 0.0
+const A = 0.1;
+const k = 5;
+const m = 5;
+const w = Math.sqrt(k/m); // 1
+var B = parseFloat(document.getElementById("B-slider").value); // 0
+// keep track of number of oscillations
+var oscillations = 0;
 // create action variable
 var S = 0;
 
-/* Canvas Animation */
-function startAnimation(p) {
-  projectile = new component(3, 3, "purple", x_initial, y_initial, p);
-  animArea.start();
+/////////////////////////////////////////////////
+/* CANVAS ANIMATIONS */
+/////////////////////////////////////////////////
+
+// wrapper function to start animations
+function startAnimation(B) {
+    mass = new component(20, 20, "blue", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, B);
+    oscillations = 0;
+    animArea.start();
+}
+
+function runAnimation(B) {
+    startAnimation(B);
+    animArea.run();
 }
 
 // wrapper function to end animations
 function endAnimation() {
-  animArea.stop();
+    animArea.stop();
 }
 
-/* Coordinate transformations */
+// parameterized coord -> canvas coord
 function transformXCoord(x) {
-  return x_initial + x * (CANVAS_WIDTH / 1.2);
+// -1 -> 50
+// 1 -> CANVAS_WIDTH - 50
+// y - 50 = (x+1)*(CANVAS_WIDTH - 100)/2
+return (x + 1) * (CANVAS_WIDTH - 100) / 2 + 50
 }
 
+// parameterized coord -> canvas coord
 function transformYCoord(y) {
-  return (y_initial * 2.3) - y * (CANVAS_HEIGHT / 1.8);
+    // 0 -> CANVAS_HEIGHT - 20
+    // CANVAS_HEIGHT -> 20
+    // y - 20 = (x-CANVAS_HEIGHT)*(40-CANVAS_HEIGHT)/CANVAS_HEIGHT
+    return (y-CANVAS_HEIGHT)*(40-CANVAS_HEIGHT)/CANVAS_HEIGHT + 20
 }
 
+// JS object for both canvases
 var animArea = {
-  panel: document.getElementById("ball-launch"),
-  start: function () {
-    this.panel.width = CANVAS_WIDTH;
-    this.panel.height = CANVAS_HEIGHT;
-    this.context = this.panel.getContext("2d");
+    panel: document.getElementById("spring-canvas"),
+    start: function(){
+        this.panel.width = CANVAS_WIDTH;
+        this.panel.height = CANVAS_HEIGHT;
+        this.context = this.panel.getContext("2d");
+        this.time = 0; 
+        updateFrame();
+        },
+        
+    run: function() {
+        this.interval = setInterval(updateFrame, FRAME_RATE);
+        },
 
-    /* Set the initial time to 0.01 */
-    this.time = 0.01;
+    clear : function() {
+        this.context.clearRect(0, 0, this.panel.width, this.panel.height);
+        }, 
 
-    this.interval = setInterval(updateFrame, FRAME_RATE);
-
-    // add text to panel
-    this.context.font = "18px Verdana";
-    this.context.fillStyle = "black";
-    this.context.fillText("Height vs Time", 10, 30);
-  },
-  stop: function () {
-    this.time = 0.01;
-    // Terminate setInterval
-    clearInterval(this.interval);
-  },
+    stop : function() {
+        this.time = 0;
+        clearInterval(this.interval); 
+    },
 }
 
-/* Define component Objects */
-function component(width, height, color, x, y, p) {
-  this.width = width;
-  this.height = height;
-  this.color = color;
-  this.x = x;
-  this.y = y;
-  this.p = p;
+// to create components
+function component(width, height, color, x, y, B) {
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.x = x;
+    this.y = y;
 
-  /* This is the function that draws the projectiles using
-  the built-in fillRect() function. */
-
-  this.update = function () {
-    var ctx = animArea.context;
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
-
-  /* This is the function that updates the projectile positions.
-  Notice the use of the transform() functions. */
-
-  // Introduce slight offset to ensure first point gets plotted!
-  this.newPos = function (t) {
-    this.x = transformXCoord(t-0.02);
-    this.y = transformYCoord(1-(t-0.02)**this.p);
-  }
+    // scaling the amplitudes so more visible in animation
+    this.B = B * 5; 
+    this.A = A * 5;
+  
+    this.update = function(){
+        animArea.context.fillStyle = this.color;
+        animArea.context.fillRect(this.x, this.y, this.width, this.height);
+    }
+  
+    this.newPos = function(t) {
+      this.x = transformXCoord(this.A * Math.cos(w * t) + this.B * Math.sin(2 * w * t)); // x(t) equation used for newPos
+    }  
 }
+  
+// helper to make the spring
+function zigzag(x) {
+    const startX = 20;
+    const startY = CANVAS_HEIGHT/2+5;
+    var zigzagSpacing = x / 7;
 
-/* This updateFrame function is very important. It updates the position
-of everything on the canvas a little and then redraws everything */
+    animArea.context.lineWidth = 2;
+    animArea.context.strokeStyle = "#0096FF"; // blue-ish color
+    animArea.context.beginPath();
+    animArea.context.moveTo(startX, startY);
 
+    // draw seven lines
+    for (var n = 0; n < 7; n++) {
+      var x = startX + ((n + 1) * zigzagSpacing);
+      var y;
+      
+      if (n % 2 == 0) { // if n is even...
+          y = startY + 10;
+      }
+      else { // if n is odd...
+          y = startY;
+      }
+      animArea.context.lineTo(x, y);
+  }
+  animArea.context.stroke();
+};
+
+// create frames for animation
 function updateFrame() {
-  animArea.time += dt;
-
-  // update projectile position
-  projectile.newPos(animArea.time)
-
-  // draw projectile with updated position on the canvas
-  projectile.update();
-
-  // end animation when t = end_time
-  if (animArea.time >= end_time) { endAnimation(); }
+    // clear frame and move to next
+    animArea.clear();
+    animArea.time += dt;
+  
+    // update positions
+    mass.newPos(animArea.time);
+    /* This statement counts oscillations of the spring to decide when to stop the animation. */
+    if (Math.round(Math.cos(animArea.time)*200)/200 == 0) {
+      oscillations += 0.5;
+      // console.log(oscillations);
+    }
+  
+    // add spring
+    zigzag(mass.x);
+  
+    // add ground + wall
+    animArea.context.fillStyle = "black";
+    animArea.context.fillRect(20, CANVAS_HEIGHT/2+21, CANVAS_WIDTH-40, 3);
+    animArea.context.fillRect(20, CANVAS_HEIGHT/2-19, 3, 40);
+  
+    // update plots
+    mass.update();
+  
+    // add text
+    animArea.context.font = "20px Arial";
+    animArea.context.fillStyle = "black";
+    animArea.context.fillText("Spring Motion", 10, 30);
+  
+    // end animation when spring has oscillated 5 times
+    if (oscillations >= 5) {endAnimation();}
 }
 
 // run animation on load
-startAnimation(p);
+startAnimation(B);
+runAnimation(B);
+
 
 /////////////////////////////////////////////////
 /* FUNCTIONS TO GENERATE PLOTTING DATA */
@@ -119,38 +183,39 @@ function energyAndDerivativeData() {
   var potential_derivative_data = [];
   var n_potential_derivative_data = [];
   var derivative_kinetic_derivative_data = [];
-  var t = 0.0001;
+  var t = 0;
   // reset action
   S = 0;
 
+  // update data for 3 periods (3*2pi)
   while (t <= end_time) {
     //parametrize graphs
-    // when p is equal to 4, we can see the graphs over the full domain
-    let y = 1-t**p;
-    let v = -p*t**(p-1);
-    let a = -p*(p-1)*t**(p-2);
-    let KE = 1/2 * m * ((-4*t**(4-1))**2); // graph kinetic energy T when p=4 to get the full graph since graph doesn't change with path
-    let PE = m * g * (1-t**4); // graph potential energy U when p=4 to get the full graph since graph doesn't change with path
+    let x = A * Math.cos(w * t) + B * Math.sin(2 * w * t); // x(t)
+    let v = -w * A * Math.sin(w * t) + 2 * B * w * Math.cos(2 * w * t); // derivative of x(t)
+    let a = -(w**2) * A * Math.cos(w * t) - (2**2) * B * (w**2) * Math.sin(2 * w * t); // second derivative of x(t)
+    let KE = 0.5 * m * v ** 2; // kinetic energy T
+    let PE = 0.5 * k * x ** 2; // potential energy U
     let nPE = -PE; // negative potential energy -U
     let dKE = m * v; // dT/dv
-    let dPE = m * g; // dU/dy
-    let dnPE = -dPE; // -dU/dy
+    let dPE = k * x; // dU/dx
+    let dnPE = -dPE; // -dU/dx
     let ddKE = m * a; // d/dt(dT/dv)
-    S += dt * ((1/2 * m * v**2) - (m * g * y));
 
     // push all data into arrays
-    kinetic_energy_data.push({ "x": -4*t**(4-1), "y": KE });
-    potential_energy_data.push({ "x": 1-t**4, "y": PE });
-    minus_potential_energy_data.push({ "x": 1-t**4, "y": nPE });
+    kinetic_energy_data.push({ "x": v, "y": KE});
+    potential_energy_data.push({ "x": x, "y": PE});
+    minus_potential_energy_data.push({ "x": x, "y": nPE});
     potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dPE });
     n_potential_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": dnPE });
-    derivative_kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": ddKE });
-
+    derivative_kinetic_derivative_data.push({ "x": Math.round(t * 10000) / 10000, "y": ddKE})
+    
+    // add to the action integral
+    S += dt * (KE - PE);
+    
     t += dt;
   }
-
   return {
-    k: kinetic_energy_data, p: potential_energy_data, np: minus_potential_energy_data,
+    k: kinetic_energy_data, np: minus_potential_energy_data, p: potential_energy_data,
     pd: potential_derivative_data, npd: n_potential_derivative_data, kdd: derivative_kinetic_derivative_data
   };
 }
@@ -220,7 +285,7 @@ function createPlot(input) {
   svg.append("text")
     .attr("text-anchor", "end")
     .attr("transform", "rotate(-90)")
-    .attr("y", -margin.left + 20)
+    .attr("y", -margin.left + 15)
     .attr("x", -margin.top + 15)
     .text(input.yLabel)
 
@@ -232,11 +297,11 @@ function createPlot(input) {
 const potential_energy_input = {
   divID: "#PE-energy-graph", // the id of the <div> element in your HTML file where the plot will go
   svgID: "svg-for-PE-plot", // what you want the svg element to be named (not super important)
-  domain: { lower: 0, upper: 1 }, // domain of the plot
-  xLabel: "y Position (m)", // x-axis label
-  range: { lower: -2, upper: 2 }, // range of the plot
+  domain: { lower: -0.2, upper: 0.2 }, // domain of the plot
+  xLabel: "x Position (m)", // x-axis label
+  range: { lower: -0.08, upper: 0.08 }, // range of the plot
   yLabel: "Potential Energy (J)"// y-axis label
-};
+};                   
 
 // the svg element is essentially saved as this const variable
 const potential_energy_plot = createPlot(potential_energy_input);
@@ -244,18 +309,17 @@ const potential_energy_plot = createPlot(potential_energy_input);
 // graph each line on the plot
 // potential energy U
 var pe_line = potential_energy_plot.svg.append("g").attr("id", "potential-energy-line").attr("visibility", "visible");
-// negative potential energy -U 
+// negative potential energy -U
 var npe_line = potential_energy_plot.svg.append("g").attr("id", "minus-potential-energy-line").attr("visibility", "visible");
-
 
 // PE DERIVATIVE OF ENERGY
 const potential_derivative_input = {
   divID: "#PE-derivative-graph",
   svgID: "svg-for-PE-derivative",
-  domain: { lower: 0, upper: 1 },
+  domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
-  range: { lower: -4, upper: 4 },
-  yLabel: "Potential Derivative (\u2202U/\u2202y)"
+  range: { lower: -2.5, upper: 2.5 },
+  yLabel: "Potential Derivative (\u2202U/\u2202x)"
 };
 
 const potential_derivative_plot = createPlot(potential_derivative_input);
@@ -263,33 +327,31 @@ const potential_derivative_plot = createPlot(potential_derivative_input);
 // dU/dy
 var pd_line = potential_derivative_plot.svg.append("g").attr("id", "potential-derivative-line").attr("visibility", "visible");
 // -dU/dy
-var npd_line = potential_derivative_plot.svg.append("g").attr("id", "n_potential-derivative-line").attr("visibility", "visible");
+var npd_line = potential_derivative_plot.svg.append("g").attr("id", "n-potential-derivative-line").attr("visibility", "visible");
 
 // KINETIC ENERGY GRAPH
 const kinetic_energy_input = {
   divID: "#KE-energy-graph",
   svgID: "svg-for-KE-plot",
-  domain: { lower: -5, upper: 0},
-  xLabel: "\u1E8F Velocity (m/s)",
-  range: { lower: 0, upper: 8 },
+  domain: { lower: -0.35, upper: 0.35 },
+  xLabel: "\u1E8B Velocity (m/s)",
+  range: { lower: 0, upper: 0.24 },
   yLabel: "Kinetic Energy (J)"
 };
 
 const kinetic_energy_plot = createPlot(kinetic_energy_input);
 
-// kinetic energy T left side
+// kinetic energy T
 var ke_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-line").attr("visibility", "visible");
-// kinetic energy T right side
-// var ke_r_line = kinetic_energy_plot.svg.append("g").attr("id", "kinetic-energy-r-line").attr("visibility", "visible");
 
 // d/dt KE DERIVATIVE OF ENERGY
 const derivative_kinetic_derivative_input = {
   divID: "#dKE-derivative-graph",
   svgID: "svg-for-dKE-derivative",
-  domain: { lower: 0, upper: 1 },
+  domain: { lower: 0, upper: 6*Math.PI },
   xLabel: "Time (s)",
-  range: { lower: -4, upper: 4 },
-  yLabel: "d/dt Kinetic Derivative (d/dt(\u2202T/\u2202\u1E8F))"
+  range: { lower: -2.5, upper: 2.5 },
+  yLabel: "d/dt Kinetic Derivative (d/dt(\u2202T/\u2202\u1E8B))"
 };
 
 const derivative_kinetic_derivative_plot = createPlot(derivative_kinetic_derivative_input);
@@ -299,7 +361,7 @@ var kdd_line = derivative_kinetic_derivative_plot.svg.append("g").attr("id", "de
 
 // update energy plots
 function plotEnergy(data) {
-  // kinetic energy 
+  // kinetic energy
   var input = {
     data: data.k,
     svg: kinetic_energy_plot.svg,
@@ -312,7 +374,7 @@ function plotEnergy(data) {
   // plot the data
   plotData(input);
 
-  // potential energy 
+  // potential energy
   input = {
     data: data.p,
     svg: potential_energy_plot.svg,
@@ -343,7 +405,7 @@ function plotEnergy(data) {
 // update derivative plots
 function plotDerivative(data) {
 
-  // d/dt(dT/dv)
+  // derivative kinetic derivative plot (d/dt(dT/dv))
   var input = {
     data: data.kdd,
     svg: derivative_kinetic_derivative_plot.svg,
@@ -356,7 +418,7 @@ function plotDerivative(data) {
   // plot the data
   plotData(input);
 
-  // dU/dy
+  // dU/dx
   var input = {
     data: data.pd,
     svg: potential_derivative_plot.svg,
@@ -369,7 +431,7 @@ function plotDerivative(data) {
   // plot the data
   plotData(input);
 
-  // -dU/dy
+  // -dU/dx
   var input = {
     data: data.npd,
     svg: potential_derivative_plot.svg,
@@ -393,7 +455,8 @@ plotEnergy(initial_data);
 plotDerivative(initial_data);
 
 // calculate action on load
-document.getElementById("print-S").innerHTML = S.toFixed(4);
+S = Math.round(S * 100)/100;
+document.getElementById("print-S").innerHTML = S.toFixed(2);
 
 /////////////////////////////////////////////////
 /* EVENT LISTENERS */
@@ -404,25 +467,14 @@ on the HTML page (ex. button click, slider change, etc). */
 
 // these booleans store whether answers are being shown
 // by default, all answers are hidden
-var showAnswer1 = false;
-var showAnswer2 = false;
+
 var showAnswer3 = false;
 
 function slider_update() {
-  // updates global value for p
-  p = parseFloat(document.getElementById("p-slider").value);
-  document.getElementById("print-p").innerHTML = p.toFixed(1);
+  // updates global values for B
+  B = parseFloat(document.getElementById("B-slider").value);
+  document.getElementById("print-B").innerHTML = B.toFixed(2);
 
-  /*
-  if (showAnswer1) { // checks if the answer is being shown before updating it
-    document.getElementById("answer1").innerHTML = "<br><br>Force = " + (-m * g).toFixed(2) + " N"
-      + "<br><br>Yes, this is a conservative force because the work done is independent of the path taken and only depends on the initial and final position.<br>";
-  }
-  */
-
-  if (showAnswer2) { // checks if the answer is being shown before updating it
-    document.getElementById("answer2").style.display = "block";
-  }
   if (showAnswer3) { // checks if the answer is being shown before updating it
     document.getElementById("answer3").style.display = "block";
   }
@@ -430,53 +482,30 @@ function slider_update() {
   // update plots
   plotEnergy(data);
   plotDerivative(data);
-  document.getElementById("print-S").innerHTML = S.toFixed(4);
+  S = Math.round(S * 100)/100;
+  document.getElementById("print-S").innerHTML = S.toFixed(2);
   endAnimation();
-  startAnimation(p);
+  startAnimation(B);
 }
 
-// checks if any sliders have been changed
-document.getElementById("p-slider").oninput = function () {
+// checks if the B slider has been changed
+document.getElementById("B-slider").oninput = function () {
   slider_update();
 }
+document.getElementById("B-slider").onchange = function() {
+  runAnimation(B);
+}
 
-/*
-// shows the answer if the q1 button is clicked
-document.getElementById("show-q1").addEventListener("click", function () {
-  if (!showAnswer1) {
-    showAnswer1 = true;
-    document.getElementById("show-q1").innerHTML = "Hide Answers";
-    slider_update();
-  } else {
-    showAnswer1 = false;
-    document.getElementById("show-q1").innerHTML = "Show Answers";
-    document.getElementById("answer1").innerHTML = "";
-  }
-});
-*/
 
-// shows the answer if the q2 button is clicked
-document.getElementById("show-q2").addEventListener("click", function () {
-  if (!showAnswer2) {
-    showAnswer2 = true;
-    document.getElementById("show-q2").innerHTML = "Hide Answer";
-    slider_update();
-  } else {
-    showAnswer2 = false;
-    document.getElementById("show-q2").innerHTML = "Show Answer";
-    document.getElementById("answer2").style.display = "none";
-  }
-});
 
-// shows the answer if the q3 button is clicked
-document.getElementById("show-q3").addEventListener("click", function () {
+document.getElementById("show-more").addEventListener("click", function () {
   if (!showAnswer3) {
     showAnswer3 = true;
-    document.getElementById("show-q3").innerHTML = "Hide Answer";
+    document.getElementById("show-more").innerHTML = "Hide Answer";
     slider_update();
   } else {
     showAnswer3 = false;
-    document.getElementById("show-q3").innerHTML = "Show Answer";
+    document.getElementById("show-more").innerHTML = "Show Proof";
     document.getElementById("answer3").style.display = "none";
   }
 });

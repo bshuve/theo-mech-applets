@@ -16,16 +16,23 @@
 
 <body id="body">
 
-<h1 id="title">Free-fall projectile in 1D: Page 1/4</h1>
+<h1 id="title">Global and Local Action Minimization</h1>
 <p id="text">
-    (Chrome Recommended.)
+
+
+    In this applet, you will look at the relationship between minimizing the action globally vs. locally
+    when varying a path with fixed endpoints: \(y(t_i)=y(t_f)=0\) for \(t_i=0\) and \(t_f=20\) s. 
+    We consider a point particle undergoing
+    uniform acceleration due to gravity. We set \(g=2\,\,\mathrm{m/s^2}\) to simplify the calculations.
+
     <br><br>
-    In this applet, you are going to be looking at the relationship between minimizing the action globally vs. locally. The system is uniform acceleration due to gravity. However, instead of using parametrized curves, you will explicitly specify the vertical position of the particle at various points on its trajectory. <br><br>
+    
+    You will vary the path by fixing values of \(y(t)\) for times in between the endpoints.<br><br>
 
      The black curve in the plots represents the classical path globally (minimizing the action between the boundary points of \(t=0\) and \(t=20\) s). 
     The white curve minimizes the "local" action defined only between the two points it connects, so it shows the classical path locally. In this first page, 
     \(y_2\), \(y_3\), \(y_4\), and \(y_5\) are set at their respective points that follow the global classical trajectory. Using the slider, \(y_1\) can be varied. Try moving the 
-    slider to see how varying one point can affect the action value.<br><br>
+    slider to see how varying one point can affect the action.<br><br>
 </p>
 
 <label for="show-q1" id="text">
@@ -35,15 +42,14 @@
 <button id="show-q1">Show answer</button>
 <br><br>        
 <span id="answer1" style="display: none">
-    The action is minimized when \(y_1\) is 51, and falls on the global classical trajectory path.
-    By putting \(y_1\) at 51, we are minimizing the actions locally between
-    each of the points, and consequently we are minimizing the global action as well.
+    The action is minimized when \(y_1\) is 51 m, and falls on the global classical trajectory path.
+    By putting \(y_1\) at 51 m, we are minimizing the action locally between
+    the beginning and \(y_2\), and consequently we are minimizing the global action as well.
     <br><br><br>
 </span>
 
 <p id="text">
-The Global Action graph to the right shows the action as a function of the indicated \(y_i\), assuming that all other points are fixed. Here,
-it shows the action as a function of \(y_1\), assuming that \(y_2\), \(y_3\), \(y_4\), and \(y_5\) don't change. The "Randomize" button moves
+<b>Note:</b> The "Randomize" button moves
 \(y_1\) to a random value, while "Classical Path" sets it to the value minimizing the global action. <br><br>
 </p>
 
@@ -61,13 +67,13 @@ it shows the action as a function of \(y_1\), assuming that \(y_2\), \(y_3\), \(
             <div id="sliders">
                 <label for="y1-slider"><span id="red">.....</span> \(y_1\): </label>
                 <input id="y1-slider" class="slider" type="range" min="0" max="200" value="0">
-                <span id="print-y1">0</span>
-                <label id="constants"><span id="orange">.....</span> \(y_2\): </label><div>84</div><div></div>
-                <label id="constants"><span id="green">.....</span> \(y_3\): </label><div>100</div><div></div>
-                <label id="constants"><span id="blue">.....</span> \(y_4\): </label><div>84</div><div></div>
-                <label id="constants"><span id="purple">.....</span> \(y_5\): </label><div>51</div><div></div>
+                <span id="print-y1">0</span> 
+                <label id="constants"><span id="orange">.....</span> \(y_2\): </label><div>84 m</div><div></div>
+                <label id="constants"><span id="green">.....</span> \(y_3\): </label><div>100 m</div><div></div>
+                <label id="constants"><span id="blue">.....</span> \(y_4\): </label><div>84 m</div><div></div>
+                <label id="constants"><span id="purple">.....</span> \(y_5\): </label><div>51 m</div><div></div>
             </div>
-            <p>Action: <span id="print-action">0</span></p>
+            <p>Action (J.s): <span id="print-action">0</span></p>
             <button type="button" class="button" id="randomize-button">RANDOMIZE</button> 
             <button type="button" class="button" id="reset-button">CLASSICAL PATH</button> 
         </div>

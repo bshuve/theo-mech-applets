@@ -3,25 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>trajectory</title>
+    <title>Least Action 2</title>
     <link rel="stylesheet" href="trajectory1.css">
     <script src="d3.v4.js"></script>
     <script defer src="trajectory2.js"></script>
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body id="body">
-    <h1 id="title">Free-fall projectile in 1D: Page 2/4</h1>
+    <h1 id="title">Principle of Least Action: Alternate Paths</h1>
+ 
     <p id="text">
-        We present a similar applet to the one on the last page, excpet we now visualize two paths: 
-        one is the specified alternative path given by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\) 
-        (with \(p=0\) corresponding to the classical path), and the classical motion of an object with the 
-        same initial position and velocity as the alternative path.
+        In Question 3 on the last page, you conjectured what was "wrong" with the alternate path with \(p\neq0\).
     </p>
 
     <p id="text">
-        Spend some time playing with this applet, and re-visit your answers to Question 3, updating them 
-        or changing them if necessary.
+        We now explore this further by allowing you to visualize two trajectories for each \(p\): one is the 
+        alternate path from before, \(y(t) = (1+p)(y_0-\frac{1}{2}gt^2)\). The other is a path obeying the
+        classical equations of motion, but with the same initial position and velocity as the alternate path
+        specified by \(p\).
     </p>
+ 
+    <p id="text">
+        Spend some time playing with the applet. Do you still agree with your answers to Question 3? Why or why not?
+        Feel free to go back to the last page and re-visit Question 3 if you need.
+    </p>
+
+
 
     <br>
     <br>
@@ -38,7 +45,7 @@
                     <fieldset>
                         <legend>LEGEND</legend>
                         <label><span id="periwinkle"></span> Classical motion with same initial conditions as alternative path</label><br>
-                        <label><span id="orange"></span> Alternative path</label><br>
+                        <label><span id="orange"></span> Alternate path</label><br>
                     </fieldset>
     
             <br> <br>

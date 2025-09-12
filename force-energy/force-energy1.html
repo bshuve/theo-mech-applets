@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>force vs. acceleration</title>
+    <title>Action-EL</title>
     <link rel = "stylesheet" href = "force-energy.css">
 
     <!-- Load d3.js -->
@@ -16,121 +16,46 @@
 
 <body id="body">
 
-<h1 id="title">Force vs. Acceleration: Page 1</h1>
-<h2 id="subtitle">How Lagrange's equations are equivalent to Newton's 2nd Law</h2>
-<p id="text">
-    (Chrome Recommended.)
-    <br><br>
-    Consider an object of mass \(m\) constrained to move with constant velocity \(\dot{x}\) in the \(x\) direction and experiencing uniform gravitational acceleration \(\ddot{y}\ = -g\) in the \(y\) direction. The object is launched from height \(h\) so that it experiences projectile motion with no initial \(y\) velocity. The kinetic energy of the object is \(T = \frac{1}{2}m\dot{y}^2\) and the potential energy is \(U=mgy\). We consider the path of the object, with its position beginning at \(y=h\) and ending when it lands on the ground at \(y=0\). <br>
-</p>
+    <h1 id="title">Satisfying the Euler-Lagrange Equations to Minimize Action</h1>
 
-<label for="show-q1" id="text">
-    <b>Question 1: </b>What is the force acting on the object based on your inputs? Is it a conservative force?
+<p id="text">
+    In this applet, we explore the connection between the action of a path and whether the path satisfies the 
+    Euler-Lagrange equations. We will go through a few specific systems that are familiar to you from
+    mechanics. 
+    
     <br><br>
-<button id="show-q1">Show answers</button>        
-<span id="answer1"></span>
-</label>
+
+    As a reminder, the Euler-Lagrange equation for a coordinate \(q\) is \(\frac{d}{dt}\left(\frac{\partial L}{\partial 
+        \dot q}\right) = \frac{\partial L}{\partial q}\). For a given system, we can check that the Euler-Lagrange
+        equations are satisfied for a particular path by calculating the left- and right-hand sides of the equation
+        and confirming that they are equal to one another.
+
+
+    <br><br>
+
+    For this applet, we restrict ourselves to Cartesian coordinates. In this case, the kinetic energy
+    \(T = \frac{1}{2}mv^2\) does not depend explicitly on any coordinate, and the potential energy \(U\) is independent of velocity. 
+    Consequently, we can write \(\frac{\partial L}{\partial \dot x} = \frac{\partial T}{\partial \dot x}\)
+    and \(\frac{\partial L}{\partial x} = -\frac{\partial U}{\partial x}\), and similarly for the other coordinates. 
+    
+
 
 <br><br>
 
-<p id="text">
-    Try dragging the values of the sliders in this applet to see how the animation and graphs change.
-    After dragging the sliders around, try answering the questions at the bottom of the page.
+The Euler-Lagrange equation is then \(\frac{d}{dt}\left(\frac{\partial T}{\partial 
+    \dot x}\right) = -\frac{\partial U}{\partial x}\). 
+    We can use this to check the equivalence of the Euler-Lagrange equations and Newton's Second Law
+     for Cartesian coordinates.
+
+
+</thead>
+
+    
 </p>
 
-<br><br> 
-
-<div id="applet">
-    <div id="top-panel" class="row">
-	<!-- First column: trajectory animation -->
-        <div class="column">
-            <canvas id="ball-launch" class="plot"
-            width="320px" height="294px" title="Actual Motion">
-            </canvas>
-        </div>
-
-	<!-- Second column: sliders -->
-        <div class="column">
-            <div id="controls">
-                <legend>Define Constants:</legend>
-                <label for="m-slider">\(m\): <span id="print-m">10.0</span> kg</label>
-                <input id="m-slider" class="slider" type="range" min="1" max="10" step="0.1" value="10">
-                <label for="a-slider">\(g\): <span id="print-a">9.8</span> m/s<sup>2</sup></label>
-                <input id="a-slider" class="slider" type="range" min="-15" max="15" step="0.1" value="9.8">
-                <label for="h-slider">\(h\): <span id="print-h">50.0</span> m</label>
-                <input id="h-slider" class="slider" type="range" min="1" max="100" value="50">
-
-            </div>
-        </div>
-    <!-- Third column: question -->
-        <div class="column">
-            <div id="controls2">
-                <span id="green">....</span> Potential Energy
-                <br><br>
-                <span id="grey">....</span> Negative Potential Energy
-                <br><br>
-                <span id="red">....</span> Kinetic Energy
-                <br><br>
-
-            </div>
-        </div>
-    </div>
-    <div id="middle-panel" class="row">
-        <div class="column left">
-            <div id="PE-energy-graph"></div>
-        </div>
-
-        <div class="column-right">
-            <div id="KE-energy-graph"></div>
-        </div>
-    </div>
-    <div id="bottom-panel" class="row">
-        <div class="column left">
-            <div id="PE-derivative-graph"></div>
-        </div>
-        <div class="column-right">
-            <div id="KE-derivative-graph"></div>
-        </div>
-    </div>
-    <div id="legend-txt1"> 
-        <p>Upper (green): \( U \)</p>
-    </div>
-    <div id="legend-txt2">
-        <p>Lower (grey): \( -U \)</p>
-    </div>
-    <div id="legend-txt3"> 
-        <p>Upper (green): \( \partial U/ \partial y \)</p>
-    </div>
-    <div id="legend-txt4">
-        <p>Lower (grey): \( -\partial U / \partial y \)</p>
-    </div>
-    <div id="slope-txt">
-        <p>Slope: \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) \) = <span id="slope">dPE</span> N</p>
-    </div>
-</div> 
-<br>
-
-<label for="show-q2" id="text" style="line-height: 2">
-    <b>Question 2: </b>As you manipulated the sliders to change the force, how do the values of \(\frac{\partial U}{\partial y}\) and \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\) change? Is there a correlation between them?
-</label>
+<button id="show-more">(Optional) Show Proof</button>
 <br><br>
-<button id="show-q2">Show answer</button>
-<br><br>        
 <span id="answer2" style="display: none; line-height: 1.8">
-    The Potential Derivative \((\frac{\partial U}{\partial y})\) vs. Time (s) graph shows the values of \(\frac{\partial U}{\partial y}\) and \(-\frac{\partial U}{\partial y}\). Because the force on the object is conservative, we know \(-\frac{\partial U}{\partial y} = F_y\). 
-    If you compare your force calculation from using the sliders, it should match the value of the negative potential energy derivative on the graph. Note that the potential energy derivatives are time-independent because they are derived with respect to \(y\) position.
-    Through the Kinetic Energy (kJ) vs. \(\dot{y}\) (m/s) graph, we can see that the relationship between \(T\) and \(\dot{y}\) is quadratic.
-    When we look at the Kinetic Derivative \((\frac{\partial T}{\partial \dot{y}})\) vs. Time (s) graph though, we can see that the slope of this line \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}\)) is equal to the \(-\frac{\partial U}{\partial y}\) value on the left graph. 
-    Thus, we can derive the connection that \(-\frac{\partial U}{\partial y} = \frac{d}{dt}(\frac{\partial T}{\partial \dot{y}})\).
-    <br><br>
-</span>
-<label for="show-more" id="text" style="line-height: 2">
-    But how does this connect with what we know from classical mechanics? We can actually mathematically prove the equivalence between the Euler-Lagrange equation and Newton's 2nd Law!
-</label>
-<br><br>
-<button id="show-more">Show Proof</button>
-<br><br>
-<span id="answer3" style="display: none; line-height: 1.8">
     We know from the Euler-Lagrange equation that \(\frac{\partial L}{\partial y} = \frac{d}{dt}(\frac{\partial L}{\partial \dot{y}})\). We additionally know that \(L = T-U\), and that \(T = \frac{1}{2}m\dot{y}^2\), \(U = mgy\) for this situation.
     <br><br>
     \(\frac{\partial L}{\partial y} = -\frac{\partial U}{\partial y} = -mg = F_y\) by definition for a conservative force.
@@ -143,6 +68,85 @@
     <br><br>
 </span>
 
+
+<p id="text">
+    Consider an object of mass \(m=1.0\) kg constrained to move in the \(y\)-direction under uniform gravitational acceleration \(g\).
+     We consider the motion of the object from \(t_i=-1\) s to \(t_f=+1\) s, with its position beginning and ending at \(y=0\).
+     To make the numerics simpler, we take \(g=2\,\,\mathrm{m}/\mathrm{s}^2\).
+
+     <br><br>
+     The classical path is \(y(t) = \frac{1}{2}g(1-t^2/t_0^2)\) with \(t_0=1\,\,\mathrm{s}\). 
+     We then consider an alternate family of paths \(y(t) = \frac{1}{2}g(1+p)(1-t^2/t_0^2)\),
+     which is equivalent to changing magnitude of the uniform acceleration. The alternate path only matches the classical
+     path when \(p=0\).
+
+
+     <br><br>
+
+     In the applet below, you can change the value of \(p\). We display graphs  of \(\frac{\partial U}{\partial y}\) and
+     \(\frac{\partial T}{\partial \dot y}\) as functions of time for the indicated path, along with 
+      the time derivative (slope) of   \(\frac{\partial T}{\partial \dot y}\).
+
+</p>
+
+
+
+
+
+<br><br> 
+
+<div id="applet">
+    <div id="top-panel" class="row">
+	<!-- First column: trajectory animation -->
+        <div class="column">
+            <canvas id="ball-launch" class="plot" title="Actual Motion"></canvas>
+        </div>
+
+	<!-- Second column: sliders -->
+        <div class="column">
+            <div id="controls-pg3">
+                <legend>Define Constants:</legend>
+                <p>\(m\): <span id="print-m">1.0</span> kg</p>
+                <p>\(g\): <span id="print-a">2.0</span> m/s<sup>2</sup></p>
+                <label for="p-slider">\(p\): <span id="print-p">0.5</span></label>
+                <input id="p-slider" class="slider" type="range" min="-1" max="1" step="0.1" value="0.5">
+                <p>Action (J.s): <span id="print-S"></span></p>
+            </div>
+        </div>
+    <!-- Third column: legend -->
+        <div class="column">
+            <div id="controls2-pg3">
+                <span id="green">....</span> Potential Energy
+                <br><br>
+                <span id="grey">....</span> Negative Potential Energy
+                <br><br>
+                <span id="red">....</span> Kinetic Energy
+                <br><br>
+
+            </div>
+        </div>
+    </div>
+    <div id="bottom-panel" class="row">
+        <div class="column left">
+            <div id="PE-derivative-graph"></div>
+        </div>
+        <div class="column-right">
+            <div id="KE-derivative-graph"></div>
+        </div>
+    </div>
+    <div id="legend-txt3">
+        <p>Upper (green): \( \partial U/ \partial y \)</p>
+    </div>
+    <div id="legend-txt4">
+        <p>Lower (grey): \( -\partial U / \partial y \)</p>
+    </div>
+    <div id="slope-txt">
+        <p>Slope: \(\frac{d}{dt}(\frac{\partial T}{\partial \dot{y}}) \) = <span id="slope">dPE</span> N</p>
+    </div>
+</div> 
+<br>
+
+
 <div class="buttons">
     <column id="next-button">
         <button onclick = "window.location.href = 'force-energy2.html'">NEXT PAGE</button>
@@ -151,7 +155,7 @@
 
 <br><br><br><br>
 
-<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</i>
+<i>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2025.</i>
 
 <br><br>
 

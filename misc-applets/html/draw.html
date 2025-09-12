@@ -25,7 +25,7 @@
     <div class="intro-container">
         <div class="theory">
             <h2>The Brachistochrone Problem</h2>
-            <p>The brachistochrone problem, posed by Johann Bernoulli in 1696, asks: <em>"What is the curve of fastest descent between two points for a bead sliding under gravity?"</em></p>
+            <p>The brachistochrone problem asks: <em>"What is the curve of fastest descent between two points for a bead sliding under gravity?"</em></p>
             
             <div class="math-box">
                 <p>The solution is a <strong>cycloid</strong> - the curve traced by a point on the rim of a rolling circle. Mathematically, it minimizes the functional:</p>
@@ -33,39 +33,19 @@
                 <p>where \(T\) is the travel time, \(g\) is gravity, and \(y_A\) is the starting height.</p>
             </div>
             
-            <h2>The Principle of Least Action</h2>
-            <p>This fundamental principle states that the path taken by a physical system between two states is the one for which the <em>action</em> is minimized:</p>
-            
-            <div class="math-box">
-                <p>\[ S = \int_{t_1}^{t_2} (T - U) \, dt \]</p>
-                <p>where \(T\) is kinetic energy and \(U\) is potential energy. For the brachistochrone, we minimize time rather than action, but the mathematical principles are similar.</p>
-            </div>
-            
-            <p>In this applet, you can draw paths between two points and see how closely they approximate the true brachistochrone curve based on the travel time and energy conservation.</p>
-        </div>
-        
-        <div class="theory">
-            <h2>How to Use This Applet</h2>
-            <ol>
-                <li><strong>Draw a path</strong> between the pink starting point (top-left) and pink ending point (bottom-right)</li>
-                <li>Observe the <strong>travel time</strong> calculation in the stats panel</li>
-                <li>Examine the <strong>energy graphs</strong> to see if energy is conserved</li>
-                <li>Compare different paths to see which is fastest</li>
-                <li>Try to draw the theoretical solution - a cycloid curve</li>
-            </ol>
-            
-            <div class="math-box">
-                <h3>Key Physics Concepts</h3>
-                <p><strong>Kinetic Energy:</strong> \[ T = \frac{1}{2}mv^2 \]</p>
-                <p><strong>Potential Energy:</strong> \[ U = mgh \]</p>
-                <p><strong>Conservation of Energy:</strong> \[ T + U = \text{constant} \]</p>
-            </div>
-            
-            <p>The true brachistochrone path will show a smooth conversion of potential to kinetic energy with minimal fluctuations in total energy.</p>
-        </div>
+
     </div>
-<h1>Find the Fastest Path</h1>
-<p id="debug">debug text here</p>
+
+
+
+<div id="time-details" style="
+        font-size: 14px;
+        color: #6c757d;
+        line-height: 1.4;
+    ">
+        Draw a path between the pink squares to see timing analysis
+    </div>
+
 <div id="applet">
     <canvas id="canvas"></canvas>
     <div id="energy-graph"></div>
@@ -74,11 +54,9 @@
     <button class="button" id="clear-canvas">clear</button>
 </div>
 
-<div id="bottom-panel">
-    <div id="derivative-graph"></div>
-    <div id="integral-graph"></div>
-</div>
+<button id="draw-brachistochrone">Draw Brachistochrone</button>
 
+<!-- Add this button near your existing clear button -->
 </body>
 </html>
 

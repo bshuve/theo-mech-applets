@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>trajectory</title>
+    <title>Least Action 3</title>
     <link rel = "stylesheet" href = "trajectory1.css">
 
     <!-- Load d3.js -->
@@ -17,13 +17,21 @@
 <body class="body">
 
 
-    <h1 id="title">Free-fall projectile in 1D: Page 3/4</h1>
-    <p class="text">
-    Along with a visualization of the particle's motion along a specified path, we now show various quantities 
-    (such as the kinetic and potential energies, and their derivatives) as functions of time. We also show the 
-    <b>integral</b> of several of these quantities over the entire path, plotted as a function of \(p\), the 
-    parameter used to specify the path. The checkboxes allow you to choose which of these integrated quantities 
-    to plot. Recall that the alternative path is parametrized by the function \(y(t) = (1+p)(y_i-\frac{1}{2}gt^2)\).
+    <h1 id="title">Principle of Least Action: Definition of Action</h1>
+
+    <p id="text">
+        The <b>action</b> is defined as \(S=\int_{t_i}^{t_f}\,(KE-PE)dt\), where \(KE\) and \(PE\) are the
+        kinetic and potential energies, respectively. This applet allows you to explore why it 
+        <i>this</i> combination of integrated energies that is minimized for the classical path.
+    </p>
+
+    <p id="text">
+        As before, you can specify an alternative path \(y(t) = (1+p)(y_0-\frac{1}{2}gt^2)\). You can 
+        choose various combinations of kinetic and potential energies. The applet plots the 
+        corresponding combination of energy as a function of time, as well as integrated over the whole path
+        for your chosen value of \(p\).
+    </p>   
+
 
 
     <p id="text">
@@ -128,58 +136,70 @@
         path to have as well?"
     </p>
 
-    <button id="solution-button-4" type="button">Show Solution</button>
+    <button id="solution-button-4" type="button">Show Example Solution</button>
     <div id="solution-container-4" class ='solution-container' style="display: none;">
         <p>
             Classical paths
             <ul>
                 <li>
-                    Follows the equation of motion
+                    Follow the equation of motion
                 </li>
                 <li>
-                    Kinetic and potential energies are balanced: Changes in kinetic energy and potential energy are smooth
+                    Satisfy the boundary condition \(y(t_i)=y(t_f)=0\)
                 </li>
                 <li>
-                    Action is minimized: The classical path minimizes the integral of L=T-U
+                    Total energy is conserved
+                </li>
+                <li>
+                    Action is minimized
                 </li>
             </ul>
             <!--nonclassical path-->
             Nonclassical paths
             <ul>
                 <li>
-                    Different curvature: Energy variations: Kinetic and potential energies are not smooth, 
-                    leading to larger or smaller action values.
+                    Do not follow the equation of motion
+                </li>
+                <li>
+                    Satisfy the boundary condition \(y(t_i)=y(t_f)=0\)
+                </li>
+                <li>
+                    Total energy is not conserved
+                </li>
+                <li>
+                    Action is not minimized
                 </li>
             </ul>
         </p>
     </div>
 
     <p id="text">
-        <b>Question 5:</b> As best you can, and in your own words, explain why the classical path minimizes the 
-        action defined as the time integral of the kinetic minus potential energies over the path. Choosing two 
-        paths, one with \(p<0\) and another with \(p>0\), explain for each why the action is larger than the minimal 
+        <b>Question 5:</b> For each of two 
+        paths, one with \(p<0\) and another with \(p>0\), explain in your own words why the action is larger than the 
+            classical path 
         value. Explain why some other candidates for the "action" (such as the integral of the <b>sum</b> 
-        of the kinetic and potential energies) are unsuitable for determining the classical path.
+        of the kinetic and potential energies) are unsuitable for determining the classical path. You
+        may wish to revisit the animation on the last page.
     </p>
     <button id="solution-button-5" type="button">Show Solution</button>
     <div id="solution-container-5" class="solution-container" style="display: none;">
         <p><b>Solution:</b></p>
-        The integral balances kinetic and potential energy over the path, ensuring minimal deviation from equilibrium conditions.
+        Minimizing the integral of kinetic minus potential energy over time means that the classical path prefers
+        to spend more time at higher potential energy/lower kinetic energy.
         <ul>
             <li>
-                For paths with \( p < 0 \): The particle remains closer to the ground, causing the potential energy \( U \) 
-                to decrease, but the kinetic energy is not optimized. The action increases due to this imbalance.
+                For paths with \( p < 0 \): More time is spend at lower potential energy, increasing the action
+                relative to the classical path.
             </li>
             <li>
-                For paths with \( p > 0 \): The particle travels higher than the classical path, increasing both 
-                potential and kinetic energy, which, again, leads to higher action values.
+                For paths with \( p > 0 \): The particle travels higher than the classical path. This increases
+                the potential energy at the top of the path, which reduces the action. But, this is more than compensated
+                by the higher speed needed to satisfy the boundary conditions while achieving a higher peak position, and 
+                this contribution to the kinetic energy ultimately increases the action.
             </li>
             <li>
-                The classical path (when \( p = 0 \)) is the most “efficient” path where energy trade-offs between \( T \) 
-                and \( U \) are balanced, leading to the smallest value of the action.
-                While “action” might still seem abstract, the simulation provides some intuitions. The action is analogous 
-                to a “best score.” Think of the classical path as achieving the most optimal motion based on physics, where 
-                energy is neither wasted nor underutilized.
+                The classical path (when \( p = 0 \)) is the most “efficient” path which balances minimizing kinetic energy
+                and maximizing potential energy at the points where the mass spends the most time.
             </li>
         </ul>
     </div>
