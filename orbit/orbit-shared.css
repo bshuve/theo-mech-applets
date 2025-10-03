@@ -335,6 +335,7 @@ button:active, .toggle-button:active {
 #orbit5-body #animation-container {
   width: 100%;
   padding: 0;
+  transition: transform 0.3s ease-out;
 }
 #orbit5-body #slider-row {
   position: absolute;
@@ -347,18 +348,28 @@ button:active, .toggle-button:active {
 #orbit5-body #graphs-container {
   flex-direction: column;
   padding: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-#orbit5-body #kinetic-row,
+#orbit5-body #kinetic-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+}
+
 #orbit5-body #potential-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
 }
 #orbit5-body #radial-kinetic-graph,
 #orbit5-body #orbital-kinetic-graph,
 #orbit5-body #potential-energy-graph,
 #orbit5-body #effective-potential-graph,
 #orbit5-body #total-energy-graph {
+  transition: transform 0.3s ease-out;
   background: transparent;
   padding: 12px;
   margin: 8px;

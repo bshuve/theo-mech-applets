@@ -716,7 +716,7 @@ const orbitSVG = d3.select("#orbit-animation")
   .attr("height", CANVAS_HEIGHT);
 
 // Change sun and orbit center - positioned far to the right for elliptical orbits
-const ORBIT_CENTER_X = CANVAS_WIDTH * 0.90;
+const ORBIT_CENTER_X = CANVAS_WIDTH * 0.95;
 const ORBIT_CENTER_Y = CANVAS_HEIGHT / 2;
 
 // Draw sun (central body)
@@ -836,11 +836,81 @@ function animate() {
 }
 
 /////////////////////////////////////////////////
+/* SCROLL-BASED UX EFFECTS */
+/////////////////////////////////////////////////
+
+/**
+ * Handles scroll-based scaling effects for different sections
+ */
+function handleScrollEffects() {
+  const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  
+  // Zone 1 (0-25%): Animation fills screen, graphs minimal
+  if (scrollPercent < 0.25) {
+    scaleAnimation(1.5);
+    scaleGraphs(0.7);
+  }
+  // Zone 2 (25-75%): Animation shrinks, kinetic graphs prominent
+  else if (scrollPercent < 0.75) {
+    scaleAnimation(0.8);
+    scaleKineticGraphs(1.2);
+    scalePotentialGraphs(0.9);
+  }
+  // Zone 3 (75-100%): Potential graphs fill screen
+  else {
+    scaleAnimation(0.6);
+    scaleKineticGraphs(0.8);
+    scalePotentialGraphs(1.3);
+  }
+}
+
+/**
+ * Scales the animation container
+ */
+function scaleAnimation(scale) {
+  const animation = document.getElementById('animation-container');
+  if (animation) {
+    animation.style.transform = `scale(${scale})`;
+  }
+}
+
+/**
+ * Scales all graphs
+ */
+function scaleGraphs(scale) {
+  const graphs = document.querySelectorAll('#kinetic-row > div, #potential-row > div');
+  graphs.forEach(graph => {
+    graph.style.transform = `scale(${scale})`;
+  });
+}
+
+/**
+ * Scales kinetic energy graphs
+ */
+function scaleKineticGraphs(scale) {
+  const kineticGraphs = document.querySelectorAll('#kinetic-row > div');
+  kineticGraphs.forEach(graph => {
+    graph.style.transform = `scale(${scale})`;
+  });
+}
+
+/**
+ * Scales potential energy graphs
+ */
+function scalePotentialGraphs(scale) {
+  const potentialGraphs = document.querySelectorAll('#potential-row > div');
+  potentialGraphs.forEach(graph => {
+    graph.style.transform = `scale(${scale})`;
+  });
+}
+
+/////////////////////////////////////////////////
 /* EVENT HANDLERS */
 /////////////////////////////////////////////////
 
 window.addEventListener("load", drawStars);
 window.addEventListener("resize", drawStars);
+window.addEventListener("scroll", handleScrollEffects);
 
 
 /**
