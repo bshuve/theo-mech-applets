@@ -5,12 +5,13 @@
 
 /* ===== BASE STYLES (shared) ===== */
 body {
-  margin: 16px;
+  margin: 0;
   padding: 16px;
   background: #182030;
   color: #EEEEEE;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
+  box-sizing: border-box;
 }
 
 #star-background {
@@ -45,8 +46,8 @@ body {
 }
 
 #orbit-animation {
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
   height: 50vw;
   min-height: 400px;
   max-height: 700px;
@@ -327,17 +328,21 @@ button:active, .toggle-button:active {
 
 /* ====== ORBIT5 UNIQUE ====== */
 #orbit5-body #applet {
-  width: fit-content;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 #orbit5-body #animation-container {
-  padding: 12px;
+  width: 100%;
+  padding: 0;
 }
 #orbit5-body #slider-row {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 16px;
-  width: 90%;
+  width: 60%;
+  justify-content: center;
 }
 #orbit5-body #graphs-container {
   flex-direction: column;
@@ -352,6 +357,7 @@ button:active, .toggle-button:active {
 #orbit5-body #radial-kinetic-graph,
 #orbit5-body #orbital-kinetic-graph,
 #orbit5-body #potential-energy-graph,
+#orbit5-body #effective-potential-graph,
 #orbit5-body #total-energy-graph {
   background: transparent;
   padding: 12px;

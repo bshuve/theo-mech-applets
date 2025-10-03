@@ -11,7 +11,8 @@
     
     <!-- External Libraries -->
     <script src="https://d3js.org/d3.v4.js"></script>
-    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" 
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <!-- Application Script -->
     <script defer src="./orbit5.js"></script>
@@ -26,14 +27,16 @@
             <div id="orbit-animation"></div>
             <div id="slider-row">
                 <div id="L-slider-container">
-                    <label for="L-slider">Momentum (L): </label>
+                    <label for="L-slider">Angular Momentum (L): </label>
                     <span id="print-L">1.00</span><br>
-                    <input id="L-slider" type="range" min="0" max="5" value="1" step="0.1" title="Adjust the angular momentum of the orbit">
+                    <input id="L-slider" type="range" min="0" max="5" value="1" step="0.1" 
+                           title="Adjust the angular momentum of the orbit">
                 </div>
                 <div id="epsilon-slider-container">
                     <label for="epsilon-slider">Eccentricity: </label>
                     <span id="print-epsilon">0.00</span><br>
-                    <input id="epsilon-slider" type="range" min="0" max="1" value="0" step="0.1" title="Adjust the eccentricity of the orbit">
+                    <input id="epsilon-slider" type="range" min="0" max="1" value="0" step="0.1" 
+                           title="Adjust the eccentricity of the orbit">
                 </div>
             </div>
         </div>
@@ -43,9 +46,10 @@
                 <div id="radial-kinetic-graph" class="energy-graph"></div>
                 <div id="orbital-kinetic-graph" class="energy-graph"></div>
             </div>
-            <!-- Bottom Row: Potential and Total Energy Graphs -->
+            <!-- Bottom Row: Potential, Effective Potential, and Total Energy Graphs -->
             <div id="potential-row">
                 <div id="potential-energy-graph" class="energy-graph"></div>
+                <div id="effective-potential-graph" class="energy-graph"></div>
                 <div id="total-energy-graph" class="energy-graph"></div>
             </div>
         </div>
@@ -65,8 +69,61 @@
                 <button id="tutorial-skip">Skip</button>
             </div>
         </div>
-        <span id="tutorial-rocket" style="display:none; position: absolute; font-size: 48px; z-index:3;">🚀</span>
-        <!-- <img id="tutorial-rocket-img" src="rocket.png" style="display: none; position: absolute; width: 48px; z-index:3;"> -->
+        <span id="tutorial-rocket" style="display:none; position: absolute; font-size: 48px; 
+              z-index:3;">🚀</span>
+        <!-- <img id="tutorial-rocket-img" src="rocket.png" style="display: none; position: absolute; 
+             width: 48px; z-index:3;"> -->
+    </div>
+
+    <!-- Hidden tutorial content with MathJax formatting -->
+    <div id="tutorial-content" style="display: none;">
+        <div id="tutorial-step-0">
+            <b>Central Mass and Orbit</b><br>This yellow point represents the Sun, 
+            the central mass in our two-body system. The blue point is the Earth. 
+            The orbit is computed from the conservation of angular momentum $L$, 
+            and energy $E$, as in the general solution:<br>
+            $$r(\theta) = \frac{L^2}{\mu G m_1 m_2 (1 + \varepsilon \cos \theta)}$$
+        </div>
+        
+        <div id="tutorial-step-1">
+            <b>Parameter Controls</b><br>Use these sliders to adjust the angular 
+            momentum $L$ and eccentricity $\varepsilon$ of the orbit. These conserved 
+            quantities fully determine the orbital shape and energy, as in:<br>
+            $$\varepsilon = \sqrt{1 + \frac{2EL^2}{\mu(Gm_1m_2)^2}}$$
+        </div>
+        
+        <div id="tutorial-step-2">
+            <b>Radial Kinetic Energy</b><br>This graph shows the radial kinetic 
+            energy (motion toward/away from the Sun) as a function of distance. 
+            The total energy is:<br>
+            $$E = \frac{1}{2}\mu\dot{r}^2 + \frac{L^2}{2\mu r^2} - \frac{Gm_1m_2}{r}$$
+        </div>
+        
+        <div id="tutorial-step-3">
+            <b>Orbital Kinetic Energy</b><br>This graph shows the kinetic energy 
+            due to motion around the Sun $$\frac{L^2}{2\mu r^2}$$ Observe how it 
+            varies with radius and how it relates to the effective potential.
+        </div>
+        
+        <div id="tutorial-step-4">
+            <b>Potential Energy</b><br>This graph shows the gravitational 
+            potential energy as a function of distance from the Sun. Notice how it 
+            becomes more negative (lower) as you get closer to the central mass.
+        </div>
+        
+        <div id="tutorial-step-5">
+            <b>Effective Potential Energy</b><br>This graph shows the effective 
+            potential $$U_{\text{eff}}(r) = \frac{L^2}{2\mu r^2} - \frac{Gm_1m_2}{r}$$ 
+            which combines centrifugal and gravitational potential. The centrifugal 
+            barrier prevents the orbit from reaching the center, creating a minimum distance.
+        </div>
+        
+        <div id="tutorial-step-6">
+            <b>Total Energy</b><br>This graph shows the total mechanical energy, 
+            with bars for kinetic and potential energy at the current position. 
+            Experiment with the sliders to see how energy is partitioned and 
+            how the orbit responds.
+        </div>
     </div>
 </body>
 
