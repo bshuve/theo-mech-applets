@@ -48,9 +48,9 @@ const GRAPH_HEIGHT = SVG_HEIGHT - GRAPH_MARGIN.top - GRAPH_MARGIN.bottom;
 /* GLOBAL STATE VARIABLES */
 /////////////////////////////////////////////////
 
-// Orbital parameters (initialized from HTML sliders)
-let epsilon = parseFloat(document.getElementById("epsilon-slider").getAttribute("value"));
-let L = parseFloat(document.getElementById("L-slider").getAttribute("value")) * 1e40; // Angular momentum
+// Orbital parameters (will be initialized from HTML sliders)
+let epsilon = 0.7; // Default value, will be updated from HTML
+let L = 3 * 1e40; // Default value, will be updated from HTML
 
 // Calculated orbital properties
 let energy = (epsilon ** 2 - 1) * ((G * SUN_MASS * EARTH_MASS * EARTH_MASS) / 2 / (L ** 2));
@@ -695,8 +695,9 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
         .attr("width", bar_width)
         .attr("height", orbital_bar_height);
     
-    // Update total energy line - use the constant conserved energy
-    const total_y = totalEnergyPlot.yScale(energy / SCALE_ENERGY);
+    // Update total energy line - use the sum of all energy components
+    const total_energy = Ueff + ke_radial + ke_orbital;
+    const total_y = totalEnergyPlot.yScale(total_energy / SCALE_ENERGY);
     teTotalLine
         .attr("x1", 0)
         .attr("y1", total_y)
@@ -845,8 +846,12 @@ function animate() {
 function handleScrollEffects() {
   const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
   
-  // Zone 1 (0-25%): Animation fills screen, graphs minimal
-  if (scrollPercent < 0.25) {
+  if (scrollPercent < 0.05) {
+    scaleAnimation(1.0);
+    scaleGraphs(1.0);
+  }
+  // Zone 1 (5-25%): Animation fills screen, graphs minimal
+  else if (scrollPercent < 0.25) {
     scaleAnimation(1.5);
     scaleGraphs(0.7);
   }
@@ -941,6 +946,19 @@ document.getElementById("L-slider").oninput = updateOrbitalParameters;
  * Initializes the application
  */
 function initialize() {
+    // Read initial values from HTML sliders
+    epsilon = parseFloat(document.getElementById("epsilon-slider").value);
+    L = parseFloat(document.getElementById("L-slider").value) * 1e40;
+    
+    // Update display values
+    document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
+    document.getElementById("print-L").innerHTML = (L/1e40).toFixed(2);
+    
+    // Recalculate orbital properties with actual values
+    energy = (epsilon ** 2 - 1) * ((G * SUN_MASS * EARTH_MASS * EARTH_MASS) / 2 / (L ** 2));
+    r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 + epsilon));
+    r_max = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 - epsilon));
+    
     // Generate initial data
     generatePotentialEnergyData();
     generateEffectivePotentialEnergyData();
@@ -953,6 +971,9 @@ function initialize() {
     updateTotalEnergyPotentialPlot();
     updateRadialKineticEnergyPlot();
     updateOrbitalKineticEnergyPlot();
+    
+    // Draw initial orbit trace
+    drawOrbitTrace(L, epsilon);
     
     // Start animation
     animate();
@@ -1205,7 +1226,11 @@ document.getElementById("tutorial-skip").onclick = function() {
 
 // Show tutorial on first visit only
 window.addEventListener("load", function() {
-    showTutorialStep(0);
+    // Start tutorial at the top to show overview, then move to first step
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => {
+        showTutorialStep(0);
+    }, 500); // Wait for scroll to complete
 });
 
 // Add this function to restart the tutorial from the beginning
@@ -1214,7 +1239,11 @@ function restartTutorial() {
   lastRocketPos = null;
   rocket.style.display = "none";
   rocket.classList.remove("hovering");
-  showTutorialStep(0);
+  // Start at the top to show overview, then begin tutorial
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => {
+    showTutorialStep(0);
+  }, 500); // Wait for scroll to complete
 }
 
 // Add this event listener for the button when DOM is ready
