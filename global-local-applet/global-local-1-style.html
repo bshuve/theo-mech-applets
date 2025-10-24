@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global and Local Action Minimization</title>
+    <link rel="stylesheet" href="global-local-1-style.css">
+
+    <!-- Load d3.js with fallback -->
+    <script src="d3.v4.js" onerror="this.onerror=null; this.src='https://d3js.org/d3.v4.js'"></script>
+    
+    <script defer src="global-local-1-style.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>Global and Local Action Minimization</h1>
+        </header>
+                <section id="welcome">
+                    <div class="tutorial-prompt">
+                        <button id="start-tutorial-main" class="tutorial-start-btn">Start Tutorial</button>
+                    </div>
+                </section>
+
+        <section id="applet">
+            <!-- Main visualization area -->
+            <div id="visualization-container">
+                <div id="graphs-row">
+                    <div id="position-graph" aria-label="Position vs Time Graph"></div>
+                    <div id="integral-graph" aria-label="Action vs y1 Graph"></div>
+                </div>
+            </div>
+            
+            <!-- Compact control panel at bottom -->
+            <div id="control-panel">
+                <div class="control-section">
+                    <div class="slider-control">
+                        <label for="y1-slider">
+                            <span id="red" aria-label="Red trajectory point"></span> \(y_1\):
+                        </label>
+                        <input id="y1-slider" class="slider" type="range" min="0" max="200" value="51" 
+                               aria-label="Adjust y1 value">
+                        <span id="print-y1" aria-label="Current y1 value">51</span>
+                    </div>
+                    
+                    <div class="action-display">
+                        <span class="action-label">Action:</span>
+                        <span id="print-action">0</span> <span class="action-unit">J.s</span>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button type="button" id="randomize-button">Randomize</button> 
+                        <button type="button" id="reset-button">Classical Path</button>
+                        <button type="button" id="show-tutorial-btn">Show Tutorial</button>
+                    </div>
+                </div>
+                
+                <div class="trajectory-info">
+                    <div class="trajectory-points">
+                        <span class="point-label"><span id="orange"></span> \(y_2\): 84m</span>
+                        <span class="point-label"><span id="green"></span> \(y_3\): 100m</span>
+                        <span class="point-label"><span id="blue"></span> \(y_4\): 84m</span>
+                        <span class="point-label"><span id="purple"></span> \(y_5\): 51m</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="buttons">
+            <button onclick="window.location.href = 'global-local2.html'">Next Page</button>
+        </nav>
+
+        <!-- Tutorial Overlay System -->
+        <div id="tutorial-overlay" style="display: none;">
+            <div id="tutorial-backdrop"></div>
+            <div id="tutorial-box">
+                <div id="tutorial-text"></div>
+                <div id="tutorial-buttons">
+                    <button id="tutorial-next">Next</button>
+                    <button id="tutorial-skip">Skip</button>
+                </div>
+            </div>
+            <span id="tutorial-rocket" style="display:none; position: absolute; font-size: 48px; z-index:3;">🚀</span>
+        </div>
+
+        <!-- Hidden tutorial content with MathJax formatting -->
+        <div id="tutorial-content" style="display: none;">
+            <div id="tutorial-step-0">
+                <b>Welcome to Action Minimization!</b><br>
+                This applet demonstrates the fascinating relationship between global and local action minimization 
+                in classical mechanics. You'll see how varying trajectory points affects the action 
+                and compare different paths.
+            </div>
+            
+            <div id="tutorial-step-1">
+                <b>Setting Up the Problem</b><br>
+                We consider a point particle with fixed endpoints: \(y(t_i)=y(t_f)=0\) for \(t_i=0\) and \(t_f=20\) s. 
+                The particle undergoes uniform acceleration due to gravity with \(g=2\,\,\mathrm{m/s^2}\). 
+                We vary the path by fixing values of \(y(t)\) at intermediate times.
+            </div>
+            
+            <div id="tutorial-step-2">
+                <b>Trajectory Visualization</b><br>
+                The left graph shows the particle's trajectory over time. The <strong>black curve</strong> 
+                represents the classical path (global action minimum), while the <strong>blue curve</strong> 
+                shows the parameterized path (local action minimum). The colored dots mark fixed trajectory points.
+            </div>
+            
+            <div id="tutorial-step-3">
+                <b>Action vs Control Point</b><br>
+                The right graph shows how the action varies as you change \(y_1\). Notice how the action 
+                reaches a minimum when \(y_1 = 51\)m, which corresponds to the classical trajectory. 
+                This demonstrates the principle of least action!
+            </div>
+            
+            <div id="tutorial-step-4">
+                <b>Interactive Controls</b><br>
+                Use the slider to vary \(y_1\) and watch how both graphs update in real-time. 
+                The "Classical Path" button sets \(y_1\) to the optimal value, while "Randomize" 
+                gives you a random starting point to explore.
+            </div>
+            
+            <div id="tutorial-step-5">
+                <b>Physics Behind the Scenes</b><br>
+                The action is calculated using the Lagrangian formalism: 
+                \(S = \int [T - V] \, dt\) where \(T\) is kinetic energy and \(V\) is potential energy. 
+                The classical path minimizes this action globally, while the parameterized path 
+                minimizes it locally between adjacent points.
+            </div>
+            
+            <div id="tutorial-step-6">
+                <b>Key Question</b><br>
+                <strong>Question:</strong> When changing the \(y_1\) slider, where is the action minimized?<br><br>
+                <strong>Answer:</strong> The action is minimized when \(y_1\) is 51 m, falling on the global classical trajectory path. 
+                By putting \(y_1\) at 51 m, we minimize the action locally between the beginning and \(y_2\), 
+                and consequently minimize the global action as well.
+            </div>
+            
+            <div id="tutorial-step-7">
+                <b>Ready to Explore!</b><br>
+                Now you're ready to experiment! Try moving the slider and observe how the action changes. 
+                Can you find the minimum action value? What happens when you move away from the classical path?
+                The "Randomize" button moves \(y_1\) to a random value, while "Classical Path" sets it to the optimal value.
+            </div>
+        </div>
+
+        <footer>
+            <p><em>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</em></p>
+        </footer>
+    </main>
+</body>
+</html>
+
