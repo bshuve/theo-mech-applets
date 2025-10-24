@@ -28,7 +28,6 @@ const CANVAS_HEIGHT = 600;
 const SVG_WIDTH = 300;
 const SVG_HEIGHT = 300;
 const DT = 31560;                     // Time step for animation
-const FRAME_RATE = 100;               // Animation frame rate (ms) - much slower default
 const TRANSITION_TIME = 10;           // D3 transition duration (ms)
 
 // Scaling factors for visualization
@@ -49,21 +48,21 @@ const GRAPH_HEIGHT = SVG_HEIGHT - GRAPH_MARGIN.top - GRAPH_MARGIN.bottom;
 /* GLOBAL STATE VARIABLES */
 /////////////////////////////////////////////////
 
-// Orbital parameters (initialized from HTML sliders)
-let epsilon = parseFloat(document.getElementById("epsilon-slider").getAttribute("value"));
-let L = parseFloat(document.getElementById("L-slider").getAttribute("value")) * 1e40; // Angular momentum (kg·m²/s)
+// Orbital parameters (will be initialized from HTML sliders)
+let epsilon = 0.7; // Default value, will be updated from HTML
+let L = 3 * 1e40; // Default value, will be updated from HTML
 
 // Calculated orbital properties
 let energy = (epsilon ** 2 - 1) * ((G * SUN_MASS * EARTH_MASS * EARTH_MASS) / 2 / (L ** 2));
-let r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS);
+let r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 + epsilon));
 let r_max = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 - epsilon));
 
 // Animation state
 let phi = 0;                          // Current angular position (radians)
-let time = 0;                         // Elapsed time
 
 // Data arrays for plotting
 let pe_data = [];                     // Potential energy data
+let effective_pe_data = [];           // Effective potential energy data
 let radial_ke_data = [];              // Radial kinetic energy data
 let orbital_ke_data = [];             // Orbital kinetic energy data
 
@@ -219,8 +218,8 @@ function styleAxes(plot) {
 const potentialEnergyPlot = createPlot({
   divID: "#potential-energy-graph",
   svgID: "svg-for-potential-energy-plot",
-  domain: { lower: 0, upper: 10 },
-  range: { lower: -40, upper: 2 },
+  domain: { lower: 0, upper: 20 },
+  range: { lower: -80, upper: 4 },
   xLabel: "Radius (AU × 10³)",
   yLabel: "Potential Energy (J × 10^32)"
 });
@@ -230,8 +229,8 @@ styleAxes(potentialEnergyPlot);
 const radialKineticEnergyPlot = createPlot({
   divID: "#radial-kinetic-graph",
   svgID: "svg-for-kinetic-energy-plot",
-  domain: { lower: 0, upper: 10 },
-  range: { lower: 0, upper: 10 },
+  domain: { lower: 0, upper: 20 },
+  range: { lower: 0, upper: 20 },
   xLabel: "Radius (AU)",
   yLabel: "Radial Kinetic Energy (J × 10^32)"
 });
@@ -241,19 +240,30 @@ styleAxes(radialKineticEnergyPlot);
 const orbitalKineticEnergyPlot = createPlot({
   divID: "#orbital-kinetic-graph",
   svgID: "svg-for-orbital-kinetic-energy-plot",
-  domain: { lower: 0, upper: 4 },
-  range: { lower: 0, upper: 3 },
+  domain: { lower: 0, upper: 8 },
+  range: { lower: 0, upper: 6 },
   xLabel: "Radius (AU)",
   yLabel: "Orbital Kinetic Energy (J × 10^32)"
 });
 styleAxes(orbitalKineticEnergyPlot);
 
+// Effective Potential Energy Plot
+const effectivePotentialEnergyPlot = createPlot({
+  divID: "#effective-potential-graph",
+  svgID: "svg-for-effective-potential-energy-plot",
+  domain: { lower: 0, upper: 20 },
+  range: { lower: -40, upper: 40 },
+  xLabel: "Radius (AU × 10³)",
+  yLabel: "Effective Potential (J × 10^32)"
+});
+styleAxes(effectivePotentialEnergyPlot);
+
 // Total Energy Plot
 const totalEnergyPlot = createPlot({
   divID: "#total-energy-graph",
   svgID: "svg-for-total-energy-plot",
-  domain: { lower: 0, upper: 10 },
-  range: { lower: -40, upper: 2 },
+  domain: { lower: 0, upper: 20 },
+  range: { lower: -80, upper: 4 },
   xLabel: "Radius (AU)",
   yLabel: "Energy (J × 10^32)"
 });
@@ -266,6 +276,13 @@ styleAxes(totalEnergyPlot);
 // Potential energy moving point
 const pePoint = potentialEnergyPlot.svg.append("circle")
     .attr("id", "potential-energy-point")
+    .attr("r", 4)
+    .attr("fill", "#00BFFF")
+    .attr("visibility", "visible");
+
+// Effective potential energy moving point
+const effectivePePoint = effectivePotentialEnergyPlot.svg.append("circle")
+    .attr("id", "effective-potential-energy-point")
     .attr("r", 4)
     .attr("fill", "#00BFFF")
     .attr("visibility", "visible");
@@ -384,6 +401,19 @@ function calculateOrbitalKineticEnergy(r) {
     return 0.5 * L * L / (EARTH_MASS * r * r);
 }
 
+/**
+ * Calculates effective potential energy at a given radius
+ * The effective potential combines centrifugal potential and gravitational potential:
+ * U_eff(r) = L²/(2μr²) - Gm₁m₂/r
+ * @param {number} r - Radial distance (meters)
+ * @returns {number} Effective potential energy (Joules)
+ */
+function calculateEffectivePotentialEnergy(r) {
+    const centrifugalTerm = (L * L) / (2 * MU * r * r);
+    const gravitationalTerm = -(G * SUN_MASS * EARTH_MASS) / r;
+    return centrifugalTerm + gravitationalTerm;
+}
+
 /////////////////////////////////////////////////
 /* DATA GENERATION */
 /////////////////////////////////////////////////
@@ -402,7 +432,7 @@ function generatePotentialEnergyData() {
     const r_start = Math.max(0.1 * r_max, 1e9); // Avoid zero
     
   for (let i = 0; i <= N; i++) {
-        const r = r_start + (4 * r_max - r_start) * (i / N);
+        const r = r_start + (8 * r_max - r_start) * (i / N);
         const Ueff = calculatePotentialEnergy(r);
         
     pe_data.push({ 
@@ -412,8 +442,8 @@ function generatePotentialEnergyData() {
     }
     
     // Update plot scales
-    potentialEnergyPlot.xScale.domain([0, 10]);
-    potentialEnergyPlot.yScale.domain([-40, 2]);
+    potentialEnergyPlot.xScale.domain([0, 20]);
+    potentialEnergyPlot.yScale.domain([-80, 4]);
     
     potentialEnergyPlot.svg.select(".myXaxis")
       .transition()
@@ -424,6 +454,45 @@ function generatePotentialEnergyData() {
     .transition()
     .duration(TRANSITION_TIME)
         .call(d3.axisLeft(potentialEnergyPlot.yScale));
+}
+
+/**
+ * Generates effective potential energy data for plotting
+ * Uses the same radius range as potential energy for consistency
+ */
+function generateEffectivePotentialEnergyData() {
+    effective_pe_data = [];
+    
+    if (!isFinite(r_min) || !isFinite(r_max) || r_max <= r_min) {
+        return;
+    }
+    
+    const N = 400;
+    const r_start = Math.max(0.1 * r_max, 1e9); // Avoid zero
+    
+    for (let i = 0; i <= N; i++) {
+        const r = r_start + (8 * r_max - r_start) * (i / N);
+        const Ueff = calculateEffectivePotentialEnergy(r);
+        
+        effective_pe_data.push({ 
+            x: r / SCALE_R,
+            y: Ueff / SCALE_ENERGY
+        });
+    }
+    
+    // Update plot scales
+    effectivePotentialEnergyPlot.xScale.domain([0, 20]);
+    effectivePotentialEnergyPlot.yScale.domain([-40, 40]);
+    
+    effectivePotentialEnergyPlot.svg.select(".myXaxis")
+        .transition()
+        .duration(TRANSITION_TIME)
+        .call(d3.axisBottom(effectivePotentialEnergyPlot.xScale));
+        
+    effectivePotentialEnergyPlot.svg.select(".myYaxis")
+        .transition()
+        .duration(TRANSITION_TIME)
+        .call(d3.axisLeft(effectivePotentialEnergyPlot.yScale));
 }
 
 // Helper to generate kinetic energy data (radial or orbital)
@@ -448,23 +517,15 @@ function generateKineticEnergyData(type) {
   return data;
 }
 
-// Helper to update a D3 plot with new data
-function updatePlot(plot, data, color, lineGroupId) {
-  const zeroY = plot.yScale(0);
-  plot.svg.select('.myXaxis')
-    .transition()
-    .duration(TRANSITION_TIME)
-    .attr('transform', `translate(0, ${zeroY})`)
-    .call(d3.axisBottom(plot.xScale));
-  plotLine(plot, data, color, lineGroupId);
-}
 
 // Generate and update all plots
 function regenerateAllDataAndPlots() {
   generatePotentialEnergyData();
+  generateEffectivePotentialEnergyData();
   radial_ke_data = generateKineticEnergyData('radial');
   orbital_ke_data = generateKineticEnergyData('orbital');
   updatePotentialEnergyPlot();
+  updateEffectivePotentialEnergyPlot();
   updateTotalEnergyPotentialPlot();
   updateRadialKineticEnergyPlot();
   updateOrbitalKineticEnergyPlot();
@@ -487,6 +548,23 @@ function updatePotentialEnergyPlot() {
 
     plotLine(potentialEnergyPlot, pe_data, "#00BFFF", "potential-energy-line");
     styleAxes(potentialEnergyPlot);
+}
+
+/**
+ * Updates the effective potential energy plot with new data
+ */
+function updateEffectivePotentialEnergyPlot() {
+    // Position x-axis at y=0 (zero line) for both positive and negative values
+    const zeroY = effectivePotentialEnergyPlot.yScale(0);
+    effectivePotentialEnergyPlot.svg.select(".myXaxis")
+        .transition()
+        .duration(TRANSITION_TIME)
+        .attr("transform", `translate(0, ${zeroY})`)
+        .call(d3.axisBottom(effectivePotentialEnergyPlot.xScale));
+
+    plotLine(effectivePotentialEnergyPlot, effective_pe_data, "#00BFFF", 
+        "effective-potential-energy-line");
+    styleAxes(effectivePotentialEnergyPlot);
 }
 
 /**
@@ -561,6 +639,18 @@ function updatePotentialEnergyPoint(r) {
 }
 
 /**
+ * Updates the effective potential energy point position
+ * @param {number} r - Radial distance (meters)
+ */
+function updateEffectivePotentialEnergyPoint(r) {
+    const Ueff = calculateEffectivePotentialEnergy(r);
+    
+    effectivePePoint
+        .attr("cx", effectivePotentialEnergyPlot.xScale(r / SCALE_R))
+        .attr("cy", effectivePotentialEnergyPlot.yScale(Ueff / SCALE_ENERGY));
+}
+
+/**
  * Updates the total energy graph with current orbital state
  * @param {number} r - Radial distance (meters)
  * @param {number} phi - Angular position (radians)
@@ -595,7 +685,8 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
         .attr("height", radial_bar_height);
 
     // Orbital bar: from Ueff + ke_radial to Ueff + ke_radial + ke_orbital
-    const y_pe_plus_radial_orbital = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_ENERGY);
+    const y_pe_plus_radial_orbital = totalEnergyPlot.yScale(
+        (Ueff + ke_radial + ke_orbital) / SCALE_ENERGY);
     const orbital_bar_y = Math.min(y_pe_plus_radial, y_pe_plus_radial_orbital);
     const orbital_bar_height = Math.abs(y_pe_plus_radial - y_pe_plus_radial_orbital);
     teOrbitalBar
@@ -604,21 +695,15 @@ function updateTotalEnergyGraph(r, phi, dphidt) {
         .attr("width", bar_width)
         .attr("height", orbital_bar_height);
     
-    // Update total energy line - use the constant conserved energy
-    const total_y = totalEnergyPlot.yScale(energy / SCALE_ENERGY);
+    // Update total energy line - use the sum of all energy components
+    const total_energy = Ueff + ke_radial + ke_orbital;
+    const total_y = totalEnergyPlot.yScale(total_energy / SCALE_ENERGY);
     teTotalLine
         .attr("x1", 0)
         .attr("y1", total_y)
         .attr("x2", totalEnergyPlot.xScale.range()[1])
         .attr("y2", total_y);
     
-    // DEBUG: Alternative total energy line using the sum (commented out for debugging)
-    const sum_total_y = totalEnergyPlot.yScale((Ueff + ke_radial + ke_orbital) / SCALE_ENERGY);
-    teTotalLine
-        .attr("x1", 0)
-        .attr("y1", sum_total_y)
-        .attr("x2", totalEnergyPlot.xScale.range()[1])
-        .attr("y2", sum_total_y);
 }
 
 /////////////////////////////////////////////////
@@ -631,11 +716,14 @@ const orbitSVG = d3.select("#orbit-animation")
   .attr("width", CANVAS_WIDTH)
   .attr("height", CANVAS_HEIGHT);
 
+// Change sun and orbit center - positioned far to the right for elliptical orbits
+const ORBIT_CENTER_X = CANVAS_WIDTH * 0.95;
+const ORBIT_CENTER_Y = CANVAS_HEIGHT / 2;
 
 // Draw sun (central body)
 const sun = orbitSVG.append("circle")
-  .attr("cx", CANVAS_WIDTH/2)
-  .attr("cy", CANVAS_HEIGHT/2)
+  .attr("cx", ORBIT_CENTER_X)
+  .attr("cy", ORBIT_CENTER_Y)
   .attr("r", 10)
   .attr("fill", "#F5BF0F");
 
@@ -648,8 +736,8 @@ function drawOrbitTrace(L, epsilon) {
   const points = [];
   for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
     const r = (L * L) / (G * SUN_MASS * EARTH_MASS * EARTH_MASS * (1 + epsilon * Math.cos(angle)));
-    const x = CANVAS_WIDTH/2 + (r / SCALE_R) * 60 * Math.cos(angle);
-    const y = CANVAS_HEIGHT/2 + (r / SCALE_R) * 60 * Math.sin(angle);
+    const x = ORBIT_CENTER_X + (r / SCALE_R) * 60 * Math.cos(angle);
+    const y = ORBIT_CENTER_Y + (r / SCALE_R) * 60 * Math.sin(angle);
     points.push([x, y]);
   }
   orbitSVG.selectAll(".orbit-trace").remove();  // clear existing trace
@@ -673,10 +761,9 @@ function drawOrbitTrace(L, epsilon) {
     .attr("stroke-width", 1);
 }
 
-// Remove the original earth definition, and update updateOrbitVisualization to use #earth-orbit
 function updateOrbitVisualization(r, phi) {
-    const x = CANVAS_WIDTH/2 + (r / SCALE_R) * 60 * Math.cos(phi);
-    const y = CANVAS_HEIGHT/2 + (r / SCALE_R) * 60 * Math.sin(phi);
+    const x = ORBIT_CENTER_X + (r / SCALE_R) * 60 * Math.cos(phi);
+    const y = ORBIT_CENTER_Y + (r / SCALE_R) * 60 * Math.sin(phi);
     orbitSVG.select("#earth-orbit")
       .attr("cx", x)
       .attr("cy", y);
@@ -729,17 +816,97 @@ function animate() {
     // Calculate current orbital state
     const r = calculateRadius(phi);
     const dphidt = calculateAngularVelocity(r);
+
     // Update angular position using proper Kepler's Second Law
-    const deltaPhi = dphidt * DT;
-    phi += deltaPhi;
-    time += DT;
+    // const deltaPhi = dphidt * DT;
+    // phi += deltaPhi;
+    
+    // Use constant angular velocity for smooth, consistent animation
+    // This makes all orbits complete one revolution in the same time regardless of shape
+    const CONSTANT_ANGULAR_SPEED = 0.02; // radians per frame
+    phi += CONSTANT_ANGULAR_SPEED;
+    
     // Update all visualizations
     updateOrbitVisualization(r, phi);
     updatePotentialEnergyPoint(r);
+    updateEffectivePotentialEnergyPoint(r);
     updateKineticEnergyBars(r, phi, dphidt);
     updateTotalEnergyGraph(r, phi, dphidt);
-    // Hard code animation speed to 5 ms
+    // Continue animation with consistent frame rate
     setTimeout(animate, 5);
+}
+
+/////////////////////////////////////////////////
+/* SCROLL-BASED UX EFFECTS */
+/////////////////////////////////////////////////
+
+/**
+ * Handles scroll-based scaling effects for different sections
+ */
+function handleScrollEffects() {
+  const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  
+  if (scrollPercent < 0.05) {
+    scaleAnimation(0.7);
+    scaleGraphs(0.7);
+  }
+  // Zone 1 (5-25%): Animation fills screen, graphs minimal
+  else if (scrollPercent < 0.25) {
+    scaleAnimation(1.5);
+    scaleGraphs(0.7);
+  }
+  // Zone 2 (25-75%): Animation shrinks, kinetic graphs prominent
+  else if (scrollPercent < 0.75) {
+    scaleAnimation(0.8);
+    scaleKineticGraphs(1.2);
+    scalePotentialGraphs(0.9);
+  }
+  // Zone 3 (75-100%): Potential graphs fill screen
+  else {
+    scaleAnimation(0.6);
+    scaleKineticGraphs(0.8);
+    scalePotentialGraphs(1.3);
+  }
+}
+
+/**
+ * Scales the animation container
+ */
+function scaleAnimation(scale) {
+  const animation = document.getElementById('animation-container');
+  if (animation) {
+    animation.style.transform = `scale(${scale})`;
+  }
+}
+
+/**
+ * Scales all graphs
+ */
+function scaleGraphs(scale) {
+  const graphs = document.querySelectorAll('#kinetic-row > div, #potential-row > div');
+  graphs.forEach(graph => {
+    graph.style.transform = `scale(${scale})`;
+  });
+}
+
+/**
+ * Scales kinetic energy graphs
+ */
+function scaleKineticGraphs(scale) {
+  const kineticGraphs = document.querySelectorAll('#kinetic-row > div');
+  kineticGraphs.forEach(graph => {
+    graph.style.transform = `scale(${scale})`;
+  });
+}
+
+/**
+ * Scales potential energy graphs
+ */
+function scalePotentialGraphs(scale) {
+  const potentialGraphs = document.querySelectorAll('#potential-row > div');
+  potentialGraphs.forEach(graph => {
+    graph.style.transform = `scale(${scale})`;
+  });
 }
 
 /////////////////////////////////////////////////
@@ -748,6 +915,7 @@ function animate() {
 
 window.addEventListener("load", drawStars);
 window.addEventListener("resize", drawStars);
+window.addEventListener("scroll", handleScrollEffects);
 
 
 /**
@@ -759,12 +927,11 @@ function updateOrbitalParameters() {
     document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
     document.getElementById("print-L").innerHTML = (L/1e40).toFixed(2);
     energy = (epsilon ** 2 - 1) * ((G * SUN_MASS * EARTH_MASS * EARTH_MASS) / 2 / (L ** 2));
-    r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS);
+    r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 + epsilon));
     r_max = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 - epsilon));
     regenerateAllDataAndPlots();
     drawOrbitTrace(L, epsilon);
     phi = 0;
-    time = 0;
 }
 
 // Attach event listeners
@@ -779,20 +946,39 @@ document.getElementById("L-slider").oninput = updateOrbitalParameters;
  * Initializes the application
  */
 function initialize() {
+    // Read initial values from HTML sliders
+    epsilon = parseFloat(document.getElementById("epsilon-slider").value);
+    L = parseFloat(document.getElementById("L-slider").value) * 1e40;
+    
+    // Update display values
+    document.getElementById("print-epsilon").innerHTML = epsilon.toFixed(2);
+    document.getElementById("print-L").innerHTML = (L/1e40).toFixed(2);
+    
+    // Recalculate orbital properties with actual values
+    energy = (epsilon ** 2 - 1) * ((G * SUN_MASS * EARTH_MASS * EARTH_MASS) / 2 / (L ** 2));
+    r_min = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 + epsilon));
+    r_max = (L) ** 2 / (G * SUN_MASS * EARTH_MASS * EARTH_MASS) * (1 / (1 - epsilon));
+    
     // Generate initial data
     generatePotentialEnergyData();
+    generateEffectivePotentialEnergyData();
     radial_ke_data = generateKineticEnergyData('radial');
     orbital_ke_data = generateKineticEnergyData('orbital');
     
     // Create initial plots
     updatePotentialEnergyPlot();
+    updateEffectivePotentialEnergyPlot();
     updateTotalEnergyPotentialPlot();
     updateRadialKineticEnergyPlot();
     updateOrbitalKineticEnergyPlot();
     
+    // Draw initial orbit trace
+    drawOrbitTrace(L, epsilon);
+    
     // Start animation
     animate();
 }
+
 
 // Start the application when the page loads
 initialize();
@@ -801,28 +987,23 @@ initialize();
 // Guided Tour of Page
 
 
-// Info to show on tutorial as JSON
+// Tutorial positioning functions - content is now stored in HTML
 const tutorialSteps = [
   {
-    text: "This is the Sun (yellow) and the Earth (blue). The simulation shows Earth's orbit around the Sun.",
     position: () => {
       const sun = document.querySelector("#orbit-animation svg circle");
       const rect = sun.getBoundingClientRect();
       return { top: rect.top + window.scrollY - 20, left: rect.left + window.scrollX + 40 };
     },
-    // positionElement: () => document.querySelector("#orbit-animation svg circle")
   },
   {
-    text: "Use these sliders to adjust the orbit's angular momentum and eccentricity (ovalness)",
     position: () => {
       const sliders = document.getElementById("slider-row");
       const rect = sliders.getBoundingClientRect();
       return { top: rect.top + window.scrollY - 20, left: rect.left + window.scrollX + 20 };
     },
-    // positionElement: () => document.getElementById("slider-row")
   },
   {
-    text: "This graph shows the radial kinetic energy of the orbiting body as a function of distance (radius)",
     position: () => {
       const graph = document.getElementById("radial-kinetic-graph");
       const rect = graph.getBoundingClientRect();
@@ -831,7 +1012,6 @@ const tutorialSteps = [
     positionElement: () => document.getElementById("radial-kinetic-graph")
   },
   {
-    text: "This graph shows the orbital kinetic energy: energy due to motion around the Sun.",
     position: () => {
       const graph = document.getElementById("orbital-kinetic-graph");
       const rect = graph.getBoundingClientRect();
@@ -840,7 +1020,6 @@ const tutorialSteps = [
     positionElement: () => document.getElementById("orbital-kinetic-graph")
   },
   {
-    text: "This graph shows the potential energy as a function of distance from the Sun.",
     position: () => {
       const graph = document.getElementById("potential-energy-graph");
       const rect = graph.getBoundingClientRect();
@@ -849,68 +1028,90 @@ const tutorialSteps = [
     positionElement: () => document.getElementById("potential-energy-graph")
   },
   {
-    text: "This graph shows the total energy, with bars for kinetic and potential energy at the current position.",
+    position: () => {
+      const graph = document.getElementById("effective-potential-graph");
+      const rect = graph.getBoundingClientRect();
+      return { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+    },
+    positionElement: () => document.getElementById("effective-potential-graph")
+  },
+  {
     position: () => {
       const graph = document.getElementById("total-energy-graph");
       const rect = graph.getBoundingClientRect();
       return { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
     },
     positionElement: () => document.getElementById("total-energy-graph")
-  }
-];
+  }];
 
 // iterating through tutorial
 let tutorialStep = 0;
 let rocket = document.getElementById("tutorial-rocket");
-// let rocket = document.getElementById("tutorial-rocket-img");
 let lastRocketPos = null; // {top, left}
 
 function showTutorialStep(step) {
   const overlay = document.getElementById("tutorial-overlay");
   const box = document.getElementById("tutorial-box");
   const text = document.getElementById("tutorial-text");
-  const elem = tutorialSteps[step].positionElement && tutorialSteps[step].positionElement();
+  const elem = tutorialSteps[step] && tutorialSteps[step].positionElement && 
+    tutorialSteps[step].positionElement();
 
   if (step >= tutorialSteps.length) {
     overlay.style.display = "none";
     rocket.style.display = "none";
-    document.body.style.overflow = "";
     return;
   }
 
   overlay.style.display = "block";
-  text.innerHTML = tutorialSteps[step].text;
+  // Get HTML content directly from tutorial step element
+  const contentElement = document.getElementById(`tutorial-step-${step}`);
+  text.innerHTML = contentElement ? contentElement.innerHTML : "Tutorial step not found";
+  box.style.visibility = "visible";
 
   // If there's an element to scroll to, do it, then position after a delay
   if (elem) {
     elem.scrollIntoView({ behavior: "smooth", block: "center" });
-    setTimeout(() => positionTutorialBoxAndRocket(step, box), 400); // 400ms delay for smooth scroll
+    // Wait for scroll to complete before positioning
+    setTimeout(() => positionTutorialBoxAndRocket(step, box), 600); // Increased delay
   } else {
-    positionTutorialBoxAndRocket(step, box);
+    // For elements without positionElement, still try to scroll to the general area
+    const pos = tutorialSteps[step].position();
+    // Scroll to bring the target position into view
+    window.scrollTo({ 
+      top: pos.top - window.innerHeight / 2, 
+      behavior: "smooth" 
+    });
+    setTimeout(() => positionTutorialBoxAndRocket(step, box), 600);
   }
 }
 
+// Position tutorial box with improved viewport handling
 function positionTutorialBoxAndRocket(step, box) {
   const pos = tutorialSteps[step].position();
-  box.style.top = pos.top + "px";
-  box.style.left = pos.left + "px";
-
-  // rocket position
-  const rocketTarget = { top: pos.top + 20, left: pos.left - 60 };
-
-  if (step === 0 || !lastRocketPos) {
-    rocket.style.top = rocketTarget.top + "px";
-    rocket.style.left = rocketTarget.left + "px";
-    rocket.style.display = "block";
-    rocket.classList.add("hovering");
-    lastRocketPos = rocketTarget;
-  } else {
-    rocket.classList.remove("hovering");
-    animateRocket(lastRocketPos, rocketTarget, 700, () => {
-      rocket.classList.add("hovering");
-    });
-    lastRocketPos = rocketTarget;
+  const padding = 16;
+  const boxWidth = box.offsetWidth;
+  const boxHeight = box.offsetHeight;
+  
+  // Calculate position relative to current viewport
+  let top = pos.top - window.scrollY;
+  let left = pos.left - window.scrollX;
+  
+  // If the tutorial box would be too low, position it above the target
+  if (top + boxHeight > window.innerHeight - padding) {
+    top = pos.top - window.scrollY - boxHeight - 20; // 20px gap above target
   }
+  
+  // If the tutorial box would be too high, position it below the target
+  if (top < padding) {
+    top = pos.top - window.scrollY + 40; // 40px gap below target
+  }
+  
+  // Clamp horizontal position to viewport
+  left = Math.max(padding, Math.min(left, window.innerWidth - boxWidth - padding));
+  
+  box.style.top = top + "px";
+  box.style.left = left + "px";
+  // Tutorial box is now shown immediately by the calling function
 }
 
 // Animate rocket movement
@@ -935,22 +1136,117 @@ function animateRocket(start, end, duration, callback) {
 // button handlers
 document.getElementById("tutorial-next").onclick = function() {
   tutorialStep++;
-  showTutorialStep(tutorialStep);
+  if (tutorialStep >= tutorialSteps.length) {
+    document.getElementById("tutorial-overlay").style.display = "none";
+    rocket.style.display = "none";
+    return;
+  }
+  // Hide the box while rocket moves
+  const box = document.getElementById("tutorial-box");
+  box.style.visibility = "hidden";
+  
+  // Check if this step has a specific element to scroll to
+  const elem = tutorialSteps[tutorialStep] && tutorialSteps[tutorialStep].positionElement && 
+    tutorialSteps[tutorialStep].positionElement();
+  
+  // Update text content from HTML element
+  const text = document.getElementById("tutorial-text");
+  const contentElement = document.getElementById(`tutorial-step-${tutorialStep}`);
+  text.innerHTML = contentElement ? contentElement.innerHTML : "Tutorial step not found";
+  
+  // Scroll to target element first, then position tutorial
+  if (elem) {
+    elem.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => {
+      positionTutorialBoxAndRocket(tutorialStep, box);
+      // Position rocket and show both simultaneously
+      const pos = tutorialSteps[tutorialStep].position();
+      const rocketTarget = { 
+        top: pos.top - window.scrollY + 20, 
+        left: pos.left - window.scrollX - 60 
+      };
+      
+      // If this is the first step or no previous position, show immediately
+      if (tutorialStep === 0 || !lastRocketPos) {
+        rocket.style.top = rocketTarget.top + "px";
+        rocket.style.left = rocketTarget.left + "px";
+        rocket.style.display = "block";
+        rocket.classList.add("hovering");
+        box.style.visibility = "visible";
+        lastRocketPos = rocketTarget;
+      } else {
+        // Animate rocket while showing tutorial box immediately
+        rocket.style.display = "block";
+        box.style.visibility = "visible";
+        animateRocket(lastRocketPos, rocketTarget, 700, () => {
+          lastRocketPos = rocketTarget;
+          rocket.classList.add("hovering");
+        });
+      }
+    }, 600);
+  } else {
+    // For elements without positionElement, scroll to general area
+    const pos = tutorialSteps[tutorialStep].position();
+    window.scrollTo({ 
+      top: pos.top - window.innerHeight / 2, 
+      behavior: "smooth" 
+    });
+    setTimeout(() => {
+      positionTutorialBoxAndRocket(tutorialStep, box);
+      // Position rocket and show both simultaneously
+      const rocketTarget = { 
+        top: pos.top - window.scrollY + 20, 
+        left: pos.left - window.scrollX - 60 
+      };
+      
+      // If this is the first step or no previous position, show immediately
+      if (tutorialStep === 0 || !lastRocketPos) {
+        rocket.style.top = rocketTarget.top + "px";
+        rocket.style.left = rocketTarget.left + "px";
+        rocket.style.display = "block";
+        rocket.classList.add("hovering");
+        box.style.visibility = "visible";
+        lastRocketPos = rocketTarget;
+      } else {
+        // Animate rocket while showing tutorial box immediately
+        rocket.style.display = "block";
+        box.style.visibility = "visible";
+        animateRocket(lastRocketPos, rocketTarget, 700, () => {
+          lastRocketPos = rocketTarget;
+          rocket.classList.add("hovering");
+        });
+      }
+    }, 600);
+  }
 };
 document.getElementById("tutorial-skip").onclick = function() {
   document.getElementById("tutorial-overlay").style.display = "none";
   rocket.style.display = "none";
 }
 
-// showTutorialStep(0);
-
-// show tutorial on first visit only
+// Show tutorial on first visit only
 window.addEventListener("load", function() {
-  if (!this.localStorage.getItem("tutorialSeen")) {
-    this.document.body.style.overflow = "hidden";
+    // Start tutorial at the top to show overview, then move to first step
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => {
+        showTutorialStep(0);
+    }, 500); // Wait for scroll to complete
+});
+
+// Add this function to restart the tutorial from the beginning
+function restartTutorial() {
+  tutorialStep = 0;
+  lastRocketPos = null;
+  rocket.style.display = "none";
+  rocket.classList.remove("hovering");
+  // Start at the top to show overview, then begin tutorial
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => {
     showTutorialStep(0);
-    this.localStorage.setItem("tutorialSeen", "true");
-  } else {
-    this.document.body.style.overflow = "";
-  }
+  }, 500); // Wait for scroll to complete
+}
+
+// Add this event listener for the button when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("show-tutorial-btn").onclick = restartTutorial;
 });
