@@ -847,8 +847,8 @@ function handleScrollEffects() {
   const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
   
   if (scrollPercent < 0.05) {
-    scaleAnimation(1.0);
-    scaleGraphs(1.0);
+    scaleAnimation(0.7);
+    scaleGraphs(0.7);
   }
   // Zone 1 (5-25%): Animation fills screen, graphs minimal
   else if (scrollPercent < 0.25) {
