@@ -339,22 +339,22 @@ const height = 400 - margin.top - margin.bottom; // Larger height for better vis
  */
 function plotData(input) {
     const { data, svg, line, xScale, yScale } = input;
-    
-    // Update the line
+
+  // Update the line
     const u = line.selectAll(".line").data([data], d => xScale(d.x));
-    
-    u.enter()
-        .append("path")
-        .attr("class", "line")
-        .merge(u)
-        .transition()
+
+  u.enter()
+    .append("path")
+    .attr("class", "line")
+    .merge(u)
+    .transition()
         .duration(ANIMATION_CONFIG.TRANSITION_TIME)
-        .attr("d", d3.line()
+    .attr("d", d3.line()
             .x(d => xScale(d.x))
             .y(d => yScale(d.y))
-        )
-        .attr("fill", "none")
-        .attr("stroke-width", 1.5);
+    )
+    .attr("fill", "none")
+    .attr("stroke-width", 1.5);
 }
 
 /**
@@ -364,27 +364,22 @@ function plotData(input) {
  * @returns {Object} Object containing SVG, scales, and plot elements
  */
 function createPlot(input) {
-    console.log("Creating plot for:", input.divID);
-    
     // Check if the target element exists
     const targetElement = document.querySelector(input.divID);
     if (!targetElement) {
-        console.error("Target element not found:", input.divID);
         return null;
     }
     
     // Create SVG element
     const svg = d3
-        .select(input.divID)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("id", input.divID)
-        .attr("class", "plot")
-        .append("g")
+    .select(input.divID)
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("id", input.divID)
+    .attr("class", "plot")
+    .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
-    
-    console.log("SVG created with dimensions:", width + margin.left + margin.right, "x", height + margin.top + margin.bottom);
     
     // Create scales
     const xScale = d3.scaleLinear()
@@ -396,33 +391,31 @@ function createPlot(input) {
         .range([height, 0]);
     
     // Add x-axis
-    svg.append("g")
+  svg.append("g")
         .attr("transform", `translate(0, ${height})`)
-        .attr("class", "myXaxis")
-        .call(d3.axisBottom(xScale));
-    
+    .attr("class", "myXaxis")
+    .call(d3.axisBottom(xScale));
+
     // Add x-axis label
-    svg.append("text")
-        .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height + margin.top + 20)
-        .text(input.xLabel);
-    
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height + margin.top + 20)
+    .text(input.xLabel);
+
     // Add y-axis
-    svg.append("g")
+  svg.append("g")
         .attr("class", "myYaxis")
-        .call(d3.axisLeft(yScale));
-    
+    .call(d3.axisLeft(yScale));
+
     // Add y-axis label
-    svg.append("text")
-        .attr("text-anchor", "end")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -margin.left + 20)
-        .attr("x", -margin.top)
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top)
         .text(input.yLabel);
-    
-    console.log("Plot created successfully for:", input.divID);
-    
+
     return { svg: svg, xScale: xScale, yScale: yScale };
 }
 
@@ -430,15 +423,15 @@ function createPlot(input) {
  * Creates and initializes the position plot
  */
 function initializePositionPlot() {
-    const position_input = {
-        divID: "#position-graph",
+const position_input = {
+  divID: "#position-graph",
         domain: { lower: 0, upper: TIME_POINTS[TIME_POINTS.length - 1] },
-        xLabel: "Time (s)",
+  xLabel: "Time (s)",
         range: { lower: 0, upper: 200 },
         yLabel: "Height (m)"
     };
     
-    const position_plot = createPlot(position_input);
+const position_plot = createPlot(position_input);
     
     // Create trajectory lines
     const x_actual_line = position_plot.svg.append("g")
@@ -490,7 +483,7 @@ function plotPosition(actual, parameterized) {
     
     // Plot parameterized trajectory
     plotData({
-        data: parameterized,
+      data: parameterized,
         svg: positionPlot.plot.svg,
         line: positionPlot.parameterizedLine,
         xScale: positionPlot.plot.xScale,
@@ -502,17 +495,17 @@ function plotPosition(actual, parameterized) {
  * Creates and initializes the action plot
  */
 function initializeActionPlot() {
-    const integral_input = {
-        divID: "#integral-graph",
+const integral_input = {
+  divID: "#integral-graph",
         domain: { lower: SLIDER_CONFIG.min, upper: SLIDER_CONFIG.max },
-        xLabel: "y1 (m)",
+  xLabel: "y1 (m)",
         range: { lower: -2500, upper: 10000 },
         yLabel: "Global Action (J.s)"
     };
-    
-    const integral_plot = createPlot(integral_input);
-    const colors = ["red", "orange", "green", "blue", "purple"];
-    
+
+const integral_plot = createPlot(integral_input);
+const colors = ["red", "orange", "green", "blue", "purple"];
+
     // Create action lines and points
     const lines = [];
     const points = [];
@@ -544,7 +537,7 @@ function initializeActionPlot() {
  * Updates the action plot with new data
  */
 function plotIntegral() {
-    for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 5; i++) {
         const data = generateActionData(i);
         plotData({
             data: data,
@@ -560,7 +553,7 @@ function plotIntegral() {
  * Updates action plot points with current trajectory values
  */
 function plotIntegralPoint() {
-    for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 5; i++) {
         if (i < yList.length) {
             actionPlot.points[i - 1].attr("cx", actionPlot.plot.xScale(yList[i]));
             actionPlot.points[i - 1].attr("cy", actionPlot.plot.yScale(calculateAction(yList)));
@@ -581,8 +574,6 @@ function plotIntegralPoint() {
 function updateSliderInfo(pointIndex) {
     const value = parseInt(document.getElementById(`y${pointIndex}-slider`).value);
     yList[pointIndex] = value;
-    
-    console.log(`Updated yList[${pointIndex}] to:`, value);
     
     // Update display
     document.getElementById(`print-y${pointIndex}`).innerHTML = value;
@@ -626,22 +617,10 @@ function randomizeY1() {
 let tutorialState = {
     currentStep: 0,
     isActive: false,
-    totalSteps: 8  // Updated to include new steps
+    totalSteps: 10,  // Updated to include new interactive steps
+    demonstrationTimer: null
 };
 
-/**
- * Tutorial step positions for rocket animation
- */
-const tutorialPositions = [
-    { x: 200, y: 100 },  // Welcome
-    { x: 150, y: 200 },  // Problem setup
-    { x: 150, y: 200 },  // Left graph
-    { x: 350, y: 200 },  // Right graph
-    { x: 250, y: 350 },  // Controls
-    { x: 250, y: 150 },  // Physics
-    { x: 250, y: 200 },  // Question
-    { x: 250, y: 250 }   // Ready to explore
-];
 
 /**
  * Starts the tutorial system
@@ -651,10 +630,8 @@ function startTutorial() {
     tutorialState.currentStep = 0;
     
     const overlay = document.getElementById("tutorial-overlay");
-    const rocket = document.getElementById("tutorial-rocket");
     
     overlay.style.display = "block";
-    rocket.style.display = "block";
     
     showTutorialStep();
 }
@@ -664,22 +641,72 @@ function startTutorial() {
  */
 function showTutorialStep() {
     const tutorialText = document.getElementById("tutorial-text");
-    const rocket = document.getElementById("tutorial-rocket");
     const stepContent = document.getElementById(`tutorial-step-${tutorialState.currentStep}`);
+    
+    // Clear any existing demonstration timer
+    if (tutorialState.demonstrationTimer) {
+        clearTimeout(tutorialState.demonstrationTimer);
+        tutorialState.demonstrationTimer = null;
+    }
     
     if (stepContent) {
         tutorialText.innerHTML = stepContent.innerHTML;
         
-        // Position rocket
-        const position = tutorialPositions[tutorialState.currentStep];
-        rocket.style.left = `${position.x}px`;
-        rocket.style.top = `${position.y}px`;
-        
-        // Position tutorial box
-        const tutorialBox = document.getElementById("tutorial-box");
-        tutorialBox.style.left = `${position.x + 20}px`;
-        tutorialBox.style.top = `${position.y - 100}px`;
+        // Handle interactive demonstration (step 4)
+        if (tutorialState.currentStep === 4) {
+            startDemonstration();
+        }
     }
+}
+
+/**
+ * Starts the interactive demonstration by changing y1 values
+ */
+function startDemonstration() {
+    const slider = document.getElementById("y1-slider");
+    if (!slider) return;
+    
+    const demoValues = [51, 100, 150, 0, 51]; // Start at classical, go high, higher, low, back to classical
+    let demoIndex = 0;
+    
+    // Change values with delays
+    function changeNextValue() {
+        if (demoIndex < demoValues.length) {
+            const value = demoValues[demoIndex];
+            slider.value = value;
+            
+            // During demonstration, only update what's necessary (not full plot recalculation)
+            yList[1] = value;
+            document.getElementById("print-y1").innerHTML = value;
+            
+            // Update trajectory point position
+            if (positionPlot && positionPlot.points && positionPlot.points[0]) {
+                positionPlot.points[0].attr("cy", positionPlot.plot.yScale(value));
+            }
+            
+            // Update action display and point position (lightweight operations)
+            const actionValue = calculateAction(yList);
+            document.getElementById("print-action").innerHTML = Math.floor(actionValue);
+            
+            if (actionPlot && actionPlot.points && actionPlot.points[0]) {
+                actionPlot.points[0].attr("cx", actionPlot.plot.xScale(value));
+                actionPlot.points[0].attr("cy", actionPlot.plot.yScale(actionValue));
+            }
+            
+            // Restart animation to show new trajectory
+    endAnimation();
+    startAnimation();
+            
+            demoIndex++;
+            
+            if (demoIndex < demoValues.length) {
+                tutorialState.demonstrationTimer = setTimeout(changeNextValue, 2000); // 2 second delay between changes
+            }
+        }
+    }
+    
+    // Start after a brief pause to let user read the instructions
+    tutorialState.demonstrationTimer = setTimeout(changeNextValue, 1500);
 }
 
 /**
@@ -700,11 +727,15 @@ function nextTutorialStep() {
 function endTutorial() {
     tutorialState.isActive = false;
     
+    // Clear demonstration timer
+    if (tutorialState.demonstrationTimer) {
+        clearTimeout(tutorialState.demonstrationTimer);
+        tutorialState.demonstrationTimer = null;
+    }
+    
     const overlay = document.getElementById("tutorial-overlay");
-    const rocket = document.getElementById("tutorial-rocket");
     
     overlay.style.display = "none";
-    rocket.style.display = "none";
 }
 
 /**
@@ -737,15 +768,11 @@ function initializeEventListeners() {
     // Slider input
     const slider = document.getElementById("y1-slider");
     if (slider) {
-        console.log("Slider found, adding event listener");
         slider.oninput = function() {
-            console.log("Slider value changed to:", this.value);
-            plotIntegral();
-            plotIntegralPoint();
-            updateSliderInfo(1);
+  plotIntegral();
+  plotIntegralPoint();
+  updateSliderInfo(1);
         };
-    } else {
-        console.error("Slider element not found!");
     }
     
     // Tutorial controls
@@ -769,14 +796,11 @@ function initializeEventListeners() {
  */
 function initializeApp() {
     try {
-        console.log("Initializing Global-Local Action Minimization Applet...");
-        
         // Check if D3 is loaded
         if (typeof d3 === 'undefined') {
             console.error("D3.js is not loaded!");
             return;
         }
-        console.log("D3.js version:", d3.version);
         
         // Check if required elements exist
         const positionGraph = document.getElementById("position-graph");
@@ -784,11 +808,8 @@ function initializeApp() {
         
         if (!positionGraph || !integralGraph) {
             console.error("Required graph elements not found!");
-            console.log("Available elements:", document.querySelectorAll('div[id*="graph"]'));
             return;
         }
-        
-        console.log("Graph elements found, initializing plots...");
         
         // Initialize trajectory data from slider
         initializeTrajectoryData();
@@ -797,23 +818,20 @@ function initializeApp() {
         window.positionPlot = initializePositionPlot();
         window.actionPlot = initializeActionPlot();
         
-        console.log("Plots initialized successfully");
-        
         // Initialize event listeners
         initializeEventListeners();
         
-        // Initial plot updates
-        plotIntegral();
-        plotIntegralPoint();
+        // Defer expensive plot calculations to avoid blocking page load
+        setTimeout(() => {
+            plotIntegral();
+            plotIntegralPoint();
+        }, 100);
         
         // Start animation
         startAnimation();
         
-        console.log("Applet initialization complete!");
-        
     } catch (error) {
         console.error("Error initializing applet:", error);
-        console.error("Stack trace:", error.stack);
     }
 }
 

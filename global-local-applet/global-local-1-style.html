@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global and Local Action Minimization</title>
-    <link rel="stylesheet" href="global-local-1-style.css">
+    <link rel="stylesheet" href="global-local-shared.css">
 
     <!-- Load d3.js with fallback -->
     <script src="d3.v4.js" onerror="this.onerror=null; this.src='https://d3js.org/d3.v4.js'"></script>
@@ -81,11 +81,10 @@
             <div id="tutorial-box">
                 <div id="tutorial-text"></div>
                 <div id="tutorial-buttons">
-                    <button id="tutorial-next">Next</button>
+                    <button id="tutorial-next">Continue Tutorial</button>
                     <button id="tutorial-skip">Skip</button>
                 </div>
             </div>
-            <span id="tutorial-rocket" style="display:none; position: absolute; font-size: 48px; z-index:3;">🚀</span>
         </div>
 
         <!-- Hidden tutorial content with MathJax formatting -->
@@ -119,13 +118,34 @@
             </div>
             
             <div id="tutorial-step-4">
-                <b>Interactive Controls</b><br>
-                Use the slider to vary \(y_1\) and watch how both graphs update in real-time. 
-                The "Classical Path" button sets \(y_1\) to the optimal value, while "Randomize" 
-                gives you a random starting point to explore.
+                <b>Interactive Demonstration</b><br>
+                Watch carefully! I'm going to change \(y_1\) to different values so you can observe 
+                what happens. Pay attention to both the trajectory curves and the action value. 
+                Notice how the blue curve moves and how the action changes in the right graph.
             </div>
             
             <div id="tutorial-step-5">
+                <b>What Did You Observe?</b><br>
+                <strong>Take a moment to think:</strong> When \(y_1\) was changed, what happened to:<br><br>
+                • The blue parameterized trajectory curve?<br>
+                • The action value shown in the display?<br>
+                • The relationship between the black and blue curves?<br><br>
+                Try to explain what's happening in your own words before continuing!
+            </div>
+            
+            <div id="tutorial-step-6">
+                <b>Explanation</b><br>
+                <strong>What was happening:</strong><br><br>
+                When \(y_1\) changes, the <strong>blue curve</strong> (parameterized path) must pass through 
+                the new red point position, creating a different local trajectory between the fixed points. 
+                Meanwhile, the <strong>black curve</strong> (classical path) stays the same because it represents 
+                the global minimum action solution.<br><br>
+                The action value increases as you move \(y_1\) away from 51 m, because this is the point where 
+                both local and global action are minimized. This demonstrates that minimizing action locally 
+                between points leads to the global minimum!
+            </div>
+            
+            <div id="tutorial-step-7">
                 <b>Physics Behind the Scenes</b><br>
                 The action is calculated using the Lagrangian formalism: 
                 \(S = \int [T - V] \, dt\) where \(T\) is kinetic energy and \(V\) is potential energy. 
@@ -133,17 +153,18 @@
                 minimizes it locally between adjacent points.
             </div>
             
-            <div id="tutorial-step-6">
-                <b>Key Question</b><br>
-                <strong>Question:</strong> When changing the \(y_1\) slider, where is the action minimized?<br><br>
-                <strong>Answer:</strong> The action is minimized when \(y_1\) is 51 m, falling on the global classical trajectory path. 
+            <div id="tutorial-step-8">
+                <b>Key Insight</b><br>
+                <strong>Important:</strong> When changing the \(y_1\) slider, the action is minimized when 
+                \(y_1 = 51\) m, falling on the global classical trajectory path. 
                 By putting \(y_1\) at 51 m, we minimize the action locally between the beginning and \(y_2\), 
-                and consequently minimize the global action as well.
+                and consequently minimize the global action as well. This is the fundamental principle of 
+                least action in classical mechanics!
             </div>
             
-            <div id="tutorial-step-7">
+            <div id="tutorial-step-9">
                 <b>Ready to Explore!</b><br>
-                Now you're ready to experiment! Try moving the slider and observe how the action changes. 
+                Now you're ready to experiment! Use the slider to vary \(y_1\) and observe how the action changes. 
                 Can you find the minimum action value? What happens when you move away from the classical path?
                 The "Randomize" button moves \(y_1\) to a random value, while "Classical Path" sets it to the optimal value.
             </div>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global and Local Action Minimization - Page 4</title>
+    <link rel="stylesheet" href="global-local-shared.css">
+
+    <!-- Load d3.js with fallback -->
+    <script src="d3.v4.js" onerror="this.onerror=null; this.src='https://d3js.org/d3.v4.js'"></script>
+    
+    <script defer src="global-local-4-style.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>Global and Local Action Minimization</h1>
+        </header>
+
+        <section id="welcome">
+            <div class="tutorial-prompt">
+                <button id="start-tutorial-main" class="tutorial-start-btn">Start Tutorial</button>
+            </div>
+        </section>
+
+        <section id="applet">
+            <!-- Main visualization area -->
+            <div id="visualization-container">
+                <div id="graphs-row">
+                    <div id="position-graph" aria-label="Position vs Time Graph"></div>
+                    <div id="integral-graph" aria-label="Action vs Control Points Graph"></div>
+                </div>
+            </div>
+            
+            <!-- Compact control panel at bottom -->
+            <div id="control-panel">
+                <div class="control-section">
+                    <div id="sliders-container">
+                        <div class="slider-control">
+                            <label for="y1-slider">
+                                <span id="red"></span> \(y_1\):
+                            </label>
+                            <input id="y1-slider" class="slider" type="range" min="0" max="200" value="0">
+                            <span id="print-y1">0</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y2-slider">
+                                <span id="orange"></span> \(y_2\):
+                            </label>
+                            <input id="y2-slider" class="slider" type="range" min="0" max="200" value="0">
+                            <span id="print-y2">0</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y3-slider">
+                                <span id="green"></span> \(y_3\):
+                            </label>
+                            <input id="y3-slider" class="slider" type="range" min="0" max="200" value="0">
+                            <span id="print-y3">0</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y4-slider">
+                                <span id="blue"></span> \(y_4\):
+                            </label>
+                            <input id="y4-slider" class="slider" type="range" min="0" max="200" value="0">
+                            <span id="print-y4">0</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y5-slider">
+                                <span id="purple"></span> \(y_5\):
+                            </label>
+                            <input id="y5-slider" class="slider" type="range" min="0" max="200" value="0">
+                            <span id="print-y5">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-display">
+                        <span class="action-label">Action:</span>
+                        <span id="print-action">0</span> <span class="action-unit">J.s</span>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button type="button" id="randomize-button">Randomize</button> 
+                        <button type="button" id="reset-button">Global Classical Path</button>
+                    </div>
+                    
+                    <div id="checkbox-grid">
+                        <p style="margin: 10px 0 5px 0; font-weight: 500;">Show action plots:</p>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <label><input type="checkbox" id="show-action-1" value="on" checked> y₁</label>
+                            <label><input type="checkbox" id="show-action-2" value="off"> y₂</label>
+                            <label><input type="checkbox" id="show-action-3" value="off"> y₃</label>
+                            <label><input type="checkbox" id="show-action-4" value="off"> y₄</label>
+                            <label><input type="checkbox" id="show-action-5" value="off"> y₅</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="question-block">
+            <p><b>Question 3:</b> In your own words, and based on your experience with this applet, explain why minimizing the global action 
+            over a time interval implies minimizing the <i>local</i> action in each time subinterval 
+            (and, consequently, obeying the classical equations of motion at each point).</p>
+        </section>
+
+        <nav class="buttons">
+            <button onclick="window.location.href = 'global-local-3-style.html'">Previous Page</button>
+        </nav>
+
+        <!-- Tutorial Overlay System -->
+        <div id="tutorial-overlay" style="display: none;">
+            <div id="tutorial-backdrop"></div>
+            <div id="tutorial-box">
+                <div id="tutorial-text"></div>
+                <div id="tutorial-buttons">
+                    <button id="tutorial-next">Continue Tutorial</button>
+                    <button id="tutorial-skip">Skip</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden tutorial content with MathJax formatting -->
+        <div id="tutorial-content" style="display: none;">
+            <div id="tutorial-step-0">
+                <b>Welcome to Page 4!</b><br>
+                Finally, you are now free to manipulate all points \(y_1\) through \(y_5\). These points are set to 
+                random initial values. Try to find the global classical path using the action plots for each
+                separate \(y_i\) choice. <strong>Hint:</strong> the global classical trajectory has an action of \(-1334\) J.s.
+            </div>
+            
+            <div id="tutorial-step-1">
+                <b>Full Control</b><br>
+                On this page, all five trajectory points \(y_1\) through \(y_5\) can be adjusted using sliders. 
+                They start at random values. This gives you complete freedom to explore the action landscape!
+            </div>
+            
+            <div id="tutorial-step-2">
+                <b>Trajectory Visualization</b><br>
+                The left graph shows the parameterized trajectory (blue curve) that must pass through all the 
+                colored points you set. As you adjust the sliders, watch how the trajectory changes to 
+                connect all the points.
+            </div>
+            
+            <div id="tutorial-step-3">
+                <b>Action Plots</b><br>
+                The right graph shows action plots for each \(y_i\). You can toggle their visibility using the 
+                checkboxes below. Each curve shows how the action varies when you change that specific point 
+                while keeping all others fixed. Use these to guide your search for the minimum action!
+            </div>
+            
+            <div id="tutorial-step-4">
+                <b>Finding the Global Minimum</b><br>
+                Your goal is to find the trajectory that minimizes the global action. Start by adjusting each 
+                slider one at a time and observe how the action changes. Look for the minimum point on each 
+                action curve - that's where that particular \(y_i\) should be set!
+            </div>
+            
+            <div id="tutorial-step-5">
+                <b>Using the Tools</b><br>
+                The "Randomize" button sets all points to new random values - useful for exploring different 
+                starting positions. When you think you've found the trajectory that minimizes the global action, 
+                click "Global Classical Path" to check your answer!
+            </div>
+            
+            <div id="tutorial-step-6">
+                <b>Ready to Explore!</b><br>
+                Try adjusting the sliders to minimize the action. Remember, the target action is \(-1334\) J.s. 
+                Can you find the optimal trajectory? Use the action plot checkboxes to see which points need 
+                adjustment. Good luck!
+            </div>
+        </div>
+
+        <footer>
+            <p><em>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</em></p>
+        </footer>
+    </main>
+</body>
+</html>
+
