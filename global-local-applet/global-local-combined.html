@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global–Local Action Minimization – Interactive Tutorial</title>
+  <link rel="stylesheet" href="global-local-shared.css">
+  <style>
+    /* Combined page specific styles */
+    body { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    header h1 {
+      margin-bottom: 10px;
+      font-size: 2em;
+    }
+    
+    .header-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1em;
+      margin: 0;
+    }
+    
+    .layout { 
+      display: grid; 
+      grid-template-columns: 280px 1fr; 
+      gap: 24px;
+      position: relative;
+    }
+    
+    /* Enhanced Sidebar */
+    .sidebar { 
+      position: sticky; 
+      top: 20px; 
+      align-self: start; 
+      border: 1px solid var(--border-color); 
+      border-radius: 12px;
+      padding: 20px; 
+      background: var(--bg-secondary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+    
+    .sidebar h3 {
+      margin: 0 0 16px 0;
+      font-size: 1.1em;
+      color: var(--text-primary);
+      padding-bottom: 12px;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: var(--border-color);
+      border-radius: 2px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--border-color);
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+    
+    .nav-item {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+      position: relative;
+    }
+    
+    .nav-item:hover {
+      background: var(--bg-primary);
+      border-color: var(--border-color);
+      transform: translateX(4px);
+    }
+    
+    .nav-item.completed::after {
+      content: '✓';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--success-color);
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    
+    .nav-number {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      background: rgba(0,0,0,0.1);
+      border-radius: 50%;
+      margin-right: 10px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+    
+    .nav-title {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+    
+    .nav-desc {
+      font-size: 0.85em;
+      color: var(--text-secondary);
+      opacity: 0.8;
+      line-height: 1.4;
+    }
+    
+    /* Section styling */
+    .section {
+      scroll-margin-top: 20px;
+      margin-bottom: 40px;
+      padding: 30px;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      border: 2px solid var(--border-color);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .section-header {
+      margin-bottom: 16px;
+    }
+    
+    .section h2 {
+      margin: 0 0 8px 0;
+      font-size: 1.6em;
+      color: var(--text-primary);
+    }
+    
+    .section-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .meta-badge {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: 500;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+    }
+    
+    .meta-badge.learning {
+      background: rgba(0,122,255,0.1);
+      color: var(--accent-primary);
+      border-color: rgba(0,122,255,0.2);
+    }
+    
+    .section-description {
+      margin: 0 0 20px 0;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.05em;
+    }
+    
+    .section-objectives {
+      background: var(--bg-secondary);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .section-objectives h4 {
+      margin: 0 0 10px 0;
+      color: var(--text-primary);
+      font-size: 1em;
+    }
+    
+    .section-objectives ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-secondary);
+    }
+    
+    .section-objectives li {
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    
+    .applet-container {
+      position: relative;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg-primary);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    
+    .applet-frame {
+      width: 100%;
+      height: 780px;
+      border: none;
+      display: block;
+    }
+    
+    /* Welcome Overlay */
+    .welcome-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .welcome-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .welcome-modal {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    
+    .welcome-overlay.show .welcome-modal {
+      transform: scale(1);
+    }
+    
+    .welcome-modal h2 {
+      margin: 0 0 16px 0;
+      color: var(--accent-primary);
+      font-size: 1.8em;
+    }
+    
+    .welcome-modal p {
+      margin: 0 0 16px 0;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    
+    .welcome-modal ul {
+      margin: 0 0 24px 20px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    
+    .welcome-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    
+    .btn-primary, .btn-secondary {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background: var(--accent-primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--accent-secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,122,255,0.3);
+    }
+    
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--border-color);
+    }
+    
+    /* Guided Tour Indicator */
+    .tour-indicator {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: var(--accent-primary);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,122,255,0.3);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @media (max-width: 1024px) {
+      .layout { 
+        grid-template-columns: 1fr; 
+      } 
+      .sidebar { 
+        position: static;
+        margin-bottom: 20px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .section {
+        padding: 20px;
+      }
+      .welcome-modal {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome Overlay -->
+  <div class="welcome-overlay" id="welcome-overlay">
+    <div class="welcome-modal">
+      <h2>Welcome to Action Minimization!</h2>
+      <p>This interactive tutorial will guide you through the fundamental concepts of <strong>global and local action minimization</strong> in classical mechanics.</p>
+      
+      <p><strong>What you'll learn:</strong></p>
+      <ul>
+        <li>How trajectories minimize action globally and locally</li>
+        <li>The relationship between classical paths and action minimization</li>
+        <li>How constraints affect the minimization process</li>
+        <li>The principle of least action in action!</li>
+      </ul>
+      
+      <p><strong>Your journey:</strong> You'll progress through 4 interactive sections, each building on the previous concepts. Take your time exploring each applet—interaction is key to understanding!</p>
+      
+      <div class="welcome-buttons">
+        <button class="btn-secondary" onclick="skipWelcome()">Skip Intro</button>
+        <button class="btn-primary" onclick="startGuidedTour()">Start Guided Tour</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <header>
+      <h1>Global and Local Action Minimization</h1>
+      <p class="header-subtitle">An Interactive Exploration of Classical Mechanics</p>
+    </header>
+
+    <div class="layout">
+      <!-- Enhanced Sidebar -->
+      <nav class="sidebar" aria-label="Section navigation">
+        <h3>Learning Path</h3>
+        
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        
+        <a href="#page-1" class="nav-item" id="link-1" data-section="1">
+          <span class="nav-number">1</span>
+          <span class="nav-title">Vary One Point</span>
+          <span class="nav-desc">Start here: explore how changing \(y_1\) affects action</span>
+        </a>
+        
+        <a href="#page-2" class="nav-item" id="link-2" data-section="2">
+          <span class="nav-number">2</span>
+          <span class="nav-title">Fixed Random Points</span>
+          <span class="nav-desc">Minimize action with constraints</span>
+        </a>
+        
+        <a href="#page-3" class="nav-item" id="link-3" data-section="3">
+          <span class="nav-number">3</span>
+          <span class="nav-title">Multiple Variables</span>
+          <span class="nav-desc">Control \(y_2\), \(y_3\), \(y_4\) with endpoints fixed</span>
+        </a>
+        
+        <a href="#page-4" class="nav-item" id="link-4" data-section="4">
+          <span class="nav-number">4</span>
+          <span class="nav-title">Full Control</span>
+          <span class="nav-desc">Find the global minimum with all controls</span>
+        </a>
+      </nav>
+
+      <!-- Main Content -->
+      <div>
+        <!-- Section 1 -->
+        <section id="page-1" class="section" aria-labelledby="h2-1" data-section="1">
+          <div class="section-header">
+            <h2 id="h2-1">Section 1: Varying a Single Point</h2>
+            <div class="section-meta">
+              <span class="meta-badge learning">Foundation</span>
+              <span class="meta-badge">~10 min</span>
+            </div>
+          </div>
+          
+          <p class="section-description">
+            <strong>Start your journey here!</strong> In this first section, you'll explore how changing a single trajectory point \(y_1\) 
+            affects the action. Compare the <strong>blue parameterized path</strong> (which must pass through your chosen point) 
+            with the <strong>black classical path</strong> (the global minimum). Watch how the action changes as you adjust the slider!
+          </p>
+          
+          <div class="section-objectives">
+            <h4>Learning Objectives:</h4>
+            <ul>
+              <li>Understand how action depends on trajectory shape</li>
+              <li>Identify the relationship between parameterized and classical paths</li>
+              <li>Observe where action is minimized</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-1-style.html" loading="lazy" title="Section 1: Vary y1"></iframe>
+          </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="page-2" class="section" aria-labelledby="h2-2" data-section="2">
+          <div class="section-header">
+            <h2 id="h2-2">Section 2: Constraints and Local Minimization</h2>
+            <div class="section-meta">
+              <span class="meta-badge learning">Building</span>
+              <span class="meta-badge">~10 min</span>
+            </div>
+          </div>
+          
+          <p class="section-description">
+            Now the scenario changes! Points \(y_2\), \(y_3\), \(y_4\), and \(y_5\) are fixed to <strong>random values</strong> 
+            (different each time you load). Only \(y_1\) remains adjustable. This demonstrates a crucial insight: 
+            <strong>even with constraints, you can minimize action locally</strong> by choosing the optimal \(y_1\) 
+            between the fixed endpoints.
+          </p>
+          
+          <div class="section-objectives">
+            <h4>Learning Objectives:</h4>
+            <ul>
+              <li>See how constraints affect minimization</li>
+              <li>Understand local vs. global minimum</li>
+              <li>Discover the classical path between adjacent points</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-2-style.html" loading="lazy" title="Section 2: Vary y1 with constraints"></iframe>
+          </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="page-3" class="section" aria-labelledby="h2-3" data-section="3">
+          <div class="section-header">
+            <h2 id="h2-3">Section 3: Multiple Variables with Endpoint Constraints</h2>
+            <div class="section-meta">
+              <span class="meta-badge learning">Advanced</span>
+              <span class="meta-badge">~15 min</span>
+            </div>
+          </div>
+          
+          <p class="section-description">
+            Step up the complexity! Here, the endpoints \(y_1 = y_5 = 0\) are fixed, but you control three intermediate points: 
+            \(y_2\), \(y_3\), and \(y_4\). Notice the <strong>three different trajectory curves</strong>: 
+            the black global classical path, the blue parameterized path, and the gray constrained classical path. 
+            Can you find the constrained minimum?
+          </p>
+          
+          <div class="section-objectives">
+            <h4>Learning Objectives:</h4>
+            <ul>
+              <li>Minimize action with multiple variables</li>
+              <li>Compare constrained vs. unconstrained classical paths</li>
+              <li>Use action plots to guide your search</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-3-style.html" loading="lazy" title="Section 3: Vary y2-y4"></iframe>
+          </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="page-4" class="section" aria-labelledby="h2-4" data-section="4">
+          <div class="section-header">
+            <h2 id="h2-4">Section 4: Full Control – Finding the Global Minimum</h2>
+            <div class="section-meta">
+              <span class="meta-badge learning">Mastery</span>
+              <span class="meta-badge">~15 min</span>
+            </div>
+          </div>
+          
+          <p class="section-description">
+            <strong>Your final challenge!</strong> You now have complete control over all five trajectory points. 
+            Use the action plots for each variable (toggle them with checkboxes) to systematically find the 
+            <strong>global classical trajectory</strong> that minimizes action. The target action is \(-1334\) J.s. 
+            Can you find it?
+          </p>
+          
+          <div class="section-objectives">
+            <h4>Learning Objectives:</h4>
+            <ul>
+              <li>Apply everything you've learned</li>
+              <li>Find the global minimum action trajectory</li>
+              <li>Understand how local minimization leads to global minimization</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-4-style.html" loading="lazy" title="Section 4: Full control"></iframe>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      <p><em>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</em></p>
+    </footer>
+  </main>
+
+  <script>
+    // Progress tracking
+    const STORAGE_KEY = 'action-minimization-progress';
+    const sections = [
+      { id: 'page-1', link: document.getElementById('link-1'), number: 1 },
+      { id: 'page-2', link: document.getElementById('link-2'), number: 2 },
+      { id: 'page-3', link: document.getElementById('link-3'), number: 3 },
+      { id: 'page-4', link: document.getElementById('link-4'), number: 4 },
+    ];
+    
+    let currentSection = 1;
+    let completedSections = new Set();
+    let tourActive = false;
+    let tourStep = 0;
+    
+    // Load progress from localStorage
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const data = JSON.parse(saved);
+          completedSections = new Set(data.completed || []);
+          currentSection = data.current || 1;
+          updateProgressUI();
+        }
+      } catch (e) {
+        console.error('Failed to load progress:', e);
+      }
+    }
+    
+    // Save progress to localStorage
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          completed: Array.from(completedSections),
+          current: currentSection,
+          timestamp: Date.now()
+        }));
+      } catch (e) {
+        console.error('Failed to save progress:', e);
+      }
+    }
+    
+    // Update progress UI
+    function updateProgressUI() {
+      // Update progress bar
+      const progress = (completedSections.size / sections.length) * 100;
+      document.getElementById('progress-fill').style.width = progress + '%';
+      
+      // Update section completion markers
+      sections.forEach((s, index) => {
+        const sectionEl = document.getElementById(s.id);
+        const link = s.link;
+        const sectionNum = index + 1;
+        
+        if (completedSections.has(sectionNum)) {
+          link.classList.add('completed');
+          if (sectionEl) sectionEl.classList.add('completed');
+        } else {
+          link.classList.remove('completed');
+          if (sectionEl) sectionEl.classList.remove('completed');
+        }
+      });
+      
+    }
+    
+    // Mark section as completed
+    function markSectionCompleted(sectionNum) {
+      completedSections.add(sectionNum);
+      saveProgress();
+      updateProgressUI();
+    }
+    
+    // Smooth scroll for sidebar links
+    sections.forEach(s => {
+      s.link.addEventListener('click', (e) => {
+        e.preventDefault();
+        scrollToSection(s.id);
+        currentSection = s.number;
+        saveProgress();
+      });
+    });
+    
+    function scrollToSection(sectionId) {
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + sectionId);
+        updateActiveSection(sectionId);
+      }
+    }
+    
+    function updateActiveSection(activeId) {
+      sections.forEach(s => {
+        if (s.id === activeId) {
+          const sectionEl = document.getElementById(s.id);
+          if (sectionEl) sectionEl.classList.add('highlighted');
+          currentSection = s.number;
+        } else {
+          const sectionEl = document.getElementById(s.id);
+          if (sectionEl) sectionEl.classList.remove('highlighted');
+        }
+      });
+    }
+    
+    // Intersection Observer for active section tracking
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          updateActiveSection(entry.target.id);
+          currentSection = parseInt(entry.target.dataset.section) || 1;
+          saveProgress();
+          
+          // Auto-mark as viewed after 10 seconds
+          const sectionNum = parseInt(entry.target.dataset.section);
+          if (sectionNum && !completedSections.has(sectionNum)) {
+            setTimeout(() => {
+              if (entry.isIntersecting) {
+                markSectionCompleted(sectionNum);
+              }
+            }, 10000); // 10 seconds
+          }
+        }
+      });
+    }, { root: null, rootMargin: '0px', threshold: 0.5 });
+    
+    sections.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) io.observe(el);
+    });
+    
+    // Welcome overlay
+    function showWelcome() {
+      const overlay = document.getElementById('welcome-overlay');
+      const hasSeenWelcome = localStorage.getItem('has-seen-welcome');
+      if (!hasSeenWelcome) {
+        setTimeout(() => overlay.classList.add('show'), 100);
+      } else {
+        loadProgress();
+      }
+    }
+    
+    function skipWelcome() {
+      document.getElementById('welcome-overlay').classList.remove('show');
+      localStorage.setItem('has-seen-welcome', 'true');
+      loadProgress();
+    }
+    
+    function startGuidedTour() {
+      skipWelcome();
+      tourActive = true;
+      tourStep = 0;
+      nextTourStep();
+    }
+    
+    function nextTourStep() {
+      if (!tourActive || tourStep >= sections.length) {
+        tourActive = false;
+        return;
+      }
+      
+      const section = sections[tourStep];
+      scrollToSection(section.id);
+      
+      // Highlight section
+      const sectionEl = document.getElementById(section.id);
+      if (sectionEl) {
+        sectionEl.classList.add('highlighted');
+        
+        // Add tour indicator
+        let indicator = sectionEl.querySelector('.tour-indicator');
+        if (!indicator) {
+          indicator = document.createElement('div');
+          indicator.className = 'tour-indicator';
+          indicator.textContent = `Section ${section.number} of ${sections.length}`;
+          sectionEl.appendChild(indicator);
+        }
+      }
+      
+      tourStep++;
+      
+      // Auto-advance after 15 seconds, or wait for user
+      setTimeout(() => {
+        if (tourActive && tourStep < sections.length) {
+          const prevSection = sections[tourStep - 1];
+          const prevEl = document.getElementById(prevSection.id);
+          if (prevEl) {
+            const indicator = prevEl.querySelector('.tour-indicator');
+            if (indicator) indicator.remove();
+            prevEl.classList.remove('highlighted');
+          }
+          nextTourStep();
+        }
+      }, 15000);
+    }
+    
+    // Reset progress
+    function resetProgress() {
+      if (confirm('Reset all progress and start over?')) {
+        completedSections.clear();
+        currentSection = 1;
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('has-seen-welcome');
+        updateProgressUI();
+        scrollToSection('page-1');
+        setTimeout(() => showWelcome(), 500);
+      }
+    }
+    
+    // Handle hash on load
+    window.addEventListener('load', () => {
+      if (location.hash) {
+        const el = document.querySelector(location.hash);
+        if (el) {
+          setTimeout(() => {
+            el.scrollIntoView();
+            updateActiveSection(el.id);
+          }, 100);
+        }
+      } else {
+        showWelcome();
+      }
+      loadProgress();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' && e.ctrlKey) {
+        e.preventDefault();
+        const nextIndex = Math.min(sections.length - 1, currentSection);
+        if (sections[nextIndex]) {
+          scrollToSection(sections[nextIndex].id);
+        }
+      } else if (e.key === 'ArrowUp' && e.ctrlKey) {
+        e.preventDefault();
+        const prevIndex = Math.max(0, currentSection - 2);
+        if (sections[prevIndex]) {
+          scrollToSection(sections[prevIndex].id);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

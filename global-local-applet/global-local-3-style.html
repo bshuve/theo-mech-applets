@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global and Local Action Minimization - Page 3</title>
+    <link rel="stylesheet" href="global-local-shared.css">
+
+    <!-- Load d3.js with fallback -->
+    <script src="d3.v4.js" onerror="this.onerror=null; this.src='https://d3js.org/d3.v4.js'"></script>
+    
+    <script defer src="global-local-3-style.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>Global and Local Action Minimization</h1>
+        </header>
+
+        <section id="welcome">
+            <div class="tutorial-prompt">
+                <button id="start-tutorial-main" class="tutorial-start-btn">Start Tutorial</button>
+            </div>
+        </section>
+
+        <section id="applet">
+            <!-- Main visualization area -->
+            <div id="visualization-container">
+                <div id="graphs-row">
+                    <div id="position-graph" aria-label="Position vs Time Graph"></div>
+                    <div id="integral-graph" aria-label="Action vs Control Points Graph"></div>
+                </div>
+            </div>
+            
+            <!-- Compact control panel at bottom -->
+            <div id="control-panel">
+                <div class="control-section">
+                    <div id="sliders-container">
+                        <div class="slider-control">
+                            <label id="constants">
+                                <span id="red"></span> \(y_1\):
+                            </label>
+                            <span>0</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y2-slider">
+                                <span id="orange"></span> \(y_2\):
+                            </label>
+                            <input id="y2-slider" class="slider" type="range" min="0" max="200" value="33">
+                            <span id="print-y2">33</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y3-slider">
+                                <span id="green"></span> \(y_3\):
+                            </label>
+                            <input id="y3-slider" class="slider" type="range" min="0" max="200" value="49">
+                            <span id="print-y3">49</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label for="y4-slider">
+                                <span id="blue"></span> \(y_4\):
+                            </label>
+                            <input id="y4-slider" class="slider" type="range" min="0" max="200" value="33">
+                            <span id="print-y4">33</span>
+                        </div>
+                        
+                        <div class="slider-control">
+                            <label id="constants">
+                                <span id="purple"></span> \(y_5\):
+                            </label>
+                            <span>0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-display">
+                        <span class="action-label">Action:</span>
+                        <span id="print-action">0</span> <span class="action-unit">J.s</span>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button type="button" id="randomize-button">Randomize</button> 
+                        <button type="button" id="reset-button">Reset</button>
+                    </div>
+                    
+                    <div id="checkbox-grid">
+                        <p style="margin: 10px 0 5px 0; font-weight: 500;">Show action plots:</p>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <label><input type="checkbox" id="show-action-1"> y₁</label>
+                            <label><input type="checkbox" id="show-action-2" checked> y₂</label>
+                            <label><input type="checkbox" id="show-action-3" checked> y₃</label>
+                            <label><input type="checkbox" id="show-action-4" checked> y₄</label>
+                            <label><input type="checkbox" id="show-action-5"> y₅</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="question-block">
+            <p>You can now vary multiple points on the trajectory. However, we have fixed \(y_1\) and \(y_5\) to 0 to reduce 
+            the number of parameters you control and allow you to explore them more thoroughly. The action now depends on 
+            \(y_2\), \(y_3\), and \(y_4\). As before, the black curve is the global classical path, the blue curve is the 
+            parameterized path. The new gray curve is the classical path <i>subject to the constraint</i> that \(y_1=y_5=0\). 
+            <br><br>
+            Try moving the sliders for \(y_2\), \(y_3\), and \(y_4\) and see how these changes affect the action. The graphs 
+            show the action over the entire trajectory; by clicking on the checkboxes, you can add or remove graphs for each 
+            \(y_i\) showing how the action varies with that parameter <i>assuming all other points are held fixed</i>. 
+            Investigate how these curves change as you move each slider. <br><br>
+            If you hit the "Randomize" button, can you recover the local minimum of the action by varying \(y_2\), \(y_3\), 
+            and \(y_4\)? Note that you will not be able to find the absolute minimum action because \(y_1\) and \(y_5\) 
+            cannot be set to the classical values.</p>
+        </section>
+
+        <nav class="buttons">
+            <button onclick="window.location.href = 'global-local-2-style.html'">Previous Page</button>
+            <button onclick="window.location.href = 'global-local-4-style.html'">Next Page</button>
+        </nav>
+
+        <!-- Tutorial Overlay System -->
+        <div id="tutorial-overlay" style="display: none;">
+            <div id="tutorial-backdrop"></div>
+            <div id="tutorial-box">
+                <div id="tutorial-text"></div>
+                <div id="tutorial-buttons">
+                    <button id="tutorial-next">Continue Tutorial</button>
+                    <button id="tutorial-skip">Skip</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden tutorial content with MathJax formatting -->
+        <div id="tutorial-content" style="display: none;">
+            <div id="tutorial-step-0">
+                <b>Welcome to Page 3!</b><br>
+                On this page, you can now vary multiple points on the trajectory: \(y_2\), \(y_3\), and \(y_4\). 
+                However, \(y_1\) and \(y_5\) are fixed at 0 to simplify the exploration. Let's discover how varying 
+                multiple points affects the action!
+            </div>
+            
+            <div id="tutorial-step-1">
+                <b>Fixed Endpoints</b><br>
+                Notice that \(y_1\) and \(y_5\) are displayed as fixed values (0) rather than sliders. This constraint 
+                reduces the number of parameters you control, making it easier to explore how \(y_2\), \(y_3\), and \(y_4\) 
+                interact to affect the action.
+            </div>
+            
+            <div id="tutorial-step-2">
+                <b>Three Trajectory Curves</b><br>
+                The left graph shows three curves: the <strong>black curve</strong> is the global classical path 
+                (optimal for the entire time range), the <strong>blue curve</strong> is the parameterized path 
+                (constrained by your slider values), and the <strong>gray curve</strong> is the classical path 
+                subject to the constraint that \(y_1 = y_5 = 0\).
+            </div>
+            
+            <div id="tutorial-step-3">
+                <b>Action Plots</b><br>
+                The right graph shows action plots for each \(y_i\). By default, plots for \(y_2\), \(y_3\), and \(y_4\) 
+                are visible (since these are the points you can control). Each curve shows how the action varies when 
+                you change that specific point while keeping all others fixed.
+            </div>
+            
+            <div id="tutorial-step-4">
+                <b>Finding the Local Minimum</b><br>
+                Your goal is to find the trajectory that minimizes the action given the constraint that \(y_1 = y_5 = 0\). 
+                Try adjusting each slider one at a time and observe how the action changes. Look for the minimum point 
+                on each action curve!
+            </div>
+            
+            <div id="tutorial-step-5">
+                <b>Using the Tools</b><br>
+                The "Randomize" button sets \(y_2\), \(y_3\), and \(y_4\) to random values. The "Reset" button sets them 
+                to the constrained minimum values (33, 49, 33). Use the checkboxes to toggle the visibility of action 
+                plots for each point.
+            </div>
+            
+            <div id="tutorial-step-6">
+                <b>Key Insight</b><br>
+                <strong>Important:</strong> Because \(y_1\) and \(y_5\) are fixed at 0 (not their classical values), you 
+                cannot achieve the absolute global minimum action. However, you can still find the local minimum subject 
+                to this constraint by minimizing the action with respect to \(y_2\), \(y_3\), and \(y_4\).
+            </div>
+            
+            <div id="tutorial-step-7">
+                <b>Ready to Explore!</b><br>
+                Use the sliders to minimize the action. Notice how the three trajectory curves relate to each other. 
+                Can you recover the constrained minimum by adjusting \(y_2\), \(y_3\), and \(y_4\)? The "Reset" button 
+                will show you the answer!
+            </div>
+        </div>
+
+        <footer>
+            <p><em>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</em></p>
+        </footer>
+    </main>
+</body>
+</html>
+

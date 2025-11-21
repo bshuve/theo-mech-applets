@@ -53,6 +53,7 @@ button:hover {
 /* Sliders */
 .slider {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 6px;
     background: var(--border-color);
@@ -473,4 +474,17 @@ footer {
 footer p {
     margin: 0;
     font-size: 0.9em;
+}
+
+#question-block {
+    background: var(--bg-secondary);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+#question-block p {
+    margin: 0;
+    line-height: 1.6;
 }
