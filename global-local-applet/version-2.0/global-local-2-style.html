@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global and Local Action Minimization - Page 2</title>
+    <link rel="stylesheet" href="global-local-shared.css">
+
+    <!-- Load d3.js with fallback -->
+    <script src="d3.v4.js" onerror="this.onerror=null; this.src='https://d3js.org/d3.v4.js'"></script>
+    
+    <script defer src="global-local-2-style.js"></script>
+
+    <!-- LaTeX support -->
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>Global and Local Action Minimization</h1>
+        </header>
+
+        <section id="welcome">
+            <div class="tutorial-prompt">
+                <button id="start-tutorial-main" class="tutorial-start-btn">Start Tutorial</button>
+            </div>
+        </section>
+
+        <section id="applet">
+            <!-- Main visualization area -->
+            <div id="visualization-container">
+                <div id="graphs-row">
+                    <div id="position-graph" aria-label="Position vs Time Graph"></div>
+                    <div id="integral-graph" aria-label="Action vs y1 Graph"></div>
+                </div>
+            </div>
+            
+            <!-- Compact control panel at bottom -->
+            <div id="control-panel">
+                <div class="control-section">
+                    <div class="slider-control">
+                        <label for="y1-slider">
+                            <span id="red" aria-label="Red trajectory point"></span> \(y_1\):
+                        </label>
+                        <input id="y1-slider" class="slider" type="range" min="0" max="200" value="0" 
+                               aria-label="Adjust y1 value">
+                        <span id="print-y1" aria-label="Current y1 value">0</span>
+                    </div>
+                    
+                    <div class="action-display">
+                        <span class="action-label">Action:</span>
+                        <span id="print-action">0</span> <span class="action-unit">J.s</span>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button type="button" id="randomize-button">Randomize</button> 
+                        <button type="button" id="reset-button">Minimum Action for y1</button>
+                    </div>
+                </div>
+                
+                <div class="trajectory-info">
+                    <div class="trajectory-points">
+                        <span class="point-label"><span id="orange"></span> \(y_2\): <span id="y2">0</span>m</span>
+                        <span class="point-label"><span id="green"></span> \(y_3\): <span id="y3">0</span>m</span>
+                        <span class="point-label"><span id="blue"></span> \(y_4\): <span id="y4">0</span>m</span>
+                        <span class="point-label"><span id="purple"></span> \(y_5\): <span id="y5">0</span>m</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="buttons">
+            <button onclick="window.location.href = 'global-local-1-style.html'">Previous Page</button>
+            <button onclick="window.location.href = 'global-local-3-style.html'">Next Page</button>
+        </nav>
+
+        <!-- Tutorial Overlay System -->
+        <div id="tutorial-overlay" style="display: none;">
+            <div id="tutorial-backdrop"></div>
+            <div id="tutorial-box">
+                <div id="tutorial-text"></div>
+                <div id="tutorial-buttons">
+                    <button id="tutorial-next">Continue Tutorial</button>
+                    <button id="tutorial-skip">Skip</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden tutorial content with MathJax formatting -->
+        <div id="tutorial-content" style="display: none;">
+            <div id="tutorial-step-0">
+                <b>Welcome to Page 2!</b><br>
+                On this page, \(y_2\), \(y_3\), \(y_4\), and \(y_5\) no longer lie along the classical path but take random, 
+                fixed values each time the page is loaded. Only \(y_1\) can be varied using the slider. 
+                Let's explore how varying one point affects the action value!
+            </div>
+            
+            <div id="tutorial-step-1">
+                <b>Random Fixed Points</b><br>
+                Notice that \(y_2\), \(y_3\), \(y_4\), and \(y_5\) are displayed in the control panel with fixed values. 
+                These were randomly generated when the page loaded. Only \(y_1\) (shown in red) can be adjusted with the slider.
+            </div>
+            
+            <div id="tutorial-step-2">
+                <b>Trajectory Visualization</b><br>
+                The left graph shows two curves: the <strong>black curve</strong> is the global classical path 
+                (optimal for the entire time range), while the <strong>blue curve</strong> is the parameterized path 
+                constrained by the fixed points. Notice how the blue curve must pass through all the colored dots!
+            </div>
+            
+            <div id="tutorial-step-3">
+                <b>Action vs y1</b><br>
+                The right graph shows how the action varies as you change \(y_1\). Even though other points are fixed at 
+                random values, you can still minimize the action by choosing the optimal \(y_1\). 
+                Try moving the slider and watch how the action changes!
+            </div>
+            
+            <div id="tutorial-step-4">
+                <b>Key Question</b><br>
+                <strong>Think about this:</strong> Find the value of \(y_1\) that minimizes the action. Since only \(y_1\) 
+                can be changed, only the paths between \(y_0\) and \(y_2\) contribute to changes in the action. 
+                What is the physical significance of these paths at the minimum?
+            </div>
+            
+            <div id="tutorial-step-5">
+                <b>Answer</b><br>
+                The action is minimized when \(y_1\) is <span id="tutorial-y-at-t1"></span> m. This path is the classical 
+                path between the two fixed points \(y_0\) and \(y_2\); this is different from the true classical path 
+                over the entire range between \(t=0\) and \(t=20\) s. <br><br>
+                We see that when varying a single point on the curve and holding others fixed, the action is minimized 
+                by choosing the classical path between the two adjacent points!
+            </div>
+            
+            <div id="tutorial-step-6">
+                <b>Ready to Explore!</b><br>
+                Use the slider to find the minimum action value. The "Minimum Action for y1" button will set \(y_1\) to 
+                the optimal value. The "Randomize" button will reload the page with new random values for the fixed points.
+            </div>
+        </div>
+
+        <footer>
+            <p><em>Created by Isabel Godoy, Ashley Kim, Michael Mumo, Brian Shuve 2025.</em></p>
+        </footer>
+    </main>
+</body>
+</html>

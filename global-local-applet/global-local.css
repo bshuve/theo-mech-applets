@@ -111,8 +111,6 @@ button:hover {
     
 }
 
-/* Clear floats after the columns: 
-IDK what that means*/
 .row:after {
     content: "";
     display: table;
