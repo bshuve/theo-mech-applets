@@ -1,0 +1,187 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2B2B2B;
+    background: #EEEEEE;
+    margin: 0;
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+    border-radius: 12px;
+}
+
+svg, canvas {
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+}
+
+button {
+    background: #174D38;
+    border: none;
+    color: #F2F2F2;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+button:hover {
+    background: #c2f0c8;
+    color: #000000;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    height: 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.button:hover {
+    transition-duration: 0.4s;
+    background-color: white; /* white */
+    color:black;
+}
+
+#text {
+    width: 1000px;
+    margin: auto;
+}
+
+#applet {
+    background-color:#b5cef5;
+    position: relative;
+    height: 380px;
+    width: 1050px;
+    left: 0px;
+}
+
+#applet2 {
+    background-color:#b5cef5;
+    position: relative;
+    height: 440px;
+    width: 1050px;
+    left: 0px;
+}
+
+.column {
+    float: left;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+ }
+
+#controls {
+    background-color:#c2f0c8;
+    box-sizing: border-box;
+    width: 270px;
+    height: 100%;
+    padding: 10px;
+}
+
+#sliders {
+    display:grid;
+    grid-template-columns: max-content 1fr 20px;
+    grid-gap:5px;
+}
+
+#sliders label { 
+    text-align:right; 
+}
+
+#constants label{ 
+    display: block;
+    width: 100%;
+    margin-left: 10px;
+}
+
+#checkbox-grid li {
+    display: block;
+    float: left;
+    width: 50%;
+}
+
+
+#previous-button{
+    float: left;
+}
+
+#next-button{
+    float: right;
+}
+
+#red {
+    color: red;
+    background-color:red;
+    width: 30px;
+}
+
+#orange {
+    color: orange;
+    background-color:orange;
+    width: 30px;
+}
+
+#green {
+    color: green;
+    background-color:green;
+    width: 30px;
+}
+
+#blue {
+    color: blue;
+    background-color:blue;
+    width: 30px;
+}
+
+#purple {
+    color: purple;
+    background-color: purple;
+    width: 30px;
+}
