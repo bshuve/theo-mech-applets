@@ -1,10 +1,9 @@
 /**
- * Global-Local Action Minimization Applet - Page 3
+ * Global-Local Action Minimization Applet - Page 4
  * 
- * This page allows control over y2, y3, y4 while y1 and y5 are fixed at 0.
- * Shows three trajectory curves: global classical, parameterized, and local classical with constraint.
+ * This page allows full control over all y1-y5 points with checkboxes to show/hide action plots.
  * 
- * @author Isabel Godoy, Ashley Kim, Brian Shuve, 2023
+ * @author Isabel Godoy, Ashley Kim, Michael Mumo, Brian Shuve, 2025
  */
 
 // ============================================================================
@@ -37,27 +36,32 @@ const SLIDER_CONFIG = {
     max: 200
 };
 
-// Constrained minimum values (y1=y5=0, y2=33, y3=49, y4=33)
-const CONSTRAINED_MINIMUM_VALUES = [0, 0, 33, 49, 33, 0, 0];
+// Global classical path values
+const CLASSICAL_VALUES = [0, 51, 84, 100, 84, 51, 0];
 
-// Initialize with constrained minimum values
-let yList = [0, 0, 33, 49, 33, 0, 0];
+let yList;
 
-function initializeValues() {
-    // y1 and y5 are always 0
-    yList[0] = 0;
-    yList[1] = 0;
-    yList[6] = 0;
+function initializeRandomValues() {
+    const max_y = SLIDER_CONFIG.max;
+    const y1 = Math.floor(max_y * Math.random());
+    const y2 = Math.floor(max_y * Math.random());
+    const y3 = Math.floor(max_y * Math.random());
+    const y4 = Math.floor(max_y * Math.random());
+    const y5 = Math.floor(max_y * Math.random());
     
-    // Get values from sliders
-    const slider2 = document.getElementById("y2-slider");
-    const slider3 = document.getElementById("y3-slider");
-    const slider4 = document.getElementById("y4-slider");
+    yList = [0, y1, y2, y3, y4, y5, 0];
     
-    if (slider2) yList[2] = parseInt(slider2.value);
-    if (slider3) yList[3] = parseInt(slider3.value);
-    if (slider4) yList[4] = parseInt(slider4.value);
-    yList[5] = 0;
+    // Update sliders and displays
+    for (let i = 1; i <= 5; i++) {
+        const slider = document.getElementById(`y${i}-slider`);
+        const display = document.getElementById(`print-y${i}`);
+        if (slider) {
+            slider.value = yList[i];
+        }
+        if (display) {
+            display.innerHTML = yList[i];
+        }
+    }
 }
 
 // ============================================================================
@@ -85,11 +89,6 @@ function calculateAction(yList) {
     return -m * ki / (6 * g) - m * g * pi;
 }
 
-function calculateClassicalTrajectory(t, T = 20) {
-    const { g } = PHYSICS_CONSTANTS;
-    return 0.5 * g * t * (T - t);
-}
-
 function calculateParameterizedTrajectory(t, yList) {
     const { g } = PHYSICS_CONSTANTS;
     
@@ -113,36 +112,6 @@ function calculateParameterizedTrajectory(t, yList) {
            0.5 * g * (t - TIME_POINTS[i-1]) ** 2;
 }
 
-/**
- * Calculates the local classical trajectory with constraint y1=y5=0
- * This uses the current y2, y3, y4 values from yList
- */
-function calculateLocalConstrainedTrajectory(t, yList) {
-    const { g } = PHYSICS_CONSTANTS;
-    
-    // Create a constrained yList where y1=y5=0, but y2, y3, y4 are from current values
-    const constrainedYList = [0, 0, yList[2], yList[3], yList[4], 0, 0];
-    
-    let i;
-    for (let j = 1; j < TIME_POINTS.length; j++) {
-        if (t < TIME_POINTS[j]) {
-            i = j;
-            break;
-        } else if (t === TIME_POINTS[j]) {
-            return constrainedYList[j];
-        }
-    }
-    
-    if (t >= TIME_POINTS[TIME_POINTS.length - 1]) {
-        return constrainedYList[constrainedYList.length - 1];
-    }
-    
-    return constrainedYList[i-1] + 
-           ((constrainedYList[i] - constrainedYList[i-1] + 0.5 * g * (TIME_POINTS[i] - TIME_POINTS[i-1]) ** 2) / 
-            (TIME_POINTS[i] - TIME_POINTS[i-1])) * (t - TIME_POINTS[i-1]) - 
-           0.5 * g * (t - TIME_POINTS[i-1]) ** 2;
-}
-
 function transformYCoord(y) {
     const { CANVAS_HEIGHT } = DIMENSIONS;
     return CANVAS_HEIGHT - (y + 500) * CANVAS_HEIGHT / 1500;
@@ -162,38 +131,25 @@ function component(width, height, color, x, y, type) {
 
     this.newPos = function(t) {
         if (this.type === 1) {
-            // Parameterized trajectory
             this.y = calculateParameterizedTrajectory(t, yList);
-        } else if (this.type === 2) {
-            // Global classical trajectory
-            this.y = calculateClassicalTrajectory(t);
-        } else if (this.type === 3) {
-            // Local constrained classical trajectory
-            this.y = calculateLocalConstrainedTrajectory(t, yList);
         }
     };
 }
 
 const animArea = {
     parameterized_data: [],
-    actual_data: [],
-    local_data: [],
     time: 0,
     interval: null,
     
     start: function() {
         this.time = 0;
         this.parameterized_data = [];
-        this.actual_data = [];
-        this.local_data = [];
         this.interval = setInterval(updateFrame, ANIMATION_CONFIG.FRAME_RATE);
     },
     
     stop: function() {
         this.time = 0;
         this.parameterized_data = [];
-        this.actual_data = [];
-        this.local_data = [];
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
@@ -201,20 +157,18 @@ const animArea = {
     }
 };
 
-let param1D, actual1D, local1D;
+let param1D;
 
 function updateFrame() {
     animArea.time += PHYSICS_CONSTANTS.dt;
 
     param1D.newPos(animArea.time);
-    actual1D.newPos(animArea.time);
-    local1D.newPos(animArea.time);
     
     animArea.parameterized_data.push({x: animArea.time, y: param1D.y});
-    animArea.actual_data.push({x: animArea.time, y: actual1D.y});
-    animArea.local_data.push({x: animArea.time, y: local1D.y});
 
-    plotPosition(animArea.local_data, animArea.actual_data, animArea.parameterized_data);
+    if (positionPlot && positionPlot.plot) {
+        plotPosition(animArea.parameterized_data);
+    }
 
     if (animArea.time >= TIME_POINTS[TIME_POINTS.length - 1]) {
         endAnimation();
@@ -226,8 +180,6 @@ function startAnimation() {
     const { y0 } = PHYSICS_CONSTANTS;
     
     param1D = new component(10, 10, "orange", CANVAS_WIDTH/3, transformYCoord(y0), 1);
-    actual1D = new component(10, 10, "purple", 2 * CANVAS_WIDTH/3, transformYCoord(y0), 2);
-    local1D = new component(10, 10, "green", 2 * CANVAS_WIDTH/3, transformYCoord(y0), 3);
     
     const actionDisplay = document.getElementById("print-action");
     if (actionDisplay) {
@@ -330,15 +282,7 @@ function initializePositionPlot() {
     
     const plot = createPlot(position_input);
     
-    // Three trajectory lines: local (gray), actual (black), parameterized (blue)
-    const x_local_line = plot.svg.append("g")
-        .attr("id", "x-local-line")
-        .attr("stroke", "gray");
-    
-    const x_actual_line = plot.svg.append("g")
-        .attr("id", "x-actual-line")
-        .attr("stroke", "black");
-    
+    // Only parameterized line for page 4
     const x_parameterized_line = plot.svg.append("g")
         .attr("id", "x-parameterized-line")
         .attr("stroke", "blue");
@@ -346,7 +290,6 @@ function initializePositionPlot() {
     const colors = ["red", "orange", "green", "blue", "purple"];
     const trajectoryPoints = [];
     
-    // Create points for all y values (y1 and y5 are at 0)
     for (let i = 1; i < yList.length - 1; i++) {
         const point = plot.svg.append("circle")
             .attr("id", "fixed-point")
@@ -360,37 +303,16 @@ function initializePositionPlot() {
     
     return {
         plot: plot,
-        localLine: x_local_line,
-        actualLine: x_actual_line,
         parameterizedLine: x_parameterized_line,
         points: trajectoryPoints
     };
 }
 
-function plotPosition(local, actual, parameterized) {
+function plotPosition(parameterized) {
     if (!positionPlot || !positionPlot.plot) {
         return;
     }
     
-    // Plot local constrained trajectory (gray)
-    plotData({
-        data: local,
-        svg: positionPlot.plot.svg,
-        line: positionPlot.localLine,
-        xScale: positionPlot.plot.xScale,
-        yScale: positionPlot.plot.yScale
-    });
-    
-    // Plot global classical trajectory (black)
-    plotData({
-        data: actual,
-        svg: positionPlot.plot.svg,
-        line: positionPlot.actualLine,
-        xScale: positionPlot.plot.xScale,
-        yScale: positionPlot.plot.yScale
-    });
-    
-    // Plot parameterized trajectory (blue)
     plotData({
         data: parameterized,
         svg: positionPlot.plot.svg,
@@ -416,20 +338,16 @@ function initializeActionPlot() {
     const points = [];
     
     for (let i = 0; i < 5; i++) {
-        // y1 (index 0) and y5 (index 4) hidden by default
-        // y2, y3, y4 (indices 1, 2, 3) visible by default
-        const isVisible = (i === 1 || i === 2 || i === 3);
-        
         const line = integral_plot.svg.append("g")
             .attr("id", `action-line-${i+1}`)
             .attr("stroke", colors[i])
-            .attr("visibility", isVisible ? "visible" : "hidden");
+            .attr("visibility", i === 0 ? "visible" : "hidden");
         
         const point = integral_plot.svg.append("circle")
             .attr("id", `action-point-${i+1}`)
             .attr("r", 3)
             .attr("fill", colors[i])
-            .attr("visibility", isVisible ? "visible" : "hidden");
+            .attr("visibility", i === 0 ? "visible" : "hidden");
         
         lines.push(line);
         points.push(point);
@@ -495,7 +413,7 @@ function plotIntegralPoint() {
 let tutorialState = {
     currentStep: 0,
     isActive: false,
-    totalSteps: 8
+    totalSteps: 7
 };
 
 function startTutorial() {
@@ -553,7 +471,6 @@ function updateSliderInfo(pointIndex) {
         display.innerHTML = value;
     }
     
-    // Update trajectory points on position plot
     if (positionPlot && pointIndex < positionPlot.points.length + 1 && positionPlot.points[pointIndex - 1]) {
         positionPlot.points[pointIndex - 1].attr("cy", positionPlot.plot.yScale(yList[pointIndex]));
     }
@@ -562,23 +479,13 @@ function updateSliderInfo(pointIndex) {
     startAnimation();
 }
 
-function resetToConstrainedMinimum() {
-    // Set y2, y3, y4 to constrained minimum values
-    const slider2 = document.getElementById("y2-slider");
-    const slider3 = document.getElementById("y3-slider");
-    const slider4 = document.getElementById("y4-slider");
-    
-    if (slider2) {
-        slider2.value = CONSTRAINED_MINIMUM_VALUES[2];
-        updateSliderInfo(2);
-    }
-    if (slider3) {
-        slider3.value = CONSTRAINED_MINIMUM_VALUES[3];
-        updateSliderInfo(3);
-    }
-    if (slider4) {
-        slider4.value = CONSTRAINED_MINIMUM_VALUES[4];
-        updateSliderInfo(4);
+function setGlobalClassicalPath() {
+    for (let i = 1; i <= 5; i++) {
+        const slider = document.getElementById(`y${i}-slider`);
+        if (slider) {
+            slider.value = CLASSICAL_VALUES[i];
+            updateSliderInfo(i);
+        }
     }
     
     setTimeout(() => {
@@ -587,32 +494,21 @@ function resetToConstrainedMinimum() {
     }, 100);
 }
 
-function randomizeY234() {
-    const max_y = SLIDER_CONFIG.max;
-    const y2 = Math.floor(max_y * Math.random());
-    const y3 = Math.floor(max_y * Math.random());
-    const y4 = Math.floor(max_y * Math.random());
+function randomizeAll() {
+    initializeRandomValues();
     
-    const slider2 = document.getElementById("y2-slider");
-    const slider3 = document.getElementById("y3-slider");
-    const slider4 = document.getElementById("y4-slider");
-    
-    if (slider2) {
-        slider2.value = y2;
-        updateSliderInfo(2);
-    }
-    if (slider3) {
-        slider3.value = y3;
-        updateSliderInfo(3);
-    }
-    if (slider4) {
-        slider4.value = y4;
-        updateSliderInfo(4);
+    // Update plots
+    for (let i = 1; i <= 5; i++) {
+        if (positionPlot && positionPlot.points[i - 1]) {
+            positionPlot.points[i - 1].attr("cy", positionPlot.plot.yScale(yList[i]));
+        }
     }
     
     setTimeout(() => {
         plotIntegral();
         plotIntegralPoint();
+        endAnimation();
+        startAnimation();
     }, 100);
 }
 
@@ -620,9 +516,11 @@ function toggleActionPlot(index) {
     const checkbox = document.getElementById(`show-action-${index}`);
     if (!checkbox || !actionPlot) return;
     
-    const isChecked = checkbox.checked;
-    const newVisibility = isChecked ? "visible" : "hidden";
+    const isVisible = checkbox.value === "on";
+    const newVisibility = isVisible ? "hidden" : "visible";
+    const newValue = isVisible ? "off" : "on";
     
+    checkbox.value = newValue;
     actionPlot.lines[index - 1].attr("visibility", newVisibility);
     actionPlot.points[index - 1].attr("visibility", newVisibility);
 }
@@ -630,12 +528,12 @@ function toggleActionPlot(index) {
 function initializeEventListeners() {
     const resetButton = document.getElementById("reset-button");
     if (resetButton) {
-        resetButton.onclick = resetToConstrainedMinimum;
+        resetButton.onclick = setGlobalClassicalPath;
     }
     
     const randomizeButton = document.getElementById("randomize-button");
     if (randomizeButton) {
-        randomizeButton.onclick = randomizeY234;
+        randomizeButton.onclick = randomizeAll;
     }
     
     const tutorialBtn = document.getElementById("start-tutorial-main");
@@ -653,8 +551,8 @@ function initializeEventListeners() {
         tutorialSkip.onclick = endTutorial;
     }
     
-    // Set up sliders for y2, y3, y4
-    for (let i = 2; i <= 4; i++) {
+    // Set up sliders
+    for (let i = 1; i <= 5; i++) {
         const slider = document.getElementById(`y${i}-slider`);
         if (slider) {
             slider.oninput = function() {
@@ -695,7 +593,7 @@ function initializeApp() {
             return;
         }
         
-        initializeValues();
+        initializeRandomValues();
         
         positionPlot = initializePositionPlot();
         actionPlot = initializeActionPlot();

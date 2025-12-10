@@ -5,8 +5,8 @@
  * in classical mechanics. It visualizes how varying trajectory points affects the action
  * and compares parameterized vs classical trajectories.
  * 
- * @author Isabel Godoy, Ashley Kim, Brian Shuve, 2023
- * @version 1.0
+ * @author Isabel Godoy, Ashley Kim, Michael Mumo, Brian Shuve, 2025
+ * @version 2.0
  */
 
 // ============================================================================

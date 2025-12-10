@@ -3,7 +3,7 @@
  * 
  * This page demonstrates varying y1 while y2-y5 are fixed at random values.
  * 
- * @author Isabel Godoy, Ashley Kim, Brian Shuve, 2023
+ * @author Isabel Godoy, Ashley Kim, Michael Mumo, Brian Shuve, 2025
  */
 
 // ============================================================================

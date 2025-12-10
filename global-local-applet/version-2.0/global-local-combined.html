@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global–Local Action Minimization – Interactive Tutorial</title>
+  <link rel="stylesheet" href="global-local-shared.css">
+  <script defer src="global-local-combined.js"></script>
+</head>
+<body>
+  <!-- Welcome Overlay -->
+  <div class="welcome-overlay" id="welcome-overlay">
+    <div class="welcome-modal">
+      <h2>Welcome to Action Minimization!</h2>
+      
+      <p><strong>Goals of this applet:</strong></p>
+      <ul>
+        <li>Show how trajectories minimize action globally and locally</li>
+        <li>Show the relationship between classical paths and action minimization</li>
+        <li>Show constraints affect the minimization process</li>
+      </ul>
+      
+      <p><strong>Journey through this page:</strong> There are 4 interactive applets with increasing complexity. </p>
+      
+      <div class="welcome-buttons">
+        <button class="btn-secondary" onclick="skipWelcome()">Skip Intro</button>
+        <button class="btn-primary" onclick="startGuidedTour()">Start Guided Tour</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <header>
+      <h1>Global and Local Action Minimization</h1>
+      <p class="header-subtitle">An Interactive Exploration of Mechanics</p>
+    </header>
+
+    <div class="layout">
+      <nav class="sidebar" aria-label="Section navigation">
+        <h3>Sections</h3>
+        
+        <a href="#page-1" class="nav-item" id="link-1" data-section="1">
+          <span class="nav-title">Vary One Point</span>
+        </a>
+        
+        <a href="#page-2" class="nav-item" id="link-2" data-section="2">
+          <span class="nav-title">Fixed Random Points</span>
+        </a>
+        
+        <a href="#page-3" class="nav-item" id="link-3" data-section="3">
+          <span class="nav-title">Multiple Variables</span>
+        </a>
+        
+        <a href="#page-4" class="nav-item" id="link-4" data-section="4">
+          <span class="nav-title">Full Control</span>
+        </a>
+      </nav>
+
+      <!-- Main Content -->
+      <div>
+        <!-- Section 1 -->
+        <section id="page-1" class="section" aria-labelledby="h2-1" data-section="1">
+          <div class="section-header">
+            <h2 id="h2-1">Section 1: Varying a Single Point</h2>
+          </div>
+          
+          <p class="section-description">
+            In this first section, you'll explore how changing a single trajectory point \(y_1\) 
+            affects the action. Compare the <strong>blue parameterized path</strong> (which must pass through your chosen point) 
+            with the <strong>black classical path</strong> (the global minimum). 
+          </p>
+          
+          <div class="section-objectives">
+            <h4>Things to do:</h4>
+            <ul>
+              <li>Adjust the slider to adjust parameterized path.</li>
+              <li>Notice how action depends on trajectory shape.</li>
+              <li>Observe where action is minimized</li>
+            </ul>
+          </div>
+          
+          <!-- Load seperate page -->
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-1-style.html" loading="lazy" title="Section 1: Vary y1"></iframe>
+          </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="page-2" class="section" aria-labelledby="h2-2" data-section="2">
+          <div class="section-header">
+            <h2 id="h2-2">Section 2: Constraints and Local Minimization</h2>
+          </div>
+          
+          <p class="section-description">
+            Now the scenario changes! Points \(y_2\), \(y_3\), \(y_4\), and \(y_5\) are fixed to <strong>random values</strong>.
+            Only \(y_1\) remains adjustable. Note: <strong>even with constraints, you can minimize action locally</strong> 
+            by choosing the optimal \(y_1\) between the fixed endpoints.
+          </p>
+          
+          <div class="section-objectives">
+            <h4>Things to do:</h4>
+            <ul>
+              <li>Adjust \(y_1\) and find point where action is minimized - classical path!</li>
+              <li>Observe local vs. global minimum</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-2-style.html" loading="lazy" title="Section 2: Vary y1 with constraints"></iframe>
+          </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="page-3" class="section" aria-labelledby="h2-3" data-section="3">
+          <div class="section-header">
+            <h2 id="h2-3">Section 3: Multiple Variables with Endpoint Constraints</h2>
+          </div>
+          
+          <p class="section-description">
+            Here, the endpoints \(y_1 = y_5 = 0\) are fixed, but you control three intermediate points: 
+            \(y_2\), \(y_3\), and \(y_4\). Notice the <strong>two different trajectory curves</strong>: 
+            the black global classical path and the blue parameterized path.
+            Try to find the constrained minimum action?
+          </p>
+          
+          <div class="section-objectives">
+            <h4>To do:</h4>
+            <ul>
+              <li>Minimize action with multiple free points</li>
+              <li>Observe changes in action plots of the point that is adjacent to the point you move and one that is not.</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-3-style.html" loading="lazy" title="Section 3: Vary y2-y4"></iframe>
+          </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="page-4" class="section" aria-labelledby="h2-4" data-section="4">
+          <div class="section-header">
+            <h2 id="h2-4">Section 4: Full Control – Finding the Global Minimum</h2>
+          </div>
+          
+          <p class="section-description">
+            You now have complete control over all five trajectory points. 
+            Use the action plots for each variable (toggle them with checkboxes) to systematically find the 
+            <strong>global classical trajectory</strong> that minimizes action. The target action is \(-1334\) J.s. 
+            Can you find it?
+          </p>
+          
+          <div class="section-objectives">
+            <h4>To do:</h4>
+            <ul>
+              <li>Find the global minimum by minimizing each local minimum!</li>
+            </ul>
+          </div>
+          
+          <div class="applet-container">
+            <iframe class="applet-frame" src="global-local-4-style.html" loading="lazy" title="Section 4: Full control"></iframe>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      <p><em>Created by Isabel Godoy, Ashley Kim, Brian Shuve, 2023.</em></p>
+    </footer>
+  </main>
+</body>
+</html>
