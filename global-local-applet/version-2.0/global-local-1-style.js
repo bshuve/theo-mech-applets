@@ -617,7 +617,7 @@ function randomizeY1() {
 let tutorialState = {
     currentStep: 0,
     isActive: false,
-    totalSteps: 10,  // Updated to include new interactive steps
+    totalSteps: 8,  // Updated to include new interactive steps
     demonstrationTimer: null
 };
 

@@ -1,64 +1,62 @@
-// Applets data - simplified without categories
-const appletsData = [
-    {
-        id: "orbit/orbit1",
-        title: "Orbital Mechanics",
-        description: "Visualize planetary orbits with adjustable parameters. Explore Kepler's laws and orbital dynamics.",
-        icon: "fas fa-globe-americas"
-    },
-    {
-        id: "cycloid-applet/cycloid",
-        title: "Cycloid Motion",
-        description: "Explore the brachistochrone problem and cycloid curves - the path of fastest descent.",
-        icon: "fas fa-wave-square"
-    },
+// Theoretical Mechanics applets
+const theoreticalApplets = [
     {
         id: "traj/trajectory1",
-        title: "Projectile Trajectories",
-        description: "Simulate projectile motion with air resistance. Compare trajectories with different parameters.",
+        title: "Principle of Least Action",
+        description: "What does it mean for the classical path to minimize the action? Why is the Lagrangian kinetic minus potential energy? Explore classical and alternative paths in a simple model of uniform gravity.",
         icon: "fas fa-project-diagram"
     },
     {
-        id: "lagrangian/lagrangian0",
-        title: "Lagrangian Mechanics",
-        description: "Interactive visualization of Lagrangian formalism with constraints and generalized coordinates.",
-        icon: "fas fa-calculator"
+        id: "trajectory-with-arrows/trajectory-supplement",
+        title: "Newton's 2nd Law and Least Action",
+        description: "Visually compare the force and acceleration for classical and alternate trajectories, and see that Newton's Second Law only holds for the path of least action.",
+        icon: "fas fa-arrows-alt"
     },
     {
-        id: "lagrangian-multipliers/mult1",
-        title: "Lagrangian Multipliers",
-        description: "Understand constraint forces through Lagrange multipliers with interactive graphs.",
-        icon: "fas fa-chart-line"
-    },
-    {
-        id: "rhr-applet/rhr1",
-        title: "Right-Hand Rule",
-        description: "Interactive guide to the right-hand rule for cross products and magnetic forces.",
-        icon: "fas fa-hand-point-right"
-    },
-    {
-        id: "force-energy/force-energy1",
-        title: "Force & Energy Relationships",
-        description: "Explore the relationship between conservative forces and potential energy functions.",
-        icon: "fas fa-bolt"
-    },
-    {
-        id: "global-local-applet/global-local1",
-        title: "Global vs Local Minima",
-        description: "Visualize optimization landscapes and understand the difference between local and global minima.",
+        id: "global-local-applet/version-2.0/global-local-1-style",
+        title: "Minimizing the Action, Locally and Globally",
+        description: "The Principle of Least Action says that the classical path minimizes the action between fixed endpoints. This global principle, however, leads to a local equation of motion at each point. Explore the connection between globally and locally minimizing the action.",
         icon: "fas fa-mountain"
     },
     {
-        id: "misc-applets",
-        title: "Miscellaneous Applets",
-        description: "Collection of smaller physics applets covering various topics in mechanics and waves.",
-        icon: "fas fa-shapes"
+        id: "force-energy/force-energy1",
+        title: "Action and the Euler-Lagrange Equations",
+        description: "Explore what it means for a path to satisfy the Euler-Lagrange equation, and the connection to the action.",
+        icon: "fas fa-bolt"
+    },
+    {
+        id: "lagrangian/lagrangian0",
+        title: "Generalized Coordinates and Coordinate Transformations",
+        description: "Changing coordinates does not change the action, but it does change the functional form of the Lagrangian and the equations of motion. Use a 1D generalized coordinate transformation to understand what changes, and what doesn't, in different coordinate systems.",
+        icon: "fas fa-calculator"
+    },
+    {
+        id: "orbit/orbit1",
+        title: "Orbital Motion and the Effective 1D Problem",
+        description: "Explore two-body motion and its relation to the effective 1D problem that is used to characterize such systems. What is effective potential, and how does it relate to true potential energy? How are the 1D and 3D motions related?",
+        icon: "fas fa-globe-americas"
+    },
+    {
+        id: "cycloid-applet/cycloid1",
+        title: "The Brachistochrone Problem and Cycloid Motion",
+        description: "The brachistochrone problem is one of the classic problems in the calculus of variations. Explore the brachistochrone problem in more detail and see how a cycloid trajectory can be derived from the principle of least time.",
+        icon: "fas fa-bicycle"
+    }
+];
+
+// Introductory Mechanics applets
+const introductoryApplets = [
+    {
+        id: "rhr-applet/rhr1",
+        title: "Right-Hand Rule Practice",
+        description: "Practice the right-hand rule for orbital angular momentum and torque in Newtonian mechanics.",
+        icon: "fas fa-hand-point-right"
     }
 ];
 
 // Function to render applets
-function renderApplets(applets) {
-    const container = document.getElementById('appletsContainer');
+function renderApplets(applets, containerId) {
+    const container = document.getElementById(containerId);
     container.innerHTML = '';
     
     applets.forEach(applet => {
@@ -85,15 +83,6 @@ function renderApplets(applets) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    renderApplets(appletsData);
-    
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredApplets = appletsData.filter(applet => 
-            applet.title.toLowerCase().includes(searchTerm) || 
-            applet.description.toLowerCase().includes(searchTerm)
-        );
-        renderApplets(filteredApplets);
-    });
+    renderApplets(theoreticalApplets, 'theoreticalContainer');
+    renderApplets(introductoryApplets, 'introductoryContainer');
 });

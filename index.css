@@ -43,7 +43,7 @@
         }
         
         .intro {
-            text-align: center;
+            text-align: left;
             max-width: 800px;
             margin: 0 auto 40px auto;
             padding: 0 20px;
@@ -92,10 +92,17 @@
             color: #999;
             font-size: 1.1rem;
         }
-        
+
+        .section-header {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
         .applets-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 35px;
             justify-items: center;
             margin-bottom: 60px;
@@ -109,7 +116,9 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             border: 1px solid #f0f0f0;
             width: 100%;
-            max-width: 350px;
+            max-width: none;
+            display: flex;
+            flex-direction: column;
         }
         
         .applet-card:hover {
@@ -147,7 +156,10 @@
         
         .applet-content {
             padding: 30px;
-            text-align: center;
+            text-align: left;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .applet-title {
@@ -155,9 +167,12 @@
             margin-bottom: 15px;
             color: #2c3e50;
             font-weight: 600;
+            min-height: 4.9rem;
+            text-align: center;
         }
         
         .applet-description {
+            flex: 1;
             margin-bottom: 25px;
             color: #666;
             font-size: 1rem;
@@ -166,6 +181,7 @@
         
         .btn {
             display: inline-block;
+            align-self: center;
             padding: 12px 30px;
             background-color: #3498db;
             color: white;

@@ -90,6 +90,12 @@ function calculateClassicalTrajectory(t, T = 20) {
     return 0.5 * g * t * (T - t);
 }
 
+function calculateClassicalTrajectoryMod(t, T = 20) {
+    const { g } = PHYSICS_CONSTANTS;
+    return 0.5 * g * (t-TIME_POINTS[1]) * (TIME_POINTS[5] - t);
+}   
+
+
 function calculateParameterizedTrajectory(t, yList) {
     const { g } = PHYSICS_CONSTANTS;
     
@@ -114,33 +120,11 @@ function calculateParameterizedTrajectory(t, yList) {
 }
 
 /**
- * Calculates the local classical trajectory with constraint y1=y5=0
- * This uses the current y2, y3, y4 values from yList
+ * Calculates the classical trajectory between the fixed endpoints y1=0 and y5=0.
+ * This is independent of the intermediate y values.
  */
-function calculateLocalConstrainedTrajectory(t, yList) {
-    const { g } = PHYSICS_CONSTANTS;
-    
-    // Create a constrained yList where y1=y5=0, but y2, y3, y4 are from current values
-    const constrainedYList = [0, 0, yList[2], yList[3], yList[4], 0, 0];
-    
-    let i;
-    for (let j = 1; j < TIME_POINTS.length; j++) {
-        if (t < TIME_POINTS[j]) {
-            i = j;
-            break;
-        } else if (t === TIME_POINTS[j]) {
-            return constrainedYList[j];
-        }
-    }
-    
-    if (t >= TIME_POINTS[TIME_POINTS.length - 1]) {
-        return constrainedYList[constrainedYList.length - 1];
-    }
-    
-    return constrainedYList[i-1] + 
-           ((constrainedYList[i] - constrainedYList[i-1] + 0.5 * g * (TIME_POINTS[i] - TIME_POINTS[i-1]) ** 2) / 
-            (TIME_POINTS[i] - TIME_POINTS[i-1])) * (t - TIME_POINTS[i-1]) - 
-           0.5 * g * (t - TIME_POINTS[i-1]) ** 2;
+function calculateLocalConstrainedTrajectory(t) {
+    return calculateClassicalTrajectoryMod(t);
 }
 
 function transformYCoord(y) {
@@ -169,7 +153,7 @@ function component(width, height, color, x, y, type) {
             this.y = calculateClassicalTrajectory(t);
         } else if (this.type === 3) {
             // Local constrained classical trajectory
-            this.y = calculateLocalConstrainedTrajectory(t, yList);
+            this.y = calculateLocalConstrainedTrajectory(t);
         }
     };
 }

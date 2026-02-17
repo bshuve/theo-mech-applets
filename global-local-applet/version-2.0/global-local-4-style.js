@@ -413,7 +413,7 @@ function plotIntegralPoint() {
 let tutorialState = {
     currentStep: 0,
     isActive: false,
-    totalSteps: 7
+    totalSteps: 6
 };
 
 function startTutorial() {

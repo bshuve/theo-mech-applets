@@ -369,7 +369,7 @@ footer p {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.1);
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 #tutorial-box {
