@@ -75,7 +75,7 @@ function renderApplets(applets) {
             <div class="applet-content">
                 <h3 class="applet-title">${applet.title}</h3>
                 <p class="applet-description">${applet.description}</p>
-                <a href="../${applet.id}.html" class="btn"><i class="fas fa-play"></i> Launch</a>
+                <a href="${applet.id}.html" class="btn"><i class="fas fa-play"></i> Launch</a>
             </div>
         `;
         
